@@ -1,0 +1,7 @@
+include .babelrc
+include .eslintignore
+include .eslintrc
+include package.json
+include *.txt
+recursive-include api *.js
+recursive-include schemas *.json

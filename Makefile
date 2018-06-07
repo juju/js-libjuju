@@ -1,6 +1,7 @@
-DEVENV=devenv
-PROJECT=js-libjuju
-SYSDEPS=build-essential python3-virtualenv tox
+DEVENV = devenv
+NODE_MODULES = node_modules
+PROJECT = js-libjuju
+SYSDEPS = build-essential python3-virtualenv tox
 
 .PHONY: all
 all: help

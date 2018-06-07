@@ -34,8 +34,8 @@ function wrapAllWatcher(cls) {
 
     @param {String} watcherId The id of the currently used watcher. The id is
       retrieved by calling the Client.watchAll API call.
-    @param {Function} callback: a callback called when the next messages arrive.
-      The callback receives an error and the changes. If there are no errors,
+    @param {Function} callback Called when the next messages arrive, the
+      callback receives an error and the changes. If there are no errors,
       changes are provided as an object like the following:
         {
           deltas: []{
@@ -88,8 +88,8 @@ function wrapAllWatcher(cls) {
 
     @param {String} watcherId The id of the currently used watcher. The id is
       retrieved by calling the Client.watchAll API call.
-    @param {Function} callback: a callback called after the watcher has been
-      stopped. The callback receives an error.
+    @param {Function} callback Called after the watcher has been stopped, the
+      callback receives an error.
   */
   cls.prototype.stop = function(watcherId, callback) {
     // Prepare the request to the Juju API.
@@ -126,9 +126,9 @@ function wrapClient(cls) {
     This method requires the AllWatcher facade to be loaded and available to the
     client.
 
-    @param {Function} callback: a callback called every time changes arrive from
-      Juju. The callback receives an error and a the changes. If there are no
-      errors, changes are provided as an object like the following:
+    @param {Function} callback Called every time changes arrive from Juju, the
+      callback receives an error and a the changes. If there are no errors,
+      changes are provided as an object like the following:
         {
           deltas: []{
             entity: {
@@ -201,8 +201,8 @@ function wrapPinger(cls) {
     to inactivity.
 
     @param {Integer} interval Milliseconds between pings.
-    @param {Function} callback: a callback called every time a pong is received
-      from the server. The callback receives an error.
+    @param {Function} callback Called every time a pong is received from the
+      server, the callback receives an error.
   */
   cls.prototype.pingForever = function(interval, callback) {
     const timer = setInterval(() => {

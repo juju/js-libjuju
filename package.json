@@ -5,7 +5,7 @@
   "main": "api/client.js",
   "scripts": {
     "lint": "eslint api/",
-    "test": "tape api/test.js | tap-diff"
+    "test": "tap api/test*.js"
   },
   "repository": {
     "type": "git",
@@ -24,7 +24,7 @@
   "homepage": "https://github.com/juju/js-libjuju#readme",
   "devDependencies": {
     "eslint": "^4.19.1",
-    "tap-diff": "^0.1.1",
-    "tape": "^4.9.0"
-  }
+    "tap": "^12.0.1"
+  },
+  "dependencies": {}
 }

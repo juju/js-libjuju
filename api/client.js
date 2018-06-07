@@ -55,10 +55,10 @@
     - adminFacadeVersion (default=3): the admin facade version;
     - closeCallback: a callback to be called with the exit code when the
       connection is closed.
-  @param {Function} callback: a callback called when the connection is made. The
-    callback receives an error and a client object. If there are no errors, the
-    client can be used to login and logout to Juju. See the docstring for the
-    Client class for information on how to use the client.
+  @param {Function} callback Called when the connection is made, the callback
+    receives an error and a client object. If there are no errors, the client
+    can be used to login and logout to Juju. See the docstring for the Client
+    class for information on how to use the client.
 */
 function connect(url, options={}, callback) {
   if (!options.adminFacadeVersion) {
@@ -110,15 +110,16 @@ class Client {
 
     @param {Object} credentials An object with the user and password fields for
       userpass authentication or the macaroons field for bakery authentication.
-    @param {Function} callback: a callback called when the login process
-      completes. The callback receives an error and a connection object. If
-      there are no errors, the connection can be used to send/receive messages
-      to and from the Juju controller or model, and to get access to the
-      available facades (through conn.facades). See the docstring for the
-      Connection class for information on how to use the connection instance.
+    @param {Function} callback Called when the login process completes, the
+      callback receives an error and a connection object. If there are no
+      errors, the connection can be used to send/receive messages to and from
+      the Juju controller or model, and to get access to the available facades
+      (through conn.facades). See the docstring for the Connection class for
+      information on how to use the connection instance.
   */
   login(credentials, callback) {
     // TODO(frankban): support bakery auth.
+    // TODO(frankban): support redirections when connecting to models.
     const req = {
       type: 'Admin',
       request: 'Login',
@@ -130,7 +131,7 @@ class Client {
     };
     this._transport.write(req, (err, resp) => {
       if (err) {
-        callback(err, {});
+        callback(err, null);
         return;
       }
       const conn = new Connection(this._transport, this._facades, resp);
@@ -141,10 +142,10 @@ class Client {
   /**
     Log out from Juju.
 
-    @param {Function} callback: a callback called when the logout process
-      completes and the connection is closed. The callback receives the close
-      code and optionally another callback. It is responsibility of the callback
-      to call the provided callback if present.
+    @param {Function} callback Called when the logout process completes and the
+      connection is closed, the callback receives the close code and optionally
+      another callback. It is responsibility of the callback to call the
+      provided callback if present.
   */
   logout(callback) {
     this._transport.close(callback);
@@ -193,9 +194,8 @@ class Transport {
       like {type: 'Client', request: 'DoSomething', version: 1, params: {}}. The
       request must not be already serialized and must not include the request
       id, as those are responsibilities of the transport.
-    @param {Function} callback: a callback called when the response to the given
-      request is ready. The callback receives an error and the response result
-      from Juju.
+    @param {Function} callback Called when the response to the given request is
+      ready, the callback receives an error and the response result from Juju.
   */
   write(req, callback) {
     // Check that the connection is ready and sane.
@@ -224,10 +224,9 @@ class Transport {
   /**
     Close the transport, and therefore the connection.
 
-    @param {Function} callback: a callback called after the transport is closed.
-      The callback receives the close code and optionally another callback. It
-      is responsibility of the callback to call the provided callback if
-      present.
+    @param {Function} callback Called after the transport is closed, the
+      callback receives the close code and optionally another callback. It is
+      responsibility of the callback to call the provided callback if present.
   */
   close(callback) {
     const closeCallback = this._closeCallback;
@@ -278,16 +277,32 @@ class Transport {
 class Connection {
 
   constructor(transport, facades, loginResp) {
+    // Store the transport used for sending messages to Juju.
     this.transport = transport;
-    const userInfo = loginResp['user-info'];
+
+    // Populate info.
+    const userInfo = loginResp['user-info'] || {};
     this.info = {
-      controllerAccess: userInfo['controller-access'],
-      modelAccess: userInfo['model-access'],
+      controllerTag: loginResp['controller-tag'] || '',
+      modelTag: loginResp['model-tag'] || '',
+      serverVersion: loginResp['server-version'] || '',
+
+      user: {
+        displayName: userInfo['display-name'] || '',
+        identity: userInfo['identity'] || '',
+        lastConnection: userInfo['last-connection'] || '',
+        // TODO(frankban): expose an ACL object using access info, so that
+        // it's more user friendly.
+        controllerAccess: userInfo['controller-access'] || '',
+        modelAccess: userInfo['model-access'] || ''
+      },
+
       getFacade: name => {
         return this.facades[name];
       }
-      // TODO: add the others.
     };
+
+    // Handle facades.
     const respFacades = loginResp.facades || [];
     const registered = facades.reduce((previous, current) => {
       previous[current.name] = current;
