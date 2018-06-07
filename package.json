@@ -1,0 +1,30 @@
+{
+  "name": "js-libjuju",
+  "version": "0.1.0",
+  "description": "Juju API client",
+  "main": "api/client.js",
+  "scripts": {
+    "lint": "eslint api/",
+    "test": "tape api/test.js | tap-diff"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juju/js-libjuju.git"
+  },
+  "keywords": [
+    "juju",
+    "api",
+    "client"
+  ],
+  "author": "Canonical JAAS Team",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "bugs": {
+    "url": "https://github.com/juju/js-libjuju/issues"
+  },
+  "homepage": "https://github.com/juju/js-libjuju#readme",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "tap-diff": "^0.1.1",
+    "tape": "^4.9.0"
+  }
+}

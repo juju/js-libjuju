@@ -2,15 +2,15 @@
 // Licensed under the LGPLv3, see LICENCE.txt file for details.
 
 /**
-  This module includes wrappers for auto-generated API facade classes. 
+  This module includes wrappers for auto-generated API facade classes.
 
-  Wrappers are class decorators, accepting a facade class and returning a 
-  modified, improved version of the facade. Wrappers are useful when the 
-  auto-generated facade includes ugly or difficult to use calls. A wrapper can 
-  extend or override the method set for facades to make the resulting API more 
-  user friendly. 
+  Wrappers are class decorators, accepting a facade class and returning a
+  modified, improved version of the facade. Wrappers are useful when the
+  auto-generated facade includes ugly or difficult to use calls. A wrapper can
+  extend or override the method set for facades to make the resulting API more
+  user friendly.
 
-  Nothing must be done in order to activate wrappers, as they are automatically 
+  Nothing must be done in order to activate wrappers, as they are automatically
   loaded by auto-generated modules.
 */
 
@@ -35,12 +35,12 @@ function wrapAllWatcher(cls) {
     @param {String} watcherId The id of the currently used watcher. The id is
       retrieved by calling the Client.watchAll API call.
     @param {Function} callback: a callback called when the next messages arrive.
-      The callback receives an error and the changes. If there are no errors, 
+      The callback receives an error and the changes. If there are no errors,
       changes are provided as an object like the following:
         {
           deltas: []{
             entity: {
-              
+
             } (required),
             removed: boolean (required)
           } (required)
@@ -88,7 +88,7 @@ function wrapAllWatcher(cls) {
 
     @param {String} watcherId The id of the currently used watcher. The id is
       retrieved by calling the Client.watchAll API call.
-    @param {Function} callback: a callback called after the watcher has been 
+    @param {Function} callback: a callback called after the watcher has been
       stopped. The callback receives an error.
   */
   cls.prototype.stop = function(watcherId, callback) {
@@ -120,19 +120,19 @@ function wrapAllWatcher(cls) {
 function wrapClient(cls) {
 
   /**
-    Watch changes in the current model, and call the provided callback every 
+    Watch changes in the current model, and call the provided callback every
     time changes arrive.
 
     This method requires the AllWatcher facade to be loaded and available to the
     client.
 
     @param {Function} callback: a callback called every time changes arrive from
-      Juju. The callback receives an error and a the changes. If there are no 
+      Juju. The callback receives an error and a the changes. If there are no
       errors, changes are provided as an object like the following:
         {
           deltas: []{
             entity: {
-              
+
             } (required),
             removed: boolean (required)
           } (required)

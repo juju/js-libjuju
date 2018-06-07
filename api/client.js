@@ -44,7 +44,7 @@
     - facades (default=[]): the list of facade classes to include in the API
       connection object. Those classes are usually auto-generated and can be
       found in the facades directory of the project. When multiple versions of
-      the same facade are included, the most recent version supported by the 
+      the same facade are included, the most recent version supported by the
       server is made available as part of the connection object;
     - debug (default=false): when enabled, all API messages are logged at debug
       level;
@@ -53,7 +53,7 @@
       require('websocket').w3cwebsocket can be used safely, as it implements the
       W3C browser native WebSocket API;
     - adminFacadeVersion (default=3): the admin facade version;
-    - closeCallback: a callback to be called with the exit code when the 
+    - closeCallback: a callback to be called with the exit code when the
       connection is closed.
   @param {Function} callback: a callback called when the connection is made. The
     callback receives an error and a client object. If there are no errors, the
@@ -76,15 +76,15 @@ function connect(url, options={}, callback) {
   if (!options.wsclass) {
     options.wsclass = window.WebSocket;
   }
-  // Instantiate the WebSocket, and make the client available when the 
+  // Instantiate the WebSocket, and make the client available when the
   // connection is open.
   const ws = new options.wsclass(url);
   ws.onopen = evt => {
     callback(null, new Client(ws, options));
-  }
+  };
   ws.onclose = evt => {
     callback('cannot connect WebSocket: ' + evt.reason, null);
-  }
+  };
 }
 
 
@@ -97,23 +97,23 @@ function connect(url, options={}, callback) {
     above for a description of available options.
 */
 class Client {
-  
+
   constructor(ws, options) {
     // Instantiate the transport, used for sending messages to the server.
     this._transport = new Transport(ws, options.closeCallback, options.debug);
     this._facades = options.facades;
     this._adminFacadeVersion = options.adminFacadeVersion;
   }
-  
+
   /**
     Log in to Juju.
 
     @param {Object} credentials An object with the user and password fields for
       userpass authentication or the macaroons field for bakery authentication.
-    @param {Function} callback: a callback called when the login process 
-      completes. The callback receives an error and a connection object. If 
+    @param {Function} callback: a callback called when the login process
+      completes. The callback receives an error and a connection object. If
       there are no errors, the connection can be used to send/receive messages
-      to and from the Juju controller or model, and to get access to the 
+      to and from the Juju controller or model, and to get access to the
       available facades (through conn.facades). See the docstring for the
       Connection class for information on how to use the connection instance.
   */
@@ -127,7 +127,7 @@ class Client {
         credentials: credentials.password
       },
       version: this._adminFacadeVersion
-    }; 
+    };
     this._transport.write(req, (err, resp) => {
       if (err) {
         callback(err, {});
@@ -137,11 +137,11 @@ class Client {
       callback(null, conn);
     });
   }
-  
+
   /**
     Log out from Juju.
 
-    @param {Function} callback: a callback called when the logout process 
+    @param {Function} callback: a callback called when the logout process
       completes and the connection is closed. The callback receives the close
       code and optionally another callback. It is responsibility of the callback
       to call the provided callback if present.
@@ -159,7 +159,7 @@ class Client {
 
   @param {Object} ws The WebSocket instance already connected to a Juju
     controller or model.
-  @param {Function} closeCallback A callback to be called after the transport 
+  @param {Function} closeCallback A callback to be called after the transport
     closes the connection. The callback receives the close code.
   @param {Boolean} debug When enabled, all API messages are logged at debug
     level.
@@ -177,13 +177,13 @@ class Transport {
         console.debug('<--', evt.data);
       }
       this._handle(evt.data);
-    }
+    };
     ws.onclose = evt => {
       if (this._debug) {
         console.debug('close:', evt.code, evt.reason);
       }
       this._closeCallback(evt.code);
-    }
+    };
   }
 
   /**
@@ -204,7 +204,7 @@ class Transport {
       const reqStr = JSON.stringify(req);
       if (callback) {
         callback(
-          `cannot send request ${reqStr}: ` + 
+          `cannot send request ${reqStr}: ` +
           `connection state ${state} is not open`);
       }
       return;
@@ -224,9 +224,9 @@ class Transport {
   /**
     Close the transport, and therefore the connection.
 
-    @param {Function} callback: a callback called after the transport is closed. 
-      The callback receives the close code and optionally another callback. It 
-      is responsibility of the callback to call the provided callback if 
+    @param {Function} callback: a callback called after the transport is closed.
+      The callback receives the close code and optionally another callback. It
+      is responsibility of the callback to call the provided callback if
       present.
   */
   close(callback) {
@@ -258,7 +258,7 @@ class Transport {
 
 /**
   A connection to a Juju controller or model. This is the object users use to
-  perform Juju API calls, as it provides access to all available facades 
+  perform Juju API calls, as it provides access to all available facades
   (conn.facades), to a transport connected to Juju (conn.transport) and to
   information about the connected Juju server (conn.info).
 
@@ -267,8 +267,8 @@ class Transport {
     of the connection instance. See the Transport docstring for information on
     how to use the transport (typically calling transport.write).
   @param {Object} facades The facade classes provided in the facades property of
-    the options provided to the connect function. When the connection is 
-    instantiated, the matching available facades as declared by Juju are 
+    the options provided to the connect function. When the connection is
+    instantiated, the matching available facades as declared by Juju are
     instantiated and access to them is provided via the facades property of the
     connection.
   @param {Object} loginResp The response to the Juju login request. The response
@@ -292,7 +292,7 @@ class Connection {
     const registered = facades.reduce((previous, current) => {
       previous[current.name] = current;
       return previous;
-    }, {})
+    }, {});
     this.facades = respFacades.reduce((previous, current) => {
       for (let i = current.versions.length-1; i >= 0; i--) {
         const className = current.name + 'V' + current.versions[i];
