@@ -16,7 +16,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='jujulib',
+    name='js-libjuju',
     version='0.1.0',
     description='Generate the JavaScript Juju API client',
     long_description=long_description,

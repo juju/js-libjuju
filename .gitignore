@@ -13,3 +13,8 @@ __pycache__/
 .tox
 .cache
 devenv
+
+# app specific
+node_modules/
+output/*.js
+package-lock.json

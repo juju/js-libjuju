@@ -9,6 +9,10 @@ $(DEVENV):
 
 dev: $(DEVENV)
 
+.PHONY: generate
+generate: dev
+	devenv/bin/generate schemas/schemas-juju-latest.json
+
 .PHONY: dist
 dist: clean dev check
 	$(DEVENV)/bin/python setup.py sdist bdist_wheel
@@ -19,12 +23,13 @@ check:
 
 .PHONY: clean
 clean:
-	rm -rf $(DEVENV) .tox dist *.egg-info
+	rm -rf $(DEVENV) .tox dist *.egg-info output/*.js
 
 .PHONY: help
 help:
 	@echo "make sysdeps - install system dependencies (debian packages)"
 	@echo "make dev - create the development environment"
+	@echo "make generate - generate API in the output dir using latest schema"
 	@echo "make test - run unit tests in the development enviroment"
 	@echo "make lint - run lint in the development environment"
 	@echo "make check - run lint and tests on the resulting packages"
