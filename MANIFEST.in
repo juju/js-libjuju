@@ -1,4 +1,3 @@
-include .babelrc
 include .eslintignore
 include .eslintrc
 include package.json
