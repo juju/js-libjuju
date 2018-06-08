@@ -16,7 +16,7 @@ devenv
 
 # app specific
 node_modules/
-output/*.js
+api/facades/*.js
 package-lock.json
 
 # js specific
