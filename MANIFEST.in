@@ -3,5 +3,7 @@ include .eslintrc
 include package.json
 include *.txt
 recursive-include api *.js
+recursive-exclude api/facades *.js
 recursive-include api *.md
+recursive-include examples *.js
 recursive-include schemas *.json
