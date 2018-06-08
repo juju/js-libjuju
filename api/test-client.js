@@ -49,6 +49,30 @@ tap.test('connect', t => {
     ws.open();
   });
 
+  t.test('login with custom admin facade version', t => {
+    const options = {
+      wsclass: helpers.makeWSClass(instance => {
+        ws = instance;
+      }),
+      adminFacadeVersion: 42
+    };
+    jujulib.connect('wss://1.2.3.4', options, (err, juju) => {
+      juju.login({user: 'dalek', password: 'skaro'}, (err, conn) => {
+        helpers.requestEqual(t, ws.lastRequest, {
+          type: 'Admin',
+          request: 'Login',
+          params: {'auth-tag': 'dalek', credentials: 'skaro'},
+          version: 42
+        });
+        t.end();
+      });
+      // Reply to the login request.
+      ws.reply({error: 'bad wolf'});
+    });
+    // Open the WebSocket connection.
+    ws.open();
+  });
+
   t.test('connection transport success', t => {
     const options = {};
     helpers.makeConnection(t, options, (conn, ws) => {
@@ -99,20 +123,20 @@ tap.test('connect', t => {
   t.test('connection info getFacade call', t => {
     const options = {
       facades: [
-        class FacadeAV2 extends helpers.BaseFacade{},
-        class FacadeAV3 extends helpers.BaseFacade{},
-        class FacadeBV0 extends helpers.BaseFacade{},
-        class FacadeBV1 extends helpers.BaseFacade{},
-        class FacadeCV1 extends helpers.BaseFacade{}
+        class ClientV2 extends helpers.BaseFacade{},
+        class ClientV3 extends helpers.BaseFacade{},
+        class AllWatcherV0 extends helpers.BaseFacade{},
+        class AllWatcherV1 extends helpers.BaseFacade{},
+        class MyFacadeV1 extends helpers.BaseFacade{}
       ]
     };
     helpers.makeConnection(t, options, (conn, ws) => {
-      let facade = conn.info.getFacade('facadeA');
-      t.equal(facade.constructor.name, 'FacadeAV3');
-      facade = conn.info.getFacade('facadeB');
-      t.equal(facade.constructor.name, 'FacadeBV0');
-      facade = conn.info.getFacade('facadeC');
-      t.equal(facade.constructor.name, 'FacadeCV1');
+      let facade = conn.info.getFacade('client');
+      t.equal(facade.constructor.name, 'ClientV3');
+      facade = conn.info.getFacade('allWatcher');
+      t.equal(facade.constructor.name, 'AllWatcherV0');
+      facade = conn.info.getFacade('myFacade');
+      t.equal(facade.constructor.name, 'MyFacadeV1');
       t.end();
     });
   });
@@ -120,19 +144,19 @@ tap.test('connect', t => {
   t.test('connection info getFacade call', t => {
     const options = {
       facades: [
-        class FacadeAV2 extends helpers.BaseFacade{},
-        class FacadeCV2 extends helpers.BaseFacade{}
+        class ClientV2 extends helpers.BaseFacade{},
+        class MyFacadeV2 extends helpers.BaseFacade{}
       ]
     };
     helpers.makeConnection(t, options, (conn, ws) => {
-      const facadeA = conn.facades.facadeA;
-      t.notEqual(facadeA, undefined);
-      t.equal(facadeA.constructor.name, 'FacadeAV2');
-      t.equal(conn.facades.facadeB, undefined);
-      t.equal(conn.facades.facadeC, undefined);
+      const client = conn.facades.client;
+      t.notEqual(client, undefined);
+      t.equal(client.constructor.name, 'ClientV2');
+      t.equal(conn.facades.allWatcher, undefined);
+      t.equal(conn.facades.myFacade, undefined);
       // Check properties passed to the instantiated facade.
-      t.deepEqual(facadeA.transport, conn.transport);
-      t.deepEqual(facadeA.info, conn.info);
+      t.deepEqual(client._transport, conn.transport);
+      t.deepEqual(client._info, conn.info);
       t.end();
     });
   });
