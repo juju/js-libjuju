@@ -161,12 +161,6 @@ tap.test('wrapClient', t => {
     helpers.makeConnection(t, options, (conn, ws) => {
       const client = conn.facades.client;
       client.watch((err, result) => {
-        // helpers.requestEqual(t, ws.lastRequest, {
-        //   type: 'AllWatcher',
-        //   request: 'Next',
-        //   version: 0
-        // });
-        // t.equal(ws.lastRequest.id, watcherId);
         t.equal(err, 'watch requires the allWatcher facade to be loaded');
         t.deepEqual(result, {});
         // Only the login request has been made, no other requests.
