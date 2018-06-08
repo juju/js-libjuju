@@ -49,11 +49,11 @@ const loginResponse = {
      'model-access': 'admin'
   },
   facades: [{
-    name: 'FacadeA', versions: [2, 3]
+    name: 'Client', versions: [2, 3]
   }, {
-    name: 'FacadeB', versions: [0]
+    name: 'AllWatcher', versions: [0]
   }, {
-    name: 'FacadeC', versions: [1, 7]
+    name: 'MyFacade', versions: [1, 7]
   }]
 };
 
@@ -63,8 +63,10 @@ const loginResponse = {
 */
 class BaseFacade {
   constructor(transport, info) {
-    this.transport = transport,
-    this.info = info;
+    this._transport = transport,
+    this._info = info;
+    // This is JavaScript: implicit type conversion for the win.
+    this.version = +this.constructor.name.slice(-1);
   }
 }
 

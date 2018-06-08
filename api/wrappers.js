@@ -51,7 +51,7 @@ function wrapAllWatcher(cls) {
     const req = {
       type: 'AllWatcher',
       request: 'Next',
-      version: 1,
+      version: this.version,
       id: watcherId
     };
     // Send the request to the server.
@@ -64,17 +64,15 @@ function wrapAllWatcher(cls) {
         return;
       }
       // Handle the response.
-      const result = {};
       resp = resp || {};
-      result.deltas = [];
-      resp['deltas'] = resp['deltas'] || [];
-      for (let i = 0; i < resp['deltas'].length; i++) {
-        result.deltas[i] = {};
-        resp['deltas'][i] = resp['deltas'][i] || {};
-        result.deltas[i].entity = {};
-        resp['deltas'][i]['entity'] = resp['deltas'][i]['entity'] || {};
-        result.deltas[i].removed = resp['deltas'][i]['removed'];
-      }
+      resp.deltas = resp.deltas || [];
+      const result = {
+        deltas: resp.deltas.map(delta => {
+          const entity = delta.entity || {};
+          const removed = delta.removed || false;
+          return {entity: entity, removed: removed};
+        })
+      };
       callback(null, result);
     });
   };
@@ -96,7 +94,7 @@ function wrapAllWatcher(cls) {
     const req = {
       type: 'AllWatcher',
       request: 'Stop',
-      version: 1,
+      version: this.version,
       id: watcherId
     };
     // Send the request to the server.
