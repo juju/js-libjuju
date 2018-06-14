@@ -21,7 +21,7 @@ def main(command, args=None):
           resulting argparse.Namespace object;
         - run(namespace):
           it executes the command receiving the namespace and possibly raising
-          firestealer.FirestealerError (or subclasses).
+          generator.AppError (or subclasses).
     """
     namespace = command.setup(args)
     try:

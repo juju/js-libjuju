@@ -8,12 +8,13 @@ import collections
 import json
 import os
 
+from ._exceptions import AppError
 from ._prop import (
     from_bare_properties,
     Method,
     uncapitalize,
 )
-from ._templates import facade_template
+from ._templates import get_template
 
 
 def setup(args):
@@ -36,14 +37,21 @@ def setup(args):
         return
     if not os.path.isdir(ns.out):
         parser.error('invalid output directory: {!r}'.format(ns.out))
+        return
     return ns
 
 
 def run(ns):
     """Run the application with the given parsed namespace."""
+    if not isinstance(ns.schema, list):
+        raise AppError('provided schema does not contain a list of facades')
+    facade_template = get_template('facade.js')
     for facade in ns.schema:
-        methods = _handle_facade(facade['Schema'])
-        name, version = facade['Name'], facade['Version']
+        try:
+            methods = _handle_facade(facade['Schema'])
+            name, version = facade['Name'], facade['Version']
+        except (KeyError, TypeError, ValueError):
+            raise AppError('schema for facades is not valid')
         filename = '{}-v{}.js'.format(_hyphenize(uncapitalize(name)), version)
         facade_template.stream(
             name=name, methods=methods, version=version
@@ -56,7 +64,8 @@ def _handle_facade(schema):
     for name, info in props.items():
         params, result = _handle_prop(info, defs)
         methods.append(Method(request=name, params=params, result=result))
-    return methods
+    # Methods are sorted mostly for making tests deterministic.
+    return sorted(methods)
 
 
 def _handle_prop(info, defs):
