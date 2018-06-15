@@ -7,3 +7,4 @@ recursive-exclude api/facades *.js
 recursive-include api *.md
 recursive-include examples *.js
 recursive-include schemas *.json
+recursive-include templates *

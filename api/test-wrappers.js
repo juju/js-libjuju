@@ -229,18 +229,26 @@ tap.test('wrapPinger', t => {
     const options = {facades: [wrappers.wrapPinger(MyFacadeV7)]};
     helpers.makeConnection(t, options, (conn, ws) => {
       const pinger = conn.facades.myFacade;
-      const interval = 50;
+      const interval = 10;
+      const times = 4;
       let callCount = 0;
-      const handle = pinger.pingForever(interval, err => {
-        callCount += 1;
-        t.equal(err, null);
-      });
-      setTimeout(() => {
+      let handle;
+      // Set a timeout that fails the test in the case the pinger is not called
+      // the expected amount of times, or not stopped.
+      const timer = setTimeout(() => {
         handle.stop();
-        t.equal(callCount, 4);
+        t.fail('pinger not stopped');
         t.end();
-        // Add more milliseconds for making sure the request is received.
-      }, interval*4+(interval-1));
+      }, interval*times*10);
+      handle = pinger.pingForever(interval, err => {
+        t.equal(err, null);
+        callCount += 1;
+        if (callCount === times) {
+          handle.stop();
+          clearTimeout(timer);
+          t.end();
+        }
+      });
     });
   });
 
@@ -253,18 +261,26 @@ tap.test('wrapPinger', t => {
     const options = {facades: [wrappers.wrapPinger(MyFacadeV7)]};
     helpers.makeConnection(t, options, (conn, ws) => {
       const pinger = conn.facades.myFacade;
-      const interval = 50;
+      const interval = 10;
+      const times = 4;
       let callCount = 0;
-      const handle = pinger.pingForever(interval, err => {
-        callCount += 1;
-        t.equal(err, 'bad wolf');
-      });
-      setTimeout(() => {
+      let handle;
+      // Set a timeout that fails the test in the case the pinger is not called
+      // the expected amount of times, or not stopped.
+      const timer = setTimeout(() => {
         handle.stop();
-        t.equal(callCount, 1);
+        t.fail('pinger not stopped');
         t.end();
-        // Add more milliseconds for making sure the request is received.
-      }, interval+(interval-1));
+      }, interval*times*10);
+      handle = pinger.pingForever(interval, err => {
+        t.equal(err, 'bad wolf');
+        callCount += 1;
+        if (callCount === times) {
+          handle.stop();
+          clearTimeout(timer);
+          t.end();
+        }
+      });
     });
   });
 

@@ -4,6 +4,7 @@
 """Test helpers."""
 
 from contextlib import contextmanager
+import os
 
 
 @contextmanager
@@ -18,3 +19,11 @@ def maybe_raises(exception):
         yield ctx
     except exception as err:
         ctx.exc = err
+
+
+def read_data(filename):
+    """Return the content of the file with the given name in the data dir."""
+    here = os.path.dirname(__file__)
+    path = os.path.abspath(os.path.join(here, 'data', filename))
+    with open(path) as f:
+        return f.read().strip()
