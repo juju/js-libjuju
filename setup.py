@@ -41,7 +41,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'generate=gen:generate',
+            'generate=generator:generate',
         ],
     },
 )
