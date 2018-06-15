@@ -95,7 +95,13 @@ class Dict:
 
     def unmarshal(self, key, value, required):
         parts = [key + ' = {};', value + ' = ' + value + ' || {};']
-        parts.extend(prop.unmarshal(key, value) for prop in self.props)
+        prop_parts = [prop.unmarshal(key, value) for prop in self.props]
+        if prop_parts:
+            parts.extend(prop_parts)
+        else:
+            # This is an opaque object not decsribed by the schema, so just
+            # copy it.
+            parts.append(key + ' = ' + value + ';')
         return '\n'.join(parts)
 
 
@@ -149,7 +155,7 @@ def from_bare_properties(info, name='', required=False):
         required_props = info.get('required', ())
         props = [
             from_bare_properties(v, name=k, required=k in required_props)
-            for k, v in properties.items()
+            for k, v in sorted(properties.items())  # Sort for testing.
         ]
         kind = Dict(props)
     if kind == 'array':
