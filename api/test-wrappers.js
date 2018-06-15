@@ -220,13 +220,8 @@ tap.test('wrapClient', t => {
 
 tap.test('wrapPinger', t => {
 
-  t.test('pingForever success', t => {
-    class MyFacadeV7 extends helpers.BaseFacade{
-      ping(callback) {
-        callback(null, {});
-      }
-    };
-    const options = {facades: [wrappers.wrapPinger(MyFacadeV7)]};
+  const check = (t, facade, wantError) => {
+    const options = {facades: [wrappers.wrapPinger(facade)]};
     helpers.makeConnection(t, options, (conn, ws) => {
       const pinger = conn.facades.myFacade;
       const interval = 10;
@@ -241,7 +236,7 @@ tap.test('wrapPinger', t => {
         t.end();
       }, interval*times*10);
       handle = pinger.pingForever(interval, err => {
-        t.equal(err, null);
+        t.equal(err, wantError);
         callCount += 1;
         if (callCount === times) {
           handle.stop();
@@ -250,6 +245,15 @@ tap.test('wrapPinger', t => {
         }
       });
     });
+  };
+
+  t.test('pingForever success', t => {
+    class MyFacadeV7 extends helpers.BaseFacade{
+      ping(callback) {
+        callback(null, {});
+      }
+    };
+    check(t, MyFacadeV7, null);
   });
 
   t.test('pingForever failure', t => {
@@ -258,30 +262,7 @@ tap.test('wrapPinger', t => {
         callback('bad wolf', {});
       }
     };
-    const options = {facades: [wrappers.wrapPinger(MyFacadeV7)]};
-    helpers.makeConnection(t, options, (conn, ws) => {
-      const pinger = conn.facades.myFacade;
-      const interval = 10;
-      const times = 4;
-      let callCount = 0;
-      let handle;
-      // Set a timeout that fails the test in the case the pinger is not called
-      // the expected amount of times, or not stopped.
-      const timer = setTimeout(() => {
-        handle.stop();
-        t.fail('pinger not stopped');
-        t.end();
-      }, interval*times*10);
-      handle = pinger.pingForever(interval, err => {
-        t.equal(err, 'bad wolf');
-        callCount += 1;
-        if (callCount === times) {
-          handle.stop();
-          clearTimeout(timer);
-          t.end();
-        }
-      });
-    });
+    check(t, MyFacadeV7, 'bad wolf');
   });
 
   t.end();
