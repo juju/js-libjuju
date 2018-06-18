@@ -1,7 +1,5 @@
-language: node_js
-node_js:
- - node
- - lts/*
-
+dist: trusty
+sudo: required
 script:
- - make check
+  - sudo pip install tox virtualenv
+  - make check
