@@ -19,7 +19,8 @@ dev-js: $(NODE_MODULES)
 
 .PHONY: generate
 generate: dev
-	devenv/bin/generate schemas/schemas-juju-latest.json
+	rm -f api/facades/*.js
+	devenv/bin/generate schemas/schema.json
 
 .PHONY: dist
 dist: clean dev check

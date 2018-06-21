@@ -4,6 +4,7 @@
 """Templates rendering helpers for generating the JavaScript API client."""
 
 import os
+import textwrap
 
 from jinja2 import (
     Environment,
@@ -20,3 +21,13 @@ def get_template(name):
     loader = FileSystemLoader(_templatedir)
     env = Environment(loader=loader)
     return env.get_template(name)
+
+
+def wrap_text(text, indent='  ', trailing_newline=False):
+    """Return the given text indented and wraped at 79."""
+    width = 79 - len(indent)
+    wrapper = textwrap.TextWrapper(subsequent_indent=indent, width=width)
+    wrapped = wrapper.fill(text)
+    if trailing_newline:
+        wrapped += '\n'
+    return wrapped

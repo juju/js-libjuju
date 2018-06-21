@@ -4,7 +4,9 @@
 """Test helpers."""
 
 from contextlib import contextmanager
+from datetime import datetime
 import os
+from unittest import mock
 
 
 @contextmanager
@@ -27,3 +29,9 @@ def read_data(filename):
     path = os.path.abspath(os.path.join(here, 'data', filename))
     with open(path) as f:
         return f.read().strip()
+
+
+def patch_datetime_utcnow():
+    mock_datetime = mock.Mock()
+    mock_datetime.utcnow.return_value = datetime(2042, 1, 1, 16, 42, 47)
+    return mock.patch('generator._generate.datetime', mock_datetime)
