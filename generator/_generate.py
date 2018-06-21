@@ -5,16 +5,20 @@
 
 import argparse
 import collections
+from datetime import datetime
 import json
 import os
 
-from ._exceptions import AppError
-from ._prop import (
-    from_bare_properties,
+from ._code import (
+    from_gotype,
     Method,
     uncapitalize,
 )
-from ._templates import get_template
+from ._exceptions import AppError
+from ._templates import (
+    get_template,
+    wrap_text,
+)
 
 
 def setup(args):
@@ -26,8 +30,8 @@ def setup(args):
         formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('schema', type=str, help='the schema JSON file')
     parser.add_argument(
-        'out', type=str, nargs='?',
-        help='the output directory (%(default)s)', default=out)
+        'out', type=str, nargs='?', default=out,
+        help='the output directory (%(default)s)')
     ns = parser.parse_args(args)
     try:
         with open(ns.schema) as f:
@@ -43,54 +47,84 @@ def setup(args):
 
 def run(ns):
     """Run the application with the given parsed namespace."""
-    if not isinstance(ns.schema, list):
-        raise AppError('provided schema does not contain a list of facades')
+    try:
+        facades, typeinfo = ns.schema['Facades'], ns.schema['TypeInfo']
+    except (KeyError, TypeError, ValueError):
+        raise AppError('provided schema is not valid')
+    if not isinstance(facades, list):
+        raise AppError('provided facades in the schema is not a list')
+    try:
+        types = typeinfo['Types']
+    except (KeyError, TypeError, ValueError):
+        raise AppError('provided type info in the schema is not valid')
+    if not isinstance(types, collections.Mapping):
+        raise AppError('provided types in the schema is not a map')
     facade_template = get_template('facade.js')
-    for facade in ns.schema:
+    for facade in facades:
+        # Check whether this facade is available for end users.
+        possible_clients = facade.get('AvailableTo', [])
+        available_on_controllers = 'controller-user' in possible_clients
+        available_on_models = 'model-user' in possible_clients
+        if not (available_on_controllers or available_on_models):
+            continue
+        # Resolve methods and facade metadata.
         try:
-            methods = _handle_facade(facade['Schema'])
             name, version = facade['Name'], facade['Version']
-        except (KeyError, TypeError, ValueError):
-            raise AppError('schema for facades is not valid')
+        except (KeyError, TypeError, ValueError) as err:
+            raise AppError('cannot retrieve name and version for facade')
+        if name in _BLACKLIST:
+            continue
+        try:
+            methods = _handle_methods(name, facade['Methods'], types)
+        except (KeyError, TypeError, ValueError) as err:
+            raise AppError(
+                'cannot retrieve methods for facade {}: {}'.format(name, err))
+        doc = facade.get('Doc', 'There is no documentation for this facade.')
+        # Render the facade.
         filename = '{}-v{}.js'.format(_hyphenize(uncapitalize(name)), version)
         facade_template.stream(
-            name=name, methods=methods, version=version
+            # Whether this facade is available on controller connections.
+            available_on_controllers=available_on_controllers,
+            # Whether this facade is available on model connections.
+            available_on_models=available_on_models,
+            # The docstring for the facade.
+            doc=wrap_text(doc),
+            # A set of _code.Method instances provided by the facade.
+            methods=methods,
+            # The name of the facade.
+            name=name,
+            # The current time as a string.
+            time=datetime.utcnow().strftime('%a %Y/%m/%d %H:%M:%S UTC'),
+            # The facade version as an int.
+            version=version,
         ).dump(os.path.join(ns.out, filename))
 
 
-def _handle_facade(schema):
-    props, defs = schema['properties'], schema.get('definitions', {})
-    methods = []
-    for name, info in props.items():
-        params, result = _handle_prop(info, defs)
-        methods.append(Method(request=name, params=params, result=result))
-    # Methods are sorted mostly for making tests deterministic.
-    return sorted(methods)
-
-
-def _handle_prop(info, defs):
-    props = info.get('properties')
-    if not props:
-        return None, None
-    params, result = props.get('Params', {}), props.get('Result', {})
-    params = from_bare_properties(_dereference(params, defs))
-    result = from_bare_properties(_dereference(result, defs))
-    return params, result
-
-
-def _dereference(data, defs, current_ref=None):
-    result = {}
-    for key, value in data.items():
-        if key == '$ref':
-            ref = value.rsplit("/", 1)[-1]
-            if ref == current_ref:
-                # TODO(frankban) handle recursive references.
-                return '$self'
-            return _dereference(defs[ref], defs, current_ref=ref)
-        if isinstance(value, collections.Mapping):
-            value = _dereference(value, defs, current_ref=current_ref)
-        result[key] = value
-    return result
+def _handle_methods(name, methods, types):
+    if not isinstance(methods, list):
+        raise AppError('methods for facade {} is not a list'.format(name))
+    resulting_methods = []
+    for method in methods:
+        if not isinstance(method, collections.Mapping):
+            raise AppError('method for facade {} is not a map'.format(name))
+        try:
+            method_name = method['Name']
+        except KeyError:
+            raise AppError('method for facade {} has no name'.format(name))
+        try:
+            params = from_gotype(types, method.get('Param'))
+            result = from_gotype(types, method.get('Result'))
+        except (KeyError, ValueError) as err:
+            raise AppError(
+                'method {}.{} is not valid: {}'.format(name, method_name, err))
+        doc = method.get('Doc', 'There is no documentation for this method.')
+        resulting_methods.append(Method(
+            request=method_name,
+            params=params,
+            result=result,
+            doc=wrap_text(doc, indent='    ', trailing_newline=True)))
+    # Resulting methods are sorted mostly for making tests deterministic.
+    return sorted(resulting_methods)
 
 
 def _hyphenize(string):
@@ -101,3 +135,24 @@ def _hyphenize(string):
             char = '-' + char.lower()
         parts.append(char)
     return ''.join(parts)
+
+
+# A black list for facades that surely are not available to users.
+_BLACKLIST = (
+    'AgentTools',
+    'EntityWatcher',
+    'FanConfigurer',
+    'FilesystemAttachmentsWatcher',
+    'Firewaller',
+    'InstancePoller',
+    'MigrationFlag',
+    'MigrationMaster',
+    'MigrationMinion',
+    'MigrationStatusWatcher',
+    'MigrationTarget',
+    'ProxyUpdater',
+    'StorageProvisioner',
+    'StringsWatcher',
+    'Undertaker',
+    'Uniter',
+)
