@@ -27,21 +27,21 @@ tap.test('wrapAllWatcher', t => {
         t.equal(ws.lastRequest.id, watcherId);
         t.equal(err, null);
         t.deepEqual(result, {
-          'deltas': [{
-            entity: {name: 'app1'}, removed: true
-          }, {
-            entity: {name: 'machine2'}, removed: false
-          }]
+          deltas: [[
+            'app', 'remove', {name: 'app1'}
+          ], [
+            'machine', 'change', {name: 'machine2'}
+          ]]
         });
         t.end();
       });
       // Reply to the next request.
       ws.reply({response: {
-        deltas: [{
-          entity: {name: 'app1'}, removed: true
-        }, {
-          entity: {name: 'machine2'}, removed: false
-        }]
+        deltas: [[
+          'app', 'remove', {name: 'app1'}
+        ], [
+          'machine', 'change', {name: 'machine2'}
+        ]]
       }});
     });
   });
@@ -98,6 +98,131 @@ tap.test('wrapAllWatcher', t => {
 });
 
 
+tap.test('wrapApplication', t => {
+
+  t.test('addCharmAndDeploy success', t => {
+    let addCharmCalled = false;
+    class ClientV2 extends helpers.BaseFacade{
+      addCharm(args, callback) {
+        addCharmCalled = true;
+        t.deepEqual(args, {url: 'cs:haproxy-42', channel: 'candidate'});
+        callback(null, {});
+      }
+    };
+    let deployCalled = false;
+    class ApplicationV7 extends helpers.BaseFacade{
+      deploy(args, callback) {
+        deployCalled = true;
+        t.deepEqual(args, {
+          applications: [{
+            application: 'ha',
+            charmUrl: 'cs:haproxy-42',
+            channel: 'candidate',
+            series: 'xenial'
+          }
+        ]});
+        callback(null, {results: [{}]});
+      }
+    };
+    const options = {facades: [
+      ClientV2, wrappers.wrapApplication(ApplicationV7)
+    ]};
+    helpers.makeConnection(t, options, (conn, ws) => {
+      const application = conn.facades.application;
+      application.addCharmAndDeploy({
+        application: 'ha',
+        charmUrl: 'cs:haproxy-42',
+        channel: 'candidate',
+        series: 'xenial'
+      }, (err, result) => {
+        t.equal(addCharmCalled, true);
+        t.equal(deployCalled, true);
+        t.equal(err, null);
+        t.deepEqual(result, {});
+        t.end();
+      });
+    });
+  });
+
+  t.test('addCharmAndDeploy failure client not found', t => {
+    class ApplicationV7 extends helpers.BaseFacade{};
+    const options = {facades: [wrappers.wrapApplication(ApplicationV7)]};
+    helpers.makeConnection(t, options, (conn, ws) => {
+      const application = conn.facades.application;
+      application.addCharmAndDeploy({
+        application: 'haproxy',
+        charmUrl: 'cs:haproxy-42',
+        channel: 'candidate',
+        series: 'xenial'
+      }, (err, result) => {
+        t.equal(
+          err, 'addCharmAndDeploy requires the client facade to be loaded');
+        t.deepEqual(result, {});
+        t.end();
+      });
+    });
+  });
+
+  t.test('addCharmAndDeploy failure on initial addCharm request', t => {
+    class ClientV2 extends helpers.BaseFacade{
+      addCharm(args, callback) {
+        callback('bad wolf', {});
+      }
+    };
+    class ApplicationV7 extends helpers.BaseFacade{
+      deploy(args, callback) {
+        callback(null, {results: [{}]});
+      }
+    };
+    const options = {facades: [
+      ClientV2, wrappers.wrapApplication(ApplicationV7)
+    ]};
+    helpers.makeConnection(t, options, (conn, ws) => {
+      const application = conn.facades.application;
+      application.addCharmAndDeploy({
+        application: 'ha',
+        charmUrl: 'cs:haproxy-42',
+        series: 'xenial'
+      }, (err, result) => {
+        t.equal(err, 'bad wolf');
+        t.deepEqual(result, {});
+        t.end();
+      });
+    });
+  });
+
+  t.test('addCharmAndDeploy failure on deploy request', t => {
+    class ClientV2 extends helpers.BaseFacade{
+      addCharm(args, callback) {
+        callback(null, {});
+      }
+    };
+    class ApplicationV7 extends helpers.BaseFacade{
+      deploy(args, callback) {
+        callback('bad wolf', {results: [{}]});
+      }
+    };
+    const options = {facades: [
+      ClientV2, wrappers.wrapApplication(ApplicationV7)
+    ]};
+    helpers.makeConnection(t, options, (conn, ws) => {
+      const application = conn.facades.application;
+      application.addCharmAndDeploy({
+        application: 'ha',
+        charmUrl: 'cs:haproxy-42',
+        series: 'xenial'
+      }, (err, result) => {
+        t.equal(err, 'bad wolf');
+        t.deepEqual(result, {});
+        t.end();
+      });
+    });
+  });
+
+  t.end();
+});
+
+
 tap.test('wrapClient', t => {
 
   t.test('watch success', t => {
@@ -120,18 +245,16 @@ tap.test('wrapClient', t => {
         switch(callCount) {
           case 1:
             t.deepEqual(result, {
-              'deltas': [{
-                entity: {name: 'app1'}, removed: true
-              }, {
-                entity: {name: 'machine2'}, removed: false
-              }]
+              deltas: [[
+                'app', 'remove', {name: 'app1'}
+              ], [
+                'machine', 'change', {name: 'machine2'}
+              ]]
             });
             break;
           case 2:
             t.deepEqual(result, {
-              'deltas': [{
-                entity: {name: 'app2'}, removed: false
-              }]
+              deltas: [['app', 'change', {name: 'app2'}]]
             });
             t.end();
             break;
@@ -139,16 +262,14 @@ tap.test('wrapClient', t => {
       });
       // Reply to next requests.
       ws.reply({response: {
-        deltas: [{
-          entity: {name: 'app1'}, removed: true
-        }, {
-          entity: {name: 'machine2'}, removed: false
-        }]
+        deltas: [[
+          'app', 'remove', {name: 'app1'}
+        ], [
+          'machine', 'change', {name: 'machine2'}
+        ]]
       }});
       ws.reply({response: {
-        deltas: [{
-          entity: {name: 'app2'}, removed: false
-        }]
+        deltas: [['app', 'change', {name: 'app2'}]]
       }});
     });
   });

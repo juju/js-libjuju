@@ -2,7 +2,7 @@
 // Licensed under the LGPLv3, see LICENCE.txt file for details.
 
 // Allow connecting endpoints using self-signed certs.
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 
 const WebSocket = require('websocket').w3cwebsocket;

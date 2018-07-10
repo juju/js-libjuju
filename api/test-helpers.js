@@ -49,9 +49,11 @@ const loginResponse = {
      'model-access': 'admin'
   },
   facades: [{
-    name: 'Client', versions: [2, 3]
-  }, {
     name: 'AllWatcher', versions: [0]
+  }, {
+    name: 'Application', versions: [7]
+  }, {
+    name: 'Client', versions: [2, 3]
   }, {
     name: 'MyFacade', versions: [1, 7]
   }]

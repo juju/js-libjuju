@@ -149,6 +149,65 @@ class TestGenerator(TestCase):
             'all-watcher-v1.js': helpers.read_data('watcher.js'),
         },
     }, {
+        'about': 'single facade with MarshalJSON',
+        'schema': {
+            'Facades': [{
+                'Name': 'Marshal',
+                'Version': 0,
+                'Doc': 'Watch anything!',
+                'Methods': [{
+                    'Name': 'Next',
+                    'Result': {
+                        'Name': 'github.com/juju/juju/apiserver/params'
+                                '#AllWatcherNextResults',
+                    },
+                }],
+                'AvailableTo': ['model-user'],
+            }],
+            'TypeInfo': {'Types': {
+                'github.com/juju/juju/apiserver/params'
+                '#AllWatcherNextResults': {
+                    'Name': 'github.com/juju/juju/apiserver/params'
+                            '#AllWatcherNextResults',
+                    'Kind': 'struct',
+                    'Fields': [{
+                        'Name': 'Deltas',
+                        'Type': {
+                            'Kind': 'slice',
+                            'Elem': {
+                                'Name': 'github.com/juju/juju/state/'
+                                        'multiwatcher#Delta',
+                            },
+                        },
+                        'Tag': 'json:"deltas"',
+                    }],
+                },
+                'github.com/juju/juju/state/multiwatcher#Delta': {
+                    'Name': 'github.com/juju/juju/state/multiwatcher#Delta',
+                    'Kind': 'struct',
+                    'Methods': {'MarshalJSON': {}},
+                    'Fields': [{
+                        'Name': 'Removed',
+                        'Type': {
+                            'Name': 'bool',
+                            'Kind': 'bool',
+                        },
+                        'Tag': 'json:"removed"',
+                    }, {
+                        'Name': 'Entity',
+                        'Type': {
+                            'Name': 'github.com/juju/juju/state/multiwatcher'
+                                    '#EntityInfo',
+                        },
+                        'Tag': 'json:"entity"',
+                    }],
+                },
+            }},
+        },
+        'want_files': {
+            'marshal-v0.js': helpers.read_data('marshal.js'),
+        },
+    }, {
         'about': 'multiple facades',
         'schema': {
             'Facades': [{

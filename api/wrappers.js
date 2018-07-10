@@ -38,12 +38,7 @@ function wrapAllWatcher(cls) {
       callback receives an error and the changes. If there are no errors,
       changes are provided as an object like the following:
         {
-          deltas: []{
-            entity: {
-
-            } (required),
-            removed: boolean (required)
-          } (required)
+          deltas: []anything
         }
   */
   cls.prototype.next = function(watcherId, callback) {
@@ -65,14 +60,7 @@ function wrapAllWatcher(cls) {
       }
       // Handle the response.
       resp = resp || {};
-      resp.deltas = resp.deltas || [];
-      const result = {
-        deltas: resp.deltas.map(delta => {
-          const entity = delta.entity || {};
-          const removed = delta.removed || false;
-          return {entity: entity, removed: removed};
-        })
-      };
+      const result = {deltas: resp.deltas || []};
       callback(null, result);
     });
   };
@@ -103,6 +91,94 @@ function wrapAllWatcher(cls) {
         return;
       }
       callback(err, {});
+    });
+  };
+  return cls;
+}
+
+
+/**
+  Decorate the Application facade class.
+
+  @param {Object} cls The auto-generated class.
+  @return {Object} The decorated class.
+*/
+function wrapApplication(cls) {
+
+  /**
+    Add a charm store charm to the model and then deploy the application.
+
+    @param {Object} args Arguments to be provided to Juju, as an object like
+      the following:
+        {
+          charmUrl: string,
+          application: string,
+          series: string,
+          channel: string,
+          numUnits: int,
+          config: map[string]string,
+          configYaml: string,
+          constraints: {
+            arch: string,
+            container: string,
+            cores: int,
+            cpuPower: int,
+            mem: int,
+            rootDisk: int,
+            tags: []string,
+            instanceType: string,
+            spaces: []string,
+            virtType: string
+          },
+          placement: []{
+            scope: string,
+            directive: string
+          },
+          policy: string,
+          storage: map[string]{
+            pool: string,
+            size: int,
+            count: int
+          },
+          attachStorage: []string,
+          endpointBindings: map[string]string,
+          resources: map[string]string
+        }
+      The charmUrl, application and series (for multi-series charm) arguments
+      are required.
+    @param {Function} callback Called when the response from Juju is available,
+      the callback receives an error and the result. If there are no connection
+      errors, the deployment result is provided as an object like:
+        {
+          error: {
+            message: string,
+            code: string,
+          }
+        }
+  */
+  cls.prototype.addCharmAndDeploy = function(args, callback) {
+    if (!callback) {
+      callback = () => {};
+    }
+    const client = this._info.getFacade('client');
+    if (!client) {
+      callback('addCharmAndDeploy requires the client facade to be loaded', {});
+      return;
+    }
+    // Add the charm.
+    client.addCharm({url: args.charmUrl, channel: args.channel}, err => {
+      if (err) {
+        callback(err, {});
+        return;
+      }
+      // Deploy the application.
+      this.deploy({applications: [args]}, (err, result) => {
+        if (err) {
+          callback(err, {});
+          return;
+        }
+        callback(null, result.results[0]);
+      });
     });
   };
   return cls;
@@ -222,6 +298,7 @@ function wrapPinger(cls) {
 
 module.exports = {
   wrapAllWatcher: wrapAllWatcher,
+  wrapApplication: wrapApplication,
   wrapClient: wrapClient,
   wrapPinger: wrapPinger
 };
