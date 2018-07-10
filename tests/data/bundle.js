@@ -72,27 +72,27 @@ class BundleV1 {
       resp = resp || {};
       result.changes = [];
       resp['changes'] = resp['changes'] || [];
-      for (let _s2 = 0; _s2 < resp['changes'].length; _s2++) {
+      for (let i = 0; i < resp['changes'].length; i++) {
         // github.com/juju/juju/apiserver/params#BundleChange
-        result.changes[_s2] = {};
-        resp['changes'][_s2] = resp['changes'][_s2] || {};
-        result.changes[_s2].id = resp['changes'][_s2]['id'];
-        result.changes[_s2].method = resp['changes'][_s2]['method'];
-        result.changes[_s2].args = [];
-        resp['changes'][_s2]['args'] = resp['changes'][_s2]['args'] || [];
-        for (let _s3 = 0; _s3 < resp['changes'][_s2]['args'].length; _s3++) {
-          result.changes[_s2].args[_s3] = resp['changes'][_s2]['args'][_s3] || undefined;
+        result.changes[i] = {};
+        resp['changes'][i] = resp['changes'][i] || {};
+        result.changes[i].id = resp['changes'][i]['id'];
+        result.changes[i].method = resp['changes'][i]['method'];
+        result.changes[i].args = [];
+        resp['changes'][i]['args'] = resp['changes'][i]['args'] || [];
+        for (let i2 = 0; i2 < resp['changes'][i]['args'].length; i2++) {
+          result.changes[i].args[i2] = resp['changes'][i]['args'][i2] || undefined;
         }
-        result.changes[_s2].requires = [];
-        resp['changes'][_s2]['requires'] = resp['changes'][_s2]['requires'] || [];
-        for (let _s4 = 0; _s4 < resp['changes'][_s2]['requires'].length; _s4++) {
-          result.changes[_s2].requires[_s4] = resp['changes'][_s2]['requires'][_s4] || undefined;
+        result.changes[i].requires = [];
+        resp['changes'][i]['requires'] = resp['changes'][i]['requires'] || [];
+        for (let i2 = 0; i2 < resp['changes'][i]['requires'].length; i2++) {
+          result.changes[i].requires[i2] = resp['changes'][i]['requires'][i2] || undefined;
         }
       }
       result.errors = [];
       resp['errors'] = resp['errors'] || [];
-      for (let _s5 = 0; _s5 < resp['errors'].length; _s5++) {
-        result.errors[_s5] = resp['errors'][_s5] || undefined;
+      for (let i = 0; i < resp['errors'].length; i++) {
+        result.errors[i] = resp['errors'][i] || undefined;
       }
       callback(null, result);
     });

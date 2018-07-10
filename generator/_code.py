@@ -4,7 +4,7 @@
 """Definitions for JavaScript code entities, like methods and types."""
 
 from collections import namedtuple
-import itertools
+from contextlib import contextmanager
 
 
 class Method(namedtuple('Method', 'request params result doc')):
@@ -105,8 +105,8 @@ class Basic:
     generate_response = generate_request
 
 
-class Interface(Basic):
-    """A kind for empty interfaces.
+class Any(Basic):
+    """A kind for empty interfaces (any possible value).
 
     The value can be anything and unfortunately the type is not better
     specified.
@@ -118,8 +118,6 @@ class Interface(Basic):
 
 class Map:
     """A kind for maps from the given key type to the given value type."""
-
-    count = itertools.count(1)
 
     def __init__(self, key, value):
         self.key, self.value = key, value
@@ -134,13 +132,12 @@ class Map:
         return self._handle(key, value, self.value.generate_response)
 
     def _handle(self, key, value, get_code):
-        count = next(self.count)
-        parts = [value + ' = ' + value + ' || {};']
-        i = '_m{}'.format(count)
-        parts.append('for (let {i} in {value}) {{'.format(i=i, value=value))
-        code = get_code('{}[{}]'.format(key, i), '{}[{}]'.format(value, i))
-        parts.append(_indent(1, code))
-        parts.append('}')
+        with _increase_level(self, 'k') as k:
+            parts = [value + ' = ' + value + ' || {};']
+            parts.append('for (let {k} in {v}) {{'.format(k=k, v=value))
+            code = get_code('{}[{}]'.format(key, k), '{}[{}]'.format(value, k))
+            parts.append(_indent(1, code))
+            parts.append('}')
         return '\n'.join(parts)
 
 
@@ -167,8 +164,6 @@ class Recursive:
 class Slice:
     """A kind for slices containing values of the provided elem type."""
 
-    count = itertools.count(1)
-
     def __init__(self, elem):
         self.elem = elem
 
@@ -182,15 +177,17 @@ class Slice:
         return self._handle(key, value, self.elem.generate_response)
 
     def _handle(self, key, value, get_code):
-        count = next(self.count)
-        parts = ['{} = [];'.format(key), '{} = {} || [];'.format(value, value)]
-        i = '_s{}'.format(count)
-        parts.append(
-            'for (let {i} = 0; {i} < {value}.length; {i}++) {{'
-            ''.format(i=i, value=value))
-        code = get_code('{}[{}]'.format(key, i), '{}[{}]'.format(value, i))
-        parts.append(_indent(1, code))
-        parts.append('}')
+        with _increase_level(self, 'i') as i:
+            parts = [
+                '{} = [];'.format(key),
+                '{} = {} || [];'.format(value, value),
+            ]
+            parts.append(
+                'for (let {i} = 0; {i} < {value}.length; {i}++) {{'
+                ''.format(i=i, value=value))
+            code = get_code('{}[{}]'.format(key, i), '{}[{}]'.format(value, i))
+            parts.append(_indent(1, code))
+            parts.append('}')
         return '\n'.join(parts)
 
 
@@ -247,6 +244,7 @@ def from_gotype(
     internally.
     """
     if gotype is None:
+        # There are no params or no results for the method being inspected.
         return
     gokind = gotype.get('Kind')
     if not gokind:
@@ -258,10 +256,14 @@ def from_gotype(
         return from_gotype(
             types, types[ref],
             name=name, ref=ref, required=required, visited=visited)
-    if gokind in ('bool', 'string'):
+    if ref != 'time#Time' and 'MarshalJSON' in gotype.get('Methods', {}):
+        # The underlying type could be marshaled in any possible way, so we
+        # cannot do any better than assigning the Any type to this Go type.
+        kind = Any()
+    elif gokind in ('bool', 'string'):
         kind = Basic(gokind)
     elif gokind == 'interface':
-        kind = Interface()
+        kind = Any()
     elif gokind == 'map':
         key = from_gotype(types, gotype['Key'], required=required)
         val = from_gotype(
@@ -362,3 +364,18 @@ def _parse_tag(tag, default):
         required = len(val) < 2 or val[1] != 'omitempty'
         return val[0] if val[0] else default, required
     return default, True
+
+
+@contextmanager
+def _increase_level(instance, varname):
+    cls = instance.__class__
+    cls._level = getattr(cls, '_level', 0) + 1
+    if cls._level < 1:
+        # This should never happen.
+        raise ValueError('invalid level for class {}'.format(cls))
+    if cls._level > 1:
+        varname = '{}{}'.format(varname, cls._level)
+    try:
+        yield varname
+    finally:
+        cls._level -= 1
