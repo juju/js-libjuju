@@ -42,11 +42,12 @@ const loginResponse = {
   'model-tag': 'model-c36a62d0-a17a-484e-87bf-a09d1b403627',
   'server-version': '2.42.47',
   'user-info': {
-     'display-name': 'who',
-     identity: 'user-who@gallifrey',
-     'last-connection': '2018-06-06T01:02:13Z',
-     'controller-access': 'timelord',
-     'model-access': 'admin'
+    credentials: 'creds',
+    'display-name': 'who',
+    identity: 'user-who@gallifrey',
+    'last-connection': '2018-06-06T01:02:13Z',
+    'controller-access': 'timelord',
+    'model-access': 'admin'
   },
   facades: [{
     name: 'AllWatcher', versions: [0]

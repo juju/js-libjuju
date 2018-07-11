@@ -35,35 +35,11 @@ tap.test('connect', t => {
         helpers.requestEqual(t, ws.lastRequest, {
           type: 'Admin',
           request: 'Login',
-          params: {'auth-tag': 'who', credentials: 'secret'},
+          params: {'auth-tag': 'who', credentials: 'secret', macaroons: []},
           version: 3
         });
         t.equal(err, 'bad wolf');
         t.equal(conn, null);
-        t.end();
-      });
-      // Reply to the login request.
-      ws.reply({error: 'bad wolf'});
-    });
-    // Open the WebSocket connection.
-    ws.open();
-  });
-
-  t.test('login with custom admin facade version', t => {
-    const options = {
-      wsclass: helpers.makeWSClass(instance => {
-        ws = instance;
-      }),
-      adminFacadeVersion: 42
-    };
-    jujulib.connect('wss://1.2.3.4', options, (err, juju) => {
-      juju.login({user: 'dalek', password: 'skaro'}, (err, conn) => {
-        helpers.requestEqual(t, ws.lastRequest, {
-          type: 'Admin',
-          request: 'Login',
-          params: {'auth-tag': 'dalek', credentials: 'skaro'},
-          version: 42
-        });
         t.end();
       });
       // Reply to the login request.
@@ -110,6 +86,7 @@ tap.test('connect', t => {
         'model-c36a62d0-a17a-484e-87bf-a09d1b403627');
       t.equal(conn.info.serverVersion, '2.42.47');
       t.deepEqual(conn.info.user, {
+        credentials: 'creds',
         displayName: 'who',
         identity: 'user-who@gallifrey',
         lastConnection: '2018-06-06T01:02:13Z',

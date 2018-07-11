@@ -22,7 +22,7 @@ class Method(namedtuple('Method', 'request params result doc')):
         return uncapitalize(self.request)
 
 
-class Type(namedtuple('Type', 'name kind ref required')):
+class Type(namedtuple('Type', 'name kind ref')):
     """A representation of the type of a JavaScript value.
 
     The name holds an optional variable name representing a value of this type.
@@ -67,7 +67,7 @@ class Type(namedtuple('Type', 'name kind ref required')):
             key = "{}['{}']".format(key, self.name)
             value = '{}.{}'.format(value, _camelcase(self.name))
         return self._add_ref(
-            self.kind.generate_request(key, value, self.required))
+            self.kind.generate_request(key, value))
 
     def generate_response(self, key, value):
         """Turn a response from Juju into a JavaScript friendly data structure.
@@ -79,7 +79,7 @@ class Type(namedtuple('Type', 'name kind ref required')):
             key = '{}.{}'.format(key, _camelcase(self.name))
             value = "{}['{}']".format(value, self.name)
         return self._add_ref(
-            self.kind.generate_response(key, value, self.required))
+            self.kind.generate_response(key, value))
 
     def _add_ref(self, code):
         """Prepend a line to the given code with the commented Juju ref."""
@@ -97,9 +97,7 @@ class Basic:
     def __str__(self):
         return self.kind
 
-    def generate_request(self, key, value, required):
-        if not required:
-            value += ' || undefined'
+    def generate_request(self, key, value):
         return '{} = {};'.format(key, value)
 
     generate_response = generate_request
@@ -125,10 +123,10 @@ class Map:
     def __str__(self):
         return 'map[{}]{}'.format(self.key, self.value)
 
-    def generate_request(self, key, value, required):
+    def generate_request(self, key, value):
         return self._handle(key, value, self.value.generate_request)
 
-    def generate_response(self, key, value, required):
+    def generate_response(self, key, value):
         return self._handle(key, value, self.value.generate_response)
 
     def _handle(self, key, value, get_code):
@@ -153,7 +151,7 @@ class Recursive:
     def __str__(self):
         return '<{} again>'.format(self.ref)
 
-    def generate_request(self, key, value, required):
+    def generate_request(self, key, value):
         return (
             '// TODO: handle recursive type referencing {}.\n'
             '{} = {};').format(self.ref, key, value)
@@ -170,10 +168,10 @@ class Slice:
     def __str__(self):
         return '[]' + str(self.elem)
 
-    def generate_request(self, key, value, required):
+    def generate_request(self, key, value):
         return self._handle(key, value, self.elem.generate_request)
 
-    def generate_response(self, key, value, required):
+    def generate_response(self, key, value):
         return self._handle(key, value, self.elem.generate_response)
 
     def _handle(self, key, value, get_code):
@@ -203,12 +201,12 @@ class Struct:
             return '<object>'
         return '{' + text + '}'
 
-    def generate_request(self, key, value, required):
+    def generate_request(self, key, value):
         parts = [key + ' = {};', value + ' = ' + value + ' || {};']
         parts.extend(t.generate_request(key, value) for t in self.types)
         return '\n'.join(parts)
 
-    def generate_response(self, key, value, required):
+    def generate_response(self, key, value):
         parts = [key + ' = {};', value + ' = ' + value + ' || {};']
         type_parts = [t.generate_response(key, value) for t in self.types]
         if type_parts:
@@ -226,22 +224,18 @@ class Time:
     def __str__(self):
         return 'time'
 
-    def generate_request(self, key, value, required):
+    def generate_request(self, key, value):
         # TODO(frankban): convert times to JS Date objects.
-        if not required:
-            value += ' || undefined'
         return '{} = {};'.format(key, value)
 
     generate_response = generate_request
 
 
-def from_gotype(
-        types, gotype, name='', ref=None, required=False, visited=None):
+def from_gotype(types, gotype, name='', ref=None, visited=None):
     """Return a Type instance from the provided bare Go type.
 
     Receives the dictionary of type definitions and the Go type to be
-    converted. The name, ref, required and visited arguments are only used
-    internally.
+    converted. The name, ref and visited arguments are only used internally.
     """
     if gotype is None:
         # There are no params or no results for the method being inspected.
@@ -254,8 +248,7 @@ def from_gotype(
             return ValueError(
                 'go type {} does not include kind or name'.format(gotype))
         return from_gotype(
-            types, types[ref],
-            name=name, ref=ref, required=required, visited=visited)
+            types, types[ref], name=name, ref=ref, visited=visited)
     if ref != 'time#Time' and 'MarshalJSON' in gotype.get('Methods', {}):
         # The underlying type could be marshaled in any possible way, so we
         # cannot do any better than assigning the Any type to this Go type.
@@ -265,11 +258,10 @@ def from_gotype(
     elif gokind == 'interface':
         kind = Any()
     elif gokind == 'map':
-        key = from_gotype(types, gotype['Key'], required=required)
-        val = from_gotype(
-            # The visited refs must be passed here as a struct can include
-            # fields that are maps of something to another struct.
-            types, gotype['Elem'], required=required, visited=visited)
+        key = from_gotype(types, gotype['Key'])
+        # The visited refs must be passed here as a struct can include fields
+        # that are maps of something to another struct.
+        val = from_gotype(types, gotype['Elem'], visited=visited)
         kind = Map(key, val)
     elif gokind == 'slice':
         elem = from_gotype(types, gotype['Elem'])
@@ -279,14 +271,14 @@ def from_gotype(
     elif gokind == 'struct':
         kind = _handle_struct(types, gotype, ref, visited)
     elif gokind == 'ptr':
-        return from_gotype(types, gotype['Elem'], name=name, required=required)
+        return from_gotype(types, gotype['Elem'], name=name)
     elif gokind.startswith('float'):
         kind = Basic('float')
     elif gokind.startswith('int') or gokind.startswith('uint'):
         kind = Basic('int')
     else:
         raise ValueError('unkown gotype kind {}'.format(gokind))
-    return Type(name, kind, ref, required)
+    return Type(name, kind, ref)
 
 
 def _handle_struct(types, gotype, ref, visited):
@@ -299,12 +291,11 @@ def _handle_struct(types, gotype, ref, visited):
     visited.add(ref)
     fields = []
     for gofield in gotype.get('Fields', []):
-        tag, req = _parse_tag(gofield.get('Tag'), gofield['Name'])
+        tag, _ = _parse_tag(gofield.get('Tag'), gofield['Name'])
         field = from_gotype(
-            types, gofield['Type'],
             # Copy the visited refs for each field so that a previous field
             # does not influence subsequent ones.
-            name=tag, required=req, visited=visited.copy())
+            types, gofield['Type'], name=tag, visited=visited.copy())
         fields.append(field)
     return Struct(fields)
 
