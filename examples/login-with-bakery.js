@@ -6,7 +6,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 
 const WebSocket = require('websocket').w3cwebsocket;
-const bakery = require('../../bakeryjs/index.js');
+const bakery = require('macaroon-bakery');
 // Bakery uses btoa and MLHttpRequest.
 global.btoa = require('btoa');
 global.XMLHttpRequest = require('xhr2')
