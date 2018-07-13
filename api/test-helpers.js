@@ -133,6 +133,25 @@ class WebSocket {
 
 
 /**
+  Create and return a mock bakery instance.
+
+  @param {Boolean} succeeding Whether the simulated discharge succeeds.
+  @returns {Object} The mock bakery instance.
+*/
+function makeBakery(succeeding) {
+  return {
+    discharge: (macaroon, onSuccess, onFailure) => {
+      if (succeeding) {
+        onSuccess(['m1', 'm2']);
+        return;
+      }
+      onFailure('bad wolf');
+    }
+  };
+}
+
+
+/**
   Check that the two requests equal.
 
   @param {Object} t The test object.
@@ -149,6 +168,7 @@ function requestEqual(t, got, want) {
 
 module.exports = {
   BaseFacade: BaseFacade,
+  makeBakery: makeBakery,
   makeConnection: makeConnection,
   makeWSClass: makeWSClass,
   requestEqual: requestEqual
