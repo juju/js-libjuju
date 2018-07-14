@@ -118,9 +118,8 @@ class Client {
     @param {Object} credentials An object with the user and password fields for
       userpass authentication or the macaroons field for bakery authentication.
       If an empty object is provided a full bakery discharge will be attempted
-      for logging in with macaroons. If the provided macaroons need discharge,
-      or no macaroons neither userpass are provided, the bakery instance
-      provided when connecting is used to obtain the third party discharges.
+      for logging in with macaroons. Any necessary third party discharges are
+      performed using the bakery instance originally provided to connect().
     @param {Function} callback Called when the login process completes, the
       callback receives an error and a connection object. If there are no
       errors, the connection can be used to send/receive messages to and from
@@ -210,7 +209,7 @@ class Client {
 
 // Define the redirect error returned by Juju, and the one returned by the API.
 const REDIRECTION_ERROR = 'redirection required';
-class RedirectionError{
+class RedirectionError {
   constructor(servers, caCert) {
     this.servers = servers;
     this.caCert = caCert;

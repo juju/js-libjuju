@@ -3,6 +3,7 @@ NODE_MODULES = node_modules
 PROJECT = js-libjuju
 SYSDEPS = build-essential python3-virtualenv tox
 
+# The generated admin facade is required by JS API client code and tests.
 ADMIN_FACADE = api/facades/admin-v3.js
 
 

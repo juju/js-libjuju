@@ -30,9 +30,6 @@ function wrapAdmin(cls) {
     always returns an error because the Juju controller does not multiplex
     controllers.
 
-    This is overridden as the auto-generated version does not work with current
-    JAAS, as servers are returned slighty differently.
-
     @param {Function} callback Called when the response from Juju is available,
       the callback receives an error and the result. If there are no errors,
       the result is provided as an object like the following:
@@ -47,6 +44,9 @@ function wrapAdmin(cls) {
         }
   */
   cls.prototype.redirectInfo = function(callback) {
+    // This is overridden as the auto-generated version does not work with
+    // current JAAS, because the servers passed to the callback do not
+    // correspond to the ones declared in the API.
     // Prepare the request to the Juju API.
     const req = {
       type: 'Admin',
