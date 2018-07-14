@@ -35,7 +35,7 @@ tap.test('connect', t => {
         helpers.requestEqual(t, ws.lastRequest, {
           type: 'Admin',
           request: 'Login',
-          params: {'auth-tag': 'who', credentials: 'secret'},
+          params: {'auth-tag': 'who', credentials: 'secret', macaroons: []},
           version: 3
         });
         t.equal(err, 'bad wolf');
@@ -49,25 +49,160 @@ tap.test('connect', t => {
     ws.open();
   });
 
-  t.test('login with custom admin facade version', t => {
-    const options = {
-      wsclass: helpers.makeWSClass(instance => {
-        ws = instance;
-      }),
-      adminFacadeVersion: 42
-    };
+  t.test('login redirection error failure', t => {
     jujulib.connect('wss://1.2.3.4', options, (err, juju) => {
-      juju.login({user: 'dalek', password: 'skaro'}, (err, conn) => {
+      t.equal(err, null);
+      t.notEqual(juju, null);
+      juju.login({}, (err, conn) => {
         helpers.requestEqual(t, ws.lastRequest, {
           type: 'Admin',
-          request: 'Login',
-          params: {'auth-tag': 'dalek', credentials: 'skaro'},
-          version: 42
+          request: 'RedirectInfo',
+          params: {},
+          version: 3
         });
+        t.equal(err, 'bad wolf');
+        t.equal(conn, null);
         t.end();
       });
       // Reply to the login request.
+      ws.reply({error: 'redirection required'});
+      // Reply to the redirectInfo request.
       ws.reply({error: 'bad wolf'});
+    });
+    // Open the WebSocket connection.
+    ws.open();
+  });
+
+  t.test('login redirection error success', t => {
+    jujulib.connect('wss://1.2.3.4', options, (err, juju) => {
+      t.equal(err, null);
+      t.notEqual(juju, null);
+      juju.login({}, (err, conn) => {
+        helpers.requestEqual(t, ws.lastRequest, {
+          type: 'Admin',
+          request: 'RedirectInfo',
+          params: {},
+          version: 3
+        });
+        t.equal(juju.isRedirectionError(err), true);
+        t.equal(err.caCert, 'mycert');
+        t.equal(err.servers.length, 2);
+        t.equal(err.servers[0].value, '1.2.3.4');
+        t.equal(err.servers[0].port, 17070);
+        t.equal(err.servers[0].type, 'ipv4');
+        t.equal(err.servers[0].scope, 'global');
+        t.equal(
+          err.servers[0].url('srv1-uuid'),
+          'wss://1.2.3.4:17070/model/srv1-uuid/api');
+        t.equal(err.servers[1].value, 'example.com');
+        t.equal(err.servers[1].port, 443);
+        t.equal(err.servers[1].type, 'hostname');
+        t.equal(err.servers[1].scope, 'global');
+        t.equal(
+          err.servers[1].url('srv2-uuid'),
+          'wss://example.com:443/model/srv2-uuid/api');
+        t.equal(conn, null);
+        t.end();
+      });
+      // Reply to the login request.
+      ws.reply({error: 'redirection required'});
+      // Reply to the redirectInfo request.
+      ws.reply({response: {
+        'ca-cert': 'mycert',
+        'servers': [[{
+          value: '1.2.3.4',
+          port: 17070,
+          type: 'ipv4',
+          scope: 'global'
+        }, {
+          value: 'example.com',
+          port: 443,
+          type: 'hostname',
+          scope: 'global'
+        }]]
+      }});
+    });
+    // Open the WebSocket connection.
+    ws.open();
+  });
+
+  t.test('login discharge required no bakery', t => {
+    jujulib.connect('wss://1.2.3.4', options, (err, juju) => {
+      t.equal(err, null);
+      t.notEqual(juju, null);
+      juju.login({}, (err, conn) => {
+        helpers.requestEqual(t, ws.lastRequest, {
+          type: 'Admin',
+          request: 'Login',
+          params: {macaroons: []},
+          version: 3
+        });
+        t.equal(
+          err,
+          'macaroon discharge is required but no bakery instance provided');
+        t.equal(conn, null);
+        t.end();
+      });
+      // Reply to the login request with a discharge required response.
+      ws.reply({response: {'discharge-required': 'macaroon'}});
+    });
+    // Open the WebSocket connection.
+    ws.open();
+  });
+
+  t.test('login discharge required failure', t => {
+    const options = {
+      bakery: helpers.makeBakery(false),
+      wsclass: helpers.makeWSClass(instance => {
+        ws = instance;
+      })
+    };
+    jujulib.connect('wss://1.2.3.4', options, (err, juju) => {
+      t.equal(err, null);
+      t.notEqual(juju, null);
+      juju.login({macaroons: ['m']}, (err, conn) => {
+        helpers.requestEqual(t, ws.lastRequest, {
+          type: 'Admin',
+          request: 'Login',
+          params: {macaroons: [['m']]},
+          version: 3
+        });
+        t.equal(err, 'macaroon discharge failed: bad wolf');
+        t.equal(conn, null);
+        t.end();
+      });
+      // Reply to the login request with a discharge required response.
+      ws.reply({response: {'discharge-required': 'macaroon'}});
+    });
+    // Open the WebSocket connection.
+    ws.open();
+  });
+
+  t.test('login discharge required success', t => {
+    const options = {
+      bakery: helpers.makeBakery(true),
+      wsclass: helpers.makeWSClass(instance => {
+        ws = instance;
+      })
+    };
+    jujulib.connect('wss://1.2.3.4', options, (err, juju) => {
+      t.equal(err, null);
+      t.notEqual(juju, null);
+      juju.login({macaroons: ['m']}, (err, conn) => {
+        helpers.requestEqual(t, ws.lastRequest, {
+          type: 'Admin',
+          request: 'Login',
+          params: {macaroons: [['m1', 'm2']]},
+          version: 3
+        });
+        t.equal(err, null);
+        t.notEqual(conn, null);
+        t.end();
+      });
+      // Reply to the login request with a discharge required response.
+      ws.reply({response: {'discharge-required': 'macaroon'}});
+      // Reply to the retried login request properly.
+      ws.reply({response: {}});
     });
     // Open the WebSocket connection.
     ws.open();
@@ -110,6 +245,7 @@ tap.test('connect', t => {
         'model-c36a62d0-a17a-484e-87bf-a09d1b403627');
       t.equal(conn.info.serverVersion, '2.42.47');
       t.deepEqual(conn.info.user, {
+        credentials: 'creds',
         displayName: 'who',
         identity: 'user-who@gallifrey',
         lastConnection: '2018-06-06T01:02:13Z',

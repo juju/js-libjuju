@@ -81,18 +81,18 @@ class BundleV1 {
         result.changes[i].args = [];
         resp['changes'][i]['args'] = resp['changes'][i]['args'] || [];
         for (let i2 = 0; i2 < resp['changes'][i]['args'].length; i2++) {
-          result.changes[i].args[i2] = resp['changes'][i]['args'][i2] || undefined;
+          result.changes[i].args[i2] = resp['changes'][i]['args'][i2];
         }
         result.changes[i].requires = [];
         resp['changes'][i]['requires'] = resp['changes'][i]['requires'] || [];
         for (let i2 = 0; i2 < resp['changes'][i]['requires'].length; i2++) {
-          result.changes[i].requires[i2] = resp['changes'][i]['requires'][i2] || undefined;
+          result.changes[i].requires[i2] = resp['changes'][i]['requires'][i2];
         }
       }
       result.errors = [];
       resp['errors'] = resp['errors'] || [];
       for (let i = 0; i < resp['errors'].length; i++) {
-        result.errors[i] = resp['errors'][i] || undefined;
+        result.errors[i] = resp['errors'][i];
       }
       callback(null, result);
     });

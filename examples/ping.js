@@ -20,20 +20,20 @@ const url = 'wss://35.196.223.30:17070/model/bf716a6d-97cf-47b6-8b77-80e1890c092
 jujulib.connect(url, options, (err, juju) => {
   if (err) {
     console.log('cannot connect:', err);
-    return;
+    process.exit(1);
   }
 
   juju.login({user: 'user-admin', password: 'secret'}, (err, conn) => {
     if (err) {
       console.log('cannot login:', err);
-      return;
+      process.exit(1);
     }
 
     const pinger = conn.facades.pinger;
     const handle = pinger.pingForever(1000, err => {
       if (err) {
         console.log('cannot ping:', err);
-        return;
+        process.exit(1);
       }
       console.log('pong');
     });

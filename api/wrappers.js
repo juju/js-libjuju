@@ -18,10 +18,78 @@
 
 
 /**
+  Decorate the Admin facade class.
+
+  @param {Object} cls The auto-generated class.
+  @returns {Object} The decorated class.
+*/
+function wrapAdmin(cls) {
+
+  /**
+    RedirectInfo returns redirected host information for the model. In Juju it
+    always returns an error because the Juju controller does not multiplex
+    controllers.
+
+    @param {Function} callback Called when the response from Juju is available,
+      the callback receives an error and the result. If there are no errors,
+      the result is provided as an object like the following:
+        {
+          servers: []{
+            value: string,
+            type: string,
+            scope: string,
+            port: string
+          },
+          caCert: string
+        }
+  */
+  cls.prototype.redirectInfo = function(callback) {
+    // This is overridden as the auto-generated version does not work with
+    // current JAAS, because the servers passed to the callback do not
+    // correspond to the ones declared in the API.
+    // Prepare the request to the Juju API.
+    const req = {
+      type: 'Admin',
+      request: 'RedirectInfo',
+      version: this.version,
+      params: {}
+    };
+    // Send the request to the server.
+    this._transport.write(req, (err, resp) => {
+      if (!callback) {
+        return;
+      }
+      if (err) {
+        callback(err, {});
+        return;
+      }
+      // Handle the response.
+      const servers = [];
+      resp.servers.forEach(srvs => {
+        srvs.forEach(srv => {
+          const server = {
+            value: srv.value,
+            port: srv.port,
+            type: srv.type,
+            scope: srv.scope,
+            url: uuid => `wss://${srv.value}:${srv.port}/model/${uuid}/api`
+          };
+          servers.push(server);
+        });
+      });
+      callback(null, {caCert: resp['ca-cert'], servers: servers});
+    });
+  };
+
+  return cls;
+}
+
+
+/**
   Decorate the AllWatcher facade class.
 
   @param {Object} cls The auto-generated class.
-  @return {Object} The decorated class.
+  @returns {Object} The decorated class.
 */
 function wrapAllWatcher(cls) {
 
@@ -93,6 +161,7 @@ function wrapAllWatcher(cls) {
       callback(err, {});
     });
   };
+
   return cls;
 }
 
@@ -101,7 +170,7 @@ function wrapAllWatcher(cls) {
   Decorate the Application facade class.
 
   @param {Object} cls The auto-generated class.
-  @return {Object} The decorated class.
+  @returns {Object} The decorated class.
 */
 function wrapApplication(cls) {
 
@@ -181,6 +250,7 @@ function wrapApplication(cls) {
       });
     });
   };
+
   return cls;
 }
 
@@ -189,7 +259,7 @@ function wrapApplication(cls) {
   Decorate the Client facade class.
 
   @param {Object} cls The auto-generated class.
-  @return {Object} The decorated class.
+  @returns {Object} The decorated class.
 */
 function wrapClient(cls) {
 
@@ -211,7 +281,7 @@ function wrapClient(cls) {
             removed: boolean (required)
           } (required)
         }
-    @return {Object} and handle that can be used to stop watching, via its stop
+    @returns {Object} and handle that can be used to stop watching, via its stop
       method which can be provided a callback receiving an error.
   */
   cls.prototype.watch = function(callback) {
@@ -256,6 +326,7 @@ function wrapClient(cls) {
       }
     };
   };
+
   return cls;
 }
 
@@ -264,7 +335,7 @@ function wrapClient(cls) {
   Decorate the Pinger facade class.
 
   @param {Object} cls The auto-generated class.
-  @return {Object} The decorated class.
+  @returns {Object} The decorated class.
 */
 function wrapPinger(cls) {
 
@@ -292,11 +363,13 @@ function wrapPinger(cls) {
       }
     };
   };
+
   return cls;
 }
 
 
 module.exports = {
+  wrapAdmin: wrapAdmin,
   wrapAllWatcher: wrapAllWatcher,
   wrapApplication: wrapApplication,
   wrapClient: wrapClient,

@@ -21,13 +21,13 @@ const url = 'wss://35.196.223.30:17070/model/bf716a6d-97cf-47b6-8b77-80e1890c092
 jujulib.connect(url, options, (err, juju) => {
   if (err) {
     console.log('cannot connect:', err);
-    return;
+    process.exit(1);
   }
 
   juju.login({user: 'user-admin', password: 'secret'}, (err, conn) => {
     if (err) {
       console.log('cannot login:', err);
-      return;
+      process.exit(1);
     }
 
     const application = conn.facades.application;
@@ -35,7 +35,7 @@ jujulib.connect(url, options, (err, juju) => {
     client.addCharm({url: 'cs:haproxy-43'}, err => {
       if (err) {
         console.log('cannot add charm:', err);
-        return;
+        process.exit(1);
       }
 
       application.deploy({
@@ -47,7 +47,7 @@ jujulib.connect(url, options, (err, juju) => {
       }, (err, result) => {
         if (err) {
           console.log('cannot deploy app:', err);
-          return;
+          process.exit(1);
         }
         console.log(result);
       });

@@ -21,13 +21,13 @@ const url = 'wss://35.240.22.136:17070/model/7ff7e1c9-f733-4eba-8d29-6c0946dc21d
 jujulib.connect(url, options, (err, juju) => {
   if (err) {
     console.log('cannot connect:', err);
-    return;
+    process.exit(1);
   }
 
   juju.login({user: 'user-admin', password: 'secret'}, (err, conn) => {
     if (err) {
       console.log('cannot login:', err);
-      return;
+      process.exit(1);
     }
 
     const application = conn.facades.application;
@@ -38,7 +38,7 @@ jujulib.connect(url, options, (err, juju) => {
     }, (err, result) => {
       if (err) {
         console.log('cannot deploy app:', err);
-        return;
+        process.exit(1);
       }
       console.log(result);
     });

@@ -3,6 +3,10 @@ NODE_MODULES = node_modules
 PROJECT = js-libjuju
 SYSDEPS = build-essential python3-virtualenv tox
 
+# The generated admin facade is required by JS API client code and tests.
+ADMIN_FACADE = api/facades/admin-v3.js
+
+
 .PHONY: all
 all: help
 
@@ -13,14 +17,12 @@ $(NODE_MODULES):
 	npm install
 	npm ls --depth=0
 
+$(ADMIN_FACADE):
+	$(MAKE) generate
+
 dev: $(DEVENV)
 
 dev-js: $(NODE_MODULES)
-
-.PHONY: generate
-generate: dev
-	rm -f api/facades/*.js
-	devenv/bin/generate schemas/schema.json
 
 .PHONY: dist
 dist: clean dev check
@@ -37,6 +39,12 @@ check-js: lint-js test-js
 clean:
 	rm -rf $(DEVENV) .tox dist *.egg-info
 	rm -rf $(NODE_MODULES)/ package-lock.json api/facades/*.js
+
+.PHONY: generate
+generate: dev
+	rm -f api/facades/*.js
+	devenv/bin/generate schemas/schema.json
+
 
 .PHONY: help
 help:
@@ -90,5 +98,5 @@ test: dev
 	$(DEVENV)/bin/python -m unittest discover . -v
 
 .PHONY: test-js
-test-js: dev-js
+test-js: dev-js $(ADMIN_FACADE)
 	npm t

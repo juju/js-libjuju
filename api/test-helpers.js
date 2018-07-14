@@ -42,11 +42,12 @@ const loginResponse = {
   'model-tag': 'model-c36a62d0-a17a-484e-87bf-a09d1b403627',
   'server-version': '2.42.47',
   'user-info': {
-     'display-name': 'who',
-     identity: 'user-who@gallifrey',
-     'last-connection': '2018-06-06T01:02:13Z',
-     'controller-access': 'timelord',
-     'model-access': 'admin'
+    credentials: 'creds',
+    'display-name': 'who',
+    identity: 'user-who@gallifrey',
+    'last-connection': '2018-06-06T01:02:13Z',
+    'controller-access': 'timelord',
+    'model-access': 'admin'
   },
   facades: [{
     name: 'AllWatcher', versions: [0]
@@ -132,6 +133,25 @@ class WebSocket {
 
 
 /**
+  Create and return a mock bakery instance.
+
+  @param {Boolean} succeeding Whether the simulated discharge succeeds.
+  @returns {Object} The mock bakery instance.
+*/
+function makeBakery(succeeding) {
+  return {
+    discharge: (macaroon, onSuccess, onFailure) => {
+      if (succeeding) {
+        onSuccess(['m1', 'm2']);
+        return;
+      }
+      onFailure('bad wolf');
+    }
+  };
+}
+
+
+/**
   Check that the two requests equal.
 
   @param {Object} t The test object.
@@ -148,6 +168,7 @@ function requestEqual(t, got, want) {
 
 module.exports = {
   BaseFacade: BaseFacade,
+  makeBakery: makeBakery,
   makeConnection: makeConnection,
   makeWSClass: makeWSClass,
   requestEqual: requestEqual

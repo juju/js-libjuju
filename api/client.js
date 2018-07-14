@@ -36,6 +36,10 @@
 
 'use strict';
 
+
+const Admin = require('./facades/admin-v3.js');
+
+
 /**
   Connect to the Juju controller or model at the given URL.
 
@@ -52,7 +56,9 @@
       for opening the connection and sending/receiving messages. Server side,
       require('websocket').w3cwebsocket can be used safely, as it implements the
       W3C browser native WebSocket API;
-    - adminFacadeVersion (default=3): the admin facade version;
+    - bakery (default: null): the bakery client to use when macaroon discharges
+      are required, in the case an external user is used to connect to Juju;
+      see <https://www.npmjs.com/package/macaroon-bakery>;
     - closeCallback: a callback to be called with the exit code when the
       connection is closed.
   @param {Function} callback Called when the connection is made, the callback
@@ -61,8 +67,8 @@
     class for information on how to use the client.
 */
 function connect(url, options={}, callback) {
-  if (!options.adminFacadeVersion) {
-    options.adminFacadeVersion = 3;
+  if (!options.bakery) {
+    options.bakery = null;
   }
   if (!options.closeCallback) {
     options.closeCallback = () => {};
@@ -102,7 +108,8 @@ class Client {
     // Instantiate the transport, used for sending messages to the server.
     this._transport = new Transport(ws, options.closeCallback, options.debug);
     this._facades = options.facades;
-    this._adminFacadeVersion = options.adminFacadeVersion;
+    this._bakery = options.bakery;
+    this._admin = new Admin(this._transport, {});
   }
 
   /**
@@ -110,31 +117,67 @@ class Client {
 
     @param {Object} credentials An object with the user and password fields for
       userpass authentication or the macaroons field for bakery authentication.
+      If an empty object is provided a full bakery discharge will be attempted
+      for logging in with macaroons. Any necessary third party discharges are
+      performed using the bakery instance originally provided to connect().
     @param {Function} callback Called when the login process completes, the
       callback receives an error and a connection object. If there are no
       errors, the connection can be used to send/receive messages to and from
       the Juju controller or model, and to get access to the available facades
       (through conn.facades). See the docstring for the Connection class for
-      information on how to use the connection instance.
+      information on how to use the connection instance. If an error is
+      returned, clients can check whether it's a redirection error as done by
+      JAAS when a new connection to the actual remote model is required. You
+      can check if that's the case using client.isRedirectionError(err). If it
+      is a redirection error, information about available servers is stored in
+      err.servers and err.caCert (if a certificate is required).
   */
   login(credentials, callback) {
-    // TODO(frankban): support bakery auth.
-    // TODO(frankban): support redirections when connecting to models.
-    const req = {
-      type: 'Admin',
-      request: 'Login',
-      params: {
-        'auth-tag': credentials.user,
-        credentials: credentials.password
-      },
-      version: this._adminFacadeVersion
+    const args = {
+      authTag: credentials.user,
+      credentials: credentials.password,
+      macaroons: credentials.macaroons
     };
-    this._transport.write(req, (err, resp) => {
+    this._admin.login(args, (err, result) => {
       if (err) {
-        callback(err, null);
+        if (err !== REDIRECTION_ERROR) {
+          // Authentication failed.
+          callback(err, null);
+          return;
+        }
+        // This is a model redirection error, so retrieve some info now.
+        this._admin.redirectInfo((err, result) => {
+          if (err) {
+            callback(err, null);
+            return;
+          }
+          callback(new RedirectionError(result.servers, result.caCert), null);
+        });
         return;
       }
-      const conn = new Connection(this._transport, this._facades, resp);
+
+      // Handle bakery discharge required responses.
+      if (result.dischargeRequired) {
+        if (!this._bakery) {
+          callback(
+            'macaroon discharge is required but no bakery instance provided',
+            null);
+          return;
+        }
+        const onSuccess = macaroons => {
+          // Send the login request again including the discharge macaroons.
+          credentials.macaroons = [macaroons];
+          this.login(credentials, callback);
+        };
+        const onFailure = err => {
+          callback('macaroon discharge failed: ' + err, null);
+        };
+        this._bakery.discharge(result.dischargeRequired, onSuccess, onFailure);
+        return;
+      }
+
+      // Authentication succeeded.
+      const conn = new Connection(this._transport, this._facades, result);
       callback(null, conn);
     });
   }
@@ -151,8 +194,27 @@ class Client {
     this._transport.close(callback);
   }
 
+  /**
+    Report whether the given error is a redirection error from Juju.
+
+    @param {Any} err The error returned by the login request.
+    @returns {Boolean} Whether the given error is a redirection error.
+  */
+  isRedirectionError(err) {
+    return err instanceof RedirectionError;
+  }
+
 }
 
+
+// Define the redirect error returned by Juju, and the one returned by the API.
+const REDIRECTION_ERROR = 'redirection required';
+class RedirectionError {
+  constructor(servers, caCert) {
+    this.servers = servers;
+    this.caCert = caCert;
+  }
+}
 
 /**
   A transport providing the ability of sending and receiving WebSocket messages
@@ -231,7 +293,11 @@ class Transport {
   close(callback) {
     const closeCallback = this._closeCallback;
     this._closeCallback = code => {
-      callback(code, closeCallback);
+      if (callback) {
+        callback(code, closeCallback);
+        return;
+      }
+      closeCallback(code);
     };
     this._ws.close();
   }
@@ -270,45 +336,35 @@ class Transport {
     instantiated, the matching available facades as declared by Juju are
     instantiated and access to them is provided via the facades property of the
     connection.
-  @param {Object} loginResp The response to the Juju login request. The response
-    includes information about the Juju server and available facades. This info
-    is made available via the info property of the connection instance.
+  @param {Object} loginResult The result to the Juju login request. It includes
+    information about the Juju server and available facades. This info is made
+    available via the info property of the connection instance.
 */
 class Connection {
 
-  constructor(transport, facades, loginResp) {
+  constructor(transport, facades, loginResult) {
     // Store the transport used for sending messages to Juju.
     this.transport = transport;
 
     // Populate info.
-    const userInfo = loginResp['user-info'] || {};
     this.info = {
-      controllerTag: loginResp['controller-tag'] || '',
-      modelTag: loginResp['model-tag'] || '',
-      serverVersion: loginResp['server-version'] || '',
-
-      user: {
-        displayName: userInfo['display-name'] || '',
-        identity: userInfo['identity'] || '',
-        lastConnection: userInfo['last-connection'] || '',
-        // TODO(frankban): expose an ACL object using access info, so that
-        // it's more user friendly.
-        controllerAccess: userInfo['controller-access'] || '',
-        modelAccess: userInfo['model-access'] || ''
-      },
-
+      controllerTag: loginResult.controllerTag,
+      modelTag: loginResult.modelTag,
+      publicDnsName: loginResult.publicDnsName,
+      serverVersion: loginResult.serverVersion,
+      servers: loginResult.servers,
+      user: loginResult.userInfo,
       getFacade: name => {
         return this.facades[name];
       }
     };
 
     // Handle facades.
-    const respFacades = loginResp.facades || [];
     const registered = facades.reduce((previous, current) => {
       previous[current.name] = current;
       return previous;
     }, {});
-    this.facades = respFacades.reduce((previous, current) => {
+    this.facades = loginResult.facades.reduce((previous, current) => {
       for (let i = current.versions.length-1; i >= 0; i--) {
         const className = current.name + 'V' + current.versions[i];
         const facadeClass = registered[className];
@@ -329,7 +385,7 @@ class Connection {
   Convert ThisString to thisString.
 
   @param {String} string A StringLikeThis.
-  @return {String} A stringLikeThis.
+  @returns {String} A stringLikeThis.
 */
 function uncapitalize(string) {
   return string.charAt(0).toLowerCase() + string.slice(1);

@@ -57,7 +57,7 @@ class MarshalV0 {
       resp['deltas'] = resp['deltas'] || [];
       for (let i = 0; i < resp['deltas'].length; i++) {
         // github.com/juju/juju/state/multiwatcher#Delta
-        result.deltas[i] = resp['deltas'][i] || undefined;
+        result.deltas[i] = resp['deltas'][i];
       }
       callback(null, result);
     });
