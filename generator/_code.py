@@ -131,7 +131,7 @@ class Map:
 
     def _handle(self, key, value, get_code):
         with _increase_level(self, 'k') as k:
-            parts = [value + ' = ' + value + ' || {};']
+            parts = [key + ' = {};', value + ' = ' + value + ' || {};']
             parts.append('for (let {k} in {v}) {{'.format(k=k, v=value))
             code = get_code('{}[{}]'.format(key, k), '{}[{}]'.format(value, k))
             parts.append(_indent(1, code))
