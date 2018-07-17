@@ -90,6 +90,7 @@ class AnnotationsV2 {
         result.results[i] = {};
         resp['results'][i] = resp['results'][i] || {};
         result.results[i].entity = resp['results'][i]['entity'];
+        result.results[i].annotations = {};
         resp['results'][i]['annotations'] = resp['results'][i]['annotations'] || {};
         for (let k in resp['results'][i]['annotations']) {
           result.results[i].annotations[k] = resp['results'][i]['annotations'][k];
@@ -143,6 +144,7 @@ class AnnotationsV2 {
       params['annotations'][i] = {};
       args.annotations[i] = args.annotations[i] || {};
       params['annotations'][i]['entity'] = args.annotations[i].entity;
+      params['annotations'][i]['annotations'] = {};
       args.annotations[i].annotations = args.annotations[i].annotations || {};
       for (let k in args.annotations[i].annotations) {
         params['annotations'][i]['annotations'][k] = args.annotations[i].annotations[k];
