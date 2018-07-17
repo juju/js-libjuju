@@ -17,7 +17,7 @@
     "client"
   ],
   "author": "Canonical JAAS Team",
-  "license": "SEE LICENSE IN LICENSE.txt",
+  "license": "LGPL-3.0",
   "bugs": {
     "url": "https://github.com/juju/js-libjuju/issues"
   },
