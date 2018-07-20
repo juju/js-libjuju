@@ -61,12 +61,14 @@ const Admin = require('./facades/admin-v3.js');
       see <https://www.npmjs.com/package/macaroon-bakery>;
     - closeCallback: a callback to be called with the exit code when the
       connection is closed.
-  @param {Function} callback Called when the connection is made, the callback
+  @param {Function} [callback=null] Called when the connection is made, the callback
     receives an error and a client object. If there are no errors, the client
     can be used to login and logout to Juju. See the docstring for the Client
     class for information on how to use the client.
+  @return {Promise} This promise will be rejected if there is an error connecting,
+    or resolved with a new Client instance.
 */
-function connect(url, options={}, callback) {
+function connect(url, options={}, callback=null) {
   if (!options.bakery) {
     options.bakery = null;
   }
@@ -82,15 +84,28 @@ function connect(url, options={}, callback) {
   if (!options.wsclass) {
     options.wsclass = window.WebSocket;
   }
-  // Instantiate the WebSocket, and make the client available when the
-  // connection is open.
-  const ws = new options.wsclass(url);
-  ws.onopen = evt => {
-    callback(null, new Client(ws, options));
-  };
-  ws.onclose = evt => {
-    callback('cannot connect WebSocket: ' + evt.reason, null);
-  };
+  return new Promise((resolve, reject) => {
+    const handler = (err = null, value = null) => {
+      if (typeof callback === 'function') {
+        callback(err, value);
+        return;
+      }
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(value);
+    };
+    // Instantiate the WebSocket, and make the client available when the
+    // connection is open.
+    const ws = new options.wsclass(url);
+    ws.onopen = evt => {
+      handler(null, new Client(ws, options));
+    };
+    ws.onclose = evt => {
+      handler('cannot connect WebSocket: ' + evt.reason, null);
+    };
+  });
 }
 
 
