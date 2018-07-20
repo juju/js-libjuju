@@ -5,7 +5,7 @@
   "main": "api/client.js",
   "scripts": {
     "lint": "eslint api/",
-    "test": "tap api/test*.js"
+    "test": "tap 'api/test-!(helpers)*.js'"
   },
   "repository": {
     "type": "git",
