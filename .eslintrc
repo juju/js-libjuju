@@ -3,12 +3,13 @@ env:
   node: true
   es6: true
 parserOptions:
-  ecmaVersion: 6
+  ecmaVersion: 2017
 rules:
   eqeqeq: ["error"]
   no-mixed-spaces-and-tabs: ["error"]
   no-trailing-spaces: ["error"]
   no-undef: 2
   no-unused-vars: [2, {args: "none"}]
+  no-unreachable: 2
   quotes: [2, "single"]
   semi: [2, "always"]
