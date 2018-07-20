@@ -17,6 +17,32 @@ tap.test('connect', t => {
     })
   };
 
+  t.test('supports supplying callback to login', t => {
+    jujulib.connect('wss://1.2.3.4', options, (err, juju) => {
+      t.equal(err, null);
+      t.equal(juju instanceof jujulib.Client, true);
+      t.end();
+    });
+    ws.open();
+  });
+
+  t.test('returns promise, supports no callback', t => {
+    const prom = jujulib.connect('wss://1.2.3.4', options)
+      .then(juju =>
+        t.test('check', t => {
+          t.equal(juju instanceof jujulib.Client, true);
+          t.end();
+        }));
+    ws.open();
+    return prom;
+  });
+
+  t.test('returns promise, handles failure to connect', t => {
+    const reject = t.rejects(jujulib.connect('wss://1.2.3.4', options), null, 'cannot connect WebSocket: nope');
+    ws.close('nope');
+    return reject;
+  });
+
   t.test('connect failure', t => {
     jujulib.connect('wss://1.2.3.4', options, (err, juju) => {
       t.equal(err, 'cannot connect WebSocket: bad wolf');
