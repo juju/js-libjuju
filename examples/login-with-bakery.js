@@ -9,7 +9,7 @@ const WebSocket = require('websocket').w3cwebsocket;
 const bakery = require('macaroon-bakery');
 // Bakery uses btoa and MLHttpRequest.
 global.btoa = require('btoa');
-global.XMLHttpRequest = require('xhr2')
+global.XMLHttpRequest = require('xhr2');
 
 const jujulib = require('../api/client.js');
 
@@ -84,7 +84,7 @@ jujulib.connect(url, options, (err, juju) => {
                   });
                 });
               }
-            })
+            });
           }
           console.log('logged in to model without redirection');
         });
