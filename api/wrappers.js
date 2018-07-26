@@ -443,7 +443,7 @@ function wrapClient(cls) {
         {
           deltas: []anything
         }
-    @returns {Object} An handle that can be used to stop watching, via its stop
+    @returns {Object} A handle that can be used to stop watching, via its stop
       method which can be provided a callback receiving an error.
   */
  cls.prototype.watch = function(callback) {
@@ -514,7 +514,7 @@ function wrapController(cls) {
         {
           deltas: []anything
         }
-    @returns {Object} An handle that can be used to stop watching, via its stop
+    @returns {Object} A handle that can be used to stop watching, via its stop
       method which can be provided a callback receiving an error.
   */
   cls.prototype.watch = function(callback) {
@@ -602,11 +602,11 @@ function wrapPinger(cls) {
 
 
 module.exports = {
-  wrapAdmin: wrapAdmin,
-  wrapAllModelWatcher: wrapAllModelWatcher,
-  wrapAllWatcher: wrapAllWatcher,
-  wrapApplication: wrapApplication,
-  wrapClient: wrapClient,
-  wrapController: wrapController,
-  wrapPinger: wrapPinger
+  wrapAdmin,
+  wrapAllModelWatcher,
+  wrapAllWatcher,
+  wrapApplication,
+  wrapClient,
+  wrapController,
+  wrapPinger
 };

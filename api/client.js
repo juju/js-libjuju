@@ -465,4 +465,4 @@ function uncapitalize(string) {
 }
 
 
-module.exports = {connect: connect, connectAndLogin: connectAndLogin};
+module.exports = {connect, connectAndLogin};
