@@ -14,6 +14,7 @@ global.XMLHttpRequest = require('xhr2')
 const jujulib = require('../api/client.js');
 
 
+const url = 'wss://jimm.jujucharms.com/api';
 const options = {
     debug: true,
     facades: [require('../api/facades/model-manager-v4.js')],
@@ -24,7 +25,6 @@ const options = {
         }
     })
 };
-const url = 'wss://jimm.jujucharms.com/api';
 
 
 jujulib.connect(url, options, (err, juju) => {

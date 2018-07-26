@@ -10,40 +10,37 @@ const WebSocket = require('websocket').w3cwebsocket;
 const jujulib = require('../api/client.js');
 
 
-const url = 'wss://130.211.62.123:17070/model/ae6e92c5-cce7-4943-8913-72514a485ea8/api';
+const url = 'wss://130.211.62.123:17070/api';
+const credentials = {user: 'user-admin', password: 'secret'};
 const facades = [
-  require('../api/facades/all-watcher-v1.js'),
-  require('../api/facades/client-v1.js')
+  require('../api/facades/all-model-watcher-v2.js'),
+  require('../api/facades/controller-v5.js')
 ];
 const options = {debug: true, facades: facades, wsclass: WebSocket};
 
 
-jujulib.connect(url, options, (err, juju) => {
+jujulib.connectAndLogin(url, credentials, options, (err, conn, logout) => {
   if (err) {
     console.log('cannot connect:', err);
     process.exit(1);
   }
-
-  juju.login({user: 'user-admin', password: 'secret'}, (err, conn) => {
+  // Start watching all models.
+  const controller = conn.facades.controller;
+  let handle;
+  handle = controller.watch((err, result) => {
     if (err) {
-      console.log('cannot login:', err);
+      console.log('cannot watch models:', err);
       process.exit(1);
     }
-
-    const client = conn.facades.client;
-    const handle = client.watch((err, result) => {
-      if (err) {
-        console.log('cannot watch model:', err);
-        process.exit(1);
-      }
-      console.log(result);
-    });
+    console.log(result.deltas);
 
     setTimeout(() => {
+      // Stop the multi-model watcher and log out.
       handle.stop(err => {
         console.log('watcher stopped');
+        logout();
       });
     }, 10000);
-
   });
+
 });

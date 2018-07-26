@@ -50,11 +50,15 @@ const loginResponse = {
     'model-access': 'admin'
   },
   facades: [{
+    name: 'AllModelWatcher', versions: [1]
+  }, {
     name: 'AllWatcher', versions: [0]
   }, {
     name: 'Application', versions: [7]
   }, {
     name: 'Client', versions: [2, 3]
+  }, {
+    name: 'Controller', versions: [3, 4, 5]
   }, {
     name: 'MyFacade', versions: [1, 7]
   }]
@@ -109,6 +113,7 @@ class WebSocket {
   }
 
   close(reason) {
+    this.readyState = 3;
     this.onclose({reason: reason});
   }
 

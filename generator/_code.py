@@ -202,19 +202,25 @@ class Struct:
         return '{' + text + '}'
 
     def generate_request(self, key, value):
-        parts = [key + ' = {};', value + ' = ' + value + ' || {};']
-        parts.extend(t.generate_request(key, value) for t in self.types)
+        parts = ['if ({}) {{'.format(value), _indent(1, key + ' = {};')]
+        parts.extend(
+            _indent(1, t.generate_request(key, value)) for t in self.types)
+        parts.append('}')
         return '\n'.join(parts)
 
     def generate_response(self, key, value):
-        parts = [key + ' = {};', value + ' = ' + value + ' || {};']
-        type_parts = [t.generate_response(key, value) for t in self.types]
+        # key = result
+        # value = resp
+        parts = ['if ({}) {{'.format(value), _indent(1, key + ' = {};')]
+        type_parts = [
+            _indent(1, t.generate_response(key, value)) for t in self.types]
         if type_parts:
             parts.extend(type_parts)
         else:
-            # This is an opaque object not decsribed by the schema, so just
+            # This is an opaque object not described by the schema, so just
             # copy it.
-            parts.append(key + ' = ' + value + ';')
+            parts.append(_indent(1, key + ' = ' + value + ';'))
+        parts.append('}')
         return '\n'.join(parts)
 
 

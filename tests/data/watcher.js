@@ -54,17 +54,19 @@ class AllWatcherV1 {
       // Handle the response.
       let result;
       // github.com/juju/juju/apiserver/params#AllWatcherNextResults
-      result = {};
-      resp = resp || {};
-      result.deltas = [];
-      resp['deltas'] = resp['deltas'] || [];
-      for (let i = 0; i < resp['deltas'].length; i++) {
-        // github.com/juju/juju/state/multiwatcher#Delta
-        result.deltas[i] = {};
-        resp['deltas'][i] = resp['deltas'][i] || {};
-        result.deltas[i].removed = resp['deltas'][i]['removed'];
-        // github.com/juju/juju/state/multiwatcher#EntityInfo
-        result.deltas[i].entity = resp['deltas'][i]['entity'];
+      if (resp) {
+        result = {};
+        result.deltas = [];
+        resp['deltas'] = resp['deltas'] || [];
+        for (let i = 0; i < resp['deltas'].length; i++) {
+          // github.com/juju/juju/state/multiwatcher#Delta
+          if (resp['deltas'][i]) {
+            result.deltas[i] = {};
+            result.deltas[i].removed = resp['deltas'][i]['removed'];
+            // github.com/juju/juju/state/multiwatcher#EntityInfo
+            result.deltas[i].entity = resp['deltas'][i]['entity'];
+          }
+        }
       }
       callback(null, result);
     });

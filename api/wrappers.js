@@ -72,12 +72,100 @@ function wrapAdmin(cls) {
             port: srv.port,
             type: srv.type,
             scope: srv.scope,
-            url: uuid => `wss://${srv.value}:${srv.port}/model/${uuid}/api`
+            url: uuidOrURL => {
+              let uuid = uuidOrURL;
+              if (uuid.startsWith('wss://') || uuid.startsWith('ws://')) {
+                const parts = uuid.split('/');
+                uuid = parts[parts.length - 2];
+              }
+              return `wss://${srv.value}:${srv.port}/model/${uuid}/api`;
+            }
           };
           servers.push(server);
         });
       });
       callback(null, {caCert: resp['ca-cert'], servers: servers});
+    });
+  };
+
+  return cls;
+}
+
+
+/**
+  Decorate the AllModelWatcher facade class.
+
+  @param {Object} cls The auto-generated class.
+  @returns {Object} The decorated class.
+*/
+function wrapAllModelWatcher(cls) {
+
+  /**
+    Ask for next watcher messages corresponding to changes in the models.
+
+    This method is overridden as the auto-generated one does not include the
+    watcherId parameter, as a result of the peculiarity of the call, which does
+    not assume the id to be in parameters, but as a top level field.
+
+    @param {String} watcherId The id of the currently used watcher. The id is
+      retrieved by calling the Controller.watchAllModels API call.
+    @param {Function} callback Called when the next messages arrive, the
+      callback receives an error and the changes. If there are no errors,
+      changes are provided as an object like the following:
+        {
+          deltas: []anything
+        }
+  */
+  cls.prototype.next = function(watcherId, callback) {
+    // Prepare the request to the Juju API.
+    const req = {
+      type: 'AllModelWatcher',
+      request: 'Next',
+      version: this.version,
+      id: watcherId
+    };
+    // Send the request to the server.
+    this._transport.write(req, (err, resp) => {
+      if (!callback) {
+        return;
+      }
+      if (err) {
+        callback(err, {});
+        return;
+      }
+      // Handle the response.
+      resp = resp || {};
+      const result = {deltas: resp.deltas || []};
+      callback(null, result);
+    });
+  };
+
+  /**
+    Stop watching all models.
+
+    This method is overridden as the auto-generated one does not include the
+    watcherId parameter, as a result of the peculiarity of the call, which does
+    not assume the id to be in parameters, but as a top level field.
+
+    @param {String} watcherId The id of the currently used watcher. The id is
+      retrieved by calling the Controller.watchAllModels API call.
+    @param {Function} callback Called after the watcher has been stopped, the
+      callback receives an error.
+  */
+  cls.prototype.stop = function(watcherId, callback) {
+    // Prepare the request to the Juju API.
+    const req = {
+      type: 'AllModelWatcher',
+      request: 'Stop',
+      version: this.version,
+      id: watcherId
+    };
+    // Send the request to the server.
+    this._transport.write(req, (err, resp) => {
+      if (!callback) {
+        return;
+      }
+      callback(err, {});
     });
   };
 
@@ -264,6 +352,85 @@ function wrapApplication(cls) {
 function wrapClient(cls) {
 
   /**
+    Add a new machine to the model.
+
+    @param {Object} args Arguments fot creating a machine, like the following:
+        {
+          series: string,
+          constraints: {
+            arch: string,
+            container: string,
+            cores: int,
+            cpuPower: int,
+            mem: int,
+            rootDisk: int,
+            tags: []string,
+            instanceType: string,
+            spaces: []string,
+            virtType: string
+          },
+          jobs: []string,
+          disks: []{
+            pool: string,
+            size: int,
+            count: int
+          },
+          placement: {
+            scope: string,
+            directive: string
+          },
+          parentId: string,
+          containerType: string,
+          instanceId: string,
+          nonce: string,
+          hardwareCharacteristics: {
+            arch: string,
+            mem: int,
+            rootDisk: int,
+            cpuCores: int,
+            cpuPower: int,
+            tags: []string,
+            availabilityZone: string
+          },
+          addresses: []{
+            value: string,
+            type: string,
+            scope: string,
+            spaceName: string
+          }
+        }
+    @param {Function} callback Called when the response from Juju is available,
+      the callback receives an error and the result. If there are no errors,
+      the result is provided as an object like the following:
+        {
+          machine: string,
+          error: {
+            message: string,
+            code: string,
+            info: {
+              macaroon: anything,
+              macaroonPath: string
+            }
+          }
+        }
+  */
+  cls.prototype.addMachine = function(args, callback) {
+    if (!args.jobs) {
+      args.jobs = ['JobHostUnits'];
+    }
+    this.addMachines({params: [args]}, (err, result) => {
+      if (!callback) {
+        return;
+      }
+      if (err) {
+        callback(err, {});
+        return;
+      }
+      callback(null, result.machines[0]);
+    });
+  };
+
+  /**
     Watch changes in the current model, and call the provided callback every
     time changes arrive.
 
@@ -274,24 +441,90 @@ function wrapClient(cls) {
       callback receives an error and a the changes. If there are no errors,
       changes are provided as an object like the following:
         {
-          deltas: []{
-            entity: {
-
-            } (required),
-            removed: boolean (required)
-          } (required)
+          deltas: []anything
         }
-    @returns {Object} and handle that can be used to stop watching, via its stop
+    @returns {Object} An handle that can be used to stop watching, via its stop
+      method which can be provided a callback receiving an error.
+  */
+ cls.prototype.watch = function(callback) {
+  if (!callback) {
+    callback = () => {};
+  }
+  // Check that the AllWatcher facade is loaded, as we will use it.
+  const allWatcher = this._info.getFacade('allWatcher');
+  if (!allWatcher) {
+    callback('watch requires the allWatcher facade to be loaded', {});
+    return;
+  }
+  let watcherId;
+  // Define a function to repeatedly ask for next changes.
+  const next = callback => {
+    if (!watcherId) {
+      return;
+    }
+    allWatcher.next(watcherId, (err, result) => {
+      callback(err, result);
+      next(callback);
+    });
+  };
+  // Start watching.
+  this.watchAll((err, result) => {
+    if (err) {
+      callback(err, {});
+      return;
+    }
+    watcherId = result.watcherId;
+    next(callback);
+  });
+  // Return the handle allowing for stopping the watcher.
+  return {
+    stop: callback => {
+      if (watcherId === undefined) {
+        callback('watcher is not running', {});
+        return;
+      }
+      allWatcher.stop(watcherId, callback);
+      watcherId = undefined;
+    }
+  };
+};
+
+  return cls;
+}
+
+
+/**
+  Decorate the Controller facade class.
+
+  @param {Object} cls The auto-generated class.
+  @returns {Object} The decorated class.
+*/
+function wrapController(cls) {
+
+  /**
+    Watch changes in the all models on this controller, and call the provided
+    callback every time changes arrive.
+
+    This method requires the AllModelWatcher facade to be loaded and available
+    to the client.
+
+    @param {Function} callback Called every time changes arrive from Juju, the
+      callback receives an error and a the changes. If there are no errors,
+      changes are provided as an object like the following:
+        {
+          deltas: []anything
+        }
+    @returns {Object} An handle that can be used to stop watching, via its stop
       method which can be provided a callback receiving an error.
   */
   cls.prototype.watch = function(callback) {
     if (!callback) {
       callback = () => {};
     }
-    // Check that the AllWatcher facade is loaded, as we will use it.
-    const allWatcher = this._info.getFacade('allWatcher');
-    if (!allWatcher) {
-      callback('watch requires the allWatcher facade to be loaded', {});
+    // Check that the AllModelWatcher facade is loaded, as we will use it.
+    const allModelWatcher = this._info.getFacade('allModelWatcher');
+    if (!allModelWatcher) {
+      callback('watch requires the allModelWatcher facade to be loaded', {});
       return;
     }
     let watcherId;
@@ -300,13 +533,13 @@ function wrapClient(cls) {
       if (!watcherId) {
         return;
       }
-      allWatcher.next(watcherId, (err, result) => {
+      allModelWatcher.next(watcherId, (err, result) => {
         callback(err, result);
         next(callback);
       });
     };
     // Start watching.
-    this.watchAll((err, result) => {
+    this.watchAllModels((err, result) => {
       if (err) {
         callback(err, {});
         return;
@@ -321,7 +554,7 @@ function wrapClient(cls) {
           callback('watcher is not running', {});
           return;
         }
-        allWatcher.stop(watcherId, callback);
+        allModelWatcher.stop(watcherId, callback);
         watcherId = undefined;
       }
     };
@@ -370,8 +603,10 @@ function wrapPinger(cls) {
 
 module.exports = {
   wrapAdmin: wrapAdmin,
+  wrapAllModelWatcher: wrapAllModelWatcher,
   wrapAllWatcher: wrapAllWatcher,
   wrapApplication: wrapApplication,
   wrapClient: wrapClient,
+  wrapController: wrapController,
   wrapPinger: wrapPinger
 };
