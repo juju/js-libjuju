@@ -46,9 +46,10 @@ class BundleV1 {
     // Prepare request parameters.
     let params;
     // github.com/juju/juju/apiserver/params#BundleChangesParams
-    params = {};
-    args = args || {};
-    params['yaml'] = args.yaml;
+    if (args) {
+      params = {};
+      params['yaml'] = args.yaml;
+    }
     // Prepare the request to the Juju API.
     const req = {
       type: 'Bundle',
@@ -68,31 +69,33 @@ class BundleV1 {
       // Handle the response.
       let result;
       // github.com/juju/juju/apiserver/params#BundleChangesResults
-      result = {};
-      resp = resp || {};
-      result.changes = [];
-      resp['changes'] = resp['changes'] || [];
-      for (let i = 0; i < resp['changes'].length; i++) {
-        // github.com/juju/juju/apiserver/params#BundleChange
-        result.changes[i] = {};
-        resp['changes'][i] = resp['changes'][i] || {};
-        result.changes[i].id = resp['changes'][i]['id'];
-        result.changes[i].method = resp['changes'][i]['method'];
-        result.changes[i].args = [];
-        resp['changes'][i]['args'] = resp['changes'][i]['args'] || [];
-        for (let i2 = 0; i2 < resp['changes'][i]['args'].length; i2++) {
-          result.changes[i].args[i2] = resp['changes'][i]['args'][i2];
+      if (resp) {
+        result = {};
+        result.changes = [];
+        resp['changes'] = resp['changes'] || [];
+        for (let i = 0; i < resp['changes'].length; i++) {
+          // github.com/juju/juju/apiserver/params#BundleChange
+          if (resp['changes'][i]) {
+            result.changes[i] = {};
+            result.changes[i].id = resp['changes'][i]['id'];
+            result.changes[i].method = resp['changes'][i]['method'];
+            result.changes[i].args = [];
+            resp['changes'][i]['args'] = resp['changes'][i]['args'] || [];
+            for (let i2 = 0; i2 < resp['changes'][i]['args'].length; i2++) {
+              result.changes[i].args[i2] = resp['changes'][i]['args'][i2];
+            }
+            result.changes[i].requires = [];
+            resp['changes'][i]['requires'] = resp['changes'][i]['requires'] || [];
+            for (let i2 = 0; i2 < resp['changes'][i]['requires'].length; i2++) {
+              result.changes[i].requires[i2] = resp['changes'][i]['requires'][i2];
+            }
+          }
         }
-        result.changes[i].requires = [];
-        resp['changes'][i]['requires'] = resp['changes'][i]['requires'] || [];
-        for (let i2 = 0; i2 < resp['changes'][i]['requires'].length; i2++) {
-          result.changes[i].requires[i2] = resp['changes'][i]['requires'][i2];
+        result.errors = [];
+        resp['errors'] = resp['errors'] || [];
+        for (let i = 0; i < resp['errors'].length; i++) {
+          result.errors[i] = resp['errors'][i];
         }
-      }
-      result.errors = [];
-      resp['errors'] = resp['errors'] || [];
-      for (let i = 0; i < resp['errors'].length; i++) {
-        result.errors[i] = resp['errors'][i];
       }
       callback(null, result);
     });

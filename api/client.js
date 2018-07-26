@@ -95,6 +95,79 @@ function connect(url, options={}, callback) {
 
 
 /**
+  Connect to the Juju controller or model at the given URL and the authenticate
+  using the given credentials.
+
+  @param {String} url The WebSocket URL of the Juju controller or model.
+  @param {Object} credentials An object with the user and password fields for
+    userpass authentication or the macaroons field for bakery authentication.
+    If an empty object is provided a full bakery discharge will be attempted
+    for logging in with macaroons. Any necessary third party discharges are
+    performed using the bakery instance provided in the options (see below).
+  @param {Object} options Connections options, including:
+    - facades (default=[]): the list of facade classes to include in the API
+      connection object. Those classes are usually auto-generated and can be
+      found in the facades directory of the project. When multiple versions of
+      the same facade are included, the most recent version supported by the
+      server is made available as part of the connection object;
+    - debug (default=false): when enabled, all API messages are logged at debug
+      level;
+    - wsclass (default=W3C browser native WebSocket): the WebSocket class to use
+      for opening the connection and sending/receiving messages. Server side,
+      require('websocket').w3cwebsocket can be used safely, as it implements the
+      W3C browser native WebSocket API;
+    - bakery (default: null): the bakery client to use when macaroon discharges
+      are required, in the case an external user is used to connect to Juju;
+      see <https://www.npmjs.com/package/macaroon-bakery>;
+    - closeCallback: a callback to be called with the exit code when the
+      connection is closed.
+  @param {Function} callback Called when the login process completes, the
+    callback receives an error, a connection object and a logout function that
+    can be used to clos ethe connection. If there are no errors, the connection
+    can be used to send/receive messages to and from the Juju controller or
+    model, and to get access to the available facades (through conn.facades).
+    See the docstring for the Connection class for information on how to use
+    the connection instance. Redirection errors are automatically handled by
+    this function, so any error is a real connection problem.
+*/
+function connectAndLogin(url, credentials, options, callback) {
+  // Connect to Juju.
+  connect(url, options, (err, juju) => {
+    if (err) {
+      callback(err, null, null);
+      return;
+    }
+    // Authenticate.
+    juju.login(credentials, (err, conn) => {
+      if (!err) {
+        callback(null, conn, juju.logout.bind(juju));
+        return;
+      }
+      if (!juju.isRedirectionError(err)) {
+        callback(err, null, null);
+        return;
+      }
+      // Redirect to the real model.
+      juju.logout();
+      for (let i = 0; i < err.servers.length; i++) {
+        const srv = err.servers[i];
+        // TODO(frankban): we should really try to connect to all servers and
+        // just use the first connection available, without second guessing
+        // that the public hostname is reachable.
+        if (srv.type === 'hostname' && srv.scope === 'public') {
+          // This is a public server with a dns-name, connect to it.
+          connectAndLogin(srv.url(url), credentials, options, callback);
+          return;
+        }
+      }
+      callback(
+        new Error('cannot connect to model after redirection'), null, null);
+    });
+  });
+}
+
+
+/**
   A Juju API client allowing for logging in and get access to facades.
 
   @param {Object} ws The WebSocket instance already connected to a Juju
@@ -392,4 +465,4 @@ function uncapitalize(string) {
 }
 
 
-module.exports = {connect: connect};
+module.exports = {connect, connectAndLogin};

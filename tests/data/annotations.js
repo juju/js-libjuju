@@ -52,15 +52,17 @@ class AnnotationsV2 {
     // Prepare request parameters.
     let params;
     // github.com/juju/juju/apiserver/params#Entities
-    params = {};
-    args = args || {};
-    params['entities'] = [];
-    args.entities = args.entities || [];
-    for (let i = 0; i < args.entities.length; i++) {
-      // github.com/juju/juju/apiserver/params#Entity
-      params['entities'][i] = {};
-      args.entities[i] = args.entities[i] || {};
-      params['entities'][i]['tag'] = args.entities[i].tag;
+    if (args) {
+      params = {};
+      params['entities'] = [];
+      args.entities = args.entities || [];
+      for (let i = 0; i < args.entities.length; i++) {
+        // github.com/juju/juju/apiserver/params#Entity
+        if (args.entities[i]) {
+          params['entities'][i] = {};
+          params['entities'][i]['tag'] = args.entities[i].tag;
+        }
+      }
     }
     // Prepare the request to the Juju API.
     const req = {
@@ -81,28 +83,32 @@ class AnnotationsV2 {
       // Handle the response.
       let result;
       // github.com/juju/juju/apiserver/params#AnnotationsGetResults
-      result = {};
-      resp = resp || {};
-      result.results = [];
-      resp['results'] = resp['results'] || [];
-      for (let i = 0; i < resp['results'].length; i++) {
-        // github.com/juju/juju/apiserver/params#AnnotationsGetResult
-        result.results[i] = {};
-        resp['results'][i] = resp['results'][i] || {};
-        result.results[i].entity = resp['results'][i]['entity'];
-        result.results[i].annotations = {};
-        resp['results'][i]['annotations'] = resp['results'][i]['annotations'] || {};
-        for (let k in resp['results'][i]['annotations']) {
-          result.results[i].annotations[k] = resp['results'][i]['annotations'][k];
+      if (resp) {
+        result = {};
+        result.results = [];
+        resp['results'] = resp['results'] || [];
+        for (let i = 0; i < resp['results'].length; i++) {
+          // github.com/juju/juju/apiserver/params#AnnotationsGetResult
+          if (resp['results'][i]) {
+            result.results[i] = {};
+            result.results[i].entity = resp['results'][i]['entity'];
+            result.results[i].annotations = {};
+            resp['results'][i]['annotations'] = resp['results'][i]['annotations'] || {};
+            for (let k in resp['results'][i]['annotations']) {
+              result.results[i].annotations[k] = resp['results'][i]['annotations'][k];
+            }
+            // github.com/juju/juju/apiserver/params#ErrorResult
+            if (resp['results'][i]['error']) {
+              result.results[i].error = {};
+              // github.com/juju/juju/apiserver/params#Error
+              if (resp['results'][i]['error']['error']) {
+                result.results[i].error.error = {};
+                result.results[i].error.error.message = resp['results'][i]['error']['error']['message'];
+                result.results[i].error.error.code = resp['results'][i]['error']['error']['code'];
+              }
+            }
+          }
         }
-        // github.com/juju/juju/apiserver/params#ErrorResult
-        result.results[i].error = {};
-        resp['results'][i]['error'] = resp['results'][i]['error'] || {};
-        // github.com/juju/juju/apiserver/params#Error
-        result.results[i].error.error = {};
-        resp['results'][i]['error']['error'] = resp['results'][i]['error']['error'] || {};
-        result.results[i].error.error.message = resp['results'][i]['error']['error']['message'];
-        result.results[i].error.error.code = resp['results'][i]['error']['error']['code'];
       }
       callback(null, result);
     });
@@ -135,19 +141,21 @@ class AnnotationsV2 {
     // Prepare request parameters.
     let params;
     // github.com/juju/juju/apiserver/params#AnnotationsSet
-    params = {};
-    args = args || {};
-    params['annotations'] = [];
-    args.annotations = args.annotations || [];
-    for (let i = 0; i < args.annotations.length; i++) {
-      // github.com/juju/juju/apiserver/params#EntityAnnotations
-      params['annotations'][i] = {};
-      args.annotations[i] = args.annotations[i] || {};
-      params['annotations'][i]['entity'] = args.annotations[i].entity;
-      params['annotations'][i]['annotations'] = {};
-      args.annotations[i].annotations = args.annotations[i].annotations || {};
-      for (let k in args.annotations[i].annotations) {
-        params['annotations'][i]['annotations'][k] = args.annotations[i].annotations[k];
+    if (args) {
+      params = {};
+      params['annotations'] = [];
+      args.annotations = args.annotations || [];
+      for (let i = 0; i < args.annotations.length; i++) {
+        // github.com/juju/juju/apiserver/params#EntityAnnotations
+        if (args.annotations[i]) {
+          params['annotations'][i] = {};
+          params['annotations'][i]['entity'] = args.annotations[i].entity;
+          params['annotations'][i]['annotations'] = {};
+          args.annotations[i].annotations = args.annotations[i].annotations || {};
+          for (let k in args.annotations[i].annotations) {
+            params['annotations'][i]['annotations'][k] = args.annotations[i].annotations[k];
+          }
+        }
       }
     }
     // Prepare the request to the Juju API.
@@ -169,19 +177,22 @@ class AnnotationsV2 {
       // Handle the response.
       let result;
       // github.com/juju/juju/apiserver/params#ErrorResults
-      result = {};
-      resp = resp || {};
-      result.results = [];
-      resp['results'] = resp['results'] || [];
-      for (let i = 0; i < resp['results'].length; i++) {
-        // github.com/juju/juju/apiserver/params#ErrorResult
-        result.results[i] = {};
-        resp['results'][i] = resp['results'][i] || {};
-        // github.com/juju/juju/apiserver/params#Error
-        result.results[i].error = {};
-        resp['results'][i]['error'] = resp['results'][i]['error'] || {};
-        result.results[i].error.message = resp['results'][i]['error']['message'];
-        result.results[i].error.code = resp['results'][i]['error']['code'];
+      if (resp) {
+        result = {};
+        result.results = [];
+        resp['results'] = resp['results'] || [];
+        for (let i = 0; i < resp['results'].length; i++) {
+          // github.com/juju/juju/apiserver/params#ErrorResult
+          if (resp['results'][i]) {
+            result.results[i] = {};
+            // github.com/juju/juju/apiserver/params#Error
+            if (resp['results'][i]['error']) {
+              result.results[i].error = {};
+              result.results[i].error.message = resp['results'][i]['error']['message'];
+              result.results[i].error.code = resp['results'][i]['error']['code'];
+            }
+          }
+        }
       }
       callback(null, result);
     });

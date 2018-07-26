@@ -51,13 +51,14 @@ class MarshalV0 {
       // Handle the response.
       let result;
       // github.com/juju/juju/apiserver/params#AllWatcherNextResults
-      result = {};
-      resp = resp || {};
-      result.deltas = [];
-      resp['deltas'] = resp['deltas'] || [];
-      for (let i = 0; i < resp['deltas'].length; i++) {
-        // github.com/juju/juju/state/multiwatcher#Delta
-        result.deltas[i] = resp['deltas'][i];
+      if (resp) {
+        result = {};
+        result.deltas = [];
+        resp['deltas'] = resp['deltas'] || [];
+        for (let i = 0; i < resp['deltas'].length; i++) {
+          // github.com/juju/juju/state/multiwatcher#Delta
+          result.deltas[i] = resp['deltas'][i];
+        }
       }
       callback(null, result);
     });

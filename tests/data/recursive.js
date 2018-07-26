@@ -51,11 +51,12 @@ class RecursiveV47 {
       // Handle the response.
       let result;
       // github.com/juju/juju#RecursiveStruct
-      result = {};
-      resp = resp || {};
-      // github.com/juju/juju#RecursiveStruct
-      // TODO: handle recursive type referencing github.com/juju/juju#RecursiveStruct.
-      result.self = resp['self'];
+      if (resp) {
+        result = {};
+        // github.com/juju/juju#RecursiveStruct
+        // TODO: handle recursive type referencing github.com/juju/juju#RecursiveStruct.
+        result.self = resp['self'];
+      }
       callback(null, result);
     });
   }

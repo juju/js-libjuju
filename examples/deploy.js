@@ -10,12 +10,12 @@ const WebSocket = require('websocket').w3cwebsocket;
 const jujulib = require('../api/client.js');
 
 
+const url = 'wss://130.211.62.123:17070/model/ae6e92c5-cce7-4943-8913-72514a485ea8/api';
 const facades = [
   require('../api/facades/application-v5.js'),
   require('../api/facades/client-v1.js')
 ];
 const options = {debug: true, facades: facades, wsclass: WebSocket};
-const url = 'wss://35.196.223.30:17070/model/bf716a6d-97cf-47b6-8b77-80e1890c0920/api';
 
 
 jujulib.connect(url, options, (err, juju) => {
