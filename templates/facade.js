@@ -59,24 +59,33 @@ class {{ name }}V{{ version }} {
       version: {{ version }},
       params: params
     };
-    // Send the request to the server.
-    this._transport.write(req, (err, resp) => {
-      if (!callback) {
-        return;
-      }
-      if (err) {
-        callback(err, {});
-        return;
-      }
-      {%- if method.result %}
-      // Handle the response.
+    // Define a transform method if necessary.
+    let transform = null;
+    {%- if method.result %}
+    transform = resp => {
       let result;
       {{ method.result.generate_response('result', 'resp')|indent(6) }}
-      callback(null, result);
-      {%- else %}
-      callback(null, {});
-      {%- endif %}
-    });
+      return result
+    }
+    {%- endif %}
+    // If we do not have a callback provided then assume it's being used as a promise.
+    let handler = null;
+    if (callback) {
+      handler = (err, resp) => {
+        if (err) {
+          callback(err, {});
+          return;
+        }
+        {%- if method.result %}
+        // Handle the response.
+        callback(null, resp);
+        {%- else %}
+        callback(null, {});
+        {%- endif %}
+      }
+    }
+    // Send the request to the server.
+    return this._transport.write(req, handler, transform);
   }
   {%- endfor %}
 }
