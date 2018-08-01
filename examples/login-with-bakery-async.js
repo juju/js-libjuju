@@ -32,46 +32,41 @@ async function loginWithBakery() {
     const conn = await juju.login({});
     // List models.
     const modelManager = conn.facades.modelManager;
-    modelManager.listModels({tag: conn.info.identity}, async (err, result) => {
-      if (err) {
-        console.log('cannot list models:', err);
+    const models = await modelManager.listModels({tag: conn.info.identity});
+    // Connect to the first model found.
+    const model = models.userModels[0].model;
+    console.log('connecting to model', model.name);
+    let modelURL = `wss://jimm.jujucharms.com/model/${model.uuid}/api`;
+
+    try {
+      const juju = await jujulib.connect(modelURL, options);
+      await juju.login({});
+    } catch (error) {
+      if (!juju.isRedirectionError(error)) {
+        console.log('cannot login to model:', error);
         process.exit(1);
       }
+      // Redirect to the real model.
+      juju.logout();
 
-      // Connect to the first model found.
-      const model = result.userModels[0].model;
-      console.log('connecting to model', model.name);
-      let modelURL = `wss://jimm.jujucharms.com/model/${model.uuid}/api`;
+      error.servers.forEach(async srv => {
+        if (srv.type === 'hostname' && srv.scope === 'public') {
+          // This is a public server with a dns-name, connect to it.
+          const modelURL = srv.url(model.uuid);
 
-      try {
-        const juju = await jujulib.connect(modelURL, options);
-        await juju.login({});
-      } catch (error) {
-        if (!juju.isRedirectionError(error)) {
-          console.log('cannot login to model:', error);
-          process.exit(1);
-        }
-        // Redirect to the real model.
-        juju.logout();
-
-        error.servers.forEach(async srv => {
-          if (srv.type === 'hostname' && srv.scope === 'public') {
-            // This is a public server with a dns-name, connect to it.
-            const modelURL = srv.url(model.uuid);
-
-            try {
-              const juju = await jujulib.connect(modelURL, options);
-              await juju.login({});
-              console.log('connected to model using', modelURL);
-              process.exit(0);
-            } catch (error) {
-              console.log('cannot login to model:', err);
-              process.exit(1);
-            }
+          try {
+            const juju = await jujulib.connect(modelURL, options);
+            await juju.login({});
+            console.log('connected to model using', modelURL);
+            process.exit(0);
+          } catch (error) {
+            console.log('cannot login to model:', error);
+            process.exit(1);
           }
-        });
-      }
-    });
+        }
+      });
+    }
+
   } catch(error) {
     console.log('unable to connect and deploy:', error);
     process.exit(1);
