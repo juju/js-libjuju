@@ -341,28 +341,31 @@ class Transport {
     @param {Function} callback Called when the response to the given request is
       ready, the callback receives an error and the response result from Juju.
   */
-  write(req, callback) {
-    // Check that the connection is ready and sane.
-    const state = this._ws.readyState;
-    if (state !== 1) {
-      const reqStr = JSON.stringify(req);
-      if (callback) {
-        callback(
-          `cannot send request ${reqStr}: ` +
-          `connection state ${state} is not open`);
+  write(req, callback, transform) {
+    return new Promise((resolve, reject) => {
+      // Check that the connection is ready and sane.
+      const state = this._ws.readyState;
+      if (state !== 1) {
+        const reqStr = JSON.stringify(req);
+        const error = `cannot send request ${reqStr}: connection state ${state} is not open`;
+        if (callback) {
+          callback(error);
+        } else {
+          reject(error);
+        }
+        return;
       }
-      return;
-    }
-    // Include the current request id in the request.
-    this._counter += 1;
-    req['request-id'] = this._counter;
-    this._callbacks[this._counter] = callback;
-    const msg = JSON.stringify(req);
-    if (this._debug) {
-      console.debug('-->', msg);
-    }
-    // Send the request to Juju.
-    this._ws.send(msg);
+      this._counter += 1;
+      // Include the current request id in the request.
+      req['request-id'] = this._counter;
+      this._callbacks[this._counter] = createAsyncHandler(callback, resolve, reject, transform);
+      const msg = JSON.stringify(req);
+      if (this._debug) {
+        console.debug('-->', msg);
+      }
+      // Send the request to Juju.
+      this._ws.send(msg);
+    });
   }
 
   /**
@@ -485,14 +488,17 @@ function uncapitalize(string) {
     resolve or reject method will be called depending on the existence of an
     error value.
 */
-function createAsyncHandler (callback, resolve, reject) {
-  return (err, value) => {
+function createAsyncHandler (callback, resolve, reject, transform) {
+  return (error, value) => {
+    if (!error && typeof transform === 'function') {
+      value = transform(value);
+    }
     if (typeof callback === 'function') {
-      callback(err, value);
+      callback(error, value);
       return;
     }
-    if (err) {
-      reject(err);
+    if (error) {
+      reject(error);
       return;
     }
     resolve(value);
