@@ -63,7 +63,7 @@ help:
 
 .PHONY: lint
 lint: dev
-	$(DEVENV)/bin/flake8 . --exclude .tox,devenv
+	$(DEVENV)/bin/flake8 . --exclude .tox,devenv,schemas
 
 .PHONY: lint-js
 lint-js: dev-js
