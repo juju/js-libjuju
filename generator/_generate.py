@@ -72,7 +72,7 @@ def run(ns):
             name, version = facade['Name'], facade['Version']
         except (KeyError, TypeError, ValueError) as err:
             raise AppError('cannot retrieve name and version for facade')
-        if name in _BLACKLIST:
+        if name in _BLACKLIST or facade['Methods'] is None:
             continue
         try:
             methods = _handle_methods(name, facade['Methods'], types)
