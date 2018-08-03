@@ -18,6 +18,7 @@ devenv
 node_modules/
 api/facades/*.js
 package-lock.json
+schemas/build
 
 # js specific
 .nyc_output/
