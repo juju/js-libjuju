@@ -72,6 +72,7 @@ def run(ns):
             name, version = facade['Name'], facade['Version']
         except (KeyError, TypeError, ValueError) as err:
             raise AppError('cannot retrieve name and version for facade')
+        # Do not process blacklisted facades or facades with no methods.
         if name in _BLACKLIST or facade['Methods'] is None:
             continue
         try:
