@@ -8,6 +8,7 @@
 
 'use strict';
 
+const {createAsyncHandler} = require('../transform.js');
 
 /**
   Annotations!
@@ -49,68 +50,67 @@ class AnnotationsV2 {
         }
   */
   get(args, callback) {
-    // Prepare request parameters.
-    let params;
-    // github.com/juju/juju/apiserver/params#Entities
-    if (args) {
-      params = {};
-      params['entities'] = [];
-      args.entities = args.entities || [];
-      for (let i = 0; i < args.entities.length; i++) {
-        // github.com/juju/juju/apiserver/params#Entity
-        if (args.entities[i]) {
-          params['entities'][i] = {};
-          params['entities'][i]['tag'] = args.entities[i].tag;
+    return new Promise((resolve, reject) => {
+      // Prepare request parameters.
+      let params;
+      // github.com/juju/juju/apiserver/params#Entities
+      if (args) {
+        params = {};
+        params['entities'] = [];
+        args.entities = args.entities || [];
+        for (let i = 0; i < args.entities.length; i++) {
+          // github.com/juju/juju/apiserver/params#Entity
+          if (args.entities[i]) {
+            params['entities'][i] = {};
+            params['entities'][i]['tag'] = args.entities[i].tag;
+          }
         }
       }
-    }
-    // Prepare the request to the Juju API.
-    const req = {
-      type: 'Annotations',
-      request: 'Get',
-      version: 2,
-      params: params
-    };
-    // Send the request to the server.
-    this._transport.write(req, (err, resp) => {
-      if (!callback) {
-        return;
-      }
-      if (err) {
-        callback(err, {});
-        return;
-      }
-      // Handle the response.
-      let result;
-      // github.com/juju/juju/apiserver/params#AnnotationsGetResults
-      if (resp) {
-        result = {};
-        result.results = [];
-        resp['results'] = resp['results'] || [];
-        for (let i = 0; i < resp['results'].length; i++) {
-          // github.com/juju/juju/apiserver/params#AnnotationsGetResult
-          if (resp['results'][i]) {
-            result.results[i] = {};
-            result.results[i].entity = resp['results'][i]['entity'];
-            result.results[i].annotations = {};
-            resp['results'][i]['annotations'] = resp['results'][i]['annotations'] || {};
-            for (let k in resp['results'][i]['annotations']) {
-              result.results[i].annotations[k] = resp['results'][i]['annotations'][k];
-            }
-            // github.com/juju/juju/apiserver/params#ErrorResult
-            if (resp['results'][i]['error']) {
-              result.results[i].error = {};
-              // github.com/juju/juju/apiserver/params#Error
-              if (resp['results'][i]['error']['error']) {
-                result.results[i].error.error = {};
-                result.results[i].error.error.message = resp['results'][i]['error']['error']['message'];
-                result.results[i].error.error.code = resp['results'][i]['error']['error']['code'];
+      // Prepare the request to the Juju API.
+      const req = {
+        type: 'Annotations',
+        request: 'Get',
+        version: 2,
+        params: params
+      };
+      // Define a transform method if necessary.
+      let transform = null;
+      transform = resp => {
+        let result;
+        // github.com/juju/juju/apiserver/params#AnnotationsGetResults
+        if (resp) {
+          result = {};
+          result.results = [];
+          resp['results'] = resp['results'] || [];
+          for (let i = 0; i < resp['results'].length; i++) {
+            // github.com/juju/juju/apiserver/params#AnnotationsGetResult
+            if (resp['results'][i]) {
+              result.results[i] = {};
+              result.results[i].entity = resp['results'][i]['entity'];
+              result.results[i].annotations = {};
+              resp['results'][i]['annotations'] = resp['results'][i]['annotations'] || {};
+              for (let k in resp['results'][i]['annotations']) {
+                result.results[i].annotations[k] = resp['results'][i]['annotations'][k];
+              }
+              // github.com/juju/juju/apiserver/params#ErrorResult
+              if (resp['results'][i]['error']) {
+                result.results[i].error = {};
+                // github.com/juju/juju/apiserver/params#Error
+                if (resp['results'][i]['error']['error']) {
+                  result.results[i].error.error = {};
+                  result.results[i].error.error.message = resp['results'][i]['error']['error']['message'];
+                  result.results[i].error.error.code = resp['results'][i]['error']['error']['code'];
+                }
               }
             }
           }
         }
-      }
-      callback(null, result);
+        return result;
+      };
+
+      const handler = createAsyncHandler(callback, resolve, reject, transform);
+      // Send the request to the server.
+      this._transport.write(req, handler);
     });
   }
 
@@ -138,63 +138,62 @@ class AnnotationsV2 {
         }
   */
   set(args, callback) {
-    // Prepare request parameters.
-    let params;
-    // github.com/juju/juju/apiserver/params#AnnotationsSet
-    if (args) {
-      params = {};
-      params['annotations'] = [];
-      args.annotations = args.annotations || [];
-      for (let i = 0; i < args.annotations.length; i++) {
-        // github.com/juju/juju/apiserver/params#EntityAnnotations
-        if (args.annotations[i]) {
-          params['annotations'][i] = {};
-          params['annotations'][i]['entity'] = args.annotations[i].entity;
-          params['annotations'][i]['annotations'] = {};
-          args.annotations[i].annotations = args.annotations[i].annotations || {};
-          for (let k in args.annotations[i].annotations) {
-            params['annotations'][i]['annotations'][k] = args.annotations[i].annotations[k];
-          }
-        }
-      }
-    }
-    // Prepare the request to the Juju API.
-    const req = {
-      type: 'Annotations',
-      request: 'Set',
-      version: 2,
-      params: params
-    };
-    // Send the request to the server.
-    this._transport.write(req, (err, resp) => {
-      if (!callback) {
-        return;
-      }
-      if (err) {
-        callback(err, {});
-        return;
-      }
-      // Handle the response.
-      let result;
-      // github.com/juju/juju/apiserver/params#ErrorResults
-      if (resp) {
-        result = {};
-        result.results = [];
-        resp['results'] = resp['results'] || [];
-        for (let i = 0; i < resp['results'].length; i++) {
-          // github.com/juju/juju/apiserver/params#ErrorResult
-          if (resp['results'][i]) {
-            result.results[i] = {};
-            // github.com/juju/juju/apiserver/params#Error
-            if (resp['results'][i]['error']) {
-              result.results[i].error = {};
-              result.results[i].error.message = resp['results'][i]['error']['message'];
-              result.results[i].error.code = resp['results'][i]['error']['code'];
+    return new Promise((resolve, reject) => {
+      // Prepare request parameters.
+      let params;
+      // github.com/juju/juju/apiserver/params#AnnotationsSet
+      if (args) {
+        params = {};
+        params['annotations'] = [];
+        args.annotations = args.annotations || [];
+        for (let i = 0; i < args.annotations.length; i++) {
+          // github.com/juju/juju/apiserver/params#EntityAnnotations
+          if (args.annotations[i]) {
+            params['annotations'][i] = {};
+            params['annotations'][i]['entity'] = args.annotations[i].entity;
+            params['annotations'][i]['annotations'] = {};
+            args.annotations[i].annotations = args.annotations[i].annotations || {};
+            for (let k in args.annotations[i].annotations) {
+              params['annotations'][i]['annotations'][k] = args.annotations[i].annotations[k];
             }
           }
         }
       }
-      callback(null, result);
+      // Prepare the request to the Juju API.
+      const req = {
+        type: 'Annotations',
+        request: 'Set',
+        version: 2,
+        params: params
+      };
+      // Define a transform method if necessary.
+      let transform = null;
+      transform = resp => {
+        let result;
+        // github.com/juju/juju/apiserver/params#ErrorResults
+        if (resp) {
+          result = {};
+          result.results = [];
+          resp['results'] = resp['results'] || [];
+          for (let i = 0; i < resp['results'].length; i++) {
+            // github.com/juju/juju/apiserver/params#ErrorResult
+            if (resp['results'][i]) {
+              result.results[i] = {};
+              // github.com/juju/juju/apiserver/params#Error
+              if (resp['results'][i]['error']) {
+                result.results[i].error = {};
+                result.results[i].error.message = resp['results'][i]['error']['message'];
+                result.results[i].error.code = resp['results'][i]['error']['code'];
+              }
+            }
+          }
+        }
+        return result;
+      };
+
+      const handler = createAsyncHandler(callback, resolve, reject, transform);
+      // Send the request to the server.
+      this._transport.write(req, handler);
     });
   }
 }

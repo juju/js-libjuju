@@ -8,6 +8,7 @@
 
 'use strict';
 
+const {createAsyncHandler} = require('../transform.js');
 
 /**
   There is no documentation for this facade.
@@ -31,33 +32,32 @@ class RecursiveV47 {
         }
   */
   fullStatus(callback) {
-    const params = {};
-    // Prepare the request to the Juju API.
-    const req = {
-      type: 'Recursive',
-      request: 'FullStatus',
-      version: 47,
-      params: params
-    };
-    // Send the request to the server.
-    this._transport.write(req, (err, resp) => {
-      if (!callback) {
-        return;
-      }
-      if (err) {
-        callback(err, {});
-        return;
-      }
-      // Handle the response.
-      let result;
-      // github.com/juju/juju#RecursiveStruct
-      if (resp) {
-        result = {};
+    return new Promise((resolve, reject) => {
+      const params = {};
+      // Prepare the request to the Juju API.
+      const req = {
+        type: 'Recursive',
+        request: 'FullStatus',
+        version: 47,
+        params: params
+      };
+      // Define a transform method if necessary.
+      let transform = null;
+      transform = resp => {
+        let result;
         // github.com/juju/juju#RecursiveStruct
-        // TODO: handle recursive type referencing github.com/juju/juju#RecursiveStruct.
-        result.self = resp['self'];
-      }
-      callback(null, result);
+        if (resp) {
+          result = {};
+          // github.com/juju/juju#RecursiveStruct
+          // TODO: handle recursive type referencing github.com/juju/juju#RecursiveStruct.
+          result.self = resp['self'];
+        }
+        return result;
+      };
+
+      const handler = createAsyncHandler(callback, resolve, reject, transform);
+      // Send the request to the server.
+      this._transport.write(req, handler);
     });
   }
 }
