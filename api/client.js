@@ -66,7 +66,8 @@ const Admin = require('./facades/admin-v3.js');
     client can be used to login and logout to Juju. See the docstring for the
     Client class for information on how to use the client.
   @return {Promise} This promise will be rejected if there is an error connecting,
-    or resolved with a new Client instance.
+    or resolved with a new Client instance. Note that the promise will not be
+    resolved or rejected if a callback is provided.
 */
 function connect(url, options={}, callback=null) {
   if (!options.bakery) {
@@ -210,7 +211,8 @@ class Client {
       is a redirection error, information about available servers is stored in
       err.servers and err.caCert (if a certificate is required).
     @return {Promise} This promise will be rejected if there is an error
-      connecting, or resolved with a new connection instance.
+      connecting, or resolved with a new connection instance. Note that the promise
+      will not be resolved or rejected if a callback is provided.
   */
   login(credentials, callback=null) {
     const args = {
@@ -483,7 +485,7 @@ function uncapitalize(string) {
 */
 function createAsyncHandler (callback, resolve, reject) {
   return (error, value) => {
-    if (typeof callback === 'function') {
+    if (callback) {
       callback(error, value);
       return;
     }

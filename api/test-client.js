@@ -62,7 +62,6 @@ tap.test('connect', t => {
     });
     t.equal(error, 'bad wolf');
     t.equal(conn, null);
-    t.end();
   }
 
   t.test('login failure', t => {
@@ -71,6 +70,7 @@ tap.test('connect', t => {
       t.notEqual(juju, null);
       juju.login({user: 'who', password: 'secret'}, (err, conn) => {
         validateLoginFailure(t, err, conn);
+        t.end();
       });
       // Reply to the login request.
       ws.reply({error: 'bad wolf'});
@@ -85,6 +85,7 @@ tap.test('connect', t => {
         .then(conn => t.fail)
         .catch(error => {
           validateLoginFailure(t, error, null);
+          t.end();
         });
       ws.reply({error: 'bad wolf'});
     });
@@ -100,7 +101,6 @@ tap.test('connect', t => {
     });
     t.equal(error, 'bad wolf');
     t.equal(conn, null);
-    t.end();
   }
 
   t.test('login redirection error failure', t => {
@@ -109,6 +109,7 @@ tap.test('connect', t => {
       t.notEqual(juju, null);
       juju.login({}, (err, conn) => {
         validateRedirectionLoginFailure(t, err, conn);
+        t.end();
       });
       // Reply to the login request.
       ws.reply({error: 'redirection required'});
@@ -125,6 +126,7 @@ tap.test('connect', t => {
         .then(conn => t.fail)
         .catch(error => {
           validateRedirectionLoginFailure(t, error, null);
+          t.end();
         });
         // Reply to the login request.
         ws.reply({error: 'redirection required'});
@@ -165,7 +167,6 @@ tap.test('connect', t => {
       error.servers[1].url('srv2-uuid'),
       'wss://example.com:443/model/srv2-uuid/api');
     t.equal(conn, null);
-    t.end();
   }
 
   t.test('login redirection error success', t => {
@@ -174,6 +175,7 @@ tap.test('connect', t => {
       t.notEqual(juju, null);
       juju.login({}, (err, conn) => {
         validateRedirectionLoginSuccess(t, juju, err, conn);
+        t.end();
       });
       // Reply to the login request.
       ws.reply({error: 'redirection required'});
@@ -203,6 +205,7 @@ tap.test('connect', t => {
         .then(t.fail)
         .catch(error => {
           validateRedirectionLoginSuccess(t, juju, error, null);
+          t.end();
         });
         // Reply to the login request.
         ws.reply({error: 'redirection required'});
@@ -236,7 +239,6 @@ tap.test('connect', t => {
       error,
       'macaroon discharge is required but no bakery instance provided');
     t.equal(conn, null);
-    t.end();
   }
 
   t.test('login discharge required no bakery', t => {
@@ -245,6 +247,7 @@ tap.test('connect', t => {
       t.notEqual(juju, null);
       juju.login({}, (err, conn) => {
         validateLoginDischargeRequiredNoBakery(t, err, conn);
+        t.end();
       });
       // Reply to the login request with a discharge required response.
       ws.reply({response: {'discharge-required': 'macaroon'}});
@@ -259,6 +262,7 @@ tap.test('connect', t => {
         .then(t.fail)
         .catch(error => {
           validateLoginDischargeRequiredNoBakery(t, error, null);
+          t.end();
         });
         // Reply to the login request with a discharge required response.
         ws.reply({response: {'discharge-required': 'macaroon'}});
@@ -275,7 +279,6 @@ tap.test('connect', t => {
     });
     t.equal(error, 'macaroon discharge failed: bad wolf');
     t.equal(conn, null);
-    t.end();
   }
 
   t.test('login discharge required failure', t => {
@@ -290,6 +293,7 @@ tap.test('connect', t => {
       t.notEqual(juju, null);
       juju.login({macaroons: ['m']}, (err, conn) => {
         validateLoginDischargeRequiredFailure(t, err, conn);
+        t.end();
       });
       // Reply to the login request with a discharge required response.
       ws.reply({response: {'discharge-required': 'macaroon'}});
@@ -310,6 +314,7 @@ tap.test('connect', t => {
         .then(t.fail)
         .catch(error => {
           validateLoginDischargeRequiredFailure(t, error, null);
+          t.end();
         });
         // Reply to the login request with a discharge required response.
         ws.reply({response: {'discharge-required': 'macaroon'}});
@@ -326,7 +331,6 @@ tap.test('connect', t => {
     });
     t.equal(error, null);
     t.notEqual(conn, null);
-    t.end();
   }
 
   t.test('login discharge required success', t => {
@@ -341,6 +345,7 @@ tap.test('connect', t => {
       t.notEqual(juju, null);
       juju.login({macaroons: ['m']}, (err, conn) => {
         validateLoginDischargeRequiredSuccess(t, err, conn);
+        t.end();
       });
       // Reply to the login request with a discharge required response.
       ws.reply({response: {'discharge-required': 'macaroon'}});
@@ -362,6 +367,7 @@ tap.test('connect', t => {
       juju.login({macaroons: ['m']})
         .then(conn => {
           validateLoginDischargeRequiredSuccess(t, null, conn);
+          t.end();
         })
         .catch(t.fail);
         // Reply to the login request with a discharge required response.

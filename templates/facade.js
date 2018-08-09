@@ -100,13 +100,13 @@ if (wrappers.wrap{{ name }}) {
 */
 function createAsyncHandler (callback, resolve, reject, transform) {
   return (error, value) => {
-    if (typeof transform === 'function' && value) {
+    if (transform === 'function' && value) {
       value = transform(value);
     }
     if (!value) {
       value = {};
     }
-    if (typeof callback === 'function') {
+    if (callback === 'function') {
       callback(error, value);
       return;
     }
