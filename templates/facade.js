@@ -67,8 +67,8 @@ class {{ name }}V{{ version }} {
       transform = resp => {
         let result;
         {{ method.result.generate_response('result', 'resp')|indent(8) }}
-        return result
-      }
+        return result;
+      };
       {%- endif %}
 
       const handler = createAsyncHandler(callback, resolve, reject, transform);
