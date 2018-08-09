@@ -45,47 +45,35 @@ class {{ name }}V{{ version }} {
     {%- endif %}
   */
   {{ method.name() }}({% if method.params %}args, {% endif %}callback) {
-    {%- if method.params %}
-    // Prepare request parameters.
-    let params;
-    {{ method.params.generate_request('params', 'args')|indent() }}
-    {%- else %}
-    const params = {};
-    {%- endif %}
-    // Prepare the request to the Juju API.
-    const req = {
-      type: '{{ name }}',
-      request: '{{ method.request }}',
-      version: {{ version }},
-      params: params
-    };
-    // Define a transform method if necessary.
-    let transform = null;
-    {%- if method.result %}
-    transform = resp => {
-      let result;
-      {{ method.result.generate_response('result', 'resp')|indent(6) }}
-      return result
-    }
-    {%- endif %}
-    // If we do not have a callback provided then assume it's being used as a promise.
-    let handler = null;
-    if (callback) {
-      handler = (err, resp) => {
-        if (err) {
-          callback(err, {});
-          return;
-        }
-        {%- if method.result %}
-        // Handle the response.
-        callback(null, resp);
-        {%- else %}
-        callback(null, {});
-        {%- endif %}
+    return new Promise((resolve, reject) => {
+      {%- if method.params %}
+      // Prepare request parameters.
+      let params;
+      {{ method.params.generate_request('params', 'args')|indent(6) }}
+      {%- else %}
+      const params = {};
+      {%- endif %}
+      // Prepare the request to the Juju API.
+      const req = {
+        type: '{{ name }}',
+        request: '{{ method.request }}',
+        version: {{ version }},
+        params: params
+      };
+      // Define a transform method if necessary.
+      let transform = null;
+      {%- if method.result %}
+      transform = resp => {
+        let result;
+        {{ method.result.generate_response('result', 'resp')|indent(8) }}
+        return result
       }
-    }
-    // Send the request to the server.
-    return this._transport.write(req, handler, transform);
+      {%- endif %}
+
+      const handler = createAsyncHandler(callback, resolve, reject, transform);
+      // Send the request to the server.
+      this._transport.write(req, handler);
+    });
   }
   {%- endfor %}
 }
@@ -96,5 +84,38 @@ if (wrappers.wrap{{ name }}) {
   // Decorate the facade class in order to improve user experience.
   {{ name }}V{{ version }} = wrappers.wrap{{ name }}({{ name }}V{{ version }});
 }
+
+/**
+  Create an async handler which will either return a value to a supplied
+  callback, or call the appropriate method on the promise resolve/reject.
+  @param {Function} [callback] The optional callback.
+  @param {Function} [resolve] The optional promise resolve function.
+  @param {Function} [reject] The optional promise reject function.
+  @param {Function} [transform] The optional response transform function.
+  @return {Function} The returned function takes two arguments (err, value).
+    If the the callback is a function the two arguments will be passed through
+    to the callback in the same order. If no callback is supplied, the promise
+    resolve or reject method will be called depending on the existence of an
+    error value.
+*/
+function createAsyncHandler (callback, resolve, reject, transform) {
+  return (error, value) => {
+    if (typeof transform === 'function' && value) {
+      value = transform(value);
+    }
+    if (!value) {
+      value = {};
+    }
+    if (typeof callback === 'function') {
+      callback(error, value);
+      return;
+    }
+    if (error) {
+      reject(error);
+      return;
+    }
+    resolve(value);
+  };
+};
 
 module.exports = {{ name }}V{{ version }};
