@@ -39,6 +39,8 @@
 
 const Admin = require('./facades/admin-v3.js');
 
+const {createAsyncHandler} = require('./transform');
+
 
 /**
   Connect to the Juju controller or model at the given URL.
@@ -470,32 +472,5 @@ class Connection {
 function uncapitalize(string) {
   return string.charAt(0).toLowerCase() + string.slice(1);
 }
-
-/**
-  Create an async handler which will either return a value to a supplied
-  callback, or call the appropriate method on the promise resolve/reject.
-  @param {Function} [callback] The optional callback.
-  @param {Function} [resolve] The optional promise resolve function.
-  @param {Function} [reject] The optional promise reject function.
-  @return {Function} The returned function takes two arguments (err, value).
-    If the the callback is a function the two arguments will be passed through
-    to the callback in the same order. If no callback is supplied, the promise
-    resolve or reject method will be called depending on the existence of an
-    error value.
-*/
-function createAsyncHandler (callback, resolve, reject) {
-  return (error, value) => {
-    if (callback) {
-      callback(error, value);
-      return;
-    }
-    if (error) {
-      reject(error);
-      return;
-    }
-    resolve(value);
-  };
-};
-
 
 module.exports = {Client, connect, connectAndLogin};

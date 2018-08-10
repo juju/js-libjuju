@@ -26,15 +26,7 @@ tap.test('createAsyncHandler', t => {
     const cb = sinon.stub();
     const fn = createAsyncHandler(cb);
     fn('boo', {});
-    t.deepEqual(cb.args[0], ['boo', {}]);
-    t.end();
-  });
-
-  t.test('calls callback with empty object if value is undefined', t => {
-    const cb = sinon.stub();
-    const fn = createAsyncHandler(cb);
-    fn(null);
-    t.deepEqual(cb.args[0], [null, {}]);
+    t.deepEqual(cb.args[0], ['boo', null]);
     t.end();
   });
 

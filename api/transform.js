@@ -17,22 +17,15 @@
     error value.
 */
 function createAsyncHandler (callback, resolve, reject, transform) {
-  return (error, value) => {
-    if (transform && value) {
+  return (err, value) => {
+    if (err) {
+      callback ? callback(err, null) : reject(err);
+      return;
+    }
+    if (transform) {
       value = transform(value);
     }
-    if (!value) {
-      value = {};
-    }
-    if (callback) {
-      callback(error, value);
-      return;
-    }
-    if (error) {
-      reject(error);
-      return;
-    }
-    resolve(value);
+    callback ? callback(null, value) : resolve(value);
   };
 };
 
