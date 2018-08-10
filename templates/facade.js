@@ -14,6 +14,7 @@
 
 'use strict';
 
+const {createAsyncHandler} = require('../transform.js');
 
 /**
   {{ doc }}
@@ -45,37 +46,34 @@ class {{ name }}V{{ version }} {
     {%- endif %}
   */
   {{ method.name() }}({% if method.params %}args, {% endif %}callback) {
-    {%- if method.params %}
-    // Prepare request parameters.
-    let params;
-    {{ method.params.generate_request('params', 'args')|indent() }}
-    {%- else %}
-    const params = {};
-    {%- endif %}
-    // Prepare the request to the Juju API.
-    const req = {
-      type: '{{ name }}',
-      request: '{{ method.request }}',
-      version: {{ version }},
-      params: params
-    };
-    // Send the request to the server.
-    this._transport.write(req, (err, resp) => {
-      if (!callback) {
-        return;
-      }
-      if (err) {
-        callback(err, {});
-        return;
-      }
-      {%- if method.result %}
-      // Handle the response.
-      let result;
-      {{ method.result.generate_response('result', 'resp')|indent(6) }}
-      callback(null, result);
+    return new Promise((resolve, reject) => {
+      {%- if method.params %}
+      // Prepare request parameters.
+      let params;
+      {{ method.params.generate_request('params', 'args')|indent(6) }}
       {%- else %}
-      callback(null, {});
+      const params = {};
       {%- endif %}
+      // Prepare the request to the Juju API.
+      const req = {
+        type: '{{ name }}',
+        request: '{{ method.request }}',
+        version: {{ version }},
+        params: params
+      };
+      // Define a transform method if necessary.
+      let transform = null;
+      {%- if method.result %}
+      transform = resp => {
+        let result;
+        {{ method.result.generate_response('result', 'resp')|indent(8) }}
+        return result;
+      };
+      {%- endif %}
+
+      const handler = createAsyncHandler(callback, resolve, reject, transform);
+      // Send the request to the server.
+      this._transport.write(req, handler);
     });
   }
   {%- endfor %}

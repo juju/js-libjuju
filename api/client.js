@@ -39,6 +39,8 @@
 
 const Admin = require('./facades/admin-v3.js');
 
+const {createAsyncHandler} = require('./transform');
+
 
 /**
   Connect to the Juju controller or model at the given URL.
@@ -61,12 +63,15 @@ const Admin = require('./facades/admin-v3.js');
       see <https://www.npmjs.com/package/macaroon-bakery>;
     - closeCallback: a callback to be called with the exit code when the
       connection is closed.
-  @param {Function} callback Called when the connection is made, the callback
-    receives an error and a client object. If there are no errors, the client
-    can be used to login and logout to Juju. See the docstring for the Client
-    class for information on how to use the client.
+  @param {Function} [callback=null] Called when the connection is made, the
+    callback receives an error and a client object. If there are no errors, the
+    client can be used to login and logout to Juju. See the docstring for the
+    Client class for information on how to use the client.
+  @return {Promise} This promise will be rejected if there is an error connecting,
+    or resolved with a new Client instance. Note that the promise will not be
+    resolved or rejected if a callback is provided.
 */
-function connect(url, options={}, callback) {
+function connect(url, options={}, callback=null) {
   if (!options.bakery) {
     options.bakery = null;
   }
@@ -82,15 +87,18 @@ function connect(url, options={}, callback) {
   if (!options.wsclass) {
     options.wsclass = window.WebSocket;
   }
-  // Instantiate the WebSocket, and make the client available when the
-  // connection is open.
-  const ws = new options.wsclass(url);
-  ws.onopen = evt => {
-    callback(null, new Client(ws, options));
-  };
-  ws.onclose = evt => {
-    callback('cannot connect WebSocket: ' + evt.reason, null);
-  };
+  return new Promise((resolve, reject) => {
+    // Instantiate the WebSocket, and make the client available when the
+    // connection is open.
+    const ws = new options.wsclass(url);
+    const handler = createAsyncHandler(callback, resolve, reject);
+    ws.onopen = evt => {
+      handler(null, new Client(ws, options));
+    };
+    ws.onclose = evt => {
+      handler('cannot connect WebSocket: ' + evt.reason, null);
+    };
+  });
 }
 
 
@@ -193,7 +201,7 @@ class Client {
       If an empty object is provided a full bakery discharge will be attempted
       for logging in with macaroons. Any necessary third party discharges are
       performed using the bakery instance originally provided to connect().
-    @param {Function} callback Called when the login process completes, the
+    @param {Function} [callback=null] Called when the login process completes, the
       callback receives an error and a connection object. If there are no
       errors, the connection can be used to send/receive messages to and from
       the Juju controller or model, and to get access to the available facades
@@ -204,54 +212,59 @@ class Client {
       can check if that's the case using client.isRedirectionError(err). If it
       is a redirection error, information about available servers is stored in
       err.servers and err.caCert (if a certificate is required).
+    @return {Promise} This promise will be rejected if there is an error
+      connecting, or resolved with a new connection instance. Note that the promise
+      will not be resolved or rejected if a callback is provided.
   */
-  login(credentials, callback) {
+  login(credentials, callback=null) {
     const args = {
       authTag: credentials.user,
       credentials: credentials.password,
       macaroons: credentials.macaroons
     };
-    this._admin.login(args, (err, result) => {
-      if (err) {
-        if (err !== REDIRECTION_ERROR) {
-          // Authentication failed.
-          callback(err, null);
-          return;
-        }
-        // This is a model redirection error, so retrieve some info now.
-        this._admin.redirectInfo((err, result) => {
-          if (err) {
-            callback(err, null);
+    return new Promise((resolve, reject) => {
+      const handler = createAsyncHandler(callback, resolve, reject);
+      this._admin.login(args, (err, result) => {
+        if (err) {
+          if (err !== REDIRECTION_ERROR) {
+            // Authentication failed.
+            handler(err, null);
             return;
           }
-          callback(new RedirectionError(result.servers, result.caCert), null);
-        });
-        return;
-      }
-
-      // Handle bakery discharge required responses.
-      if (result.dischargeRequired) {
-        if (!this._bakery) {
-          callback(
-            'macaroon discharge is required but no bakery instance provided',
-            null);
+          // This is a model redirection error, so retrieve some info now.
+          this._admin.redirectInfo((err, result) => {
+            if (err) {
+              handler(err, null);
+              return;
+            }
+            handler(new RedirectionError(result.servers, result.caCert), null);
+          });
           return;
         }
-        const onSuccess = macaroons => {
-          // Send the login request again including the discharge macaroons.
-          credentials.macaroons = [macaroons];
-          this.login(credentials, callback);
-        };
-        const onFailure = err => {
-          callback('macaroon discharge failed: ' + err, null);
-        };
-        this._bakery.discharge(result.dischargeRequired, onSuccess, onFailure);
-        return;
-      }
+        // Handle bakery discharge required responses.
+        if (result.dischargeRequired) {
+          if (!this._bakery) {
+            handler(
+              'macaroon discharge is required but no bakery instance provided',
+              null);
+            return;
+          }
+          const onSuccess = macaroons => {
+            // Send the login request again including the discharge macaroons.
+            credentials.macaroons = [macaroons];
+            this.login(credentials, handler);
+          };
+          const onFailure = err => {
+            handler('macaroon discharge failed: ' + err, null);
+          };
+          this._bakery.discharge(result.dischargeRequired, onSuccess, onFailure);
+          return;
+        }
 
-      // Authentication succeeded.
-      const conn = new Connection(this._transport, this._facades, result);
-      callback(null, conn);
+        // Authentication succeeded.
+        const conn = new Connection(this._transport, this._facades, result);
+        handler(null, conn);
+      });
     });
   }
 
@@ -337,15 +350,11 @@ class Transport {
     const state = this._ws.readyState;
     if (state !== 1) {
       const reqStr = JSON.stringify(req);
-      if (callback) {
-        callback(
-          `cannot send request ${reqStr}: ` +
-          `connection state ${state} is not open`);
-      }
-      return;
+      const error = `cannot send request ${reqStr}: connection state ${state} is not open`;
+      callback(error);
     }
-    // Include the current request id in the request.
     this._counter += 1;
+    // Include the current request id in the request.
     req['request-id'] = this._counter;
     this._callbacks[this._counter] = callback;
     const msg = JSON.stringify(req);
@@ -464,5 +473,4 @@ function uncapitalize(string) {
   return string.charAt(0).toLowerCase() + string.slice(1);
 }
 
-
-module.exports = {connect, connectAndLogin};
+module.exports = {Client, connect, connectAndLogin};
