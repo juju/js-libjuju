@@ -1,6 +1,5 @@
 DEVENV = devenv
 NODE_MODULES = node_modules
-PROJECT = js-libjuju
 SCHEMA = schemas/schema.json
 SYSDEPS = build-essential jq python3-virtualenv tox
 
@@ -75,15 +74,7 @@ release: dist
 	$(DEVENV)/bin/twine upload dist/*
 
 .PHONY: release-js
-release-js: clean check dev-js
-	$(eval current := $(shell npm view $(PROJECT) version))
-	$(eval package := $(shell npm version | grep $(PROJECT) | cut -d "'" -f 2))
-	@test $(current) != $(package) || ( \
-		echo cannot publish existing version $(current): update package.json; \
-		exit 1 \
-	)
-	git tag $(package)
-	git push --tags
+release-js: clean check
 	npm publish
 
 .PHONY: sysdeps

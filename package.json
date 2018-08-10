@@ -16,7 +16,10 @@
     "api",
     "client"
   ],
-  "author": "Canonical JAAS Team",
+  "author": "Francesco Banconi <francesco.banconi@canonical.com>",
+  "contributors": [
+    "Jeff Pihach <jeff.pihach@canonical.com> (https://fromanegg.com)"
+  ],
   "license": "LGPL-3.0",
   "bugs": {
     "url": "https://github.com/juju/js-libjuju/issues"

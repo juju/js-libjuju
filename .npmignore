@@ -1,4 +1,4 @@
-# Be sure to update the .npmignore if you update this file.
+# Be sure to update the .gitignore if you update this file.
 # general things to ignore
 build/
 dist/
@@ -9,6 +9,14 @@ __pycache__/
 *.so
 *~
 .vscode
+generator/
+schemas/
+tox.ini
+setup.py
+MANIFEST.in
+.travis.yml
+.eslint*
+tests/*.py
 
 # due to using tox
 .tox
@@ -17,9 +25,7 @@ devenv
 
 # app specific
 node_modules/
-api/facades/*.js
 package-lock.json
-schemas/build
 
 # js specific
 .nyc_output/

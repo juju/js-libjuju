@@ -9,3 +9,4 @@ recursive-include examples *.js
 recursive-include schemas *.json *.md *.sh
 recursive-exclude schemas/build *
 recursive-include templates *
+exclude .npmignore
