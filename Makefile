@@ -1,6 +1,7 @@
 DEVENV = devenv
 NODE_MODULES = node_modules
-SYSDEPS = build-essential python3-virtualenv tox
+SCHEMA = schemas/schema.json
+SYSDEPS = build-essential jq python3-virtualenv tox
 
 # The generated admin facade is required by JS API client code and tests.
 ADMIN_FACADE = api/facades/admin-v3.js
@@ -36,13 +37,13 @@ check-js: lint-js test-js
 
 .PHONY: clean
 clean:
-	rm -rf $(DEVENV) .tox dist *.egg-info
+	rm -rf $(DEVENV) .tox dist *.egg-info schemas/build
 	rm -rf $(NODE_MODULES)/ package-lock.json api/facades/*.js
 
 .PHONY: generate
 generate: dev
 	rm -f api/facades/*.js
-	devenv/bin/generate schemas/schema.json
+	devenv/bin/generate $(SCHEMA)
 
 
 .PHONY: help
@@ -50,7 +51,8 @@ help:
 	@echo -e "$(PROJECT) - list of make targets:\n"
 	@echo "make sysdeps - install system dependencies (debian packages)"
 	@echo "make dev - create the development environment"
-	@echo "make generate - generate API in api/facades using latest schema"
+	@echo "make generate - generate API in api/facades from schema"
+	@echo "make update-schema - update schema with current juju develop"
 	@echo "make test - run unit tests"
 	@echo "make lint - run lint"
 	@echo "make check - run lint and tests on the resulting packages"
@@ -60,7 +62,7 @@ help:
 
 .PHONY: lint
 lint: dev
-	$(DEVENV)/bin/flake8 . --exclude .tox,devenv
+	$(DEVENV)/bin/flake8 . --exclude .tox,devenv,schemas
 
 .PHONY: lint-js
 lint-js: dev-js
@@ -91,3 +93,7 @@ test: dev
 .PHONY: test-js
 test-js: dev-js $(ADMIN_FACADE)
 	npm t
+
+.PHONY: update-schema
+update-schema:
+	schemas/create.sh $(SCHEMA)

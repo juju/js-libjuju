@@ -9,11 +9,12 @@ const WebSocket = require('websocket').w3cwebsocket;
 const bakery = require('macaroon-bakery');
 // Bakery uses btoa and MLHttpRequest.
 global.btoa = require('btoa');
-global.XMLHttpRequest = require('xhr2')
+global.XMLHttpRequest = require('xhr2');
 
 const jujulib = require('../api/client.js');
 
 
+const url = 'wss://jimm.jujucharms.com/api';
 const options = {
     debug: true,
     facades: [require('../api/facades/model-manager-v4.js')],
@@ -24,7 +25,6 @@ const options = {
         }
     })
 };
-const url = 'wss://jimm.jujucharms.com/api';
 
 
 jujulib.connect(url, options, (err, juju) => {
@@ -84,7 +84,7 @@ jujulib.connect(url, options, (err, juju) => {
                   });
                 });
               }
-            })
+            });
           }
           console.log('logged in to model without redirection');
         });

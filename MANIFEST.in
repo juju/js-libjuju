@@ -6,6 +6,7 @@ recursive-include api *.js
 recursive-exclude api/facades *.js
 recursive-include api *.md
 recursive-include examples *.js
-recursive-include schemas *.json
+recursive-include schemas *.json *.md *.sh
+recursive-exclude schemas/build *
 recursive-include templates *
 exclude .npmignore

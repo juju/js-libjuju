@@ -8,6 +8,7 @@
 
 'use strict';
 
+const {createAsyncHandler} = require('../transform.js');
 
 /**
   Watch anything!
@@ -31,35 +32,35 @@ class MarshalV0 {
         }
   */
   next(callback) {
-    const params = {};
-    // Prepare the request to the Juju API.
-    const req = {
-      type: 'Marshal',
-      request: 'Next',
-      version: 0,
-      params: params
-    };
-    // Send the request to the server.
-    this._transport.write(req, (err, resp) => {
-      if (!callback) {
-        return;
-      }
-      if (err) {
-        callback(err, {});
-        return;
-      }
-      // Handle the response.
-      let result;
-      // github.com/juju/juju/apiserver/params#AllWatcherNextResults
-      result = {};
-      resp = resp || {};
-      result.deltas = [];
-      resp['deltas'] = resp['deltas'] || [];
-      for (let i = 0; i < resp['deltas'].length; i++) {
-        // github.com/juju/juju/state/multiwatcher#Delta
-        result.deltas[i] = resp['deltas'][i];
-      }
-      callback(null, result);
+    return new Promise((resolve, reject) => {
+      const params = {};
+      // Prepare the request to the Juju API.
+      const req = {
+        type: 'Marshal',
+        request: 'Next',
+        version: 0,
+        params: params
+      };
+      // Define a transform method if necessary.
+      let transform = null;
+      transform = resp => {
+        let result;
+        // github.com/juju/juju/apiserver/params#AllWatcherNextResults
+        if (resp) {
+          result = {};
+          result.deltas = [];
+          resp['deltas'] = resp['deltas'] || [];
+          for (let i = 0; i < resp['deltas'].length; i++) {
+            // github.com/juju/juju/state/multiwatcher#Delta
+            result.deltas[i] = resp['deltas'][i];
+          }
+        }
+        return result;
+      };
+
+      const handler = createAsyncHandler(callback, resolve, reject, transform);
+      // Send the request to the server.
+      this._transport.write(req, handler);
     });
   }
 }

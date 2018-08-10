@@ -8,6 +8,7 @@
 
 'use strict';
 
+const {createAsyncHandler} = require('../transform.js');
 
 /**
   pinger describes a resource that can be pinged.
@@ -27,24 +28,21 @@ class PingerV42 {
       the callback receives an error or null if the operation succeeded.
   */
   ping(callback) {
-    const params = {};
-    // Prepare the request to the Juju API.
-    const req = {
-      type: 'Pinger',
-      request: 'Ping',
-      version: 42,
-      params: params
-    };
-    // Send the request to the server.
-    this._transport.write(req, (err, resp) => {
-      if (!callback) {
-        return;
-      }
-      if (err) {
-        callback(err, {});
-        return;
-      }
-      callback(null, {});
+    return new Promise((resolve, reject) => {
+      const params = {};
+      // Prepare the request to the Juju API.
+      const req = {
+        type: 'Pinger',
+        request: 'Ping',
+        version: 42,
+        params: params
+      };
+      // Define a transform method if necessary.
+      let transform = null;
+
+      const handler = createAsyncHandler(callback, resolve, reject, transform);
+      // Send the request to the server.
+      this._transport.write(req, handler);
     });
   }
 
@@ -55,24 +53,21 @@ class PingerV42 {
       the callback receives an error or null if the operation succeeded.
   */
   stop(callback) {
-    const params = {};
-    // Prepare the request to the Juju API.
-    const req = {
-      type: 'Pinger',
-      request: 'Stop',
-      version: 42,
-      params: params
-    };
-    // Send the request to the server.
-    this._transport.write(req, (err, resp) => {
-      if (!callback) {
-        return;
-      }
-      if (err) {
-        callback(err, {});
-        return;
-      }
-      callback(null, {});
+    return new Promise((resolve, reject) => {
+      const params = {};
+      // Prepare the request to the Juju API.
+      const req = {
+        type: 'Pinger',
+        request: 'Stop',
+        version: 42,
+        params: params
+      };
+      // Define a transform method if necessary.
+      let transform = null;
+
+      const handler = createAsyncHandler(callback, resolve, reject, transform);
+      // Send the request to the server.
+      this._transport.write(req, handler);
     });
   }
 }
