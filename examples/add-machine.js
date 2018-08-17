@@ -5,12 +5,12 @@ const WebSocket = require('websocket').w3cwebsocket;
 const bakery = require('macaroon-bakery');
 // Bakery uses btoa and MLHttpRequest.
 global.btoa = require('btoa');
-global.XMLHttpRequest = require('xhr2')
+global.XMLHttpRequest = require('xhr2');
 
 const jujulib = require('../api/client.js');
 
 
-const url = 'wss://jimm.jujucharms.com:443/model/9f367e7c-8601-4d55-85e3-0fd8d7867287/api';
+const url = 'wss://jimm.jujucharms.com:443/model/cebb753f-60c2-4717-8ae8-5c318ac4074c/api';
 const credentials = {};
 const options = {
   debug: true,
@@ -24,13 +24,13 @@ const options = {
 };
 
 
-jujulib.connectAndLogin(url, credentials, options, (err, conn, logout) => {
+jujulib.connectAndLogin(url, credentials, options, (err, result) => {
   if (err) {
     console.log('cannot connect:', err);
     process.exit(1);
   }
   // Add a single bionic machine.
-  const client = conn.facades.client;
+  const client = result.conn.facades.client;
   client.addMachine({series: 'bionic'}, (err, result) => {
     if (err) {
       console.log('cannot add machine:', err);

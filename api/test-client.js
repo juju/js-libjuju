@@ -482,10 +482,9 @@ tap.test('connectAndLogin', t => {
 
   t.test('connect failure', t => {
     const creds = {};
-    jujulib.connectAndLogin(url, creds, options, (err, conn, logout) => {
+    jujulib.connectAndLogin(url, creds, options, (err, result) => {
       t.equal(err, 'cannot connect WebSocket: bad wolf');
-      t.equal(conn, null);
-      t.equal(logout, null);
+      t.equal(result, null);
       t.end();
     });
     // Close the WebSocket connection.
@@ -494,7 +493,7 @@ tap.test('connectAndLogin', t => {
 
   t.test('login failure', t => {
     const creds = {user: 'who', password: 'tardis'};
-    jujulib.connectAndLogin(url, creds, options, (err, conn, logout) => {
+    jujulib.connectAndLogin(url, creds, options, (err, result) => {
       helpers.requestEqual(t, ws.lastRequest, {
         type: 'Admin',
         request: 'Login',
@@ -502,8 +501,7 @@ tap.test('connectAndLogin', t => {
         version: 3
       });
       t.equal(err, 'bad wolf');
-      t.equal(conn, null);
-      t.equal(logout, null);
+      t.equal(result, null);
       t.end();
     });
     // Open the WebSocket connection.
@@ -514,7 +512,7 @@ tap.test('connectAndLogin', t => {
 
   t.test('login redirection error failure', t => {
     const creds = {user: 'who', password: 'tardis'};
-    jujulib.connectAndLogin(url, creds, options, (err, conn, logout) => {
+    jujulib.connectAndLogin(url, creds, options, (err, result) => {
       helpers.requestEqual(t, ws.lastRequest, {
         type: 'Admin',
         request: 'RedirectInfo',
@@ -522,8 +520,7 @@ tap.test('connectAndLogin', t => {
         version: 3
       });
       t.equal(err, 'bad wolf');
-      t.equal(conn, null);
-      t.equal(logout, null);
+      t.equal(result, null);
       t.end();
     });
     // Open the WebSocket connection.
@@ -536,11 +533,12 @@ tap.test('connectAndLogin', t => {
 
   t.test('login redirection error success', t => {
     const creds = {user: 'who', password: 'tardis'};
-    jujulib.connectAndLogin(url, creds, options, (err, conn, logout) => {
+    jujulib.connectAndLogin(url, creds, options, (err, result) => {
       t.equal(err, null);
-      t.notEqual(conn, null);
-      t.notEqual(logout, null);
-      logout();
+      t.notEqual(result, null);
+      t.notEqual(result.conn, null);
+      t.notEqual(result.logout, null);
+      result.logout();
       // The WebSocket is now closed.
       t.equal(ws.readyState, 3);
       t.end();
@@ -572,11 +570,12 @@ tap.test('connectAndLogin', t => {
 
   t.test('login success', t => {
     const creds = {user: 'who', password: 'tardis'};
-    jujulib.connectAndLogin(url, creds, options, (err, conn, logout) => {
+    jujulib.connectAndLogin(url, creds, options, (err, result) => {
       t.equal(err, null);
-      t.notEqual(conn, null);
-      t.notEqual(logout, null);
-      logout();
+      t.notEqual(result, null);
+      t.notEqual(result.conn, null);
+      t.notEqual(result.logout, null);
+      result.logout();
       // The WebSocket is now closed.
       t.equal(ws.readyState, 3);
       t.end();
