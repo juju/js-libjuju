@@ -54,10 +54,10 @@ const {createAsyncHandler} = require('./transform');
       server is made available as part of the connection object;
     - debug (default=false): when enabled, all API messages are logged at debug
       level;
-    - wsclass (default=W3C browser native WebSocket): the WebSocket class to use
-      for opening the connection and sending/receiving messages. Server side,
-      require('websocket').w3cwebsocket can be used safely, as it implements the
-      W3C browser native WebSocket API;
+    - wsclass (default=W3C browser native WebSocket): the WebSocket class to
+      use for opening the connection and sending/receiving messages. Server
+      side, require('websocket').w3cwebsocket can be used safely, as it
+      implements the W3C browser native WebSocket API;
     - bakery (default: null): the bakery client to use when macaroon discharges
       are required, in the case an external user is used to connect to Juju;
       see <https://www.npmjs.com/package/macaroon-bakery>;
@@ -67,9 +67,9 @@ const {createAsyncHandler} = require('./transform');
     callback receives an error and a client object. If there are no errors, the
     client can be used to login and logout to Juju. See the docstring for the
     Client class for information on how to use the client.
-  @return {Promise} This promise will be rejected if there is an error connecting,
-    or resolved with a new Client instance. Note that the promise will not be
-    resolved or rejected if a callback is provided.
+  @return {Promise} This promise will be rejected if there is an error
+    connecting, or resolved with a new Client instance. Note that the promise
+    will not be resolved or rejected if a callback is provided.
 */
 function connect(url, options={}, callback=null) {
   if (!options.bakery) {
@@ -120,56 +120,62 @@ function connect(url, options={}, callback=null) {
       server is made available as part of the connection object;
     - debug (default=false): when enabled, all API messages are logged at debug
       level;
-    - wsclass (default=W3C browser native WebSocket): the WebSocket class to use
-      for opening the connection and sending/receiving messages. Server side,
-      require('websocket').w3cwebsocket can be used safely, as it implements the
-      W3C browser native WebSocket API;
+    - wsclass (default=W3C browser native WebSocket): the WebSocket class to
+      use for opening the connection and sending/receiving messages. Server
+      side, require('websocket').w3cwebsocket can be used safely, as it
+      implements the W3C browser native WebSocket API;
     - bakery (default: null): the bakery client to use when macaroon discharges
       are required, in the case an external user is used to connect to Juju;
       see <https://www.npmjs.com/package/macaroon-bakery>;
     - closeCallback: a callback to be called with the exit code when the
       connection is closed.
   @param {Function} callback Called when the login process completes, the
-    callback receives an error, a connection object and a logout function that
-    can be used to clos ethe connection. If there are no errors, the connection
-    can be used to send/receive messages to and from the Juju controller or
-    model, and to get access to the available facades (through conn.facades).
-    See the docstring for the Connection class for information on how to use
-    the connection instance. Redirection errors are automatically handled by
-    this function, so any error is a real connection problem.
+    callback receives an error, or a {conn, logout} result including a
+    connection object and a logout function that can be used to close the
+    connection. If there are no errors, the connection can be used to
+    send/receive messages to and from the Juju controller or model, and to get
+    access to the available facades (through conn.facades). See the docstring
+    for the Connection class for information on how to use the connection
+    instance. Redirection errors are automatically handled by this function, so
+    any error is a real connection problem.
+  @return {Promise} This promise will be rejected if there is an error
+    connecting, or resolved with a new {conn, logout} object. Note that the
+    promise will not be resolved or rejected if a callback is provided.
 */
 function connectAndLogin(url, credentials, options, callback) {
-  // Connect to Juju.
-  connect(url, options, (err, juju) => {
-    if (err) {
-      callback(err, null, null);
-      return;
-    }
-    // Authenticate.
-    juju.login(credentials, (err, conn) => {
-      if (!err) {
-        callback(null, conn, juju.logout.bind(juju));
+  return new Promise((resolve, reject) => {
+    const handler = createAsyncHandler(callback, resolve, reject);
+    // Connect to Juju.
+    connect(url, options, (err, juju) => {
+      if (err) {
+        handler(err, null);
         return;
       }
-      if (!juju.isRedirectionError(err)) {
-        callback(err, null, null);
-        return;
-      }
-      // Redirect to the real model.
-      juju.logout();
-      for (let i = 0; i < err.servers.length; i++) {
-        const srv = err.servers[i];
-        // TODO(frankban): we should really try to connect to all servers and
-        // just use the first connection available, without second guessing
-        // that the public hostname is reachable.
-        if (srv.type === 'hostname' && srv.scope === 'public') {
-          // This is a public server with a dns-name, connect to it.
-          connectAndLogin(srv.url(url), credentials, options, callback);
+      // Authenticate.
+      juju.login(credentials, (err, conn) => {
+        if (!err) {
+          handler(null, {conn: conn, logout: juju.logout.bind(juju)});
           return;
         }
-      }
-      callback(
-        new Error('cannot connect to model after redirection'), null, null);
+        if (!juju.isRedirectionError(err)) {
+          handler(err, null);
+          return;
+        }
+        // Redirect to the real model.
+        juju.logout();
+        for (let i = 0; i < err.servers.length; i++) {
+          const srv = err.servers[i];
+          // TODO(frankban): we should really try to connect to all servers and
+          // just use the first connection available, without second guessing
+          // that the public hostname is reachable.
+          if (srv.type === 'hostname' && srv.scope === 'public') {
+            // This is a public server with a dns-name, connect to it.
+            connectAndLogin(srv.url(url), credentials, options, handler);
+            return;
+          }
+        }
+        handler(new Error('cannot connect to model after redirection'), null);
+      });
     });
   });
 }
@@ -201,8 +207,8 @@ class Client {
       If an empty object is provided a full bakery discharge will be attempted
       for logging in with macaroons. Any necessary third party discharges are
       performed using the bakery instance originally provided to connect().
-    @param {Function} [callback=null] Called when the login process completes, the
-      callback receives an error and a connection object. If there are no
+    @param {Function} [callback=null] Called when the login process completes,
+      the callback receives an error and a connection object. If there are no
       errors, the connection can be used to send/receive messages to and from
       the Juju controller or model, and to get access to the available facades
       (through conn.facades). See the docstring for the Connection class for
@@ -213,8 +219,8 @@ class Client {
       is a redirection error, information about available servers is stored in
       err.servers and err.caCert (if a certificate is required).
     @return {Promise} This promise will be rejected if there is an error
-      connecting, or resolved with a new connection instance. Note that the promise
-      will not be resolved or rejected if a callback is provided.
+      connecting, or resolved with a new connection instance. Note that the
+      promise will not be resolved or rejected if a callback is provided.
   */
   login(credentials, callback=null) {
     const args = {
@@ -339,9 +345,9 @@ class Transport {
     Send a message to Juju.
 
     @param {Object} req A Juju API request, typically in the form of an object
-      like {type: 'Client', request: 'DoSomething', version: 1, params: {}}. The
-      request must not be already serialized and must not include the request
-      id, as those are responsibilities of the transport.
+      like {type: 'Client', request: 'DoSomething', version: 1, params: {}}.
+      The request must not be already serialized and must not include the
+      request id, as those are responsibilities of the transport.
     @param {Function} callback Called when the response to the given request is
       ready, the callback receives an error and the response result from Juju.
   */
@@ -410,11 +416,11 @@ class Transport {
   information about the connected Juju server (conn.info).
 
   @param {Object} transport The Transport instance used to communicate with
-    Juju. The transport is available exposed to users via the transport property
-    of the connection instance. See the Transport docstring for information on
-    how to use the transport (typically calling transport.write).
-  @param {Object} facades The facade classes provided in the facades property of
-    the options provided to the connect function. When the connection is
+    Juju. The transport is available exposed to users via the transport
+    property of the connection instance. See the Transport docstring for
+    information on how to use the transport, typically calling transport.write.
+  @param {Object} facades The facade classes provided in the facades property
+    of the options provided to the connect function. When the connection is
     instantiated, the matching available facades as declared by Juju are
     instantiated and access to them is provided via the facades property of the
     connection.

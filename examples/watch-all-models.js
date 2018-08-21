@@ -19,13 +19,13 @@ const facades = [
 const options = {debug: true, facades: facades, wsclass: WebSocket};
 
 
-jujulib.connectAndLogin(url, credentials, options, (err, conn, logout) => {
+jujulib.connectAndLogin(url, credentials, options, (err, result) => {
   if (err) {
     console.log('cannot connect:', err);
     process.exit(1);
   }
   // Start watching all models.
-  const controller = conn.facades.controller;
+  const controller = result.facades.controller;
   let handle;
   handle = controller.watch((err, result) => {
     if (err) {
@@ -38,7 +38,7 @@ jujulib.connectAndLogin(url, credentials, options, (err, conn, logout) => {
       // Stop the multi-model watcher and log out.
       handle.stop(err => {
         console.log('watcher stopped');
-        logout();
+        result.logout();
       });
     }, 10000);
   });
