@@ -15,7 +15,6 @@ $(DEVENV):
 
 $(NODE_MODULES):
 	npm install
-	npm ls --depth=0
 
 $(ADMIN_FACADE):
 	$(MAKE) generate
@@ -37,21 +36,23 @@ check-js: lint-js test-js
 
 .PHONY: clean
 clean:
-	rm -rf $(DEVENV) .tox dist *.egg-info schemas/build
+	rm -rf $(DEVENV) .tox dist *.egg-info
 	rm -rf $(NODE_MODULES)/ package-lock.json api/facades/*.js
+	# go modules creates a read-ony cache.
+	chmod -R u+w schemas/build 2> /dev/null || true
+	rm -rf schemas/build
 
 .PHONY: generate
-generate: dev
-	rm -f api/facades/*.js
+generate: dev dev-js
+	rm -f api/doc/*.md api/facades/*.js
 	devenv/bin/generate $(SCHEMA)
-
 
 .PHONY: help
 help:
 	@echo -e "$(PROJECT) - list of make targets:\n"
 	@echo "make sysdeps - install system dependencies (debian packages)"
 	@echo "make dev - create the development environment"
-	@echo "make generate - generate API in api/facades from schema"
+	@echo "make generate - generate API in api/facades and docs from schema"
 	@echo "make update-schema - update schema with current juju develop"
 	@echo "make test - run unit tests"
 	@echo "make lint - run lint"

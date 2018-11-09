@@ -48,6 +48,9 @@ class AnnotationsV2 {
             }
           }
         }
+    @return {Promise} Rejected or resolved with the values normally passed to
+      the callback when the callback is not provided.
+      This allows this method to be awaited.
   */
   get(args, callback) {
     return new Promise((resolve, reject) => {
@@ -136,6 +139,9 @@ class AnnotationsV2 {
             }
           }
         }
+    @return {Promise} Rejected or resolved with the values normally passed to
+      the callback when the callback is not provided.
+      This allows this method to be awaited.
   */
   set(args, callback) {
     return new Promise((resolve, reject) => {

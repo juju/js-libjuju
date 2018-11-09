@@ -5,22 +5,19 @@
 
 set -euo pipefail
 
-go version || (echo updating schema requires go to be installed; exit 1)
+go version > /dev/null 2>&1 || (echo 'updating schema requires go to be installed'; exit 1)
+go help mod > /dev/null 2>&1 || (echo 'updating schema requires support for go modules'; exit 1)
 
 export GOPATH=`readlink -m $(dirname $0)`/build
-rm -rf $GOPATH
+export GO111MODULE=on
+export PATH=$GOPATH/bin:$PATH
+
 mkdir -p $GOPATH
 
-# Install juju.
-go get -v github.com/rogpeppe/godeps
-go get -d -v github.com/juju/juju
-pushd $GOPATH/src/github.com/juju/juju
-$GOPATH/bin/godeps -u dependencies.tsv
-go install -v ./...
-popd
-
-# Generate the schema.
-go get -v github.com/rogpeppe/misc/cmd/jujuapidoc/jujugenerateapidoc
-$GOPATH/bin/jujugenerateapidoc | jq . > $1
+GO111MODULE=off go get -u github.com/myitcv/gobin
+gobin -u github.com/rogpeppe/gomodmerge
+gobin -u github.com/juju/jujuapidoc
+jujuapidoc develop | jq . > $1.part
+mv $1.part $1
 
 echo schema successfully generated

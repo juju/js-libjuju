@@ -44,6 +44,9 @@ class {{ name }}V{{ version }} {
     @param {Function} callback Called when the response from Juju is available,
       the callback receives an error or null if the operation succeeded.
     {%- endif %}
+    @return {Promise} Rejected or resolved with the values normally passed to
+      the callback when the callback is not provided.
+      This allows this method to be awaited.
   */
   {{ method.name() }}({% if method.params %}args, {% endif %}callback) {
     return new Promise((resolve, reject) => {
