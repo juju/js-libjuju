@@ -11,15 +11,10 @@ from setuptools import (
 )
 
 
-here = path.abspath(path.dirname(__file__))
-with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
-    long_description = f.read()
-
 setup(
     name='js-libjuju',
     version='1.0.0',
     description='Generate the JavaScript Juju API client',
-    long_description=long_description,
     url='https://github.com/juju/jujulibjs',
     author='Canonical JAAS Team',
     author_email='jaas@canonical.com',
