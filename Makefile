@@ -52,9 +52,8 @@ help:
 	@echo "make lint - run lint"
 	@echo "make check - run lint and tests on the resulting packages"
 	@echo "make clean - clean up the development environment"
-	@echo "make tag - tag a new release"
-	@echo "make release - create a new py release and upload it to PyPI"
-	@echo "make release-js - create a new js release and upload it to npm"
+	@echo "make release - create a new js release and upload it to npm"
+	@echo "               for instance: make release VERSION=1.2.3"
 
 .PHONY: lint
 lint: dev
@@ -65,22 +64,15 @@ lint-js: dev-js
 	npm run lint
 
 .PHONY: release
-release: dist
-	$(DEVENV)/bin/pip install twine
-	$(DEVENV)/bin/twine upload dist/*
-
-.PHONY: release-js
-release-js: clean check
-	npm publish
+release: clean check
+	@test -n "$(VERSION)" || (echo "error: VERSION is not defined"; exit 1)
+	npm version $(VERSION)
+	git push --tags origin master
+	npm publish --access=public
 
 .PHONY: sysdeps
 sysdeps:
 	sudo apt install -y $(SYSDEPS)
-
-.PHONY: tag
-tag: dev
-	git tag v`$(DEVENV)/bin/python setup.py --version`
-	git push --tags origin master
 
 .PHONY: test
 test: dev
