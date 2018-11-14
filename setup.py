@@ -3,8 +3,6 @@
 
 """Set up the application package."""
 
-from codecs import open
-from os import path
 from setuptools import (
     find_packages,
     setup,
@@ -15,7 +13,8 @@ setup(
     name='js-libjuju',
     version='1.0.0',
     description='Generate the JavaScript Juju API client',
-    url='https://github.com/juju/jujulibjs',
+    long_description='This project is not intended to be pushed to PyPI',
+    url='https://github.com/juju/js-libjuju',
     author='Canonical JAAS Team',
     author_email='jaas@canonical.com',
     classifiers=[  # Optional
