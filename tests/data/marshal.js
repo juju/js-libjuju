@@ -30,6 +30,9 @@ class MarshalV0 {
         {
           deltas: []anything
         }
+    @return {Promise} Rejected or resolved with the values normally passed to
+      the callback when the callback is not provided.
+      This allows this method to be awaited.
   */
   next(callback) {
     return new Promise((resolve, reject) => {

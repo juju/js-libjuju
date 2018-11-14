@@ -6,6 +6,8 @@
 from ._cmd import generate
 
 
+assert generate
+
 __all__ = [
     'generate',
 ]

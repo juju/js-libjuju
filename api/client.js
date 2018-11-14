@@ -6,10 +6,11 @@
   get access to the API. Provide your required facade classes in options, like:
 
     const facades = [
-      require('../output/all-watcher-v1.js'),
-      require('../output/application-v5.js'),
-      require('../output/client-v1.js'),
-      require('../output/pinger-v1.js')
+      require('jujulib/api/facades/all-watcher-v1'),
+      require('jujulib/api/facades/application-v5'),
+      require('jujulib/api/facades/client-v1'),
+      require('jujulib/api/facades/client-v2'),
+      require('jujulib/api/facades/pinger-v1')
     ];
     jujulib.connect('wss://example.com', {facades: facades}, (err, juju) => {
       if (err) {
@@ -470,13 +471,32 @@ class Connection {
 
 
 /**
-  Convert ThisString to thisString.
+  Convert ThisString to thisString and THATString to thatString.
 
-  @param {String} string A StringLikeThis.
+  @param {String} text A StringLikeThis.
   @returns {String} A stringLikeThis.
 */
-function uncapitalize(string) {
-  return string.charAt(0).toLowerCase() + string.slice(1);
+function uncapitalize(text) {
+  if (!text) {
+    return '';
+  }
+  const isLower = char => char.toLowerCase() === char;
+  if (isLower(text[0])) {
+    return text;
+  }
+  const uppers = [];
+  for (let i = 0; i < text.length; i++) {
+    const char = text.charAt(i);
+    if (isLower(char)) {
+      break;
+    }
+    uppers.push(char);
+  }
+  if (uppers.length > 1) {
+    uppers.pop();
+  }
+  const prefix = uppers.join('');
+  return prefix.toLowerCase() + text.slice(prefix.length);
 }
 
 module.exports = {Client, connect, connectAndLogin};

@@ -42,6 +42,9 @@ class BundleV1 {
           },
           errors: []string
         }
+    @return {Promise} Rejected or resolved with the values normally passed to
+      the callback when the callback is not provided.
+      This allows this method to be awaited.
   */
   getChanges(args, callback) {
     return new Promise((resolve, reject) => {

@@ -9,6 +9,12 @@ import os
 from unittest import mock
 
 
+_here = os.path.dirname(__file__)
+_wrappers = os.path.join(_here, '..', 'templates', 'wrappers.md')
+with open(os.path.abspath(_wrappers)) as f:
+    wrappers_content = f.read().strip()
+
+
 @contextmanager
 def maybe_raises(exception):
     """Assume the code in the block may or may not raise an exception.
@@ -25,8 +31,7 @@ def maybe_raises(exception):
 
 def read_data(filename):
     """Return the content of the file with the given name in the data dir."""
-    here = os.path.dirname(__file__)
-    path = os.path.abspath(os.path.join(here, 'data', filename))
+    path = os.path.abspath(os.path.join(_here, 'data', filename))
     with open(path) as f:
         return f.read().strip()
 
@@ -34,4 +39,4 @@ def read_data(filename):
 def patch_datetime_utcnow():
     mock_datetime = mock.Mock()
     mock_datetime.utcnow.return_value = datetime(2042, 1, 1, 16, 42, 47)
-    return mock.patch('generator._generate.datetime', mock_datetime)
+    return mock.patch('generator._render.datetime', mock_datetime)

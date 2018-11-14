@@ -12,10 +12,16 @@
 
   Nothing must be done in order to activate wrappers, as they are automatically
   loaded by auto-generated modules.
+
+  IMPORTANT: when implementing new wrappers, please expand the documentation
+  present at templates/wrappers.md. Also ensure updates are consistent with the
+  existing structure of that document, because its content is further processed
+  when automatically generating the documentation.
 */
 
 'use strict';
 
+const {createAsyncHandler} = require('./transform.js');
 
 /**
   Decorate the Admin facade class.
@@ -42,49 +48,50 @@ function wrapAdmin(cls) {
           },
           caCert: string
         }
+    @return {Promise} Rejected or resolved with the values normally passed to
+      the callback when the callback is not provided.
+      This allows this method to be awaited.
   */
   cls.prototype.redirectInfo = function(callback) {
     // This is overridden as the auto-generated version does not work with
     // current JAAS, because the servers passed to the callback do not
     // correspond to the ones declared in the API.
-    // Prepare the request to the Juju API.
-    const req = {
-      type: 'Admin',
-      request: 'RedirectInfo',
-      version: this.version,
-      params: {}
-    };
-    // Send the request to the server.
-    this._transport.write(req, (err, resp) => {
-      if (!callback) {
-        return;
-      }
-      if (err) {
-        callback(err, {});
-        return;
-      }
-      // Handle the response.
-      const servers = [];
-      resp.servers.forEach(srvs => {
-        srvs.forEach(srv => {
-          const server = {
-            value: srv.value,
-            port: srv.port,
-            type: srv.type,
-            scope: srv.scope,
-            url: uuidOrURL => {
-              let uuid = uuidOrURL;
-              if (uuid.startsWith('wss://') || uuid.startsWith('ws://')) {
-                const parts = uuid.split('/');
-                uuid = parts[parts.length - 2];
+    return new Promise((resolve, reject) => {
+      // Prepare the request to the Juju API.
+      const req = {
+        type: 'Admin',
+        request: 'RedirectInfo',
+        version: this.version,
+        params: {}
+      };
+      // Allow for js-friendly responses.
+      const transform = resp => {
+        const servers = [];
+        resp.servers.forEach(srvs => {
+          srvs.forEach(srv => {
+            const server = {
+              value: srv.value,
+              port: srv.port,
+              type: srv.type,
+              scope: srv.scope,
+              url: uuidOrURL => {
+                let uuid = uuidOrURL;
+                if (uuid.startsWith('wss://') || uuid.startsWith('ws://')) {
+                  const parts = uuid.split('/');
+                  uuid = parts[parts.length - 2];
+                }
+                return `wss://${srv.value}:${srv.port}/model/${uuid}/api`;
               }
-              return `wss://${srv.value}:${srv.port}/model/${uuid}/api`;
-            }
-          };
-          servers.push(server);
+            };
+            servers.push(server);
+          });
         });
-      });
-      callback(null, {caCert: resp['ca-cert'], servers: servers});
+        return {caCert: resp['ca-cert'], servers: servers};
+      };
+
+      const handler = createAsyncHandler(callback, resolve, reject, transform);
+      // Send the request to the server.
+      this._transport.write(req, handler);
     });
   };
 
@@ -103,10 +110,6 @@ function wrapAllModelWatcher(cls) {
   /**
     Ask for next watcher messages corresponding to changes in the models.
 
-    This method is overridden as the auto-generated one does not include the
-    watcherId parameter, as a result of the peculiarity of the call, which does
-    not assume the id to be in parameters, but as a top level field.
-
     @param {String} watcherId The id of the currently used watcher. The id is
       retrieved by calling the Controller.watchAllModels API call.
     @param {Function} callback Called when the next messages arrive, the
@@ -115,57 +118,59 @@ function wrapAllModelWatcher(cls) {
         {
           deltas: []anything
         }
+    @return {Promise} Rejected or resolved with the values normally passed to
+      the callback when the callback is not provided.
+      This allows this method to be awaited.
   */
   cls.prototype.next = function(watcherId, callback) {
-    // Prepare the request to the Juju API.
-    const req = {
-      type: 'AllModelWatcher',
-      request: 'Next',
-      version: this.version,
-      id: watcherId
-    };
-    // Send the request to the server.
-    this._transport.write(req, (err, resp) => {
-      if (!callback) {
-        return;
-      }
-      if (err) {
-        callback(err, {});
-        return;
-      }
-      // Handle the response.
-      resp = resp || {};
-      const result = {deltas: resp.deltas || []};
-      callback(null, result);
+    // This method is overridden as the auto-generated one does not include the
+    // watcherId parameter, as a result of the peculiarity of the call, which
+    // does not assume the id to be in parameters, but as a top level field.
+    return new Promise((resolve, reject) => {
+      // Prepare the request to the Juju API.
+      const req = {
+        type: 'AllModelWatcher',
+        request: 'Next',
+        version: this.version,
+        id: watcherId
+      };
+      // Allow for js-friendly responses.
+      const transform = resp => {
+        resp = resp || {};
+        return {deltas: resp.deltas || []};
+      };
+      const handler = createAsyncHandler(callback, resolve, reject, transform);
+      // Send the request to the server.
+      this._transport.write(req, handler);
     });
   };
 
   /**
     Stop watching all models.
 
-    This method is overridden as the auto-generated one does not include the
-    watcherId parameter, as a result of the peculiarity of the call, which does
-    not assume the id to be in parameters, but as a top level field.
-
     @param {String} watcherId The id of the currently used watcher. The id is
       retrieved by calling the Controller.watchAllModels API call.
     @param {Function} callback Called after the watcher has been stopped, the
       callback receives an error.
+    @return {Promise} Rejected or resolved with the values normally passed to
+      the callback when the callback is not provided.
+      This allows this method to be awaited.
   */
   cls.prototype.stop = function(watcherId, callback) {
-    // Prepare the request to the Juju API.
-    const req = {
-      type: 'AllModelWatcher',
-      request: 'Stop',
-      version: this.version,
-      id: watcherId
-    };
-    // Send the request to the server.
-    this._transport.write(req, (err, resp) => {
-      if (!callback) {
-        return;
-      }
-      callback(err, {});
+    // This method is overridden as the auto-generated one does not include the
+    // watcherId parameter, as a result of the peculiarity of the call, which
+    // does not assume the id to be in parameters, but as a top level field.
+    return new Promise((resolve, reject) => {
+      // Prepare the request to the Juju API.
+      const req = {
+        type: 'AllModelWatcher',
+        request: 'Stop',
+        version: this.version,
+        id: watcherId
+      };
+      const handler = createAsyncHandler(callback, resolve, reject, null);
+      // Send the request to the server.
+      this._transport.write(req, handler);
     });
   };
 
@@ -184,10 +189,6 @@ function wrapAllWatcher(cls) {
   /**
     Ask for next watcher messages corresponding to changes in the model.
 
-    This method is overridden as the auto-generated one does not include the
-    watcherId parameter, as a result of the peculiarity of the call, which does
-    not assume the id to be in parameters, but as a top level field.
-
     @param {String} watcherId The id of the currently used watcher. The id is
       retrieved by calling the Client.watchAll API call.
     @param {Function} callback Called when the next messages arrive, the
@@ -196,57 +197,59 @@ function wrapAllWatcher(cls) {
         {
           deltas: []anything
         }
+    @return {Promise} Rejected or resolved with the values normally passed to
+      the callback when the callback is not provided.
+      This allows this method to be awaited.
   */
   cls.prototype.next = function(watcherId, callback) {
-    // Prepare the request to the Juju API.
-    const req = {
-      type: 'AllWatcher',
-      request: 'Next',
-      version: this.version,
-      id: watcherId
-    };
-    // Send the request to the server.
-    this._transport.write(req, (err, resp) => {
-      if (!callback) {
-        return;
-      }
-      if (err) {
-        callback(err, {});
-        return;
-      }
-      // Handle the response.
-      resp = resp || {};
-      const result = {deltas: resp.deltas || []};
-      callback(null, result);
+    // This method is overridden as the auto-generated one does not include the
+    // watcherId parameter, as a result of the peculiarity of the call, which
+    // does not assume the id to be in parameters, but as a top level field.
+    return new Promise((resolve, reject) => {
+      // Prepare the request to the Juju API.
+      const req = {
+        type: 'AllWatcher',
+        request: 'Next',
+        version: this.version,
+        id: watcherId
+      };
+      // Allow for js-friendly responses.
+      const transform = resp => {
+        resp = resp || {};
+        return {deltas: resp.deltas || []};
+      };
+      const handler = createAsyncHandler(callback, resolve, reject, transform);
+      // Send the request to the server.
+      this._transport.write(req, handler);
     });
   };
 
   /**
     Stop watching the model.
 
-    This method is overridden as the auto-generated one does not include the
-    watcherId parameter, as a result of the peculiarity of the call, which does
-    not assume the id to be in parameters, but as a top level field.
-
     @param {String} watcherId The id of the currently used watcher. The id is
       retrieved by calling the Client.watchAll API call.
     @param {Function} callback Called after the watcher has been stopped, the
       callback receives an error.
+    @return {Promise} Rejected or resolved with the values normally passed to
+      the callback when the callback is not provided.
+      This allows this method to be awaited.
   */
   cls.prototype.stop = function(watcherId, callback) {
-    // Prepare the request to the Juju API.
-    const req = {
-      type: 'AllWatcher',
-      request: 'Stop',
-      version: this.version,
-      id: watcherId
-    };
-    // Send the request to the server.
-    this._transport.write(req, (err, resp) => {
-      if (!callback) {
-        return;
-      }
-      callback(err, {});
+    // This method is overridden as the auto-generated one does not include the
+    // watcherId parameter, as a result of the peculiarity of the call, which
+    // does not assume the id to be in parameters, but as a top level field.
+    return new Promise((resolve, reject) => {
+      // Prepare the request to the Juju API.
+      const req = {
+        type: 'AllWatcher',
+        request: 'Stop',
+        version: this.version,
+        id: watcherId
+      };
+      const handler = createAsyncHandler(callback, resolve, reject, null);
+      // Send the request to the server.
+      this._transport.write(req, handler);
     });
   };
 
@@ -312,29 +315,32 @@ function wrapApplication(cls) {
             code: string,
           }
         }
+    @return {Promise} Rejected or resolved with the values normally passed to
+      the callback when the callback is not provided.
+      This allows this method to be awaited.
   */
   cls.prototype.addCharmAndDeploy = function(args, callback) {
-    if (!callback) {
-      callback = () => {};
-    }
-    const client = this._info.getFacade('client');
-    if (!client) {
-      callback('addCharmAndDeploy requires the client facade to be loaded', {});
-      return;
-    }
-    // Add the charm.
-    client.addCharm({url: args.charmUrl, channel: args.channel}, err => {
-      if (err) {
-        callback(err, {});
+    return new Promise((resolve, reject) => {
+      const handler = createAsyncHandler(callback, resolve, reject, null);
+      const client = this._info.getFacade('client');
+      if (!client) {
+        handler('addCharmAndDeploy requires the client facade to be loaded', {});
         return;
       }
-      // Deploy the application.
-      this.deploy({applications: [args]}, (err, result) => {
+      // Add the charm.
+      client.addCharm({url: args.charmUrl, channel: args.channel}, err => {
         if (err) {
-          callback(err, {});
+          handler(err, {});
           return;
         }
-        callback(null, result.results[0]);
+        // Deploy the application.
+        this.deploy({applications: [args]}, (err, result) => {
+          if (err) {
+            handler(err, {});
+            return;
+          }
+          handler(null, result.results[0]);
+        });
       });
     });
   };
@@ -413,20 +419,26 @@ function wrapClient(cls) {
             }
           }
         }
+    @return {Promise} Rejected or resolved with the values normally passed to
+      the callback when the callback is not provided.
+      This allows this method to be awaited.
   */
   cls.prototype.addMachine = function(args, callback) {
-    if (!args.jobs) {
-      args.jobs = ['JobHostUnits'];
-    }
-    this.addMachines({params: [args]}, (err, result) => {
-      if (!callback) {
-        return;
+    return new Promise((resolve, reject) => {
+      const handler = createAsyncHandler(callback, resolve, reject, null);
+      if (!args.jobs) {
+        args.jobs = ['JobHostUnits'];
       }
-      if (err) {
-        callback(err, {});
-        return;
-      }
-      callback(null, result.machines[0]);
+      this.addMachines({params: [args]}, (err, result) => {
+        if (!callback) {
+          return;
+        }
+        if (err) {
+          handler(err, {});
+          return;
+        }
+        handler(null, result.machines[0]);
+      });
     });
   };
 
@@ -581,6 +593,8 @@ function wrapPinger(cls) {
     @param {Integer} interval Milliseconds between pings.
     @param {Function} callback Called every time a pong is received from the
       server, the callback receives an error.
+    @returns {Object} A handle that can be used to stop pinging via its stop
+      method.
   */
   cls.prototype.pingForever = function(interval, callback) {
     const timer = setInterval(() => {

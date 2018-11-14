@@ -3,6 +3,12 @@ js-libjuju
 
 JavaScript Juju API client.
 
+Documentation
+-------------
+
+The documentation for the JavaScript API client can be found `here
+<api/doc/index.md>`_.
+
 Updating the schema
 -------------------
 

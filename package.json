@@ -27,6 +27,7 @@
   "homepage": "https://github.com/juju/js-libjuju#readme",
   "devDependencies": {
     "btoa": "^1.2.1",
+    "documentation": "^8.1.2",
     "eslint": "^4.19.1",
     "macaroon-bakery": "^0.2.0",
     "sinon": "^6.1.5",

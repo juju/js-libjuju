@@ -3,9 +3,6 @@ NODE_MODULES = node_modules
 SCHEMA = schemas/schema.json
 SYSDEPS = build-essential jq python3-virtualenv tox
 
-# The generated admin facade is required by JS API client code and tests.
-ADMIN_FACADE = api/facades/admin-v3.js
-
 
 .PHONY: all
 all: help
@@ -15,10 +12,6 @@ $(DEVENV):
 
 $(NODE_MODULES):
 	npm install
-	npm ls --depth=0
-
-$(ADMIN_FACADE):
-	$(MAKE) generate
 
 dev: $(DEVENV)
 
@@ -37,28 +30,31 @@ check-js: lint-js test-js
 
 .PHONY: clean
 clean:
-	rm -rf $(DEVENV) .tox dist *.egg-info schemas/build
-	rm -rf $(NODE_MODULES)/ package-lock.json api/facades/*.js
+	rm -rf $(DEVENV) .tox dist *.egg-info
+	rm -rf $(NODE_MODULES)/ package-lock.json
+	# go modules creates a read-ony cache.
+	chmod -R u+w schemas/build 2> /dev/null || true
+	rm -rf schemas/build
 
 .PHONY: generate
-generate: dev
-	rm -f api/facades/*.js
+generate: dev dev-js
+	rm -f api/doc/*.md api/facades/*.js
 	devenv/bin/generate $(SCHEMA)
-
 
 .PHONY: help
 help:
 	@echo -e "$(PROJECT) - list of make targets:\n"
 	@echo "make sysdeps - install system dependencies (debian packages)"
 	@echo "make dev - create the development environment"
-	@echo "make generate - generate API in api/facades from schema"
+	@echo "make generate - generate API in api/facades and docs from schema"
 	@echo "make update-schema - update schema with current juju develop"
 	@echo "make test - run unit tests"
 	@echo "make lint - run lint"
 	@echo "make check - run lint and tests on the resulting packages"
-	@echo "make clean - clean up the development environment and built files"
+	@echo "make clean - clean up the development environment"
 	@echo "make tag - tag a new release"
-	@echo "make release - create a new release and upload it to PyPI"
+	@echo "make release - create a new py release and upload it to PyPI"
+	@echo "make release-js - create a new js release and upload it to npm"
 
 .PHONY: lint
 lint: dev
@@ -91,7 +87,7 @@ test: dev
 	$(DEVENV)/bin/python -m unittest discover . -v
 
 .PHONY: test-js
-test-js: dev-js $(ADMIN_FACADE)
+test-js: dev-js
 	npm t
 
 .PHONY: update-schema
