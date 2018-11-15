@@ -17,6 +17,21 @@ const jujulib = require('./client.js');
     connection itself and the WebSocket instance.
 */
 function makeConnection(t, options, callback) {
+  makeConnectionWithResponse(t, options, [], callback);
+}
+
+/**
+  Create a Juju connection with the given options and provide it to the given
+  callback.
+
+  @param {Object} t The test object.
+  @param {Object} options The connect options.
+  @param {Array} facades A list of facades to include in the login response
+    in addition to the default list.
+  @param {Function} callback Called when the connection is ready passing the
+    connection itself and the WebSocket instance.
+*/
+function makeConnectionWithResponse(t, options, facades, callback) {
   let ws;
   options.wsclass = makeWSClass(instance => {
     ws = instance;
@@ -30,6 +45,7 @@ function makeConnection(t, options, callback) {
       callback(conn, ws);
     });
     // Reply to the login request.
+    loginResponse.facades = facades.concat(defaultFacades);
     ws.reply({response: loginResponse});
   });
   // Open the WebSocket connection.
@@ -48,21 +64,22 @@ const loginResponse = {
     'last-connection': '2018-06-06T01:02:13Z',
     'controller-access': 'timelord',
     'model-access': 'admin'
-  },
-  facades: [{
-    name: 'AllModelWatcher', versions: [1]
-  }, {
-    name: 'AllWatcher', versions: [0]
-  }, {
-    name: 'Application', versions: [7]
-  }, {
-    name: 'Client', versions: [2, 3]
-  }, {
-    name: 'Controller', versions: [3, 4, 5]
-  }, {
-    name: 'MyFacade', versions: [1, 7]
-  }]
+  }
 };
+
+const defaultFacades = [{
+  name: 'AllModelWatcher', versions: [1]
+}, {
+  name: 'AllWatcher', versions: [0]
+}, {
+  name: 'Application', versions: [7]
+}, {
+  name: 'Client', versions: [2, 3]
+}, {
+  name: 'Controller', versions: [3, 4, 5]
+}, {
+  name: 'MyFacade', versions: [1, 7]
+}];
 
 
 /**
