@@ -115,6 +115,8 @@ class WebSocket {
     this.url = url;
     this.readyState = 0;
     this.requests = [];
+    this.responses = [];
+    this._queuedResponses = new Map();
 
     this.lastRequest = null;
     init(this);
@@ -141,16 +143,39 @@ class WebSocket {
   send(msg) {
     this.lastRequest = JSON.parse(msg);
     this.requests.push(this.lastRequest);
+    this._autoReply(this.lastRequest['request-id']);
   }
 
-  reply(resp) {
+  _autoReply(requestId) {
+    if (this._queuedResponses.has(requestId)) {
+      this.reply(this._queuedResponses.get(requestId), requestId);
+    }
+  }
+
+  /**
+    Reply to requests from the websocket.
+    @param {Object} resp - The response for the request in a JSON.stringify-able
+      format
+    @param {Number} [requestId] - The request ID that you want to respond to. Optional.
+  */
+  reply(resp, requestId) {
     if (this.lastRequest === null) {
       throw new Error('cannot reply as no requests were received');
     }
-    resp['request-id'] = this.lastRequest['request-id'];
-    this.onmessage({data: JSON.stringify(resp)});
+    resp['request-id'] = requestId || this.lastRequest['request-id'];
+    const response = {data: JSON.stringify(resp)};
+    this.responses.push(response);
+    this.onmessage(response);
   }
 
+  /**
+    Queue up a number of response values for upcoming requests.
+    @param {Map} data - The response values as a map where the Id is the
+      request-id and the value is the response values.
+  */
+  queueReplies(data) {
+    this._queuedResponses = data;
+  }
 };
 
 
@@ -192,6 +217,7 @@ module.exports = {
   BaseFacade: BaseFacade,
   makeBakery: makeBakery,
   makeConnection: makeConnection,
+  makeConnectionWithResponse: makeConnectionWithResponse,
   makeWSClass: makeWSClass,
   requestEqual: requestEqual
 };
