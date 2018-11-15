@@ -3,7 +3,6 @@
 
 'use strict';
 
-
 const jujulib = require('./client.js');
 
 
@@ -17,21 +16,23 @@ const jujulib = require('./client.js');
     connection itself and the WebSocket instance.
 */
 function makeConnection(t, options, callback) {
-  makeConnectionWithResponse(t, options, [], callback);
+  makeConnectionWithResponse(t, options, {}, callback);
 }
 
 /**
   Create a Juju connection with the given options and provide it to the given
-  callback.
+  callback. When logging in, the simulated server side automatically returns
+  the appropriate response.
 
   @param {Object} t The test object.
   @param {Object} options The connect options.
-  @param {Array} facades A list of facades to include in the login response
-    in addition to the default list.
+  @param {Object} loginResponse
+
+
   @param {Function} callback Called when the connection is ready passing the
     connection itself and the WebSocket instance.
 */
-function makeConnectionWithResponse(t, options, facades, callback) {
+function makeConnectionWithResponse(t, options, loginResponse, callback) {
   let ws;
   options.wsclass = makeWSClass(instance => {
     ws = instance;
@@ -45,15 +46,15 @@ function makeConnectionWithResponse(t, options, facades, callback) {
       callback(conn, ws);
     });
     // Reply to the login request.
-    loginResponse.facades = facades.concat(defaultFacades);
-    ws.reply({response: loginResponse});
+    const mergedLoginResponse = Object.assign(defaultLoginResponse, loginResponse);
+    ws.reply({response: mergedLoginResponse});
   });
   // Open the WebSocket connection.
   ws.open();
 }
 
 
-const loginResponse = {
+const defaultLoginResponse = {
   'controller-tag': 'controller-76b9c391-12be-47fc-8406-c31f2db68ee5',
   'model-tag': 'model-c36a62d0-a17a-484e-87bf-a09d1b403627',
   'server-version': '2.42.47',
@@ -64,22 +65,21 @@ const loginResponse = {
     'last-connection': '2018-06-06T01:02:13Z',
     'controller-access': 'timelord',
     'model-access': 'admin'
-  }
+  },
+  facades: [{
+    name: 'AllModelWatcher', versions: [1]
+  }, {
+    name: 'AllWatcher', versions: [0]
+  }, {
+    name: 'Application', versions: [7]
+  }, {
+    name: 'Client', versions: [2, 3]
+  }, {
+    name: 'Controller', versions: [3, 4, 5]
+  }, {
+    name: 'MyFacade', versions: [1, 7]
+  }]
 };
-
-const defaultFacades = [{
-  name: 'AllModelWatcher', versions: [1]
-}, {
-  name: 'AllWatcher', versions: [0]
-}, {
-  name: 'Application', versions: [7]
-}, {
-  name: 'Client', versions: [2, 3]
-}, {
-  name: 'Controller', versions: [3, 4, 5]
-}, {
-  name: 'MyFacade', versions: [1, 7]
-}];
 
 
 /**
@@ -148,33 +148,36 @@ class WebSocket {
 
   _autoReply(requestId) {
     if (this._queuedResponses.has(requestId)) {
-      this.reply(this._queuedResponses.get(requestId), requestId);
+      const response = this._queuedResponses.get(requestId);
+      response['request-id'] = requestId;
+      this.reply(response);
     }
   }
 
   /**
-    Reply to requests from the websocket.
+    Reply to requests from the WebSocket.
     @param {Object} resp - The response for the request in a JSON.stringify-able
       format
-    @param {Number} [requestId] - The request ID that you want to respond to. Optional.
   */
-  reply(resp, requestId) {
-    if (this.lastRequest === null) {
-      throw new Error('cannot reply as no requests were received');
+  reply(resp) {
+    if (resp['request-id'] === undefined) {
+      if (this.lastRequest === null) {
+        throw new Error('cannot reply as no requests were received');
+      }
+      resp['request-id'] = this.lastRequest['request-id'];
     }
-    resp['request-id'] = requestId || this.lastRequest['request-id'];
-    const response = {data: JSON.stringify(resp)};
-    this.responses.push(response);
-    this.onmessage(response);
+    this.responses.push(resp);
+    this.onmessage({data: JSON.stringify(resp)});
   }
 
   /**
     Queue up a number of response values for upcoming requests.
-    @param {Map} data - The response values as a map where the Id is the
-      request-id and the value is the response values.
+    @param {Map} responses - The response values as a map where the Id is the
+      request-id and the value is the respons value. The response value does
+      not need to include the `request-id` key.
   */
-  queueReplies(data) {
-    this._queuedResponses = data;
+  queueResponses(responses) {
+    this._queuedResponses = responses;
   }
 };
 
