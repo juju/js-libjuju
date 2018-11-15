@@ -2,7 +2,6 @@
 'use strict';
 
 const listModelSummaries = {
-  'request-id': 5,
   'response': {
     'results': [{
       'result': {
@@ -159,7 +158,6 @@ const listModelSummaries = {
 };
 
 const destroyModelsError = {
-  'request-id': 7,
   response: {
     results: [{
       error: {

@@ -2,7 +2,6 @@
 'use strict';
 
 const clouds = {
-  'request-id': 4,
   'response': {
     'clouds': {
       'cloud-aws': {
@@ -203,7 +202,6 @@ const clouds = {
 };
 
 const userCredentials = {
-  'request-id': 4,
   'response': {
     'results': [{
       'result': [
