@@ -269,7 +269,7 @@ class Client {
         }
 
         // Authentication succeeded.
-        const conn = new Connection(this._transport, this._facades, result);
+        const conn = new Connection(this._transport, this._facades, args, result);
         handler(null, conn);
       });
     });
@@ -425,16 +425,19 @@ class Transport {
     instantiated, the matching available facades as declared by Juju are
     instantiated and access to them is provided via the facades property of the
     connection.
+  @param {Object} loginArgs The arguments that were used to log into Juju with.
+    This will contain the discharged macaroon that's returned from Juju when
+    using an identity provider like Candid. It will also contain the user name
+    and password used to log in if using the standard login system.
   @param {Object} loginResult The result to the Juju login request. It includes
     information about the Juju server and available facades. This info is made
     available via the info property of the connection instance.
 */
 class Connection {
 
-  constructor(transport, facades, loginResult) {
+  constructor(transport, facades, loginArgs, loginResult) {
     // Store the transport used for sending messages to Juju.
     this.transport = transport;
-
     // Populate info.
     this.info = {
       controllerTag: loginResult.controllerTag,
@@ -443,6 +446,7 @@ class Connection {
       serverVersion: loginResult.serverVersion,
       servers: loginResult.servers,
       user: loginResult.userInfo,
+      macaroons: loginArgs.macaroons,
       getFacade: name => {
         return this.facades[name];
       }
