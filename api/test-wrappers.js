@@ -52,7 +52,7 @@ tap.test('wrapAllModelWatcher', t => {
       const watcherId = 42;
       allModelWatcher.next(watcherId, (err, result) => {
         t.equal(err, 'bad wolf');
-        t.deepEqual(result, {});
+        t.deepEqual(result, null);
         t.end();
       });
       // Reply to the next request.
@@ -86,7 +86,7 @@ tap.test('wrapAllModelWatcher', t => {
       const watcherId = 42;
       allModelWatcher.stop(watcherId, (err, result) => {
         t.equal(err, 'bad wolf');
-        t.deepEqual(result, {});
+        t.deepEqual(result, null);
         t.end();
       });
       // Reply to the next request.
@@ -140,7 +140,7 @@ tap.test('wrapAllWatcher', t => {
       const watcherId = 42;
       allWatcher.next(watcherId, (err, result) => {
         t.equal(err, 'bad wolf');
-        t.deepEqual(result, {});
+        t.deepEqual(result, null);
         t.end();
       });
       // Reply to the next request.
@@ -174,7 +174,7 @@ tap.test('wrapAllWatcher', t => {
       const watcherId = 42;
       allWatcher.stop(watcherId, (err, result) => {
         t.equal(err, 'bad wolf');
-        t.deepEqual(result, {});
+        t.deepEqual(result, null);
         t.end();
       });
       // Reply to the next request.
@@ -245,7 +245,7 @@ tap.test('wrapApplication', t => {
       }, (err, result) => {
         t.equal(
           err, 'addCharmAndDeploy requires the client facade to be loaded');
-        t.deepEqual(result, {});
+        t.deepEqual(result, null);
         t.end();
       });
     });
@@ -273,7 +273,7 @@ tap.test('wrapApplication', t => {
         series: 'xenial'
       }, (err, result) => {
         t.equal(err, 'bad wolf');
-        t.deepEqual(result, {});
+        t.deepEqual(result, null);
         t.end();
       });
     });
@@ -301,7 +301,7 @@ tap.test('wrapApplication', t => {
         series: 'xenial'
       }, (err, result) => {
         t.equal(err, 'bad wolf');
-        t.deepEqual(result, {});
+        t.deepEqual(result, null);
         t.end();
       });
     });
@@ -415,7 +415,7 @@ tap.test('wrapClient', t => {
       const client = conn.facades.client;
       client.watch((err, result) => {
         t.equal(err, 'bad wolf');
-        t.deepEqual(result, {});
+        t.deepEqual(result, null);
         t.end();
       });
       // Reply to the next request.
@@ -487,7 +487,7 @@ tap.test('wrapClient', t => {
       const client = conn.facades.client;
       client.addMachine({series: 'bionic'}, (err, result) => {
         t.equal(err, 'bad wolf');
-        t.deepEqual(result, {});
+        t.deepEqual(result, null);
         t.end();
       });
     });
@@ -601,7 +601,7 @@ tap.test('wrapController', t => {
       const controller = conn.facades.controller;
       controller.watch((err, result) => {
         t.equal(err, 'bad wolf');
-        t.deepEqual(result, {});
+        t.deepEqual(result, null);
         t.end();
       });
       // Reply to the next request.

@@ -30,6 +30,9 @@ class RecursiveV47 {
         {
           self: <github.com/juju/juju#recursivestruct again>
         }
+    @return {Promise} Rejected or resolved with the values normally passed to
+      the callback when the callback is not provided.
+      This allows this method to be awaited.
   */
   fullStatus(callback) {
     return new Promise((resolve, reject) => {

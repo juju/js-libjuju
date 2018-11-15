@@ -26,6 +26,9 @@ class PingerV42 {
 
     @param {Function} callback Called when the response from Juju is available,
       the callback receives an error or null if the operation succeeded.
+    @return {Promise} Rejected or resolved with the values normally passed to
+      the callback when the callback is not provided.
+      This allows this method to be awaited.
   */
   ping(callback) {
     return new Promise((resolve, reject) => {
@@ -51,6 +54,9 @@ class PingerV42 {
 
     @param {Function} callback Called when the response from Juju is available,
       the callback receives an error or null if the operation succeeded.
+    @return {Promise} Rejected or resolved with the values normally passed to
+      the callback when the callback is not provided.
+      This allows this method to be awaited.
   */
   stop(callback) {
     return new Promise((resolve, reject) => {
