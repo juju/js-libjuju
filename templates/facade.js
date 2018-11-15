@@ -26,9 +26,12 @@ class {{ name }}V{{ version }} {
     this._info = info;
     this.version = {{ version }};
 
-    {%- for method in methods %}
-    this.{{ method.name() }} = this.{{ method.name() }}.bind(this);
-    {%- endfor %}
+    for (let name in Object.getOwnPropertyNames(this.constructor.prototype)) {
+      const value = this[key];
+      if (name !== 'constructor' && typeof value === 'function') {
+        this[name] = value.bind(this);
+      }
+    }
   }
   {%- for method in methods %}
 
