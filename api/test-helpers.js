@@ -26,9 +26,10 @@ function makeConnection(t, options, callback) {
 
   @param {Object} t The test object.
   @param {Object} options The connect options.
-  @param {Object} loginResponse
-
-
+  @param {Object} loginResponse The response to be returned during the juju
+    login over the websocket. The object value provided here will be merged with
+    the default response allowing you to provide custom values for top level keys
+    like 'facades'.
   @param {Function} callback Called when the connection is ready passing the
     connection itself and the WebSocket instance.
 */
@@ -157,7 +158,7 @@ class WebSocket {
   /**
     Reply to requests from the WebSocket.
     @param {Object} resp - The response for the request in a JSON.stringify-able
-      format
+      format.
   */
   reply(resp) {
     if (resp['request-id'] === undefined) {
@@ -173,7 +174,7 @@ class WebSocket {
   /**
     Queue up a number of response values for upcoming requests.
     @param {Map} responses - The response values as a map where the Id is the
-      request-id and the value is the respons value. The response value does
+      request-id and the value is the response value. The response value does
       not need to include the `request-id` key.
   */
   queueResponses(responses) {
@@ -217,10 +218,10 @@ function requestEqual(t, got, want) {
 
 
 module.exports = {
-  BaseFacade: BaseFacade,
-  makeBakery: makeBakery,
-  makeConnection: makeConnection,
-  makeConnectionWithResponse: makeConnectionWithResponse,
-  makeWSClass: makeWSClass,
-  requestEqual: requestEqual
+  BaseFacade,
+  makeBakery,
+  makeConnection,
+  makeConnectionWithResponse,
+  makeWSClass,
+  requestEqual
 };
