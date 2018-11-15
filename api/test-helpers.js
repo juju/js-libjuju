@@ -3,7 +3,6 @@
 
 'use strict';
 
-
 const jujulib = require('./client.js');
 
 
@@ -17,6 +16,24 @@ const jujulib = require('./client.js');
     connection itself and the WebSocket instance.
 */
 function makeConnection(t, options, callback) {
+  makeConnectionWithResponse(t, options, {}, callback);
+}
+
+/**
+  Create a Juju connection with the given options and provide it to the given
+  callback. When logging in, the simulated server side automatically returns
+  the appropriate response.
+
+  @param {Object} t The test object.
+  @param {Object} options The connect options.
+  @param {Object} loginResponse The response to be returned during the juju
+    login over the websocket. The object value provided here will be merged with
+    the default response allowing you to provide custom values for top level keys
+    like 'facades'.
+  @param {Function} callback Called when the connection is ready passing the
+    connection itself and the WebSocket instance.
+*/
+function makeConnectionWithResponse(t, options, loginResponse, callback) {
   let ws;
   options.wsclass = makeWSClass(instance => {
     ws = instance;
@@ -30,14 +47,15 @@ function makeConnection(t, options, callback) {
       callback(conn, ws);
     });
     // Reply to the login request.
-    ws.reply({response: loginResponse});
+    const mergedLoginResponse = Object.assign(defaultLoginResponse, loginResponse);
+    ws.reply({response: mergedLoginResponse});
   });
   // Open the WebSocket connection.
   ws.open();
 }
 
 
-const loginResponse = {
+const defaultLoginResponse = {
   'controller-tag': 'controller-76b9c391-12be-47fc-8406-c31f2db68ee5',
   'model-tag': 'model-c36a62d0-a17a-484e-87bf-a09d1b403627',
   'server-version': '2.42.47',
@@ -98,6 +116,8 @@ class WebSocket {
     this.url = url;
     this.readyState = 0;
     this.requests = [];
+    this.responses = [];
+    this._queuedResponses = new Map();
 
     this.lastRequest = null;
     init(this);
@@ -124,16 +144,42 @@ class WebSocket {
   send(msg) {
     this.lastRequest = JSON.parse(msg);
     this.requests.push(this.lastRequest);
+    this._autoReply(this.lastRequest['request-id']);
   }
 
-  reply(resp) {
-    if (this.lastRequest === null) {
-      throw new Error('cannot reply as no requests were received');
+  _autoReply(requestId) {
+    if (this._queuedResponses.has(requestId)) {
+      const response = this._queuedResponses.get(requestId);
+      response['request-id'] = requestId;
+      this.reply(response);
     }
-    resp['request-id'] = this.lastRequest['request-id'];
+  }
+
+  /**
+    Reply to requests from the WebSocket.
+    @param {Object} resp - The response for the request in a JSON.stringify-able
+      format.
+  */
+  reply(resp) {
+    if (resp['request-id'] === undefined) {
+      if (this.lastRequest === null) {
+        throw new Error('cannot reply as no requests were received');
+      }
+      resp['request-id'] = this.lastRequest['request-id'];
+    }
+    this.responses.push(resp);
     this.onmessage({data: JSON.stringify(resp)});
   }
 
+  /**
+    Queue up a number of response values for upcoming requests.
+    @param {Map} responses - The response values as a map where the Id is the
+      request-id and the value is the response value. The response value does
+      not need to include the `request-id` key.
+  */
+  queueResponses(responses) {
+    this._queuedResponses = responses;
+  }
 };
 
 
@@ -172,9 +218,10 @@ function requestEqual(t, got, want) {
 
 
 module.exports = {
-  BaseFacade: BaseFacade,
-  makeBakery: makeBakery,
-  makeConnection: makeConnection,
-  makeWSClass: makeWSClass,
-  requestEqual: requestEqual
+  BaseFacade,
+  makeBakery,
+  makeConnection,
+  makeConnectionWithResponse,
+  makeWSClass,
+  requestEqual
 };
