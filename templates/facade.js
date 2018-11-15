@@ -25,6 +25,10 @@ class {{ name }}V{{ version }} {
     this._transport = transport;
     this._info = info;
     this.version = {{ version }};
+
+    {%- for method in methods %}
+    this.{{ method.name() }} = this.{{ method.name() }}.bind(this);
+    {%- endfor %}
   }
   {%- for method in methods %}
 
