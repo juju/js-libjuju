@@ -14,7 +14,7 @@
 
 'use strict';
 
-const {createAsyncHandler} = require('../transform.js');
+const {autoBind, createAsyncHandler} = require('../transform.js');
 
 /**
   {{ doc }}
@@ -26,12 +26,8 @@ class {{ name }}V{{ version }} {
     this._info = info;
     this.version = {{ version }};
 
-    for (let name in Object.getOwnPropertyNames(this.constructor.prototype)) {
-      const value = this[key];
-      if (name !== 'constructor' && typeof value === 'function') {
-        this[name] = value.bind(this);
-      }
-    }
+    // Automatically bind all methods to instances.
+    autoBind(this);
   }
   {%- for method in methods %}
 
