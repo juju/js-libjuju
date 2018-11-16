@@ -14,7 +14,7 @@
 
 'use strict';
 
-const {createAsyncHandler} = require('../transform.js');
+const {autoBind, createAsyncHandler} = require('../transform.js');
 
 /**
   {{ doc }}
@@ -25,6 +25,9 @@ class {{ name }}V{{ version }} {
     this._transport = transport;
     this._info = info;
     this.version = {{ version }};
+
+    // Automatically bind all methods to instances.
+    autoBind(this);
   }
   {%- for method in methods %}
 

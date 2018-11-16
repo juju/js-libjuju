@@ -6,7 +6,57 @@
 const tap = require('tap');
 const sinon = require('sinon');
 
-const {createAsyncHandler} = require('./transform.js');
+const {autoBind, createAsyncHandler} = require('./transform.js');
+
+
+tap.test('autoBind', t => {
+
+  // Set up a class used in tests.
+  class Question {
+    constructor() {
+      this._answer = 42;
+      autoBind(this);
+    }
+    answer() {
+      return this._answer;
+    }
+    self() {
+      return this;
+    }
+  }
+  // Extend the class in a way similar to what is done by facade wrappers.
+  Question.prototype.ext = function() {
+    return this.self().answer();
+  };
+
+  t.test('methods can be called from the instance', t => {
+    const q = new Question();
+    t.equal(q.answer(), 42);
+    t.equal(q.self(), q);
+    t.equal(q.ext(), 42);
+    t.end();
+  });
+
+  t.test('all methods are bound', t => {
+    const q = new Question();
+    const answer = q.answer;
+    const self = q.self;
+    const ext = q.ext;
+    t.equal(answer(), 42);
+    t.equal(self(), q);
+    t.equal(ext(), 42);
+    t.end();
+  });
+
+  t.test('it is not possible to rebind methods', t => {
+    const q = new Question();
+    const answer = q.answer.bind({_answer: 47})();
+    t.equal(answer, 42);
+    t.end();
+  });
+
+  t.end();
+});
 
 tap.test('createAsyncHandler', t => {
   t.test('returns a function and all arguments are optional', t => {

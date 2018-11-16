@@ -8,7 +8,7 @@
 
 'use strict';
 
-const {createAsyncHandler} = require('../transform.js');
+const {autoBind, createAsyncHandler} = require('../transform.js');
 
 /**
   Watch all!
@@ -19,6 +19,9 @@ class AllWatcherV1 {
     this._transport = transport;
     this._info = info;
     this.version = 1;
+
+    // Automatically bind all methods to instances.
+    autoBind(this);
   }
 
   /**
