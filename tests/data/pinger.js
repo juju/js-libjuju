@@ -8,7 +8,7 @@
 
 'use strict';
 
-const {createAsyncHandler} = require('../transform.js');
+const {autoBind, createAsyncHandler} = require('../transform.js');
 
 /**
   pinger describes a resource that can be pinged.
@@ -19,6 +19,9 @@ class PingerV42 {
     this._transport = transport;
     this._info = info;
     this.version = 42;
+
+    // Automatically bind all methods to instances.
+    autoBind(this);
   }
 
   /**

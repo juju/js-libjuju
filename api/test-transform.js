@@ -27,7 +27,7 @@ tap.test('autoBind', t => {
   // Extend the class in a way similar to what is done by facade wrappers.
   Question.prototype.ext = function() {
     return this.self().answer();
-  }
+  };
 
   t.test('methods can be called from the instance', t => {
     const q = new Question();

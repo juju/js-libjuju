@@ -8,7 +8,7 @@
 
 'use strict';
 
-const {createAsyncHandler} = require('../transform.js');
+const {autoBind, createAsyncHandler} = require('../transform.js');
 
 /**
   Annotations!
@@ -19,6 +19,9 @@ class AnnotationsV2 {
     this._transport = transport;
     this._info = info;
     this.version = 2;
+
+    // Automatically bind all methods to instances.
+    autoBind(this);
   }
 
   /**

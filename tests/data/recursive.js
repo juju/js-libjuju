@@ -8,7 +8,7 @@
 
 'use strict';
 
-const {createAsyncHandler} = require('../transform.js');
+const {autoBind, createAsyncHandler} = require('../transform.js');
 
 /**
   There is no documentation for this facade.
@@ -19,6 +19,9 @@ class RecursiveV47 {
     this._transport = transport;
     this._info = info;
     this.version = 47;
+
+    // Automatically bind all methods to instances.
+    autoBind(this);
   }
 
   /**
