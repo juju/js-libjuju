@@ -49,6 +49,7 @@ help:
 	@echo "make generate - generate API in api/facades and docs from schema"
 	@echo "make update-schema - update schema with current juju develop"
 	@echo "make test - run unit tests"
+	@echo "make test-js - run js unit tests"
 	@echo "make lint - run lint"
 	@echo "make check - run lint and tests on the resulting packages"
 	@echo "make clean - clean up the development environment"
