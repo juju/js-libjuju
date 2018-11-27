@@ -13,6 +13,7 @@ WebSocket API.
   - [connectAndLogin](#connectAndLogin)
   - [Client](#Client)
   - [Connection](#Connection)
+  - [generateModelURL](#generateModelURL)
   - [Transport](#Transport)
 - [Facades Reference](#facades-reference)
 - [Facade Helpers](#facade-helpers)
@@ -163,6 +164,20 @@ using the given credentials.
 Returns **[Promise][5]** This promise will be rejected if there is an error
 connecting, or resolved with a new {conn, logout} object. Note that the
 promise will not be resolved or rejected if a callback is provided.
+
+---
+### generateModelURL
+
+Returns a URL that is to be used to connect to a supplied model uuid on the
+supplied controller host.
+
+#### Parameters
+
+-   `controllerHost` **[String][1]** The url that's used to connect to the controller.
+    The `connectAndLogin` method handles redirections so the public URL is fine.
+-   `modelUUID` **[String][1]** The UUID of the model to connect to.
+
+Returns **[String][1]** The fully qualified wss URL to connect to the model.
 
 ---
 ### Client

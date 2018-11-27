@@ -183,6 +183,19 @@ function connectAndLogin(url, credentials, options, callback) {
 
 
 /**
+  Returns a URL that is to be used to connect to a supplied model uuid on the
+  supplied controller host.
+  @param {String} controllerHost The url that's used to connect to the controller.
+    The `connectAndLogin` method handles redirections so the public URL is fine.
+  @param {String} modelUUID The UUID of the model to connect to.
+  @returns {String} The fully qualified wss URL to connect to the model.
+*/
+function generateModelURL(controllerHost, modelUUID) {
+  return `wss://${controllerHost}/model/${modelUUID}/api`;
+}
+
+
+/**
   A Juju API client allowing for logging in and get access to facades.
 
   @param {Object} ws The WebSocket instance already connected to a Juju
@@ -499,4 +512,4 @@ function uncapitalize(text) {
   return prefix.toLowerCase() + text.slice(prefix.length);
 }
 
-module.exports = {Client, connect, connectAndLogin};
+module.exports = {Client, connect, connectAndLogin, generateModelURL};

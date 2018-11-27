@@ -470,7 +470,6 @@ tap.test('connect', t => {
   t.end();
 });
 
-
 tap.test('connectAndLogin', t => {
   let ws;
   const url = 'wss://1.2.3.4';
@@ -586,5 +585,15 @@ tap.test('connectAndLogin', t => {
     ws.reply({});
   });
 
+  t.end();
+});
+
+tap.test('generateModelURL', t => {
+  t.test('returns valid url', t => {
+    t.equal(
+      jujulib.generateModelURL('1.2.3.4:123', 'abc-123-4'),
+      'wss://1.2.3.4:123/model/abc-123-4/api');
+    t.end();
+  });
   t.end();
 });
