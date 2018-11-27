@@ -51,6 +51,7 @@ help:
 	@echo "make test - run unit tests"
 	@echo "make test-js - run js unit tests"
 	@echo "make lint - run lint"
+	@echo "make lint-js - run js lint"
 	@echo "make check - run lint and tests on the resulting packages"
 	@echo "make clean - clean up the development environment"
 	@echo "make release - create a new js release and upload it to npm"

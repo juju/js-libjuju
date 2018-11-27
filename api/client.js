@@ -183,15 +183,15 @@ function connectAndLogin(url, credentials, options, callback) {
 
 
 /**
-  Returns a url that is to be used to connect to a supplied model uuid on the
-  supplied controller url.
-  @param {String} controllerURL The url that's used to connect to the controller.
-    The `connect` method handles redirections so the public URL is fine.
+  Returns a URL that is to be used to connect to a supplied model uuid on the
+  supplied controller host.
+  @param {String} controllerHost The url that's used to connect to the controller.
+    The `connectAndLogin` method handles redirections so the public URL is fine.
   @param {String} modelUUID The UUID of the model to connect to.
-  @returns {String} The fully qualified wss url to connect to the model.
+  @returns {String} The fully qualified wss URL to connect to the model.
 */
-function generateModelURL(controllerURL, modelUUID) {
-  return `wss://${controllerURL}/model/${modelUUID}/api`;
+function generateModelURL(controllerHost, modelUUID) {
+  return `wss://${controllerHost}/model/${modelUUID}/api`;
 }
 
 
