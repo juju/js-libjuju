@@ -26,6 +26,7 @@ PUBLIC_API = (
     'connectAndLogin',
     'Client',
     'Connection',
+    'generateModelURL',
     'Transport',
 )
 
