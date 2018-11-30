@@ -56,7 +56,7 @@ function makeConnectionWithResponse(t, options, loginResponse, callback) {
 
 /**
   Generate a login response mixing in the supplied overrides to the
-  defaultLoginResponse.
+  default login response.
   @param {Object} loginResponse The response to be returned during the juju
     login over the WebSocket. The object value provided here will be merged with
     the default response allowing you to provide custom values for top level keys
