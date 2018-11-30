@@ -47,13 +47,25 @@ function makeConnectionWithResponse(t, options, loginResponse, callback) {
       callback(conn, ws);
     });
     // Reply to the login request.
-    const mergedLoginResponse = Object.assign(defaultLoginResponse, loginResponse);
-    ws.reply({response: mergedLoginResponse});
+    const generatedResponse = makeLoginResponse(loginResponse);
+    ws.reply(generatedResponse);
   });
   // Open the WebSocket connection.
   ws.open();
 }
 
+/**
+  Generate a login response mixing in the supplied overrides to the
+  default login response.
+  @param {Object} loginResponse The response to be returned during the juju
+    login over the WebSocket. The object value provided here will be merged with
+    the default response allowing you to provide custom values for top level keys
+    like 'facades'.
+  @return {Object} The merged login response.
+*/
+function makeLoginResponse(overrides) {
+  return {response: Object.assign(defaultLoginResponse, overrides)};
+}
 
 const defaultLoginResponse = {
   'controller-tag': 'controller-76b9c391-12be-47fc-8406-c31f2db68ee5',
@@ -222,6 +234,7 @@ module.exports = {
   makeBakery,
   makeConnection,
   makeConnectionWithResponse,
+  makeLoginResponse,
   makeWSClass,
   requestEqual
 };
