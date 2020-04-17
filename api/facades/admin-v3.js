@@ -114,7 +114,11 @@ class AdminV3 {
         if (resp) {
           result = {};
           // gopkg.in/macaroon.v2-unstable#Macaroon
-          result.dischargeRequired = resp['discharge-required'];
+          // The optional path for the dischargeRequired is to support both the
+          // old <2.8 and >2.8 versions of Juju without having to re-generate
+          // the whole facade. In an upcoming release we'll drop support for
+          // <2.8.
+          result.dischargeRequired = resp['discharge-required'] || resp['bakery-discharge-required'];
           result.dischargeRequiredError = resp['discharge-required-error'];
           result.servers = [];
           resp['servers'] = resp['servers'] || [];
