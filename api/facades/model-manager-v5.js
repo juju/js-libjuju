@@ -1061,6 +1061,7 @@ class ModelManagerV5 {
                 result.results[i].result.type = resp['results'][i]['result']['type'];
                 result.results[i].result.uuid = resp['results'][i]['result']['uuid'];
                 result.results[i].result.controllerUuid = resp['results'][i]['result']['controller-uuid'];
+                result.results[i].result.isController = resp['results'][i]['result']['is-controller'];
                 result.results[i].result.providerType = resp['results'][i]['result']['provider-type'];
                 result.results[i].result.defaultSeries = resp['results'][i]['result']['default-series'];
                 result.results[i].result.cloudTag = resp['results'][i]['result']['cloud-tag'];
