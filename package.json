@@ -16,10 +16,7 @@
     "api",
     "client"
   ],
-  "author": "Francesco Banconi <francesco.banconi@canonical.com>",
-  "contributors": [
-    "Jeff Pihach <jeff.pihach@canonical.com> (https://fromanegg.com)"
-  ],
+  "author": "Jeff Pihach <jeff.pihach@canonical.com> (https://fromanegg.com)",
   "license": "LGPL-3.0",
   "bugs": {
     "url": "https://github.com/juju/js-libjuju/issues"
@@ -30,6 +27,7 @@
     "documentation": "^8.1.2",
     "eslint": "^4.19.1",
     "macaroon-bakery": "^0.2.0",
+    "prettier": "^2.0.5",
     "sinon": "^6.1.5",
     "tap": "^12.0.1",
     "websocket": "^1.0.26",
