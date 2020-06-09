@@ -20,5 +20,4 @@ node_modules/
 package-lock.json
 schemas/build
 
-# js specific
-.nyc_output/
+generator/*.js
