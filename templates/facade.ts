@@ -5,11 +5,17 @@ export default (f: FacadeTemplate): string => {
   const lowerCaseFirstChar = (name: string): string =>
     name.charAt(0).toLowerCase() + name.slice(1);
 
+  const upperCaseFirstChar = (name: string): string =>
+    name.charAt(0).toUpperCase() + name.slice(1);
+
   const padString = (doc: string, indent: number): string => {
     const segments = doc.split('\n').map(segment =>
       segment.padStart(segment.length + indent));
     return segments.join('\n')
   }
+
+  const generateAvailableList = (availableTo) =>
+  padString(f.availableTo.map(env => upperCaseFirstChar(env.replace('-user', 's'))).join('\n'), 6);
 
   const generateInterface = (method) => {
     if (method.params) {
@@ -25,8 +31,8 @@ ${method.params.map(p => padString(type(p), 6)).join('\n')}
   return `
   /**
     Juju ${f.name} version ${f.version}.
-    ${f.availableOnControllers ? 'This API facade is available on controller connections.': ''}
-    ${f.availableOnModels ? 'This API facade is available on model connections.': ''}
+    This facade is available on:
+${generateAvailableList(f.availableTo)}
 
     NOTE: This file was generated on ${new Date(Date.now()).toUTCString()} using
     the Juju schema from  Juju ${f.jujuVersion} at the git SHA ${f.jujuGitSHA}.

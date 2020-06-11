@@ -31,10 +31,10 @@ interface Properties {
   properties: object;
 }
 
-const __dirname = resolve();
-
 const schemaLocation: string = process.env.SCHEMA;
-const schemaData: string = readFileSync(join(__dirname, schemaLocation), {
+const jujuVersion: string = process.env.JUJU_VERSION.replace(/\"/g, "");
+const jujuGitSHA: string = process.env.JUJU_GIT_SHA;
+const schemaData: string = readFileSync(resolve(schemaLocation), {
   encoding: "utf8",
 });
 
@@ -61,11 +61,10 @@ schema.forEach(async (facade) => {
     name: facade.Name,
     version: facade.Version,
     methods: generateMethods(expandedFacade),
-    availableOnControllers: isInController(facade.AvailableTo),
-    availableOnModels: isInModel(facade.AvailableTo),
+    availableTo: facade.AvailableTo,
     docBlock: facade.Description,
-    jujuVersion: "2.8.1-beta2", // TODO https://github.com/juju/juju/blob/2.8/snap/snapcraft.yaml#L2 or https://github.com/juju/juju/blob/develop/version/version.go#L24
-    jujuGitSHA: "dcdc98fdc1", // TODO git rev-parse --short HEAD
+    jujuVersion,
+    jujuGitSHA,
   };
 
   generateFile(facadeTemplateData);

@@ -2,8 +2,7 @@ export interface FacadeTemplate {
   name: string;
   version: number;
   methods: FacadeMethod[];
-  availableOnControllers: boolean;
-  availableOnModels: boolean;
+  availableTo: string[];
   docBlock: string;
   jujuVersion: string;
   jujuGitSHA: string;
