@@ -4,13 +4,16 @@ import { inspect } from "util";
 
 import RefParser from "@apidevtools/json-schema-ref-parser";
 
-import { facadeTemplate, facadeMethod } from "./interfaces";
+import { FacadeTemplate, FacadeMethod } from "./interfaces";
 import { isInController, isInModel } from "./categorizer.js";
+import facadeTemplateGenerator from "../templates/facade.js";
 
 interface Facade {
   Name: string;
   Version: number;
   Schema: FacadeSchema;
+  Description: string;
+  AvailableTo: string[];
 }
 
 interface FacadeSchema {
@@ -53,29 +56,33 @@ schema.forEach(async (facade) => {
   } catch (e) {
     console.error(e);
   }
-
-  const facadeTemplateData: facadeTemplate = {
+  // console.log(inspect(expandedFacade, true, null, true));
+  const facadeTemplateData: FacadeTemplate = {
     name: facade.Name,
     version: facade.Version,
     methods: generateMethods(expandedFacade),
-    availableOnControllers: isInController(facade.Name),
-    availableOnModels: isInModel(facade.Name),
-    docBlock: "", // Not currently available in the new Juju schema.
+    availableOnControllers: isInController(facade.AvailableTo),
+    availableOnModels: isInModel(facade.AvailableTo),
+    docBlock: facade.Description,
+    jujuVersion: "2.8.1-beta2", // TODO https://github.com/juju/juju/blob/2.8/snap/snapcraft.yaml#L2 or https://github.com/juju/juju/blob/develop/version/version.go#L24
+    jujuGitSHA: "dcdc98fdc1", // TODO git rev-parse --short HEAD
   };
+
+  generateFile(facadeTemplateData);
 });
 
 /**
   Generate the list of methods available for the facade. While the API may
   expose methods, the actual data sent over the wire is an RPC call.
 */
-function generateMethods(methods: SchemaProperties): facadeMethod[] {
-  const facadeMethods: facadeMethod[] = Object.entries(methods.properties).map(
+function generateMethods(methods: SchemaProperties): FacadeMethod[] {
+  const facadeMethods: FacadeMethod[] = Object.entries(methods.properties).map(
     (method) => {
       return {
         name: method[0],
         params: extractProperties("Params", method[1]),
         result: extractProperties("Result", method[1]),
-        docBlock: "", // Not currently available in the new Juju schema.
+        docBlock: method[1].description,
       };
     }
   );
@@ -95,4 +102,9 @@ function extractProperties(
     );
   }
   return segmentData;
+}
+
+function generateFile(facadeTemplateData: FacadeTemplate): void {
+  const output = facadeTemplateGenerator(facadeTemplateData);
+  console.log(output);
 }

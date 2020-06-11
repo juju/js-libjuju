@@ -1,15 +1,17 @@
-export interface facadeTemplate {
+export interface FacadeTemplate {
   name: string;
   version: number;
-  methods: facadeMethod[];
+  methods: FacadeMethod[];
   availableOnControllers: boolean;
   availableOnModels: boolean;
-  docBlock: string; // Not currently available in the new Juju schema.
+  docBlock: string;
+  jujuVersion: string;
+  jujuGitSHA: string;
 }
 
-export interface facadeMethod {
+export interface FacadeMethod {
   name: string;
   params: (string | object)[];
   result: (string | object)[];
-  docBlock: string; // Not currently available in the new Juju schema.
+  docBlock: string;
 }
