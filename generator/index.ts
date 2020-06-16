@@ -2,9 +2,6 @@ import { readFileSync } from "fs";
 import { resolve } from "path";
 import { inspect } from "util";
 
-import RefParser from "@apidevtools/json-schema-ref-parser";
-import clone from "clone-deep";
-
 import { FacadeTemplate, FacadeMethod } from "./interfaces";
 import facadeTemplateGenerator from "../templates/facade.js";
 
@@ -51,21 +48,11 @@ schema.forEach(async (facade) => {
     return;
   }
   console.log(inspect(facade.Schema, true, null, true));
-  let expandedFacade = null;
-  // We clone the definitions value here because the RefParser.dereference
-  // modifies the schema facade in place.
-  const definitions = clone(facade.Schema.definitions);
-  try {
-    expandedFacade = await RefParser.dereference(facade.Schema);
-  } catch (e) {
-    console.error(e);
-  }
-  // console.log(inspect(expandedFacade, true, null, true));
   const facadeTemplateData: FacadeTemplate = {
     name: facade.Name,
     version: facade.Version,
-    methods: generateMethods(expandedFacade),
-    interfaces: generateInterfaces(definitions),
+    methods: generateMethods(facade.Schema.properties),
+    interfaces: generateInterfaces(facade.Schema.definitions),
     availableTo: facade.AvailableTo,
     docBlock: facade.Description,
     jujuVersion,
@@ -75,23 +62,34 @@ schema.forEach(async (facade) => {
   generateFile(facadeTemplateData);
 });
 
+function getRefString(ref: string): string {
+  const parts = ref.split("/");
+  return parts[parts.length - 1];
+}
+
+function extractRef(method, segment: string): string {
+  return method.properties[segment]
+    ? getRefString(method.properties[segment]["$ref"])
+    : undefined;
+}
+
 /**
   Generate the list of methods available for the facade. While the API may
   expose methods, the actual data sent over the wire is an RPC call.
 */
 function generateMethods(methods: SchemaProperties): FacadeMethod[] {
   // console.log(inspect(methods, true, null, true));
-  const facadeMethods: FacadeMethod[] = Object.entries(methods.properties).map(
+  const facadeMethods: FacadeMethod[] = Object.entries(methods).map(
     (method) => {
       return {
         name: method[0],
-        params: extractProperties("Params", method[1]),
-        result: extractProperties("Result", method[1]),
+        params: extractRef(method[1], "Params"),
+        result: extractRef(method[1], "Result"),
         docBlock: method[1].description,
       };
     }
   );
-  // console.log(inspect(facadeMethods, true, null, true));
+  console.log(inspect(facadeMethods, true, null, true));
   return facadeMethods;
 }
 
@@ -103,13 +101,6 @@ function generateInterfaces(definitions: object): object[] {
       { properties: { "[key: string]": { type: "any" } } },
     ])
   );
-  // XXX remove me below
-  Object.entries(definitions).forEach((definition, index) => {
-    console.log(inspect(definition[1], true, null, true));
-    console.log(inspect(interfaces[index], true, null, true));
-  });
-  console.log(inspect(interfaces[interfaces.length - 1], true, null, true));
-
   return interfaces;
 }
 
@@ -122,11 +113,6 @@ function generateInterface(definition: object): object {
 
 function generateTypes(properties: object): object[] {
   // XXX Add optional flag based on value in 'required' key.
-
-  function getRefString(ref: string): string {
-    const parts = ref.split("/");
-    return parts[parts.length - 1];
-  }
 
   function extractType(values: object): string {
     if (values.type) {
@@ -158,24 +144,7 @@ function generateTypes(properties: object): object[] {
   });
 }
 
-function extractProperties(
-  segment: string,
-  methodData: any
-): (string | object)[] {
-  let segmentData = null;
-  if (methodData?.properties[segment]?.properties) {
-    segmentData = Object.entries(methodData.properties[segment].properties).map(
-      // XXX Go recursive to remove properties object nesting
-      (prop) => {
-        // console.log(prop);
-        return prop;
-      }
-    );
-  }
-  return segmentData;
-}
-
 function generateFile(facadeTemplateData: FacadeTemplate): void {
   const output = facadeTemplateGenerator(facadeTemplateData);
-  // console.log(output);
+  console.log(output);
 }
