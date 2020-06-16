@@ -1,11 +1,11 @@
 import { readFileSync } from "fs";
-import { resolve, join } from "path";
+import { resolve } from "path";
 import { inspect } from "util";
 
 import RefParser from "@apidevtools/json-schema-ref-parser";
+import clone from "clone-deep";
 
 import { FacadeTemplate, FacadeMethod } from "./interfaces";
-import { isInController, isInModel } from "./categorizer.js";
 import facadeTemplateGenerator from "../templates/facade.js";
 
 interface Facade {
@@ -50,7 +50,11 @@ schema.forEach(async (facade) => {
   if (facade.Name !== "Bundle") {
     return;
   }
+  console.log(inspect(facade.Schema, true, null, true));
   let expandedFacade = null;
+  // We clone the definitions value here because the RefParser.dereference
+  // modifies the schema facade in place.
+  const definitions = clone(facade.Schema.definitions);
   try {
     expandedFacade = await RefParser.dereference(facade.Schema);
   } catch (e) {
@@ -61,6 +65,7 @@ schema.forEach(async (facade) => {
     name: facade.Name,
     version: facade.Version,
     methods: generateMethods(expandedFacade),
+    interfaces: generateInterfaces(definitions),
     availableTo: facade.AvailableTo,
     docBlock: facade.Description,
     jujuVersion,
@@ -75,6 +80,7 @@ schema.forEach(async (facade) => {
   expose methods, the actual data sent over the wire is an RPC call.
 */
 function generateMethods(methods: SchemaProperties): FacadeMethod[] {
+  // console.log(inspect(methods, true, null, true));
   const facadeMethods: FacadeMethod[] = Object.entries(methods.properties).map(
     (method) => {
       return {
@@ -89,6 +95,69 @@ function generateMethods(methods: SchemaProperties): FacadeMethod[] {
   return facadeMethods;
 }
 
+function generateInterfaces(definitions: object): object[] {
+  const interfaces = Object.entries(definitions).map(generateInterface);
+  interfaces.push(
+    generateInterface([
+      "AdditionalProperties",
+      { properties: { "[key: string]": { type: "any" } } },
+    ])
+  );
+  // XXX remove me below
+  Object.entries(definitions).forEach((definition, index) => {
+    console.log(inspect(definition[1], true, null, true));
+    console.log(inspect(interfaces[index], true, null, true));
+  });
+  console.log(inspect(interfaces[interfaces.length - 1], true, null, true));
+
+  return interfaces;
+}
+
+function generateInterface(definition: object): object {
+  return {
+    name: definition[0],
+    types: generateTypes(definition[1].properties),
+  };
+}
+
+function generateTypes(properties: object): object[] {
+  // XXX Add optional flag based on value in 'required' key.
+
+  function getRefString(ref: string): string {
+    const parts = ref.split("/");
+    return parts[parts.length - 1];
+  }
+
+  function extractType(values: object): string {
+    if (values.type) {
+      if (values.patternProperties || values.additionalProperties) {
+        // There are additional unknown properties defined.
+        if (values.type === "object") {
+          return "AdditionalProperties";
+        }
+        return;
+      }
+      if (values.type === "array" && values.items) {
+        if (values.items["$ref"]) {
+          return `${getRefString(values.items["$ref"])}[]`;
+        }
+        return `${values.items.type}[]`;
+      }
+      return values.type;
+    }
+    if (values["$ref"]) {
+      return getRefString(values["$ref"]);
+    }
+    return "any"; // If we don't know the type then type it as any.
+  }
+  return Object.entries(properties).map((property) => {
+    return {
+      name: property[0],
+      type: extractType(property[1]),
+    };
+  });
+}
+
 function extractProperties(
   segment: string,
   methodData: any
@@ -97,7 +166,10 @@ function extractProperties(
   if (methodData?.properties[segment]?.properties) {
     segmentData = Object.entries(methodData.properties[segment].properties).map(
       // XXX Go recursive to remove properties object nesting
-      (prop) => prop
+      (prop) => {
+        // console.log(prop);
+        return prop;
+      }
     );
   }
   return segmentData;
@@ -105,5 +177,5 @@ function extractProperties(
 
 function generateFile(facadeTemplateData: FacadeTemplate): void {
   const output = facadeTemplateGenerator(facadeTemplateData);
-  console.log(output);
+  // console.log(output);
 }
