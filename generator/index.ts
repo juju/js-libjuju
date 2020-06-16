@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 import { resolve } from "path";
 import { inspect } from "util";
 
@@ -43,11 +43,6 @@ try {
 }
 
 schema.forEach(async (facade) => {
-  // XXX REMOVE ME
-  if (facade.Name !== "Bundle") {
-    return;
-  }
-  console.log(inspect(facade.Schema, true, null, true));
   const facadeTemplateData: FacadeTemplate = {
     name: facade.Name,
     version: facade.Version,
@@ -78,7 +73,6 @@ function extractRef(method, segment: string): string {
   expose methods, the actual data sent over the wire is an RPC call.
 */
 function generateMethods(methods: SchemaProperties): FacadeMethod[] {
-  // console.log(inspect(methods, true, null, true));
   const facadeMethods: FacadeMethod[] = Object.entries(methods).map(
     (method) => {
       return {
@@ -89,7 +83,6 @@ function generateMethods(methods: SchemaProperties): FacadeMethod[] {
       };
     }
   );
-  console.log(inspect(facadeMethods, true, null, true));
   return facadeMethods;
 }
 
@@ -145,6 +138,10 @@ function generateTypes(properties: object): object[] {
 }
 
 function generateFile(facadeTemplateData: FacadeTemplate): void {
+  // console.log(inspect(facadeTemplateData, true, null, true));
   const output = facadeTemplateGenerator(facadeTemplateData);
-  console.log(output);
+  writeFileSync(
+    `facades/${facadeTemplateData.name}-v${facadeTemplateData.version}.ts`,
+    output
+  );
 }

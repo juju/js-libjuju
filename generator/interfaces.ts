@@ -2,6 +2,7 @@ export interface FacadeTemplate {
   name: string;
   version: number;
   methods: FacadeMethod[];
+  interfaces: object[];
   availableTo: string[];
   docBlock: string;
   jujuVersion: string;
@@ -10,7 +11,7 @@ export interface FacadeTemplate {
 
 export interface FacadeMethod {
   name: string;
-  params: (string | object)[];
-  result: (string | object)[];
+  params: string;
+  result: string;
   docBlock: string;
 }

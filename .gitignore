@@ -21,3 +21,4 @@ package-lock.json
 schemas/build
 
 generator/*.js
+templates/facade.js

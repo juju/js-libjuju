@@ -26,12 +26,10 @@ export default (f: FacadeTemplate): string => {
     return `
 interface ${i.name} {
 ${i.types.map(t => padString(`${t.name}: ${t.type};`, 2)).join('\n')}
-}
-`
+}`
   }
 
-  return `
-/**
+  return `/**
   Juju ${f.name} version ${f.version}.
   This facade is available on:
 ${generateAvailableList(f.availableTo)}
@@ -43,7 +41,6 @@ ${generateAvailableList(f.availableTo)}
 
 import {autoBind, createAsyncHandler} from "../transform.js";
 import wrappers from "../wrappers.js";
-
 ${f.interfaces.map(generateInterface).join('\n')}
 
 /**
@@ -59,7 +56,6 @@ export default class ${f.name}V${f.version} {
     autoBind(this);
   }
   ${f.methods.map(m =>`
-
   /**
 ${padString(m.docBlock, 4)}
   */
