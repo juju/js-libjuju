@@ -63,7 +63,7 @@ function getRefString(ref: string): string {
 }
 
 function extractRef(method, segment: string): string {
-  return method.properties[segment]
+  return method.properties?.[segment]
     ? getRefString(method.properties[segment]["$ref"])
     : undefined;
 }

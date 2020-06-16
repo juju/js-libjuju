@@ -67,8 +67,9 @@ ${padString(m.docBlock, 4)}
         type: '${f.name}',
         request: '${m.name}',
         version: '${f.version}',
-        params: params
-      };
+      ${m.params ? `  params: params,
+      };`:
+`};`}
 
       let transform = null;
 
