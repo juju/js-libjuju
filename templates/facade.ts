@@ -63,7 +63,7 @@ export default class ${f.name}V${f.version} {
   /**
 ${padString(m.docBlock, 4)}
   */
-  ${lowerCaseFirstChar(m.name)}(${m.params ? `params: ${m.name}Params, callback?`: 'callback?'}) {
+  ${lowerCaseFirstChar(m.name)}(${m.params ? `params: ${m.params}` : ``}): Promise<${m.result}> {
     return new Promise((resolve, reject) => {
 
       const req = {
@@ -74,14 +74,13 @@ ${padString(m.docBlock, 4)}
       };
 
       let transform = null;
-      ${m.result ? `
+
       transform = resp => {
-        let result;
-        // XXX generate the result
-        return result;
+        // Perform any transformations if necessary.
+        return resp;
       };
-      `: ``}
-      const handler = createAsyncHandler(callback, resolve, reject, transform);
+
+      const handler = createAsyncHandler(resolve, reject, transform);
       this._transport.write(req, handler);
     });
   }
