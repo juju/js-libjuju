@@ -138,10 +138,10 @@ function generateTypes(properties: object): object[] {
 }
 
 function generateFile(facadeTemplateData: FacadeTemplate): void {
-  // console.log(inspect(facadeTemplateData, true, null, true));
-  const output = facadeTemplateGenerator(facadeTemplateData);
-  writeFileSync(
-    `facades/${facadeTemplateData.name}-v${facadeTemplateData.version}.ts`,
-    output
-  );
+  const output: string = facadeTemplateGenerator(facadeTemplateData);
+  const filename: string = `${facadeTemplateData.name}-v${facadeTemplateData.version}`
+    .replace(/\W+/g, "-")
+    .replace(/([a-z\d])([A-Z])/g, "$1-$2")
+    .toLowerCase();
+  writeFileSync(`facades/${filename}.ts`, output);
 }
