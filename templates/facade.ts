@@ -17,15 +17,17 @@ export default (f: FacadeTemplate): string => {
   const generateAvailableList = (availableTo) =>
   padString(f.availableTo.map(env => upperCaseFirstChar(env.replace('-user', 's'))).join('\n'), 6);
 
-  const generateInterface = (method) => {
-    if (method.params) {
-      const type = (p) => `${p[0]}: ${p[1].type};`;
-      return `
-    interface ${method.name}Params {
-${method.params.map(p => padString(type(p), 6)).join('\n')}
-    }`
-    }
-    return '';
+  interface Schema {
+    type: string;
+    items: object;
+  }
+
+  const generateInterface = (i) => {
+    return `
+  interface ${i.name} {
+${i.types.map(t => padString(`${t.name}: ${t.type};`, 4)).join('\n')}
+  }
+`
   }
 
   return `
@@ -42,6 +44,8 @@ ${generateAvailableList(f.availableTo)}
   import {autoBind, createAsyncHandler} from "../transform.js";
   import wrappers from "../wrappers.js";
 
+${f.interfaces.map(generateInterface).join('\n')}
+
   /**
 ${padString(f.docBlock, 4)}
   */
@@ -54,8 +58,7 @@ ${padString(f.docBlock, 4)}
       // Automatically bind all methods to instances.
       autoBind(this);
     }
-    ${f.methods.map(m => `
-${generateInterface(m)}
+    ${f.methods.map(m =>`
 
     /**
 ${padString(m.docBlock, 6)}
