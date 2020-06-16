@@ -9,6 +9,9 @@ export default (f: FacadeTemplate): string => {
     name.charAt(0).toUpperCase() + name.slice(1);
 
   const padString = (doc: string, indent: number): string => {
+    if (!doc) {
+      return '';
+    }
     const segments = doc.split('\n').map(segment =>
       segment.padStart(segment.length + indent));
     return segments.join('\n')
