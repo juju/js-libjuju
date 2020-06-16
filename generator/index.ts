@@ -122,6 +122,9 @@ function generateTypes(properties: object): object[] {
         }
         return `${values.items.type}[]`;
       }
+      if (values.type === "integer") {
+        return "number";
+      }
       return values.type;
     }
     if (values["$ref"]) {
