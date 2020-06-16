@@ -15,17 +15,18 @@ export default (f: FacadeTemplate): string => {
   }
 
   const generateAvailableList = (availableTo) =>
-  padString(f.availableTo.map(env => upperCaseFirstChar(env.replace('-user', 's'))).join('\n'), 6);
-
-  interface Schema {
-    type: string;
-    items: object;
-  }
+  padString(availableTo.map(env => upperCaseFirstChar(env.replace('-user', 's'))).join('\n'), 4);
 
   const generateInterface = (i) => {
     return `
 interface ${i.name} {
-${i.types.map(t => padString(`${t.name}: ${t.type};`, 2)).join('\n')}
+${i.types.map(t => {
+  let name: string = t.name;
+  if (name.indexOf('-') !== -1) {
+    name = `'${name}'`;
+  }
+return padString(`${name}: ${t.type};`, 2)
+}).join('\n')}
 }`
   }
 
