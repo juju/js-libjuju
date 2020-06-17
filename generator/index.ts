@@ -15,17 +15,56 @@ interface Facade {
 
 interface FacadeSchema {
   type: string;
+  properties: SchemaMethods;
+  definitions: SchemaDefinitions;
+}
+
+interface SchemaMethods {
+  [methodName: string]: SchemaMethod;
+}
+
+interface SchemaDefinitions {
+  [definitionName: string]: SchemaDefinition;
+}
+
+interface SchemaMethod {
+  type: string;
   properties: SchemaProperties;
-  definitions: object;
+  description: string;
+}
+
+interface SchemaDefinition {
+  type: string;
+  properties: DefinitionProperties;
+  additionalProperties?: boolean;
+  required?: string[];
+}
+
+interface DefinitionProperties {
+  [argumentName: string]: JSONSchemaType;
+}
+
+interface JSONSchemaType {
+  type: string;
+  items?: JSONSchemaType;
+  additionalProperties?: boolean;
+  patternProperties?: any;
+  $ref?: string;
 }
 
 interface SchemaProperties {
-  [any: string]: Properties;
+  Params: object;
+  Result: object;
 }
 
-interface Properties {
+interface InterfaceData {
+  name: string;
+  types: InterfaceType[];
+}
+
+interface InterfaceType {
+  name: string;
   type: string;
-  properties: object;
 }
 
 const schemaLocation: string = process.env.SCHEMA;
@@ -77,7 +116,7 @@ function extractType(method, segment: string): string {
   Generate the list of methods available for the facade. While the API may
   expose methods, the actual data sent over the wire is an RPC call.
 */
-function generateMethods(methods: SchemaProperties): FacadeMethod[] {
+function generateMethods(methods: SchemaMethods): FacadeMethod[] {
   const facadeMethods: FacadeMethod[] = Object.entries(methods).map(
     (method) => {
       return {
@@ -91,7 +130,7 @@ function generateMethods(methods: SchemaProperties): FacadeMethod[] {
   return facadeMethods;
 }
 
-function generateInterfaces(definitions: object): object[] {
+function generateInterfaces(definitions?: SchemaDefinitions): InterfaceData[] {
   if (!definitions) {
     return [];
   }
@@ -99,14 +138,16 @@ function generateInterfaces(definitions: object): object[] {
   interfaces.push(
     generateInterface([
       "AdditionalProperties",
-      { properties: { "[key: string]": { type: "any" } } },
+      { properties: { "[key: string]": { type: "any" } }, type: "object" },
     ])
   );
   return interfaces;
 }
 
-function generateInterface(definition: object): object {
-  let types = null;
+function generateInterface(
+  definition: [string, SchemaDefinition]
+): InterfaceData {
+  let types: InterfaceType[];
   if (definition[1].properties) {
     types = generateTypes(definition[1].properties);
   } else {
@@ -123,10 +164,10 @@ function generateInterface(definition: object): object {
   };
 }
 
-function generateTypes(properties: object): object[] {
+function generateTypes(properties: DefinitionProperties): InterfaceType[] {
   // XXX Add optional flag based on value in 'required' key.
 
-  function extractType(values: object): string {
+  function extractType(values: JSONSchemaType): string {
     if (values.type) {
       if (values.patternProperties || values.additionalProperties) {
         // There are additional unknown properties defined.
