@@ -170,7 +170,6 @@ function generateTypes(
   properties: DefinitionProperties,
   required: string[]
 ): InterfaceType[] {
-  // XXX Add optional flag based on value in 'required' key.
   function extractType(values: JSONSchemaType): string {
     if (values.type) {
       if (values.patternProperties || values.additionalProperties) {
