@@ -28,7 +28,8 @@ ${i.types.map(t => {
   if (name.indexOf('-') !== -1) {
     name = `'${name}'`;
   }
-return padString(`${name}: ${t.type};`, 2)
+  const optional = !t.required ? '?' : '';
+return padString(`${name}${optional}: ${t.type};`, 2)
 }).join('\n')}
 }`
   }

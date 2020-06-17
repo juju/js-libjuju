@@ -65,6 +65,7 @@ interface InterfaceData {
 interface InterfaceType {
   name: string;
   type: string;
+  required: boolean;
 }
 
 const schemaLocation: string = process.env.SCHEMA;
@@ -149,12 +150,13 @@ function generateInterface(
 ): InterfaceData {
   let types: InterfaceType[];
   if (definition[1].properties) {
-    types = generateTypes(definition[1].properties);
+    types = generateTypes(definition[1].properties, definition[1].required);
   } else {
     types = [
       {
         name: "[key: string]",
         type: "AdditionalProperties",
+        required: false,
       },
     ];
   }
@@ -164,9 +166,11 @@ function generateInterface(
   };
 }
 
-function generateTypes(properties: DefinitionProperties): InterfaceType[] {
+function generateTypes(
+  properties: DefinitionProperties,
+  required: string[]
+): InterfaceType[] {
   // XXX Add optional flag based on value in 'required' key.
-
   function extractType(values: JSONSchemaType): string {
     if (values.type) {
       if (values.patternProperties || values.additionalProperties) {
@@ -192,10 +196,21 @@ function generateTypes(properties: DefinitionProperties): InterfaceType[] {
     }
     return "any"; // If we don't know the type then type it as any.
   }
+
+  function isRequired(requiredArgs: string[], propertyName: string): boolean {
+    if (!requiredArgs) {
+      // If requiredArgs doesn't exist then it's likely that this is a
+      // response interface.
+      return true;
+    }
+    return requiredArgs.includes(propertyName);
+  }
+
   return Object.entries(properties).map((property) => {
     return {
       name: property[0],
       type: extractType(property[1]),
+      required: isRequired(required, property[0]),
     };
   });
 }
