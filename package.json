@@ -8,7 +8,7 @@
     "build": "tsc -t ES2020 generator/index.ts",
     "lint": "eslint api/",
     "test": "tap 'api/test-!(helpers)*.js'",
-    "watch": "tsc --watch -t ES2019 --moduleResolution Node --allowSyntheticDefaultImports generator/index.ts",
+    "watch": "tsc --watch -t ES2019 --moduleResolution Node --allowSyntheticDefaultImports --sourceMap generator/index.ts",
     "generate": "./generate.sh"
   },
   "repository": {
