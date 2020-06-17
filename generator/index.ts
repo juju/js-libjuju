@@ -62,10 +62,15 @@ function getRefString(ref: string): string {
   return parts[parts.length - 1];
 }
 
-function extractRef(method, segment: string): string {
-  return method.properties?.[segment]
-    ? getRefString(method.properties[segment]["$ref"])
-    : undefined;
+function extractType(method, segment: string): string {
+  if (method.properties?.[segment]) {
+    if (method.properties[segment]["$ref"]) {
+      return getRefString(method.properties[segment]["$ref"]);
+    } else if (method.properties[segment].type) {
+      return method.properties[segment].type;
+    }
+  }
+  return undefined;
 }
 
 /**
@@ -77,8 +82,8 @@ function generateMethods(methods: SchemaProperties): FacadeMethod[] {
     (method) => {
       return {
         name: method[0],
-        params: extractRef(method[1], "Params"),
-        result: extractRef(method[1], "Result"),
+        params: extractType(method[1], "Params"),
+        result: extractType(method[1], "Result"),
         docBlock: method[1].description,
       };
     }
