@@ -92,6 +92,9 @@ function generateMethods(methods: SchemaProperties): FacadeMethod[] {
 }
 
 function generateInterfaces(definitions: object): object[] {
+  if (!definitions) {
+    return [];
+  }
   const interfaces = Object.entries(definitions).map(generateInterface);
   interfaces.push(
     generateInterface([
@@ -103,9 +106,20 @@ function generateInterfaces(definitions: object): object[] {
 }
 
 function generateInterface(definition: object): object {
+  let types = null;
+  if (definition[1].properties) {
+    types = generateTypes(definition[1].properties);
+  } else {
+    types = [
+      {
+        name: "[key: string]",
+        type: "AdditionalProperties",
+      },
+    ];
+  }
   return {
     name: definition[0],
-    types: generateTypes(definition[1].properties),
+    types,
   };
 }
 
