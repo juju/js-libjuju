@@ -1,94 +1,76 @@
-// Copyright 2018 Canonical Ltd.
+// Copyright 2020 Canonical Ltd.
 // Licensed under the LGPLv3, see LICENCE.txt file for details.
 
 // Allow connecting endpoints using self-signed certs.
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-
-const WebSocket = require('websocket').w3cwebsocket;
-const bakery = require('macaroon-bakery');
+import websocket from "websocket";
+import bakery from "macaroon-bakery";
 // Bakery uses btoa and MLHttpRequest.
-global.btoa = require('btoa');
-global.XMLHttpRequest = require('xhr2');
+import btoa from "btoa";
+global.btoa = btoa;
+import xhr2 from "xhr2";
+global.XMLHttpRequest = xhr2;
 
-const jujulib = require('../api/client.js');
+import * as jujulib from "../api/client.js";
+import modelManagerv8 from "../api/facades/model-manager-v8.js";
 
-
-const url = 'wss://jimm.jujucharms.com/api';
 const options = {
-    debug: true,
-    facades: [require('../api/facades/model-manager-v4.js')],
-    wsclass: WebSocket,
-    bakery: new bakery.Bakery({
-        visitPage: resp => {
-            console.log('visit this URL to login:', resp.Info.VisitURL);
-        }
-    })
+  debug: true,
+  facades: [modelManagerv8],
+  wsclass: websocket.w3cwebsocket,
+  bakery: new bakery.Bakery({
+    visitPage: (resp) => {
+      console.log("visit this URL to login:", resp.Info.VisitURL);
+    },
+  }),
 };
+const url = "wss://jimm.jujucharms.com/api";
 
-
-jujulib.connect(url, options, (err, juju) => {
-  if (err) {
-    console.log('cannot connect to controller:', err);
-    process.exit(1);
-  }
-  juju.login({}, (err, conn) => {
-    if (err) {
-      console.log('cannot login to controller:', err);
-      process.exit(1);
-    }
-    console.log('logged in to controller');
-
+async function loginWithBakery() {
+  try {
+    const juju = await jujulib.connect(url, options);
+    const conn = await juju.login({});
     // List models.
     const modelManager = conn.facades.modelManager;
-    modelManager.listModels({tag: conn.info.identity}, (err, result) => {
-      if (err) {
-        console.log('cannot list models:', err);
+    const models = await modelManager.listModels({ tag: conn.info.identity });
+    // Connect to the first model found.
+    const model = models["user-models"][0].model;
+    console.log("connecting to model", model.name);
+    let modelURL = `wss://jimm.jujucharms.com/model/${model.uuid}/api`;
+
+    try {
+      const juju = await jujulib.connect(modelURL, options);
+      await juju.login({});
+    } catch (error) {
+      if (!juju.isRedirectionError(error)) {
+        console.log("cannot login to model:", error);
         process.exit(1);
       }
+      // Redirect to the real model.
+      juju.logout();
 
-      // Connect to the first model found.
-      const model = result.userModels[0].model;
-      console.log('connecting to model', model.name);
-      let modelURL = `wss://jimm.jujucharms.com/model/${model.uuid}/api`;
-      jujulib.connect(modelURL, options, (err, juju) => {
-        if (err) {
-          console.log('cannot connect to model:', err);
-          process.exit(1);
-        }
-        juju.login({}, (err, conn) => {
-          if (err) {
-            if (!juju.isRedirectionError(err)) {
-              console.log('cannot login to model:', err);
-              process.exit(1);
-            }
-            // Redirect to the real model.
-            juju.logout();
+      error.servers.forEach(async (srv) => {
+        if (srv.type === "hostname" && srv.scope === "public") {
+          // This is a public server with a dns-name, connect to it.
+          const modelURL = srv.url(model.uuid);
 
-            err.servers.forEach(srv => {
-              if (srv.type === 'hostname' && srv.scope === 'public') {
-                // This is a public server with a dns-name, connect to it.
-                const modelURL = srv.url(model.uuid);
-                jujulib.connect(modelURL, options, (err, juju) => {
-                  if (err) {
-                    console.log('cannot connect to model:', err);
-                    process.exit(1);
-                  }
-                  juju.login({}, (err, conn) => {
-                    if (err) {
-                      console.log('cannot login to model:', err);
-                      process.exit(1);
-                    }
-                    console.log('connected to model using', modelURL);
-                    process.exit(0);
-                  });
-                });
-              }
-            });
+          try {
+            const juju = await jujulib.connect(modelURL, options);
+            await juju.login({});
+            console.log("connected to model using", modelURL);
+            process.exit(0);
+          } catch (error) {
+            console.log("cannot login to model:", error);
+            process.exit(1);
           }
-          console.log('logged in to model without redirection');
-        });
+        }
       });
-    });
-  });
-});
+    }
+  } catch (error) {
+    console.log("unable to connect:", error);
+    process.exit(1);
+  }
+}
+
+loginWithBakery();
