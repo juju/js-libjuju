@@ -1,4 +1,4 @@
-// Copyright 2018 Canonical Ltd.
+// Copyright 2020 Canonical Ltd.
 // Licensed under the LGPLv3, see LICENCE.txt file for details.
 
 /**
@@ -19,9 +19,9 @@
   when automatically generating the documentation.
 */
 
-'use strict';
+"use strict";
 
-const {createAsyncHandler} = require('./transform.js');
+import { createAsyncHandler } from "./transform.js";
 
 /**
   Decorate the Admin facade class.
@@ -30,7 +30,6 @@ const {createAsyncHandler} = require('./transform.js');
   @returns {Object} The decorated class.
 */
 function wrapAdmin(cls) {
-
   /**
     RedirectInfo returns redirected host information for the model. In Juju it
     always returns an error because the Juju controller does not multiplex
@@ -48,48 +47,46 @@ function wrapAdmin(cls) {
           },
           caCert: string
         }
-    @return {Promise} Rejected or resolved with the values normally passed to
-      the callback when the callback is not provided.
-      This allows this method to be awaited.
   */
-  cls.prototype.redirectInfo = function(callback) {
+  cls.prototype.redirectInfo = function () {
     // This is overridden as the auto-generated version does not work with
     // current JAAS, because the servers passed to the callback do not
     // correspond to the ones declared in the API.
     return new Promise((resolve, reject) => {
       // Prepare the request to the Juju API.
       const req = {
-        type: 'Admin',
-        request: 'RedirectInfo',
+        type: "Admin",
+        request: "RedirectInfo",
         version: this.version,
-        params: {}
+        params: {},
       };
-      // Allow for js-friendly responses.
-      const transform = resp => {
+
+      const transform = (resp) => {
+        // Flatten response to make it easier to work with.
         const servers = [];
-        resp.servers.forEach(srvs => {
-          srvs.forEach(srv => {
+        resp.servers.forEach((srvs) => {
+          srvs.forEach((srv) => {
             const server = {
               value: srv.value,
               port: srv.port,
               type: srv.type,
               scope: srv.scope,
-              url: uuidOrURL => {
+              url: (uuidOrURL) => {
                 let uuid = uuidOrURL;
-                if (uuid.startsWith('wss://') || uuid.startsWith('ws://')) {
-                  const parts = uuid.split('/');
+                if (uuid.startsWith("wss://") || uuid.startsWith("ws://")) {
+                  const parts = uuid.split("/");
                   uuid = parts[parts.length - 2];
                 }
                 return `wss://${srv.value}:${srv.port}/model/${uuid}/api`;
-              }
+              },
             };
             servers.push(server);
           });
         });
-        return {caCert: resp['ca-cert'], servers: servers};
+        return { "ca-cert": resp["ca-cert"], servers };
       };
 
-      const handler = createAsyncHandler(callback, resolve, reject, transform);
+      const handler = createAsyncHandler(null, resolve, reject, transform);
       // Send the request to the server.
       this._transport.write(req, handler);
     });
@@ -98,7 +95,6 @@ function wrapAdmin(cls) {
   return cls;
 }
 
-
 /**
   Decorate the AllModelWatcher facade class.
 
@@ -106,7 +102,6 @@ function wrapAdmin(cls) {
   @returns {Object} The decorated class.
 */
 function wrapAllModelWatcher(cls) {
-
   /**
     Ask for next watcher messages corresponding to changes in the models.
 
@@ -122,22 +117,22 @@ function wrapAllModelWatcher(cls) {
       the callback when the callback is not provided.
       This allows this method to be awaited.
   */
-  cls.prototype.next = function(watcherId, callback) {
+  cls.prototype.next = function (watcherId, callback) {
     // This method is overridden as the auto-generated one does not include the
     // watcherId parameter, as a result of the peculiarity of the call, which
     // does not assume the id to be in parameters, but as a top level field.
     return new Promise((resolve, reject) => {
       // Prepare the request to the Juju API.
       const req = {
-        type: 'AllModelWatcher',
-        request: 'Next',
+        type: "AllModelWatcher",
+        request: "Next",
         version: this.version,
-        id: watcherId
+        id: watcherId,
       };
       // Allow for js-friendly responses.
-      const transform = resp => {
+      const transform = (resp) => {
         resp = resp || {};
-        return {deltas: resp.deltas || []};
+        return { deltas: resp.deltas || [] };
       };
       const handler = createAsyncHandler(callback, resolve, reject, transform);
       // Send the request to the server.
@@ -156,17 +151,17 @@ function wrapAllModelWatcher(cls) {
       the callback when the callback is not provided.
       This allows this method to be awaited.
   */
-  cls.prototype.stop = function(watcherId, callback) {
+  cls.prototype.stop = function (watcherId, callback) {
     // This method is overridden as the auto-generated one does not include the
     // watcherId parameter, as a result of the peculiarity of the call, which
     // does not assume the id to be in parameters, but as a top level field.
     return new Promise((resolve, reject) => {
       // Prepare the request to the Juju API.
       const req = {
-        type: 'AllModelWatcher',
-        request: 'Stop',
+        type: "AllModelWatcher",
+        request: "Stop",
         version: this.version,
-        id: watcherId
+        id: watcherId,
       };
       const handler = createAsyncHandler(callback, resolve, reject, null);
       // Send the request to the server.
@@ -177,7 +172,6 @@ function wrapAllModelWatcher(cls) {
   return cls;
 }
 
-
 /**
   Decorate the AllWatcher facade class.
 
@@ -185,7 +179,6 @@ function wrapAllModelWatcher(cls) {
   @returns {Object} The decorated class.
 */
 function wrapAllWatcher(cls) {
-
   /**
     Ask for next watcher messages corresponding to changes in the model.
 
@@ -201,22 +194,22 @@ function wrapAllWatcher(cls) {
       the callback when the callback is not provided.
       This allows this method to be awaited.
   */
-  cls.prototype.next = function(watcherId, callback) {
+  cls.prototype.next = function (watcherId, callback) {
     // This method is overridden as the auto-generated one does not include the
     // watcherId parameter, as a result of the peculiarity of the call, which
     // does not assume the id to be in parameters, but as a top level field.
     return new Promise((resolve, reject) => {
       // Prepare the request to the Juju API.
       const req = {
-        type: 'AllWatcher',
-        request: 'Next',
+        type: "AllWatcher",
+        request: "Next",
         version: this.version,
-        id: watcherId
+        id: watcherId,
       };
       // Allow for js-friendly responses.
-      const transform = resp => {
+      const transform = (resp) => {
         resp = resp || {};
-        return {deltas: resp.deltas || []};
+        return { deltas: resp.deltas || [] };
       };
       const handler = createAsyncHandler(callback, resolve, reject, transform);
       // Send the request to the server.
@@ -235,17 +228,17 @@ function wrapAllWatcher(cls) {
       the callback when the callback is not provided.
       This allows this method to be awaited.
   */
-  cls.prototype.stop = function(watcherId, callback) {
+  cls.prototype.stop = function (watcherId, callback) {
     // This method is overridden as the auto-generated one does not include the
     // watcherId parameter, as a result of the peculiarity of the call, which
     // does not assume the id to be in parameters, but as a top level field.
     return new Promise((resolve, reject) => {
       // Prepare the request to the Juju API.
       const req = {
-        type: 'AllWatcher',
-        request: 'Stop',
+        type: "AllWatcher",
+        request: "Stop",
         version: this.version,
-        id: watcherId
+        id: watcherId,
       };
       const handler = createAsyncHandler(callback, resolve, reject, null);
       // Send the request to the server.
@@ -256,99 +249,6 @@ function wrapAllWatcher(cls) {
   return cls;
 }
 
-
-/**
-  Decorate the Application facade class.
-
-  @param {Object} cls The auto-generated class.
-  @returns {Object} The decorated class.
-*/
-function wrapApplication(cls) {
-
-  /**
-    Add a charm store charm to the model and then deploy the application.
-
-    @param {Object} args Arguments to be provided to Juju, as an object like
-      the following:
-        {
-          charmUrl: string,
-          application: string,
-          series: string,
-          channel: string,
-          numUnits: int,
-          config: map[string]string,
-          configYaml: string,
-          constraints: {
-            arch: string,
-            container: string,
-            cores: int,
-            cpuPower: int,
-            mem: int,
-            rootDisk: int,
-            tags: []string,
-            instanceType: string,
-            spaces: []string,
-            virtType: string
-          },
-          placement: []{
-            scope: string,
-            directive: string
-          },
-          policy: string,
-          storage: map[string]{
-            pool: string,
-            size: int,
-            count: int
-          },
-          attachStorage: []string,
-          endpointBindings: map[string]string,
-          resources: map[string]string
-        }
-      The charmUrl, application and series (for multi-series charm) arguments
-      are required.
-    @param {Function} callback Called when the response from Juju is available,
-      the callback receives an error and the result. If there are no connection
-      errors, the deployment result is provided as an object like:
-        {
-          error: {
-            message: string,
-            code: string,
-          }
-        }
-    @return {Promise} Rejected or resolved with the values normally passed to
-      the callback when the callback is not provided.
-      This allows this method to be awaited.
-  */
-  cls.prototype.addCharmAndDeploy = function(args, callback) {
-    return new Promise((resolve, reject) => {
-      const handler = createAsyncHandler(callback, resolve, reject, null);
-      const client = this._info.getFacade('client');
-      if (!client) {
-        handler('addCharmAndDeploy requires the client facade to be loaded', {});
-        return;
-      }
-      // Add the charm.
-      client.addCharm({url: args.charmUrl, channel: args.channel}, err => {
-        if (err) {
-          handler(err, {});
-          return;
-        }
-        // Deploy the application.
-        this.deploy({applications: [args]}, (err, result) => {
-          if (err) {
-            handler(err, {});
-            return;
-          }
-          handler(null, result.results[0]);
-        });
-      });
-    });
-  };
-
-  return cls;
-}
-
-
 /**
   Decorate the Client facade class.
 
@@ -356,92 +256,6 @@ function wrapApplication(cls) {
   @returns {Object} The decorated class.
 */
 function wrapClient(cls) {
-
-  /**
-    Add a new machine to the model.
-
-    @param {Object} args Arguments fot creating a machine, like the following:
-        {
-          series: string,
-          constraints: {
-            arch: string,
-            container: string,
-            cores: int,
-            cpuPower: int,
-            mem: int,
-            rootDisk: int,
-            tags: []string,
-            instanceType: string,
-            spaces: []string,
-            virtType: string
-          },
-          jobs: []string,
-          disks: []{
-            pool: string,
-            size: int,
-            count: int
-          },
-          placement: {
-            scope: string,
-            directive: string
-          },
-          parentId: string,
-          containerType: string,
-          instanceId: string,
-          nonce: string,
-          hardwareCharacteristics: {
-            arch: string,
-            mem: int,
-            rootDisk: int,
-            cpuCores: int,
-            cpuPower: int,
-            tags: []string,
-            availabilityZone: string
-          },
-          addresses: []{
-            value: string,
-            type: string,
-            scope: string,
-            spaceName: string
-          }
-        }
-    @param {Function} callback Called when the response from Juju is available,
-      the callback receives an error and the result. If there are no errors,
-      the result is provided as an object like the following:
-        {
-          machine: string,
-          error: {
-            message: string,
-            code: string,
-            info: {
-              macaroon: anything,
-              macaroonPath: string
-            }
-          }
-        }
-    @return {Promise} Rejected or resolved with the values normally passed to
-      the callback when the callback is not provided.
-      This allows this method to be awaited.
-  */
-  cls.prototype.addMachine = function(args, callback) {
-    return new Promise((resolve, reject) => {
-      const handler = createAsyncHandler(callback, resolve, reject, null);
-      if (!args.jobs) {
-        args.jobs = ['JobHostUnits'];
-      }
-      this.addMachines({params: [args]}, (err, result) => {
-        if (!callback) {
-          return;
-        }
-        if (err) {
-          handler(err, {});
-          return;
-        }
-        handler(null, result.machines[0]);
-      });
-    });
-  };
-
   /**
     Watch changes in the current model, and call the provided callback every
     time changes arrive.
@@ -458,52 +272,51 @@ function wrapClient(cls) {
     @returns {Object} A handle that can be used to stop watching, via its stop
       method which can be provided a callback receiving an error.
   */
- cls.prototype.watch = function(callback) {
-  if (!callback) {
-    callback = () => {};
-  }
-  // Check that the AllWatcher facade is loaded, as we will use it.
-  const allWatcher = this._info.getFacade('allWatcher');
-  if (!allWatcher) {
-    callback('watch requires the allWatcher facade to be loaded', {});
-    return;
-  }
-  let watcherId;
-  // Define a function to repeatedly ask for next changes.
-  const next = callback => {
-    if (!watcherId) {
+  cls.prototype.watch = function (callback) {
+    if (!callback) {
+      callback = () => {};
+    }
+    // Check that the AllWatcher facade is loaded, as we will use it.
+    const allWatcher = this._info.getFacade("allWatcher");
+    if (!allWatcher) {
+      callback("watch requires the allWatcher facade to be loaded", {});
       return;
     }
-    allWatcher.next(watcherId, (err, result) => {
-      callback(err, result);
-      next(callback);
-    });
-  };
-  // Start watching.
-  this.watchAll((err, result) => {
-    if (err) {
-      callback(err, {});
-      return;
-    }
-    watcherId = result.watcherId;
-    next(callback);
-  });
-  // Return the handle allowing for stopping the watcher.
-  return {
-    stop: callback => {
-      if (watcherId === undefined) {
-        callback('watcher is not running', {});
+    let watcherId;
+    // Define a function to repeatedly ask for next changes.
+    const next = (callback) => {
+      if (!watcherId) {
         return;
       }
-      allWatcher.stop(watcherId, callback);
-      watcherId = undefined;
-    }
+      allWatcher.next(watcherId, (err, result) => {
+        callback(err, result);
+        next(callback);
+      });
+    };
+    // Start watching.
+    this.watchAll((err, result) => {
+      if (err) {
+        callback(err, {});
+        return;
+      }
+      watcherId = result.watcherId;
+      next(callback);
+    });
+    // Return the handle allowing for stopping the watcher.
+    return {
+      stop: (callback) => {
+        if (watcherId === undefined) {
+          callback("watcher is not running", {});
+          return;
+        }
+        allWatcher.stop(watcherId, callback);
+        watcherId = undefined;
+      },
+    };
   };
-};
 
   return cls;
 }
-
 
 /**
   Decorate the Controller facade class.
@@ -512,7 +325,6 @@ function wrapClient(cls) {
   @returns {Object} The decorated class.
 */
 function wrapController(cls) {
-
   /**
     Watch changes in the all models on this controller, and call the provided
     callback every time changes arrive.
@@ -529,19 +341,19 @@ function wrapController(cls) {
     @returns {Object} A handle that can be used to stop watching, via its stop
       method which can be provided a callback receiving an error.
   */
-  cls.prototype.watch = function(callback) {
+  cls.prototype.watch = function (callback) {
     if (!callback) {
       callback = () => {};
     }
     // Check that the AllModelWatcher facade is loaded, as we will use it.
-    const allModelWatcher = this._info.getFacade('allModelWatcher');
+    const allModelWatcher = this._info.getFacade("allModelWatcher");
     if (!allModelWatcher) {
-      callback('watch requires the allModelWatcher facade to be loaded', {});
+      callback("watch requires the allModelWatcher facade to be loaded", {});
       return;
     }
     let watcherId;
     // Define a function to repeatedly ask for next changes.
-    const next = callback => {
+    const next = (callback) => {
       if (!watcherId) {
         return;
       }
@@ -561,20 +373,19 @@ function wrapController(cls) {
     });
     // Return the handle allowing for stopping the watcher.
     return {
-      stop: callback => {
+      stop: (callback) => {
         if (watcherId === undefined) {
-          callback('watcher is not running', {});
+          callback("watcher is not running", {});
           return;
         }
         allModelWatcher.stop(watcherId, callback);
         watcherId = undefined;
-      }
+      },
     };
   };
 
   return cls;
 }
-
 
 /**
   Decorate the Pinger facade class.
@@ -583,7 +394,6 @@ function wrapController(cls) {
   @returns {Object} The decorated class.
 */
 function wrapPinger(cls) {
-
   /**
     Start pinging repeatedly with the give interval.
 
@@ -596,31 +406,29 @@ function wrapPinger(cls) {
     @returns {Object} A handle that can be used to stop pinging via its stop
       method.
   */
-  cls.prototype.pingForever = function(interval, callback) {
+  cls.prototype.pingForever = function (interval, callback) {
     const timer = setInterval(() => {
-      this.ping(err => {
+      this.ping((err) => {
         if (callback) {
           callback(err);
         }
       });
     }, interval);
     return {
-      stop: function() {
+      stop: function () {
         clearInterval(timer);
-      }
+      },
     };
   };
 
   return cls;
 }
 
-
-module.exports = {
+export {
   wrapAdmin,
   wrapAllModelWatcher,
   wrapAllWatcher,
-  wrapApplication,
   wrapClient,
   wrapController,
-  wrapPinger
+  wrapPinger,
 };
