@@ -5,7 +5,7 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 import websocket from "websocket";
-import bakery from "macaroon-bakery";
+import bakery from "@canonical/macaroon-bakery";
 // Bakery uses btoa and MLHttpRequest.
 import btoa from "btoa";
 global.btoa = btoa;
@@ -13,11 +13,11 @@ import xhr2 from "xhr2";
 global.XMLHttpRequest = xhr2;
 
 import * as jujulib from "../api/client.js";
-import modelManagerv8 from "../api/facades/model-manager-v8.js";
+import modelManagerv5 from "../api/facades/model-manager-v5.js";
 
 const options = {
   debug: true,
-  facades: [modelManagerv8],
+  facades: [modelManagerv5],
   wsclass: websocket.w3cwebsocket,
   bakery: new bakery.Bakery({
     visitPage: (resp) => {

@@ -1,56 +1,51 @@
-// Copyright 2018 Canonical Ltd.
+// Copyright 2020 Canonical Ltd.
 // Licensed under the LGPLv3, see LICENCE.txt file for details.
 
 // Allow connecting endpoints using self-signed certs.
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
+import websocket from "websocket";
+import * as jujulib from "../api/client.js";
 
-const WebSocket = require('websocket').w3cwebsocket;
+import ApplicationV12 from "../api/facades/application-v12.js";
+import ClientV2 from "../api/facades/client-v2.js";
 
-const jujulib = require('../api/client.js');
+const options = {
+  debug: true,
+  facades: [ApplicationV12, ClientV2],
+  wsclass: websocket.w3cwebsocket,
+};
 
+const url =
+  "wss://10.223.241.216:17070/model/7236b7b8-5458-4d3e-8a9a-1c8f1a0046b1/api";
 
-const url = 'wss://130.211.62.123:17070/model/ae6e92c5-cce7-4943-8913-72514a485ea8/api';
-const facades = [
-  require('../api/facades/application-v5.js'),
-  require('../api/facades/client-v1.js')
-];
-const options = {debug: true, facades: facades, wsclass: WebSocket};
-
-
-jujulib.connect(url, options, (err, juju) => {
-  if (err) {
-    console.log('cannot connect:', err);
-    process.exit(1);
-  }
-
-  juju.login({user: 'user-admin', password: 'secret'}, (err, conn) => {
-    if (err) {
-      console.log('cannot login:', err);
-      process.exit(1);
-    }
+async function connectAndDeploy() {
+  try {
+    const juju = await jujulib.connect(url, options);
+    const conn = await juju.login({
+      username: "admin",
+      password: "ca83f25a8fd8e162641b60f7a5fd1049",
+    });
 
     const application = conn.facades.application;
     const client = conn.facades.client;
-    client.addCharm({url: 'cs:haproxy-43'}, err => {
-      if (err) {
-        console.log('cannot add charm:', err);
-        process.exit(1);
-      }
 
-      application.deploy({
-        applications: [{
-          application: 'ha',
-          charmUrl: 'cs:haproxy-43',
-          series: 'xenial'
-        }]
-      }, (err, result) => {
-        if (err) {
-          console.log('cannot deploy app:', err);
-          process.exit(1);
-        }
-        console.log(result);
-      });
+    await client.addCharm({ url: "cs:haproxy-60" });
+    const app = await application.deploy({
+      applications: [
+        {
+          application: "h4",
+          "charm-url": "cs:haproxy-60",
+          series: "focal",
+        },
+      ],
     });
-  });
-});
+    console.log(JSON.stringify(app, null, 2));
+    process.exit();
+  } catch (error) {
+    console.log("unable to connect and deploy:", error);
+    process.exit(1);
+  }
+}
+
+connectAndDeploy();
