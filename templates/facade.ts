@@ -1,4 +1,4 @@
-import {FacadeTemplate} from "../generator/interfaces";
+import type {FacadeTemplate} from "../generator/interfaces";
 
 export default (f: FacadeTemplate): string => {
 
@@ -45,17 +45,24 @@ ${generateAvailableList(f.availableTo)}
 */
 
 import {autoBind, createAsyncHandler} from "../transform.js";
-import wrappers from "../wrappers.js";
+import * as wrappers from "../wrappers.js";
 ${f.interfaces.map(generateInterface).join('\n')}
 
 /**
 ${padString(f.docBlock, 2)}
 */
-export default class ${f.name}V${f.version} {
-  version: number;
+let facade = class ${f.name}V${f.version} {
+  static NAME: string = '${f.name}';
+  static VERSION: number = ${f.version};
 
-  constructor() {
+  version: number;
+  _transport: any;
+  _info: any;
+
+  constructor(transport, info) {
     this.version = ${f.version};
+    this._transport = transport;
+    this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
@@ -70,7 +77,7 @@ ${padString(m.docBlock, 4)}
       const req = {
         type: '${f.name}',
         request: '${m.name}',
-        version: '${f.version}',
+        version: ${f.version},
       ${m.params ? `  params: params,
       };`:
 `};`}
@@ -82,14 +89,17 @@ ${padString(m.docBlock, 4)}
         return resp;
       };
 
-      const handler = createAsyncHandler(resolve, reject, transform);
+      const handler = createAsyncHandler(null, resolve, reject, transform);
       this._transport.write(req, handler);
     });
   }
   `).join('')}
-  if (wrappers.wrap${f.name}) {
-    ${f.name}V${f.version} = wrappers.wrap${f.name}(${f.name}V${f.version});
-  }
 }
+
+if (wrappers.wrap${f.name}) {
+  facade = wrappers.wrap${f.name}(facade);
+}
+
+export default facade;
 `;
 }
