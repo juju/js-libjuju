@@ -82,15 +82,7 @@ ${padString(m.docBlock, 4)}
       };`:
 `};`}
 
-      let transform = null;
-
-      transform = resp => {
-        // Perform any transformations if necessary.
-        return resp;
-      };
-
-      const handler = createAsyncHandler(null, resolve, reject, transform);
-      this._transport.write(req, handler);
+      this._transport.write(req, resolve, reject);
     });
   }
   `).join('')}

@@ -303,21 +303,21 @@ class Transport {
       like {type: 'Client', request: 'DoSomething', version: 1, params: {}}.
       The request must not be already serialized and must not include the
       request id, as those are responsibilities of the transport.
-    @param {Function} callback Called when the response to the given request is
-      ready, the callback receives an error and the response result from Juju.
+    @param {Function} resolve Function called when the request is successful.
+    @param {Function} reject Function called when the request is not successful.
   */
-  write(req, callback) {
+  write(req, resolve, reject) {
     // Check that the connection is ready and sane.
     const state = this._ws.readyState;
     if (state !== 1) {
       const reqStr = JSON.stringify(req);
       const error = `cannot send request ${reqStr}: connection state ${state} is not open`;
-      callback(error);
+      reject(error);
     }
     this._counter += 1;
     // Include the current request id in the request.
     req["request-id"] = this._counter;
-    this._callbacks[this._counter] = callback;
+    this._callbacks[this._counter] = resolve;
     const msg = JSON.stringify(req);
     if (this._debug) {
       console.debug("-->", msg);
@@ -357,7 +357,7 @@ class Transport {
     const callback = this._callbacks[id];
     delete this._callbacks[id];
     if (callback) {
-      callback.call(this, resp.error || null, resp.response || {});
+      callback(resp.error || resp.response);
     }
   }
 }
