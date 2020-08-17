@@ -44,7 +44,7 @@ ${generateAvailableList(f.availableTo)}
   Do not manually edit this file.
 */
 
-import {autoBind, createAsyncHandler} from "../transform.js";
+import {autoBind} from "../utils.js";
 import * as wrappers from "../wrappers.js";
 ${f.interfaces.map(generateInterface).join('\n')}
 

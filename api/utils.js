@@ -1,18 +1,18 @@
 // Copyright 2018 Canonical Ltd.
 // Licensed under the LGPLv3, see LICENCE.txt file for details.
 
-'use strict';
+"use strict";
 
 /**
   Automatically bind all methods of the given object to the object itself.
 
   @param {Object} obj The object whose method must be bound.
 */
-function autoBind(obj) {
+export function autoBind(obj) {
   const names = Object.getOwnPropertyNames(obj.constructor.prototype);
   for (let i = 0; i < names.length; i++) {
     const name = names[i];
-    if (name !== 'constructor' && typeof obj[name] === 'function') {
+    if (name !== "constructor" && typeof obj[name] === "function") {
       obj[name] = obj[name].bind(obj);
     }
   }
@@ -32,7 +32,7 @@ function autoBind(obj) {
     resolve or reject method will be called depending on the existence of an
     error value.
 */
-function createAsyncHandler(callback, resolve, reject, transform) {
+export function createAsyncHandler(callback, resolve, reject, transform) {
   return (err, value) => {
     if (err) {
       callback ? callback(err, null) : reject(err);
@@ -43,6 +43,4 @@ function createAsyncHandler(callback, resolve, reject, transform) {
     }
     callback ? callback(null, value) : resolve(value);
   };
-};
-
-module.exports = {autoBind, createAsyncHandler};
+}

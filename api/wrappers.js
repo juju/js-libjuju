@@ -21,7 +21,7 @@
 
 "use strict";
 
-import { createAsyncHandler } from "./transform.js";
+import { createAsyncHandler } from "./utils.js";
 
 /**
   Decorate the Admin facade class.

@@ -11,7 +11,7 @@
 
 import Admin from "./facades/admin-v3.js";
 
-import { createAsyncHandler } from "./transform.js";
+import { createAsyncHandler } from "./utils.js";
 
 /**
   Connect to the Juju controller or model at the given URL.
