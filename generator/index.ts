@@ -1,6 +1,5 @@
-import { readFileSync, writeFileSync } from "fs";
+import { mkdirSync, readFileSync, writeFileSync } from "fs";
 import { resolve } from "path";
-import { inspect } from "util";
 
 import { FacadeTemplate, FacadeMethod } from "./interfaces";
 import facadeTemplateGenerator from "../templates/facade.js";
@@ -82,6 +81,8 @@ try {
   console.error("Unable to parse schema", e);
 }
 
+mkdirSync("api/facades", { recursive: true });
+
 schema.forEach(async (facade) => {
   const facadeTemplateData: FacadeTemplate = {
     name: facade.Name,
@@ -156,7 +157,9 @@ function generateInterface(
       {
         name: "[key: string]",
         type: "AdditionalProperties",
-        required: false,
+        // This isn't actually required but we don't want to add the ? for
+        // optional with this key type.
+        required: true,
       },
     ];
   }
@@ -179,9 +182,19 @@ function generateTypes(
         }
         return;
       }
+      // TODO: Recirsify this conditional.
       if (values.type === "array" && values.items) {
         if (values.items["$ref"]) {
           return `${getRefString(values.items["$ref"])}[]`;
+        }
+        if (values.items.type === "integer") {
+          values.items.type = "number";
+        } else if (values.items.type === "array" && values.items.items) {
+          // multi-dimensional array
+          if (values.items.items["$ref"]) {
+            return `${getRefString(values.items.items["$ref"])}[][]`;
+          }
+          return "[]";
         }
         return `${values.items.type}[]`;
       }
@@ -220,5 +233,5 @@ function generateFile(facadeTemplateData: FacadeTemplate): void {
     .replace(/\W+/g, "-")
     .replace(/([a-z\d])([A-Z])/g, "$1-$2")
     .toLowerCase();
-  writeFileSync(`facades/${filename}.ts`, output);
+  writeFileSync(`api/facades/${filename}.ts`, output);
 }
