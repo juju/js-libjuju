@@ -1,5 +1,5 @@
+*.map
 node_modules/
 generator/*.js
-templates/facade.js
-*.map
+templates/*.js
 api/*.js

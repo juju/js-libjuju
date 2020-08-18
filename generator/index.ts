@@ -1,8 +1,10 @@
-import { mkdirSync, readFileSync, writeFileSync } from "fs";
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "fs";
+import { execSync } from "child_process";
 import { resolve } from "path";
 
-import { FacadeTemplate, FacadeMethod } from "./interfaces";
+import { FacadeTemplate, FacadeMethod, ReadmeTemplate } from "./interfaces";
 import facadeTemplateGenerator from "../templates/facade.js";
+import readmeTemplateGenerator from "../templates/readme.js";
 
 interface Facade {
   Name: string;
@@ -97,6 +99,25 @@ schema.forEach(async (facade) => {
 
   generateFile(facadeTemplateData);
 });
+
+const clientAPIInfo: string = execSync(
+  "./node_modules/.bin/documentation build api/client.js --document-exported --shallow --markdown-toc false -f md",
+  { encoding: "utf8" }
+);
+const readmeTemplateData: ReadmeTemplate = {
+  clientAPIInfo,
+  exampleList: readdirSync("examples").map((f) => ({
+    name: f,
+    path: `examples\/${f}`,
+  })),
+  facadeList: readdirSync("api/facades")
+    .filter((f) => f.split(".")[1] === "ts")
+    .map((f) => ({
+      name: f,
+      path: `api\/facades\/${f}`,
+    })),
+};
+generateReadmeFile(readmeTemplateData);
 
 function getRefString(ref: string): string {
   const parts = ref.split("/");
@@ -234,4 +255,9 @@ function generateFile(facadeTemplateData: FacadeTemplate): void {
     .replace(/([a-z\d])([A-Z])/g, "$1-$2")
     .toLowerCase();
   writeFileSync(`api/facades/${filename}.ts`, output);
+}
+
+function generateReadmeFile(readmeTemplateData: ReadmeTemplate): void {
+  const output: string = readmeTemplateGenerator(readmeTemplateData);
+  writeFileSync("README.md", output);
 }
