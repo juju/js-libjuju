@@ -10,7 +10,7 @@
 import Admin from "./facades/admin-v3.js";
 
 import { createAsyncHandler } from "./utils.js";
-import type { JujuRequest } from "../generator/interfaces";
+import type { Callback, JujuRequest } from "../generator/interfaces";
 
 interface ConnectOptions {
   bakery?: any;
@@ -48,8 +48,6 @@ interface LoginArguments {
 type AdminV3 = any;
 type Bakery = any;
 type Facade = any;
-
-type Callback = (error?: string | number, value?: any) => void;
 
 /**
   Connect to the Juju controller or model at the given URL.

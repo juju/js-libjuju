@@ -2,26 +2,13 @@
 // Licensed under the LGPLv3, see LICENCE.txt file for details.
 
 /**
-  This module includes wrappers for auto-generated API facade classes.
-
-  Wrappers are class decorators, accepting a facade class and returning a
-  modified, improved version of the facade. Wrappers are useful when the
-  auto-generated facade includes ugly or difficult to use calls. A wrapper can
-  extend or override the method set for facades to make the resulting API more
-  user friendly.
-
-  Nothing must be done in order to activate wrappers, as they are automatically
-  loaded by auto-generated modules.
-
-  IMPORTANT: when implementing new wrappers, please expand the documentation
-  present at templates/wrappers.md. Also ensure updates are consistent with the
-  existing structure of that document, because its content is further processed
-  when automatically generating the documentation.
+  This module contains versions of some hard to use api facade methods for
+  convenience purposes.
 */
 
-"use strict";
-
 import { createAsyncHandler } from "./utils.js";
+import type { Callback } from "../generator/interfaces";
+import type PingerV1 from "./facades/pinger-v1";
 
 /**
   Decorate the Admin facade class.
@@ -387,41 +374,28 @@ function wrapController(cls) {
   return cls;
 }
 
+type StopFunction = () => void;
 /**
-  Decorate the Pinger facade class.
-
-  @param {Object} cls The auto-generated class.
-  @returns {Object} The decorated class.
+  Ping repeatedly using the Pinger facade.
+  @param PingerFacade - An instance of the Pinger facade.
+  @param interval - How often would you like to ping? (ms).
+  @param callback - The callback that gets called after each ping.
+  @returns A function to call to stop the pinger.
 */
-function wrapPinger(cls) {
-  /**
-    Start pinging repeatedly with the give interval.
-
-    This can be useful for preventing proxies to close a connection to Juju due
-    to inactivity.
-
-    @param {Integer} interval Milliseconds between pings.
-    @param {Function} callback Called every time a pong is received from the
-      server, the callback receives an error.
-    @returns {Object} A handle that can be used to stop pinging via its stop
-      method.
-  */
-  cls.prototype.pingForever = function (interval, callback) {
-    const timer = setInterval(() => {
-      this.ping((err) => {
-        if (callback) {
-          callback(err);
-        }
-      });
-    }, interval);
-    return {
-      stop: function () {
-        clearInterval(timer);
-      },
-    };
+export function pingForever(
+  PingerFacade: PingerV1,
+  interval: number,
+  callback: Callback
+): StopFunction {
+  const timer = setInterval(async () => {
+    const resp = await PingerFacade.ping();
+    if (callback) {
+      callback(resp);
+    }
+  }, interval);
+  return () => {
+    clearInterval(timer);
   };
-
-  return cls;
 }
 
 export {
@@ -430,5 +404,4 @@ export {
   wrapAllWatcher,
   wrapClient,
   wrapController,
-  wrapPinger,
 };

@@ -33,3 +33,5 @@ export interface JujuRequest {
   version: number;
   params?: any; // Typed by the call signature of the facade method.
 }
+
+export type Callback = (error?: string | number, value?: any) => void;

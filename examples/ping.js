@@ -6,6 +6,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 import websocket from "websocket";
 import * as jujulib from "../api/client.js";
+import { pingForever } from "../api/helpers.js";
 
 import PingerV1 from "../api/facades/pinger-v1.js";
 
@@ -26,14 +27,15 @@ async function ping() {
       username: "admin",
       password: "ca83f25a8fd8e162641b60f7a5fd1049",
     });
-    const handle = conn.facades.pinger.pingForever(1000, (err) => {
-      if (err) {
-        console.log("cannot ping:", err);
+    const stopFn = pingForever(conn.facades.pinger, 1000, (resp) => {
+      if (resp.error) {
+        console.log("cannot ping:", error);
         process.exit(1);
       }
       console.log("pong");
     });
-    setTimeout(handle.stop, 5000);
+
+    setTimeout(stopFn, 5000);
   } catch (error) {
     console.log("cannot connect:", error);
     process.exit(1);

@@ -1,3 +1,4 @@
+.vscode
 *.map
 node_modules/
 generator/*.js
