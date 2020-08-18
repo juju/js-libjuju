@@ -45,7 +45,6 @@ ${generateAvailableList(f.availableTo)}
 */
 
 import { autoBind } from "../utils.js";
-import * as wrappers from "../wrappers.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 ${f.interfaces.map(generateInterface).join('\n')}
@@ -53,7 +52,7 @@ ${f.interfaces.map(generateInterface).join('\n')}
 /**
 ${padString(f.docBlock, 2)}
 */
-let facade = class ${f.name}V${f.version} {
+class ${f.name}V${f.version} {
   static NAME: string = '${f.name}';
   static VERSION: number = ${f.version};
 
@@ -90,12 +89,6 @@ ${padString(m.docBlock, 4)}
   `).join('')}
 }
 
-// @ts-ignore These are ignored as they likely don't exist on the wrappers obj.
-if (wrappers.wrap${f.name}) {
-  // @ts-ignore
-  facade = wrappers.wrap${f.name}(facade);
-}
-
-export default facade;
+export default ${f.name}V${f.version};
 `;
 }
