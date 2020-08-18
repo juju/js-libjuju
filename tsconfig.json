@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "Node",
+    "sourceMap": true,
+    "target": "ES2019"
+  }
+}

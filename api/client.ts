@@ -1,4 +1,4 @@
-// Copyright 2018 Canonical Ltd.
+// Copyright 2020 Canonical Ltd.
 // Licensed under the LGPLv3, see LICENCE.txt file for details.
 
 /**
@@ -7,11 +7,49 @@
   to use this API.
 */
 
-"use strict";
-
 import Admin from "./facades/admin-v3.js";
 
 import { createAsyncHandler } from "./utils.js";
+import type { JujuRequest } from "../generator/interfaces";
+
+interface ConnectOptions {
+  bakery?: any;
+  closeCallback?: Function;
+  debug?: boolean;
+  facades?: any[];
+  wsclass?: WebSocket;
+}
+
+interface ConnectionInfo {
+  controllerTag: string;
+  modelTag: string;
+  publicDnsName: string;
+  serverVersion: string;
+  servers: object[];
+  user: object;
+  getFacade: (string) => Facade;
+}
+
+interface Credentials {
+  username?: string;
+  password?: string;
+  macaroons?: object;
+}
+
+interface LoginArguments {
+  "auth-tag"?: string; // username prefixed with 'user-'
+  credentials?: string; // password
+  macaroons?: object; // Macaroon object
+}
+
+// XXX Expand on these types.
+// Facades are wrapped which makes the class types break. Can we do that
+// override differently to avoid this issue?
+type AdminV3 = any;
+type Bakery = any;
+type Facade = any;
+
+type Callback = (error?: string | number, value?: any) => void;
 
 /**
   Connect to the Juju controller or model at the given URL.
@@ -42,7 +80,11 @@ import { createAsyncHandler } from "./utils.js";
     connecting, or resolved with a new Client instance. Note that the promise
     will not be resolved or rejected if a callback is provided.
 */
-function connect(url, options = {}, callback = null) {
+function connect(
+  url: string,
+  options: ConnectOptions = {},
+  callback: Callback = null
+): Promise<any> {
   if (!options.bakery) {
     options.bakery = null;
   }
@@ -61,6 +103,8 @@ function connect(url, options = {}, callback = null) {
   return new Promise((resolve, reject) => {
     // Instantiate the WebSocket, and make the client available when the
     // connection is open.
+    // @ts-ignore The following line is ignored because TS thinks that
+    // WebSocket is not instantiable.
     const ws = new options.wsclass(url);
     const handler = createAsyncHandler(callback, resolve, reject);
     ws.onopen = (evt) => {
@@ -106,7 +150,7 @@ function connect(url, options = {}, callback = null) {
     connecting, or resolved with a new {conn, logout} object. Note that the
     promise will not be resolved or rejected if a callback is provided.
 */
-function connectAndLogin(url, credentials, options) {
+function connectAndLogin(url: string, credentials, options) {
   return new Promise(async (resolve, reject) => {
     // Connect to Juju.
     let juju;
@@ -156,7 +200,12 @@ function generateModelURL(controllerHost, modelUUID) {
     above for a description of available options.
 */
 class Client {
-  constructor(ws, options) {
+  _transport: Transport;
+  _facades: Facade[];
+  _bakery: Bakery;
+  _admin: AdminV3;
+
+  constructor(ws: WebSocket, options) {
     // Instantiate the transport, used for sending messages to the server.
     this._transport = new Transport(ws, options.closeCallback, options.debug);
     this._facades = options.facades;
@@ -176,8 +225,8 @@ class Client {
       connecting, or resolved with a new connection instance. Note that the
       promise will not be resolved or rejected if a callback is provided.
   */
-  login(credentials) {
-    const args = {};
+  login(credentials: Credentials): Promise<any> | void {
+    const args: LoginArguments = {};
     if (credentials.password) {
       args.credentials = credentials.password;
     }
@@ -258,6 +307,9 @@ class Client {
 // Define the redirect error returned by Juju, and the one returned by the API.
 const REDIRECTION_ERROR = "redirection required";
 class RedirectionError {
+  servers: object[];
+  caCert: string;
+
   constructor(info) {
     this.servers = info.servers;
     this.caCert = info["ca-cert"];
@@ -276,7 +328,13 @@ class RedirectionError {
     level.
 */
 class Transport {
-  constructor(ws, closeCallback, debug) {
+  _ws: WebSocket;
+  _counter: number;
+  _callbacks: object;
+  _closeCallback: Callback;
+  _debug: boolean;
+
+  constructor(ws: WebSocket, closeCallback: Callback, debug: boolean) {
     this._ws = ws;
     this._counter = 0;
     this._callbacks = {};
@@ -306,7 +364,7 @@ class Transport {
     @param {Function} resolve Function called when the request is successful.
     @param {Function} reject Function called when the request is not successful.
   */
-  write(req, resolve, reject) {
+  write(req: JujuRequest, resolve: Function, reject: Function) {
     // Check that the connection is ready and sane.
     const state = this._ws.readyState;
     if (state !== 1) {
@@ -333,7 +391,7 @@ class Transport {
       callback receives the close code and optionally another callback. It is
       responsibility of the callback to call the provided callback if present.
   */
-  close(callback) {
+  close(callback: Callback) {
     const closeCallback = this._closeCallback;
     this._closeCallback = (code) => {
       if (callback) {
@@ -351,7 +409,7 @@ class Transport {
     @param {String} data: the raw response from Juju, usually as a JSON encoded
       string.
   */
-  _handle(data) {
+  _handle(data: string) {
     const resp = JSON.parse(data);
     const id = resp["request-id"];
     const callback = this._callbacks[id];
@@ -382,7 +440,11 @@ class Transport {
     available via the info property of the connection instance.
 */
 class Connection {
-  constructor(transport, facades, loginResult) {
+  facades: Facade[];
+  transport: Transport;
+  info: ConnectionInfo;
+
+  constructor(transport: Transport, facades, loginResult) {
     // Store the transport used for sending messages to Juju.
     this.transport = transport;
 
@@ -422,7 +484,7 @@ class Connection {
   @param {String} text A StringLikeThis.
   @returns {String} A stringLikeThis.
 */
-function uncapitalize(text) {
+function uncapitalize(text: string): string {
   if (!text) {
     return "";
   }

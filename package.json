@@ -5,13 +5,13 @@
   "main": "api/client.js",
   "type": "module",
   "scripts": {
-    "build": "yarn run build-generator && yarn run generate && yarn run build-facades",
-    "build-generator": "tsc -t ES2019 generator/index.ts",
-    "build-facades": "tsc -t ES2019 api/facades/*.ts",
+    "build": "npm run build-generator && npm run generate && npm run build-facades",
+    "build-generator": "cd generator && tsc",
+    "build-facades": "cd api && tsc",
+    "generate": "./scripts/generate.sh",
     "lint": "eslint api/",
     "test": "tap 'api/test-!(helpers)*.js'",
-    "watch": "tsc --watch -t ES2019 --moduleResolution Node --allowSyntheticDefaultImports --sourceMap generator/index.ts",
-    "generate": "./generate.sh"
+    "watch": "tsc --watch -t ES2019 --moduleResolution Node --allowSyntheticDefaultImports --sourceMap generator/index.ts"
   },
   "repository": {
     "type": "git",

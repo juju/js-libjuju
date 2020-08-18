@@ -2,3 +2,4 @@ node_modules/
 generator/*.js
 templates/facade.js
 *.map
+api/*.js

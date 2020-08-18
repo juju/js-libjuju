@@ -44,8 +44,10 @@ ${generateAvailableList(f.availableTo)}
   Do not manually edit this file.
 */
 
-import {autoBind} from "../utils.js";
+import { autoBind } from "../utils.js";
 import * as wrappers from "../wrappers.js";
+import type { JujuRequest } from "../../generator/interfaces";
+
 ${f.interfaces.map(generateInterface).join('\n')}
 
 /**
@@ -74,7 +76,7 @@ ${padString(m.docBlock, 4)}
   ${lowerCaseFirstChar(m.name)}(${m.params ? `params: ${m.params}` : ``}): Promise<${m.result}> {
     return new Promise((resolve, reject) => {
 
-      const req = {
+      const req: JujuRequest = {
         type: '${f.name}',
         request: '${m.name}',
         version: ${f.version},
@@ -88,7 +90,9 @@ ${padString(m.docBlock, 4)}
   `).join('')}
 }
 
+// @ts-ignore These are ignored as they likely don't exist on the wrappers obj.
 if (wrappers.wrap${f.name}) {
+  // @ts-ignore
   facade = wrappers.wrap${f.name}(facade);
 }
 
