@@ -37,9 +37,11 @@ The \`connect\` method returns a \`juju\` object which can be used to log into t
 
 ## Client API Reference
 
-${r.clientAPIInfo}
+Visit the [full API documentation](https://js-libjuju.github.io/) for detailed information on the Client API.
 
 ## Facade API Reference
+
+Defailed Facade documentation van be found by visiting the [full API documentation](https://js-libjuju.github.io/) or you can visit the facade source directly using the links below.
 
 ${r.facadeList
   .map((f) => {
