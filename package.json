@@ -5,10 +5,11 @@
   "main": "api/client.js",
   "type": "module",
   "scripts": {
-    "build": "npm run build-generator && npm run generate && npm run build-facades",
-    "build-generator": "cd generator && tsc",
+    "build": "npm run build-generator && npm run generate-facades && npm run build-facades && npm run build-api-docs",
+    "build-api-docs": "typedoc api/*",
     "build-facades": "cd api && tsc",
-    "generate": "./scripts/generate.sh",
+    "build-generator": "cd generator && tsc",
+    "generate-facades": "./scripts/generate.sh",
     "lint": "eslint api/",
     "test": "tap 'api/test-!(helpers)*.js'",
     "watch": "tsc --watch -t ES2019 --moduleResolution Node --allowSyntheticDefaultImports --sourceMap generator/index.ts"
@@ -34,6 +35,7 @@
     "prettier": "^2.0.5",
     "sinon": "^9.0.3",
     "tap": "^14.10.8",
+    "typedoc": "^0.18.0",
     "typescript": "^3.9.7"
   },
   "dependencies": {
