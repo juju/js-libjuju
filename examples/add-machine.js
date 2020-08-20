@@ -1,41 +1,42 @@
-// Copyright 2018 Canonical Ltd.
+// Copyright 2020 Canonical Ltd.
 // Licensed under the LGPLv3, see LICENCE.txt file for details.
 
-const WebSocket = require('websocket').w3cwebsocket;
-const bakery = require('macaroon-bakery');
+import websocket from "websocket";
+import bakery from "@canonical/macaroon-bakery";
 // Bakery uses btoa and MLHttpRequest.
-global.btoa = require('btoa');
-global.XMLHttpRequest = require('xhr2');
+import btoa from "btoa";
+global.btoa = btoa;
+import xhr2 from "xhr2";
+global.XMLHttpRequest = xhr2;
 
-const jujulib = require('../api/client.js');
+import * as jujulib from "../api/client.js";
+import ClientV2 from "../api/facades/client-v2.js";
 
-
-const url = 'wss://jimm.jujucharms.com:443/model/cebb753f-60c2-4717-8ae8-5c318ac4074c/api';
+const url =
+  "wss://jimm.jujucharms.com:443/model/57650e3c-815f-4540-89df-81fd5d70b7ef/api";
 const credentials = {};
 const options = {
   debug: true,
-  facades: [require('../api/facades/client-v1.js')],
-  wsclass: WebSocket,
+  facades: [ClientV2],
+  wsclass: websocket.w3cwebsocket,
   bakery: new bakery.Bakery({
-    visitPage: resp => {
-      console.log('visit this URL to login:', resp.Info.VisitURL);
-    }
-  })
+    visitPage: (resp) => {
+      console.log("visit this URL to login:", resp.Info.VisitURL);
+    },
+  }),
 };
 
-
-jujulib.connectAndLogin(url, credentials, options, (err, result) => {
-  if (err) {
-    console.log('cannot connect:', err);
-    process.exit(1);
-  }
-  // Add a single bionic machine.
-  const client = result.conn.facades.client;
-  client.addMachine({series: 'bionic'}, (err, result) => {
-    if (err) {
-      console.log('cannot add machine:', err);
-      process.exit(1);
-    }
-    console.log('machine added:', result);
+async function addMachine() {
+  const { conn } = await jujulib.connectAndLogin(url, credentials, options);
+  const machineInfo = await conn.facades.client.addMachines({
+    params: [
+      {
+        series: "bionic",
+        jobs: ["JobHostUnits"],
+      },
+    ],
   });
-});
+  console.log(machineInfo);
+}
+
+addMachine();

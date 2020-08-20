@@ -1,11 +1,18 @@
 {
   "name": "@canonical/jujulib",
-  "version": "1.3.2",
+  "version": "2.0.0",
   "description": "Juju API client",
   "main": "api/client.js",
+  "type": "module",
   "scripts": {
+    "build": "npm run build-generator && npm run generate-facades && npm run build-facades && npm run build-api-docs",
+    "build-api-docs": "typedoc api/*",
+    "build-facades": "cd api && tsc",
+    "build-generator": "cd generator && tsc",
+    "generate-facades": "./scripts/generate.sh",
     "lint": "eslint api/",
-    "test": "tap 'api/test-!(helpers)*.js'"
+    "test": "tap 'api/test-!(helpers)*.js'",
+    "watch": "tsc --watch -t ES2019 --moduleResolution Node --allowSyntheticDefaultImports --sourceMap generator/index.ts"
   },
   "repository": {
     "type": "git",
@@ -16,24 +23,26 @@
     "api",
     "client"
   ],
-  "author": "Francesco Banconi <francesco.banconi@canonical.com>",
-  "contributors": [
-    "Jeff Pihach <jeff.pihach@canonical.com> (https://fromanegg.com)"
-  ],
+  "author": "Jeff Pihach <jeff.pihach@canonical.com> (https://fromanegg.com)",
   "license": "LGPL-3.0",
   "bugs": {
     "url": "https://github.com/juju/js-libjuju/issues"
   },
   "homepage": "https://github.com/juju/js-libjuju#readme",
   "devDependencies": {
-    "btoa": "^1.2.1",
-    "documentation": "^8.1.2",
-    "eslint": "^4.19.1",
-    "macaroon-bakery": "^0.2.0",
-    "sinon": "^6.1.5",
-    "tap": "^12.0.1",
-    "websocket": "^1.0.26",
-    "xhr2": "^0.1.4"
+    "@types/node": "^14.6.0",
+    "eslint": "^7.7.0",
+    "prettier": "^2.0.5",
+    "sinon": "^9.0.3",
+    "tap": "^14.10.8",
+    "typedoc": "^0.18.0",
+    "typescript": "^3.9.7"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@canonical/macaroon-bakery": "^0.3.0",
+    "btoa": "^1.2.1",
+    "documentation": "^13.0.2",
+    "websocket": "^1.0.26",
+    "xhr2": "^0.2.0"
+  }
 }

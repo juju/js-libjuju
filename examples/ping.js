@@ -1,40 +1,45 @@
-// Copyright 2018 Canonical Ltd.
+// Copyright 2020 Canonical Ltd.
 // Licensed under the LGPLv3, see LICENCE.txt file for details.
 
 // Allow connecting endpoints using self-signed certs.
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
+import websocket from "websocket";
+import * as jujulib from "../api/client.js";
+import { pingForever } from "../api/helpers.js";
 
-const WebSocket = require('websocket').w3cwebsocket;
+import PingerV1 from "../api/facades/pinger-v1.js";
 
-const jujulib = require('../api/client.js');
+const url =
+  "wss://10.223.241.216:17070/model/7236b7b8-5458-4d3e-8a9a-1c8f1a0046b1/api";
 
+const facades = [PingerV1];
+const options = {
+  debug: true,
+  facades: facades,
+  wsclass: websocket.w3cwebsocket,
+};
 
-const url = 'wss://130.211.62.123:17070/model/ae6e92c5-cce7-4943-8913-72514a485ea8/api';
-const facades = [require('../api/facades/pinger-v1.js')];
-const options = {debug: true, facades: facades, wsclass: WebSocket};
-
-
-jujulib.connect(url, options, (err, juju) => {
-  if (err) {
-    console.log('cannot connect:', err);
-    process.exit(1);
-  }
-
-  juju.login({user: 'user-admin', password: 'secret'}, (err, conn) => {
-    if (err) {
-      console.log('cannot login:', err);
-      process.exit(1);
-    }
-
-    const pinger = conn.facades.pinger;
-    const handle = pinger.pingForever(1000, err => {
-      if (err) {
-        console.log('cannot ping:', err);
+async function ping() {
+  try {
+    const juju = await jujulib.connect(url, options);
+    const conn = await juju.login({
+      username: "admin",
+      password: "ca83f25a8fd8e162641b60f7a5fd1049",
+    });
+    const stopFn = pingForever(conn.facades.pinger, 1000, (resp) => {
+      if (resp.error) {
+        console.log("cannot ping:", error);
         process.exit(1);
       }
-      console.log('pong');
+      console.log("pong");
     });
-    setTimeout(handle.stop, 5000);
-  });
-});
+
+    setTimeout(stopFn, 5000);
+  } catch (error) {
+    console.log("cannot connect:", error);
+    process.exit(1);
+  }
+}
+
+ping();

@@ -1,49 +1,46 @@
-// Copyright 2018 Canonical Ltd.
+// Copyright 2020 Canonical Ltd.
 // Licensed under the LGPLv3, see LICENCE.txt file for details.
 
 // Allow connecting endpoints using self-signed certs.
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
+import websocket from "websocket";
+import * as jujulib from "../api/client.js";
 
-const WebSocket = require('websocket').w3cwebsocket;
+import AllWatcherV1 from "../api/facades/all-watcher-v1.js";
+import ClientV2 from "../api/facades/client-v2.js";
 
-const jujulib = require('../api/client.js');
+const url =
+  "wss://10.223.241.216:17070/model/7236b7b8-5458-4d3e-8a9a-1c8f1a0046b1/api";
+const options = {
+  debug: true,
+  facades: [AllWatcherV1, ClientV2],
+  wsclass: websocket.w3cwebsocket,
+};
 
-
-const url = 'wss://130.211.62.123:17070/model/ae6e92c5-cce7-4943-8913-72514a485ea8/api';
-const facades = [
-  require('../api/facades/all-watcher-v1.js'),
-  require('../api/facades/client-v1.js')
-];
-const options = {debug: true, facades: facades, wsclass: WebSocket};
-
-
-jujulib.connect(url, options, (err, juju) => {
-  if (err) {
-    console.log('cannot connect:', err);
-    process.exit(1);
-  }
-
-  juju.login({user: 'user-admin', password: 'secret'}, (err, conn) => {
-    if (err) {
-      console.log('cannot login:', err);
-      process.exit(1);
-    }
-
-    const client = conn.facades.client;
-    const handle = client.watch((err, result) => {
+async function watch() {
+  try {
+    const juju = await jujulib.connect(url, options);
+    const conn = await juju.login({
+      username: "admin",
+      password: "ca83f25a8fd8e162641b60f7a5fd1049",
+    });
+    const handle = conn.facades.client.watch((err, result) => {
       if (err) {
-        console.log('cannot watch model:', err);
+        console.log("cannot watch model:", err);
         process.exit(1);
       }
       console.log(result);
     });
-
     setTimeout(() => {
-      handle.stop(err => {
-        console.log('watcher stopped');
+      handle.stop((err) => {
+        console.log("watcher stopped");
       });
     }, 10000);
+  } catch (error) {
+    console.log("cannot connect:", error);
+    process.exit(1);
+  }
+}
 
-  });
-});
+watch();

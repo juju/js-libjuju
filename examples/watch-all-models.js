@@ -1,46 +1,49 @@
-// Copyright 2018 Canonical Ltd.
+// Copyright 2020 Canonical Ltd.
 // Licensed under the LGPLv3, see LICENCE.txt file for details.
 
 // Allow connecting endpoints using self-signed certs.
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
+import websocket from "websocket";
+import * as jujulib from "../api/client.js";
 
-const WebSocket = require('websocket').w3cwebsocket;
+import AllModelWatcherV2 from "../api/facades/all-model-watcher-v2.js";
+import ControllerV9 from "../api/facades/controller-v9.js";
 
-const jujulib = require('../api/client.js');
+const url = "wss://10.223.241.216:17070/api";
+const credentials = {
+  username: "admin",
+  password: "ca83f25a8fd8e162641b60f7a5fd1049",
+};
 
+const options = {
+  debug: true,
+  facades: [AllModelWatcherV2, ControllerV9],
+  wsclass: websocket.w3cwebsocket,
+};
 
-const url = 'wss://130.211.62.123:17070/api';
-const credentials = {user: 'user-admin', password: 'secret'};
-const facades = [
-  require('../api/facades/all-model-watcher-v2.js'),
-  require('../api/facades/controller-v5.js')
-];
-const options = {debug: true, facades: facades, wsclass: WebSocket};
+async function watchAll() {
+  try {
+    const { conn } = await jujulib.connectAndLogin(url, credentials, options);
+    const handle = conn.facades.controller.watch((err, result) => {
+      if (err) {
+        console.log("cannot watch models:", err);
+        process.exit(1);
+      }
+      console.log(result.deltas);
 
-
-jujulib.connectAndLogin(url, credentials, options, (err, result) => {
-  if (err) {
-    console.log('cannot connect:', err);
+      setTimeout(() => {
+        // Stop the multi-model watcher and log out.
+        handle.stop((err) => {
+          console.log("watcher stopped");
+          result.logout();
+        });
+      }, 10000);
+    });
+  } catch (error) {
+    console.log("cannot watch all models:", error);
     process.exit(1);
   }
-  // Start watching all models.
-  const controller = result.facades.controller;
-  let handle;
-  handle = controller.watch((err, result) => {
-    if (err) {
-      console.log('cannot watch models:', err);
-      process.exit(1);
-    }
-    console.log(result.deltas);
+}
 
-    setTimeout(() => {
-      // Stop the multi-model watcher and log out.
-      handle.stop(err => {
-        console.log('watcher stopped');
-        result.logout();
-      });
-    }, 10000);
-  });
-
-});
+watchAll();

@@ -1,24 +1,6 @@
-# Be sure to update the .npmignore if you update this file.
-# general things to ignore
-build/
-dist/
-*.egg-info/
-*.egg
-*.py[cod]
-__pycache__/
-*.so
-*~
 .vscode
-
-# due to using tox
-.tox
-.cache
-devenv
-
-# app specific
+*.map
 node_modules/
-package-lock.json
-schemas/build
-
-# js specific
-.nyc_output/
+generator/*.js
+templates/*.js
+api/**/*.js
