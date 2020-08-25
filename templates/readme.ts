@@ -44,11 +44,11 @@ The \`connect\` method returns a \`juju\` object which can be used to log into t
 
 ## Client API Reference
 
-Visit the [full API documentation](https://js-libjuju.github.io/) for detailed information on the Client API.
+Visit the [full API documentation](https://juju.github.io/js-libjuju/) for detailed information on the Client API.
 
 ## Facade API Reference
 
-Defailed Facade documentation can be found by visiting the [full API documentation](https://js-libjuju.github.io/) or you can visit the facade source directly using the links below.
+Defailed Facade documentation can be found by visiting the [full API documentation](https://juju.github.io/js-libjuju/) or you can visit the facade source directly using the links below.
 
 ${r.facadeList
   .map((f) => {
@@ -70,7 +70,11 @@ ${r.exampleList
 
 ### Updating Library Facades
 
-The Juju facade API files are generated from a supplied Juju schema. To update these facades run \`npm run build\` on this project. This will generate the facades using the schema stored at \`$GOPATH/src/github.com/juju/juju/apiserver/facades/schema.json\`. It will also pull the SHA and Juju version from this repository.
+The Juju facade API files are generated from a supplied Juju schema.
+
+To generate this schema you will need to clone the [Juju repository](https://github.com/juju/juju/) and then run \`go run github.com/juju/juju/generate/schemagen -admin-facades --facade-group=client,jimm ./apiserver/facades/schema.json\` to generate a schema file that contains the publicly available facades as well as the set of facades for JAAS. Other \`--facade-group\` options are \`latest\` and \`all\`.
+
+To update the facades run \`npm run build\` on this project. This will generate the facades using the schema stored at \`$GOPATH/src/github.com/juju/juju/apiserver/facades/schema.json\`. It will also pull the SHA and Juju version from this repository.
 
 ### Releasing to NPM
 
