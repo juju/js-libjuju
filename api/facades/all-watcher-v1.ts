@@ -3,8 +3,8 @@
   This facade is available on:
     Models
 
-  NOTE: This file was generated on Wed, 19 Aug 2020 16:08:07 GMT using
-  the Juju schema from  Juju 2.8.2 at the git SHA ff690fd0c2.
+  NOTE: This file was generated on Tue, 25 Aug 2020 18:00:56 GMT using
+  the Juju schema from  Juju 2.8.2 at the git SHA 516c1904ce.
   Do not manually edit this file.
 */
 
