@@ -4,3 +4,4 @@ node_modules/
 generator/*.js
 templates/*.js
 api/**/*.js
+api/dist/
