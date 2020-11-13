@@ -2,6 +2,7 @@
 .vscode
 .eslint*
 .prettierignore
+.gitignore
 
 tsconfig.json
 */**/tsconfig.json
