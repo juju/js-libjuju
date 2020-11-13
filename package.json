@@ -1,17 +1,18 @@
 {
   "name": "@canonical/jujulib",
-  "version": "2.0.0",
+  "version": "2.0.0-beta.0",
   "description": "Juju API client",
-  "main": "api/client.js",
+  "main": "dist/api/client.js",
+  "types": "index.t.ds",
   "type": "module",
   "scripts": {
     "build": "npm run build-generator && npm run generate-facades && npm run build-facades && npm run build-api-docs",
     "build-api-docs": "typedoc api/* --out docs --includeVersion --gitRemote upstream",
-    "build-facades": "cd api && tsc",
-    "build-generator": "cd generator && tsc",
+    "build-facades": "tsc -p api/tsconfig.json --outdir dist",
+    "build-generator": "tsc -p generator/tsconfig.json",
     "generate-facades": "./scripts/generate.sh",
     "lint": "eslint api/",
-    "test": "tap 'api/test-!(helpers)*.js'",
+    "test": "tap 'api/tests/test-!(helpers)*.js'",
     "watch": "tsc --watch -t ES2019 --moduleResolution Node --allowSyntheticDefaultImports --sourceMap generator/index.ts"
   },
   "repository": {
