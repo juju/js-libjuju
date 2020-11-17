@@ -22,8 +22,6 @@ interface ConnectOptions {
 
 interface ConnectionInfo {
   controllerTag: string;
-  modelTag: string;
-  publicDnsName: string;
   serverVersion: string;
   servers: object[];
   user: object;
@@ -163,13 +161,22 @@ function connectAndLogin(url: string, credentials, options) {
       // Redirect to the real model.
       juju.logout();
       for (let i = 0; i < error.servers.length; i++) {
-        const srv = error.servers[i];
+        const srv = error.servers[i][0];
         // TODO(frankban): we should really try to connect to all servers and
         // just use the first connection available, without second guessing
         // that the public hostname is reachable.
         if (srv.type === "hostname" && srv.scope === "public") {
           // This is a public server with a dns-name, connect to it.
-          resolve(connectAndLogin(srv.url(url), credentials, options));
+          const generateURL = (uuidOrURL: string, srv) => {
+            let uuid = uuidOrURL;
+            if (uuid.startsWith('wss://') || uuid.startsWith('ws://')) {
+              const parts = uuid.split('/');
+              uuid = parts[parts.length - 2];
+            }
+            return `wss://${srv.value}:${srv.port}/model/${uuid}/api`;
+          }
+
+          resolve(connectAndLogin(generateURL(url, srv), credentials, options));
         }
       }
       reject("cannot connect to model after redirection");
@@ -238,7 +245,10 @@ class Client {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await this._admin.login(args);
-        if (response["discharge-required"]) {
+        const dischargeRequired =
+          response["discharge-required"] ||
+          response["bakery-discharge-required"];
+        if (dischargeRequired) {
           if (!this._bakery) {
             reject(
               "macaroon discharge required but no bakery instance provided"
@@ -254,11 +264,13 @@ class Client {
             reject("macaroon discharge failed: " + err);
           };
           this._bakery.discharge(
-            response["discharge-required"],
+            dischargeRequired,
             onSuccess,
             onFailure
           );
           return;
+        } else if (response === REDIRECTION_ERROR) {
+          throw response;
         }
         resolve(new Connection(this._transport, this._facades, response));
       } catch (error) {
@@ -448,12 +460,10 @@ class Connection {
 
     // Populate info.
     this.info = {
-      controllerTag: loginResult.controllerTag,
-      modelTag: loginResult.modelTag,
-      publicDnsName: loginResult.publicDnsName,
-      serverVersion: loginResult.serverVersion,
+      controllerTag: loginResult['controller-tag'],
+      serverVersion: loginResult['server-version'],
       servers: loginResult.servers,
-      user: loginResult.userInfo,
+      user: loginResult['user-info'],
       getFacade: (name) => {
         return this.facades[name];
       },
