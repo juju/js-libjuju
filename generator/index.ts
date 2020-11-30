@@ -70,7 +70,7 @@ interface InterfaceType {
 }
 
 const schemaLocation: string = process.env.SCHEMA;
-const jujuVersion: string = process.env.JUJU_VERSION.replace(/\"/g, "");
+const jujuVersion: string = process.env.JUJU_VERSION;
 const jujuGitSHA: string = process.env.JUJU_GIT_SHA;
 const schemaData: string = readFileSync(resolve(schemaLocation), {
   encoding: "utf8",
