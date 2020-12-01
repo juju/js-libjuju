@@ -9,5 +9,6 @@ tsconfig.json
 
 generator/
 node_modules/
+schema/
 scripts/
 templates/

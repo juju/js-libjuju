@@ -5,3 +5,4 @@ generator/*.js
 templates/*.js
 api/!(test)**/*.js
 dist/
+.nyc_output/
