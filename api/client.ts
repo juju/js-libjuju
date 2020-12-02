@@ -155,7 +155,7 @@ function connectAndLogin(url: string, credentials, options) {
       const conn = await juju.login(credentials);
       resolve({ conn, logout: juju.logout.bind(juju) });
     } catch (error) {
-      if (!juju.isRedirectionError(error)) {
+      if (!juju || !juju.isRedirectionError(error)) {
         reject(error);
       }
       // Redirect to the real model.
