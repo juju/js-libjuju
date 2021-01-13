@@ -159,7 +159,7 @@ function connectAndLogin(url: string, credentials, options) {
         reject(error);
       }
       // Redirect to the real model.
-      juju.logout();
+      juju && juju.logout();
       for (let i = 0; i < error.servers.length; i++) {
         const srv = error.servers[i][0];
         // TODO(frankban): we should really try to connect to all servers and
