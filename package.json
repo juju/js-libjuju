@@ -1,6 +1,6 @@
 {
   "name": "@canonical/jujulib",
-  "version": "2.0.0-beta.2",
+  "version": "2.0.0-beta.3",
   "description": "Juju API client",
   "main": "dist/api/client.js",
   "types": "index.t.ds",
