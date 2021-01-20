@@ -157,6 +157,7 @@ function connectAndLogin(url: string, credentials, options) {
     } catch (error) {
       if (!juju || !juju.isRedirectionError(error)) {
         reject(error);
+        return;
       }
       // Redirect to the real model.
       juju && juju.logout();
