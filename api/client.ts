@@ -233,14 +233,19 @@ class Client {
   */
   login(credentials: Credentials): Promise<any> | void {
     const args: LoginArguments = {};
-    if (credentials.password) {
+    const url = this._transport._ws.url;
+    const origin = new URL(url).origin;
+
+    if (credentials.username && credentials.password) {
       args.credentials = credentials.password;
-    }
-    if (credentials.macaroons) {
-      args.macaroons = credentials.macaroons;
-    }
-    if (credentials.username) {
       args["auth-tag"] = `user-${credentials.username}`;
+    } else {
+      const macaroons = this._bakery.storage.get(origin);
+      let deserialized;
+      if (macaroons) {
+        deserialized = JSON.parse(atob(macaroons));
+      }
+      args.macaroons = [deserialized];
     }
 
     return new Promise(async (resolve, reject) => {
@@ -257,6 +262,9 @@ class Client {
             return;
           }
           const onSuccess = (macaroons) => {
+            // Store the macaroon in the bakery for the next connections.
+            const serialized = btoa(JSON.stringify(macaroons));
+            this._bakery.storage.set(origin, serialized, () => {});
             // Send the login request again including the discharge macaroons.
             credentials.macaroons = [macaroons];
             return resolve(this.login(credentials));
