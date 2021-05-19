@@ -1,6 +1,6 @@
 {
   "name": "@canonical/jujulib",
-  "version": "2.0.0-beta.3",
+  "version": "2.0.0-beta.5",
   "description": "Juju API client",
   "main": "dist/api/client.js",
   "types": "index.t.ds",
@@ -32,19 +32,19 @@
   },
   "homepage": "https://github.com/juju/js-libjuju#readme",
   "devDependencies": {
-    "@types/node": "^14.14.21",
-    "documentation": "13.1.0",
-    "eslint": "^7.17.0",
-    "prettier": "^2.2.1",
-    "sinon": "^9.2.3",
-    "tap": "^14.11.0",
-    "typedoc": "^0.20.14",
-    "typescript": "^4.1.3"
+    "@types/node": "^15.3.0",
+    "documentation": "^13.2.5",
+    "eslint": "^7.26.0",
+    "prettier": "^2.3.0",
+    "sinon": "9.2.3",
+    "tap": "14.11.0",
+    "typedoc": "^0.20.36",
+    "typescript": "^4.2.4"
   },
   "dependencies": {
     "@canonical/macaroon-bakery": "0.3.0",
     "btoa": "1.2.1",
     "websocket": "^1.0.33",
-    "xhr2": "0.2.0"
+    "xhr2": "^0.2.1"
   }
 }
