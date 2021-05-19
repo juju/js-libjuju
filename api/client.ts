@@ -176,7 +176,6 @@ function connectAndLogin(url: string, credentials, options) {
             }
             return `wss://${srv.value}:${srv.port}/model/${uuid}/api`;
           };
-
           resolve(connectAndLogin(generateURL(url, srv), credentials, options));
         }
       }
@@ -275,6 +274,17 @@ class Client {
           this._bakery.discharge(dischargeRequired, onSuccess, onFailure);
           return;
         } else if (response === REDIRECTION_ERROR) {
+          // This is should be handled by any user of this login method.
+          throw response;
+        } else if (response === INVALIDCREDENTIALS_ERROR) {
+          throw `response
+Have you been granted permission to a model on this controller?`;
+        } else if (response === PERMISSIONDENIED_ERROR) {
+          throw `response
+Ensure that you've been given 'login' permission on this controller.`;
+        } else if (typeof response === "string") {
+          // If the response is a string and not an object it's an error
+          // message and surface that back to the user.
           throw response;
         }
         resolve(new Connection(this._transport, this._facades, response));
@@ -321,6 +331,8 @@ class Client {
 
 // Define the redirect error returned by Juju, and the one returned by the API.
 const REDIRECTION_ERROR = "redirection required";
+const INVALIDCREDENTIALS_ERROR = "invalid entity name or password";
+const PERMISSIONDENIED_ERROR = "permission denied";
 class RedirectionError {
   servers: object[];
   caCert: string;
