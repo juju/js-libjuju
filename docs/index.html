@@ -3,10 +3,11 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>@canonical/jujulib - v2.0.0</title>
-	<meta name="description" content="Documentation for @canonical/jujulib - v2.0.0">
+	<title>@canonical/jujulib - v2.0.0-beta.5</title>
+	<meta name="description" content="Documentation for @canonical/jujulib - v2.0.0-beta.5">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
@@ -22,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">@canonical/jujulib - v2.0.0</a>
+					<a href="index.html" class="title">@canonical/jujulib - v2.0.0-beta.5</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -40,8 +41,6 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -51,12 +50,7 @@
 	</div>
 	<div class="tsd-page-title">
 		<div class="container">
-			<ul class="tsd-breadcrumb">
-				<li>
-					<a href="globals.html">Globals</a>
-				</li>
-			</ul>
-			<h1>@canonical/jujulib - v2.0.0</h1>
+			<h1>@canonical/jujulib - v2.0.0-beta.5</h1>
 		</div>
 	</div>
 </header>
@@ -87,19 +81,20 @@
 				<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
 					<h2>Getting Started</h2>
 				</a>
-				<p>In order to access the Juju API, a connection must be made, to either a Juju
-				controller or model.</p>
-				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> ApplicationV5 <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;jujulib/api/facades/application-v5.js&quot;</span>;
-<span class="hljs-keyword">import</span> ClientV1 <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;jujulib/api/facades/client-v1.js&quot;</span>;
-<span class="hljs-keyword">import</span> ClientV2 <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;jujulib/api/facades/client-v2.js&quot;</span>;
+				<p>To access the Juju API, a connection must be made to either a Juju
+				controller or a Juju model.</p>
+				<pre><code class="language-javascript"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">ApplicationV5</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;jujulib/api/facades/application-v5.js&quot;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">ClientV1</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;jujulib/api/facades/client-v1.js&quot;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">ClientV2</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;jujulib/api/facades/client-v2.js&quot;</span><span style="color: #000000">;</span>
 
-<span class="hljs-keyword">const</span> juju = <span class="hljs-keyword">await</span> jujulib.connect(
-  <span class="hljs-string">&#x27;wss://example.com/model/x-y-z/api&#x27;</span>,
-  {<span class="hljs-attr">facades</span>: [ApplicationV5, ClientV1, ClientV2]}
-);</code></pre>
-				<p>In the code above, a connection is being established to the provided model API URL, and the client declares interest in using the specified set of facades.</p>
-				<p><strong>Note</strong> When multiple versions of the same facade are included (like the two client versions in the example), the most recent version supported by the server is made available to the client.</p>
-				<p>The <code>connect</code> method returns a <code>juju</code> object which can be used to log into the controller or model by providing a userpass credentials or macaroons. See The various <a href="#examples">examples</a> below.</p>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">juju</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">jujulib</span><span style="color: #000000">.</span><span style="color: #795E26">connect</span><span style="color: #000000">(</span>
+<span style="color: #000000">  </span><span style="color: #A31515">&#039;wss://example.com/model/x-y-z/api&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">  {</span><span style="color: #001080">facades:</span><span style="color: #000000"> [</span><span style="color: #001080">ApplicationV5</span><span style="color: #000000">, </span><span style="color: #001080">ClientV1</span><span style="color: #000000">, </span><span style="color: #001080">ClientV2</span><span style="color: #000000">]}</span>
+<span style="color: #000000">);</span>
+</code></pre>
+				<p>In the code above, a connection is established to the provided model API URL, and the client declares interest in using the specified set of facades.</p>
+				<p><strong>Note:</strong> When multiple versions of the same facade are included (like the two client versions in the example), the most recent version supported by the server is made available to the client.</p>
+				<p>The <code>connect</code> method returns a <code>juju</code> object which is used to log into the controller or model by providing a user/pass credentials or macaroons. See the <a href="#examples">various examples</a>.</p>
 				<a href="#client-api-reference" id="client-api-reference" style="color: inherit; text-decoration: none;">
 					<h2>Client API Reference</h2>
 				</a>
@@ -107,7 +102,7 @@
 				<a href="#facade-api-reference" id="facade-api-reference" style="color: inherit; text-decoration: none;">
 					<h2>Facade API Reference</h2>
 				</a>
-				<p>Defailed Facade documentation can be found by visiting the <a href="https://juju.github.io/js-libjuju/">full API documentation</a> or you can visit the facade source directly using the links below.</p>
+				<p>Detailed Facade documentation is available as part of the <a href="https://juju.github.io/js-libjuju/">full API documentation</a> or you can visit the facade source directly using the following links:</p>
 				<ul>
 					<li><a href="api/facades/action-v6.ts">action-v6.ts</a></li>
 					<li><a href="api/facades/admin-v3.ts">admin-v3.ts</a></li>
@@ -115,12 +110,16 @@
 					<li><a href="api/facades/all-watcher-v1.ts">all-watcher-v1.ts</a></li>
 					<li><a href="api/facades/annotations-v2.ts">annotations-v2.ts</a></li>
 					<li><a href="api/facades/application-offers-v2.ts">application-offers-v2.ts</a></li>
+					<li><a href="api/facades/application-offers-v3.ts">application-offers-v3.ts</a></li>
 					<li><a href="api/facades/application-v12.ts">application-v12.ts</a></li>
+					<li><a href="api/facades/application-v13.ts">application-v13.ts</a></li>
 					<li><a href="api/facades/backups-v2.ts">backups-v2.ts</a></li>
 					<li><a href="api/facades/block-v2.ts">block-v2.ts</a></li>
 					<li><a href="api/facades/bundle-v1.ts">bundle-v1.ts</a></li>
 					<li><a href="api/facades/bundle-v4.ts">bundle-v4.ts</a></li>
+					<li><a href="api/facades/charm-hub-v1.ts">charm-hub-v1.ts</a></li>
 					<li><a href="api/facades/charms-v2.ts">charms-v2.ts</a></li>
+					<li><a href="api/facades/charms-v4.ts">charms-v4.ts</a></li>
 					<li><a href="api/facades/client-v2.ts">client-v2.ts</a></li>
 					<li><a href="api/facades/cloud-v1.ts">cloud-v1.ts</a></li>
 					<li><a href="api/facades/cloud-v2.ts">cloud-v2.ts</a></li>
@@ -150,6 +149,7 @@
 					<li><a href="api/facades/model-manager-v4.ts">model-manager-v4.ts</a></li>
 					<li><a href="api/facades/model-manager-v5.ts">model-manager-v5.ts</a></li>
 					<li><a href="api/facades/model-manager-v8.ts">model-manager-v8.ts</a></li>
+					<li><a href="api/facades/model-manager-v9.ts">model-manager-v9.ts</a></li>
 					<li><a href="api/facades/payloads-v1.ts">payloads-v1.ts</a></li>
 					<li><a href="api/facades/pinger-v1.ts">pinger-v1.ts</a></li>
 					<li><a href="api/facades/resources-v1.ts">resources-v1.ts</a></li>
@@ -163,7 +163,7 @@
 				<a href="#examples" id="examples" style="color: inherit; text-decoration: none;">
 					<h2>Examples</h2>
 				</a>
-				<p>We have a number of examples showing how to perform a few common tasks. Those can be found in the examples folder.</p>
+				<p>We have a number of examples showing how to perform a few common tasks. Those can be found in the <code>examples</code> folder.</p>
 				<ul>
 					<li><a href="examples/add-machine.js">add-machine.js</a></li>
 					<li><a href="examples/deploy.js">deploy.js</a></li>
@@ -180,7 +180,8 @@
 				</a>
 				<p>The Juju facade API files are generated from a supplied Juju schema.</p>
 				<p>To generate this schema you will need to clone the <a href="https://github.com/juju/juju/">Juju repository</a> and then run <code>go run github.com/juju/juju/generate/schemagen -admin-facades --facade-group=client,jimm ./apiserver/facades/schema.json</code> to generate a schema file that contains the publicly available facades as well as the set of facades for JAAS. Other <code>--facade-group</code> options are <code>latest</code> and <code>all</code>.</p>
-				<p>To update the facades run <code>npm run build</code> on this project. This will generate the facades using the schema stored at <code>$GOPATH/src/github.com/juju/juju/apiserver/facades/schema.json</code>. It will also pull the SHA and Juju version from this repository.</p>
+				<p>After generating a new schema run <code>npm run store-schema</code> which will store the updated schema and necessary meta data in this project.</p>
+				<p>To update the facades, run <code>npm run build</code> on this project. This will generate the facades using the locally stored schema, sha, and version the schema was generated from.</p>
 				<a href="#releasing-to-npm" id="releasing-to-npm" style="color: inherit; text-decoration: none;">
 					<h3>Releasing to NPM</h3>
 				</a>
@@ -199,176 +200,182 @@
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
-						<a href="globals.html"><em>Globals</em></a>
-					</li>
-					<li class="label tsd-is-external">
-						<span>Internals</span>
+					<li class=" ">
+						<a href="modules.html">Modules</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_client_.html">&quot;api/client&quot;</a>
+						<a href="modules/client.html">client</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_action_v6_.html">&quot;api/facades/action-<wbr>v6&quot;</a>
+						<a href="modules/facades_action_v6.html">facades/action-<wbr>v6</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_admin_v3_.html">&quot;api/facades/admin-<wbr>v3&quot;</a>
+						<a href="modules/facades_admin_v3.html">facades/admin-<wbr>v3</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_all_model_watcher_v2_.html">&quot;api/facades/all-<wbr>model-<wbr>watcher-<wbr>v2&quot;</a>
+						<a href="modules/facades_all_model_watcher_v2.html">facades/all-<wbr>model-<wbr>watcher-<wbr>v2</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_all_watcher_v1_.html">&quot;api/facades/all-<wbr>watcher-<wbr>v1&quot;</a>
+						<a href="modules/facades_all_watcher_v1.html">facades/all-<wbr>watcher-<wbr>v1</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_annotations_v2_.html">&quot;api/facades/annotations-<wbr>v2&quot;</a>
+						<a href="modules/facades_annotations_v2.html">facades/annotations-<wbr>v2</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_application_offers_v2_.html">&quot;api/facades/application-<wbr>offers-<wbr>v2&quot;</a>
+						<a href="modules/facades_application_offers_v2.html">facades/application-<wbr>offers-<wbr>v2</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_application_v12_.html">&quot;api/facades/application-<wbr>v12&quot;</a>
+						<a href="modules/facades_application_offers_v3.html">facades/application-<wbr>offers-<wbr>v3</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_backups_v2_.html">&quot;api/facades/backups-<wbr>v2&quot;</a>
+						<a href="modules/facades_application_v12.html">facades/application-<wbr>v12</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_block_v2_.html">&quot;api/facades/block-<wbr>v2&quot;</a>
+						<a href="modules/facades_application_v13.html">facades/application-<wbr>v13</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_bundle_v1_.html">&quot;api/facades/bundle-<wbr>v1&quot;</a>
+						<a href="modules/facades_backups_v2.html">facades/backups-<wbr>v2</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_bundle_v4_.html">&quot;api/facades/bundle-<wbr>v4&quot;</a>
+						<a href="modules/facades_block_v2.html">facades/block-<wbr>v2</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_charms_v2_.html">&quot;api/facades/charms-<wbr>v2&quot;</a>
+						<a href="modules/facades_bundle_v1.html">facades/bundle-<wbr>v1</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_client_v2_.html">&quot;api/facades/client-<wbr>v2&quot;</a>
+						<a href="modules/facades_bundle_v4.html">facades/bundle-<wbr>v4</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_cloud_v1_.html">&quot;api/facades/cloud-<wbr>v1&quot;</a>
+						<a href="modules/facades_charm_hub_v1.html">facades/charm-<wbr>hub-<wbr>v1</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_cloud_v2_.html">&quot;api/facades/cloud-<wbr>v2&quot;</a>
+						<a href="modules/facades_charms_v2.html">facades/charms-<wbr>v2</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_cloud_v3_.html">&quot;api/facades/cloud-<wbr>v3&quot;</a>
+						<a href="modules/facades_charms_v4.html">facades/charms-<wbr>v4</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_cloud_v4_.html">&quot;api/facades/cloud-<wbr>v4&quot;</a>
+						<a href="modules/facades_client_v2.html">facades/client-<wbr>v2</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_cloud_v5_.html">&quot;api/facades/cloud-<wbr>v5&quot;</a>
+						<a href="modules/facades_cloud_v1.html">facades/cloud-<wbr>v1</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_cloud_v7_.html">&quot;api/facades/cloud-<wbr>v7&quot;</a>
+						<a href="modules/facades_cloud_v2.html">facades/cloud-<wbr>v2</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_controller_v3_.html">&quot;api/facades/controller-<wbr>v3&quot;</a>
+						<a href="modules/facades_cloud_v3.html">facades/cloud-<wbr>v3</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_controller_v4_.html">&quot;api/facades/controller-<wbr>v4&quot;</a>
+						<a href="modules/facades_cloud_v4.html">facades/cloud-<wbr>v4</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_controller_v5_.html">&quot;api/facades/controller-<wbr>v5&quot;</a>
+						<a href="modules/facades_cloud_v5.html">facades/cloud-<wbr>v5</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_controller_v6_.html">&quot;api/facades/controller-<wbr>v6&quot;</a>
+						<a href="modules/facades_cloud_v7.html">facades/cloud-<wbr>v7</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_controller_v7_.html">&quot;api/facades/controller-<wbr>v7&quot;</a>
+						<a href="modules/facades_controller_v3.html">facades/controller-<wbr>v3</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_controller_v8_.html">&quot;api/facades/controller-<wbr>v8&quot;</a>
+						<a href="modules/facades_controller_v4.html">facades/controller-<wbr>v4</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_controller_v9_.html">&quot;api/facades/controller-<wbr>v9&quot;</a>
+						<a href="modules/facades_controller_v5.html">facades/controller-<wbr>v5</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_credential_manager_v1_.html">&quot;api/facades/credential-<wbr>manager-<wbr>v1&quot;</a>
+						<a href="modules/facades_controller_v6.html">facades/controller-<wbr>v6</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_firewall_rules_v1_.html">&quot;api/facades/firewall-<wbr>rules-<wbr>v1&quot;</a>
+						<a href="modules/facades_controller_v7.html">facades/controller-<wbr>v7</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_high_availability_v2_.html">&quot;api/facades/high-<wbr>availability-<wbr>v2&quot;</a>
+						<a href="modules/facades_controller_v8.html">facades/controller-<wbr>v8</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_image_manager_v2_.html">&quot;api/facades/image-<wbr>manager-<wbr>v2&quot;</a>
+						<a href="modules/facades_controller_v9.html">facades/controller-<wbr>v9</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_image_metadata_manager_v1_.html">&quot;api/facades/image-<wbr>metadata-<wbr>manager-<wbr>v1&quot;</a>
+						<a href="modules/facades_credential_manager_v1.html">facades/credential-<wbr>manager-<wbr>v1</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_key_manager_v1_.html">&quot;api/facades/key-<wbr>manager-<wbr>v1&quot;</a>
+						<a href="modules/facades_firewall_rules_v1.html">facades/firewall-<wbr>rules-<wbr>v1</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_machine_manager_v6_.html">&quot;api/facades/machine-<wbr>manager-<wbr>v6&quot;</a>
+						<a href="modules/facades_high_availability_v2.html">facades/high-<wbr>availability-<wbr>v2</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_metrics_debug_v2_.html">&quot;api/facades/metrics-<wbr>debug-<wbr>v2&quot;</a>
+						<a href="modules/facades_image_manager_v2.html">facades/image-<wbr>manager-<wbr>v2</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_model_config_v2_.html">&quot;api/facades/model-<wbr>config-<wbr>v2&quot;</a>
+						<a href="modules/facades_image_metadata_manager_v1.html">facades/image-<wbr>metadata-<wbr>manager-<wbr>v1</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_model_generation_v4_.html">&quot;api/facades/model-<wbr>generation-<wbr>v4&quot;</a>
+						<a href="modules/facades_key_manager_v1.html">facades/key-<wbr>manager-<wbr>v1</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_model_manager_v2_.html">&quot;api/facades/model-<wbr>manager-<wbr>v2&quot;</a>
+						<a href="modules/facades_machine_manager_v6.html">facades/machine-<wbr>manager-<wbr>v6</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_model_manager_v3_.html">&quot;api/facades/model-<wbr>manager-<wbr>v3&quot;</a>
+						<a href="modules/facades_metrics_debug_v2.html">facades/metrics-<wbr>debug-<wbr>v2</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_model_manager_v4_.html">&quot;api/facades/model-<wbr>manager-<wbr>v4&quot;</a>
+						<a href="modules/facades_model_config_v2.html">facades/model-<wbr>config-<wbr>v2</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_model_manager_v5_.html">&quot;api/facades/model-<wbr>manager-<wbr>v5&quot;</a>
+						<a href="modules/facades_model_generation_v4.html">facades/model-<wbr>generation-<wbr>v4</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_model_manager_v8_.html">&quot;api/facades/model-<wbr>manager-<wbr>v8&quot;</a>
+						<a href="modules/facades_model_manager_v2.html">facades/model-<wbr>manager-<wbr>v2</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_payloads_v1_.html">&quot;api/facades/payloads-<wbr>v1&quot;</a>
+						<a href="modules/facades_model_manager_v3.html">facades/model-<wbr>manager-<wbr>v3</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_pinger_v1_.html">&quot;api/facades/pinger-<wbr>v1&quot;</a>
+						<a href="modules/facades_model_manager_v4.html">facades/model-<wbr>manager-<wbr>v4</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_resources_v1_.html">&quot;api/facades/resources-<wbr>v1&quot;</a>
+						<a href="modules/facades_model_manager_v5.html">facades/model-<wbr>manager-<wbr>v5</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_spaces_v6_.html">&quot;api/facades/spaces-<wbr>v6&quot;</a>
+						<a href="modules/facades_model_manager_v8.html">facades/model-<wbr>manager-<wbr>v8</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_sshclient_v2_.html">&quot;api/facades/sshclient-<wbr>v2&quot;</a>
+						<a href="modules/facades_model_manager_v9.html">facades/model-<wbr>manager-<wbr>v9</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_storage_v6_.html">&quot;api/facades/storage-<wbr>v6&quot;</a>
+						<a href="modules/facades_payloads_v1.html">facades/payloads-<wbr>v1</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_subnets_v4_.html">&quot;api/facades/subnets-<wbr>v4&quot;</a>
+						<a href="modules/facades_pinger_v1.html">facades/pinger-<wbr>v1</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_user_manager_v1_.html">&quot;api/facades/user-<wbr>manager-<wbr>v1&quot;</a>
+						<a href="modules/facades_resources_v1.html">facades/resources-<wbr>v1</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_facades_user_manager_v2_.html">&quot;api/facades/user-<wbr>manager-<wbr>v2&quot;</a>
+						<a href="modules/facades_spaces_v6.html">facades/spaces-<wbr>v6</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_helpers_.html">&quot;api/helpers&quot;</a>
+						<a href="modules/facades_sshclient_v2.html">facades/sshclient-<wbr>v2</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_api_utils_.html">&quot;api/utils&quot;</a>
+						<a href="modules/facades_storage_v6.html">facades/storage-<wbr>v6</a>
 					</li>
-					<li class="label tsd-is-external">
-						<span>Externals</span>
+					<li class=" tsd-kind-module">
+						<a href="modules/facades_subnets_v4.html">facades/subnets-<wbr>v4</a>
 					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_generator_interfaces_.html">&quot;generator/interfaces&quot;</a>
+					<li class=" tsd-kind-module">
+						<a href="modules/facades_user_manager_v1.html">facades/user-<wbr>manager-<wbr>v1</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/facades_user_manager_v2.html">facades/user-<wbr>manager-<wbr>v2</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/helpers.html">helpers</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>
@@ -384,12 +391,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
-				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
-				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
