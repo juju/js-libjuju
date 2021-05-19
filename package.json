@@ -32,19 +32,19 @@
   },
   "homepage": "https://github.com/juju/js-libjuju#readme",
   "devDependencies": {
-    "@types/node": "^15.3.0",
-    "documentation": "^13.2.5",
-    "eslint": "^7.26.0",
-    "prettier": "^2.3.0",
+    "@types/node": "15.3.0",
+    "documentation": "13.2.5",
+    "eslint": "7.26.0",
+    "prettier": "2.3.0",
     "sinon": "9.2.3",
     "tap": "14.11.0",
-    "typedoc": "^0.20.36",
-    "typescript": "^4.2.4"
+    "typedoc": "0.20.36",
+    "typescript": "4.2.4"
   },
   "dependencies": {
     "@canonical/macaroon-bakery": "0.3.0",
     "btoa": "1.2.1",
-    "websocket": "^1.0.33",
-    "xhr2": "^0.2.1"
+    "websocket": "1.0.33",
+    "xhr2": "0.2.1"
   }
 }
