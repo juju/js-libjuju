@@ -170,12 +170,12 @@ function connectAndLogin(url: string, credentials, options) {
           // This is a public server with a dns-name, connect to it.
           const generateURL = (uuidOrURL: string, srv) => {
             let uuid = uuidOrURL;
-            if (uuid.startsWith('wss://') || uuid.startsWith('ws://')) {
-              const parts = uuid.split('/');
+            if (uuid.startsWith("wss://") || uuid.startsWith("ws://")) {
+              const parts = uuid.split("/");
               uuid = parts[parts.length - 2];
             }
             return `wss://${srv.value}:${srv.port}/model/${uuid}/api`;
-          }
+          };
 
           resolve(connectAndLogin(generateURL(url, srv), credentials, options));
         }
@@ -264,11 +264,7 @@ class Client {
           const onFailure = (err) => {
             reject("macaroon discharge failed: " + err);
           };
-          this._bakery.discharge(
-            dischargeRequired,
-            onSuccess,
-            onFailure
-          );
+          this._bakery.discharge(dischargeRequired, onSuccess, onFailure);
           return;
         } else if (response === REDIRECTION_ERROR) {
           throw response;
@@ -461,10 +457,10 @@ class Connection {
 
     // Populate info.
     this.info = {
-      controllerTag: loginResult['controller-tag'],
-      serverVersion: loginResult['server-version'],
+      controllerTag: loginResult["controller-tag"],
+      serverVersion: loginResult["server-version"],
       servers: loginResult.servers,
-      user: loginResult['user-info'],
+      user: loginResult["user-info"],
       getFacade: (name) => {
         return this.facades[name];
       },

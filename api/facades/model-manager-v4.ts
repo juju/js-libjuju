@@ -6,8 +6,8 @@
     Unit-agent
     Controllers
 
-  NOTE: This file was generated on Tue, 25 Aug 2020 18:00:56 GMT using
-  the Juju schema from  Juju 2.8.2 at the git SHA 516c1904ce.
+  NOTE: This file was generated on Wed, 19 May 2021 21:37:19 GMT using
+  the Juju schema from  Juju 2.9-rc3 at the git SHA cb361902f8.
   Do not manually edit this file.
 */
 
@@ -304,6 +304,15 @@ interface UserModelList {
   'user-models': UserModel[];
 }
 
+interface ValidateModelUpgradeParam {
+  'model-tag': string;
+}
+
+interface ValidateModelUpgradeParams {
+  force: boolean;
+  model: ValidateModelUpgradeParam[];
+}
+
 interface AdditionalProperties {
   [key: string]: any;
 }
@@ -537,6 +546,27 @@ class ModelManagerV4 {
       const req: JujuRequest = {
         type: 'ModelManager',
         request: 'UnsetModelDefaults',
+        version: 4,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
+    ValidateModelUpgrades validates if a model is allowed to perform an upgrade.
+    Examples of why you would want to block a model upgrade, would be situations
+    like upgrade-series. If performing an upgrade-series we don't know the
+    current status of the machine, so performing an upgrade-model can lead to
+    bad unintended errors down the line.
+  */
+  validateModelUpgrades(params: ValidateModelUpgradeParams): Promise<ErrorResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'ModelManager',
+        request: 'ValidateModelUpgrades',
         version: 4,
         params: params,
       };

@@ -6,8 +6,8 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 25 Aug 2020 18:00:56 GMT using
-  the Juju schema from  Juju 2.8.2 at the git SHA 516c1904ce.
+  NOTE: This file was generated on Wed, 19 May 2021 21:37:19 GMT using
+  the Juju schema from  Juju 2.9-rc3 at the git SHA cb361902f8.
   Do not manually edit this file.
 */
 
@@ -93,6 +93,7 @@ interface ApplicationStatus {
   'endpoint-bindings': AdditionalProperties;
   err?: Error;
   exposed: boolean;
+  'exposed-endpoints'?: AdditionalProperties;
   int?: number;
   life: string;
   'meter-statuses': AdditionalProperties;
@@ -205,6 +206,11 @@ interface ErrorResult {
 
 interface ErrorResults {
   results: ErrorResult[];
+}
+
+interface ExposedEndpoint {
+  'expose-to-cidrs': string[];
+  'expose-to-spaces': string[];
 }
 
 interface FindToolsParams {
@@ -561,6 +567,7 @@ interface UnitStatus {
 }
 
 interface Value {
+  'allocate-public-ip': boolean;
   arch: string;
   container: string;
   cores: number;
@@ -633,7 +640,10 @@ class ClientV2 {
   }
   
   /**
-
+    NOTE: AddCharm is deprecated as of juju 2.9 and charms facade version 3.
+    Please discontinue use and move to the charms facade version.
+    
+    TODO: remove in juju 3.0
   */
   addCharm(params: AddCharm): Promise<undefined> {
     return new Promise((resolve, reject) => {
@@ -650,12 +660,18 @@ class ClientV2 {
   }
   
   /**
-    AddCharmWithAuthorization adds the given charm URL (which must include revision) to
-    the model, if it does not exist yet. Local charms are not
+    AddCharmWithAuthorization adds the given charm URL (which must include
+    revision) to the model, if it does not exist yet. Local charms are not
     supported, only charm store URLs. See also AddLocalCharm().
     
-    The authorization macaroon, args.CharmStoreMacaroon, may be
-    omitted, in which case this call is equivalent to AddCharm.
+    The authorization macaroon, args.CharmStoreMacaroon, may be omitted, in
+    which case this call is equivalent to AddCharm.
+    
+    NOTE: AddCharmWithAuthorization is deprecated as of juju 2.9 and charms
+    facade version 3. Please discontinue use and move to the charms facade
+    version.
+    
+    TODO: remove in juju 3.0
   */
   addCharmWithAuthorization(params: AddCharmWithAuthorization): Promise<undefined> {
     return new Promise((resolve, reject) => {
@@ -983,6 +999,11 @@ class ClientV2 {
   /**
     ResolveCharm resolves the best available charm URLs with series, for charm
     locations without a series specified.
+    
+    NOTE: ResolveCharms is deprecated as of juju 2.9 and charms facade version 3.
+    Please discontinue use and move to the charms facade version.
+    
+    TODO: remove in juju 3.0
   */
   resolveCharms(params: ResolveCharms): Promise<ResolveCharmResults> {
     return new Promise((resolve, reject) => {

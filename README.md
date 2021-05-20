@@ -19,8 +19,8 @@ WebSocket API.
 
 ## Getting Started
 
-In order to access the Juju API, a connection must be made, to either a Juju
-controller or model.
+To access the Juju API, a connection must be made to either a Juju
+controller or a Juju model.
 
 ```javascript
 import ApplicationV5 from "jujulib/api/facades/application-v5.js";
@@ -33,11 +33,11 @@ const juju = await jujulib.connect(
 );
 ```
 
-In the code above, a connection is being established to the provided model API URL, and the client declares interest in using the specified set of facades.
+In the code above, a connection is established to the provided model API URL, and the client declares interest in using the specified set of facades.
 
-**Note** When multiple versions of the same facade are included (like the two client versions in the example), the most recent version supported by the server is made available to the client.
+**Note:** When multiple versions of the same facade are included (like the two client versions in the example), the most recent version supported by the server is made available to the client.
 
-The `connect` method returns a `juju` object which can be used to log into the controller or model by providing a userpass credentials or macaroons. See The various [examples](#examples) below.
+The `connect` method returns a `juju` object which is used to log into the controller or model by providing a user/pass credentials or macaroons. See the [various examples](#examples).
 
 ## Client API Reference
 
@@ -45,7 +45,7 @@ Visit the [full API documentation](https://juju.github.io/js-libjuju/) for detai
 
 ## Facade API Reference
 
-Defailed Facade documentation can be found by visiting the [full API documentation](https://juju.github.io/js-libjuju/) or you can visit the facade source directly using the links below.
+Detailed Facade documentation is available as part of the [full API documentation](https://juju.github.io/js-libjuju/) or you can visit the facade source directly using the following links:
 
 - [action-v6.ts](api/facades/action-v6.ts)
 - [admin-v3.ts](api/facades/admin-v3.ts)
@@ -53,12 +53,16 @@ Defailed Facade documentation can be found by visiting the [full API documentati
 - [all-watcher-v1.ts](api/facades/all-watcher-v1.ts)
 - [annotations-v2.ts](api/facades/annotations-v2.ts)
 - [application-offers-v2.ts](api/facades/application-offers-v2.ts)
+- [application-offers-v3.ts](api/facades/application-offers-v3.ts)
 - [application-v12.ts](api/facades/application-v12.ts)
+- [application-v13.ts](api/facades/application-v13.ts)
 - [backups-v2.ts](api/facades/backups-v2.ts)
 - [block-v2.ts](api/facades/block-v2.ts)
 - [bundle-v1.ts](api/facades/bundle-v1.ts)
 - [bundle-v4.ts](api/facades/bundle-v4.ts)
+- [charm-hub-v1.ts](api/facades/charm-hub-v1.ts)
 - [charms-v2.ts](api/facades/charms-v2.ts)
+- [charms-v4.ts](api/facades/charms-v4.ts)
 - [client-v2.ts](api/facades/client-v2.ts)
 - [cloud-v1.ts](api/facades/cloud-v1.ts)
 - [cloud-v2.ts](api/facades/cloud-v2.ts)
@@ -88,6 +92,7 @@ Defailed Facade documentation can be found by visiting the [full API documentati
 - [model-manager-v4.ts](api/facades/model-manager-v4.ts)
 - [model-manager-v5.ts](api/facades/model-manager-v5.ts)
 - [model-manager-v8.ts](api/facades/model-manager-v8.ts)
+- [model-manager-v9.ts](api/facades/model-manager-v9.ts)
 - [payloads-v1.ts](api/facades/payloads-v1.ts)
 - [pinger-v1.ts](api/facades/pinger-v1.ts)
 - [resources-v1.ts](api/facades/resources-v1.ts)
@@ -100,7 +105,7 @@ Defailed Facade documentation can be found by visiting the [full API documentati
 
 ## Examples
 
-We have a number of examples showing how to perform a few common tasks. Those can be found in the examples folder.
+We have a number of examples showing how to perform a few common tasks. Those can be found in the `examples` folder.
 
 - [add-machine.js](examples/add-machine.js)
 - [deploy.js](examples/deploy.js)
@@ -117,7 +122,9 @@ The Juju facade API files are generated from a supplied Juju schema.
 
 To generate this schema you will need to clone the [Juju repository](https://github.com/juju/juju/) and then run `go run github.com/juju/juju/generate/schemagen -admin-facades --facade-group=client,jimm ./apiserver/facades/schema.json` to generate a schema file that contains the publicly available facades as well as the set of facades for JAAS. Other `--facade-group` options are `latest` and `all`.
 
-To update the facades run `npm run build` on this project. This will generate the facades using the schema stored at `$GOPATH/src/github.com/juju/juju/apiserver/facades/schema.json`. It will also pull the SHA and Juju version from this repository.
+After generating a new schema run `npm run store-schema` which will store the updated schema and necessary meta data in this project.
+
+To update the facades, run `npm run build` on this project. This will generate the facades using the locally stored schema, sha, and version the schema was generated from.
 
 ### Releasing to NPM
 

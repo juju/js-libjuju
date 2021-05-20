@@ -3,8 +3,8 @@
   This facade is available on:
     Models
 
-  NOTE: This file was generated on Tue, 25 Aug 2020 18:00:56 GMT using
-  the Juju schema from  Juju 2.8.2 at the git SHA 516c1904ce.
+  NOTE: This file was generated on Wed, 19 May 2021 21:37:19 GMT using
+  the Juju schema from  Juju 2.9-rc3 at the git SHA cb361902f8.
   Do not manually edit this file.
 */
 
@@ -114,6 +114,7 @@ interface OperationQueryArgs {
   actions: string[];
   applications: string[];
   limit: number;
+  machines: string[];
   offset: number;
   status: string[];
   units: string[];
