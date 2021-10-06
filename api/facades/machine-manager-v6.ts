@@ -6,8 +6,8 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Wed, 19 May 2021 21:37:19 GMT using
-  the Juju schema from  Juju 2.9-rc3 at the git SHA cb361902f8.
+  NOTE: This file was generated on Wed, 06 Oct 2021 18:15:31 GMT using
+  the Juju schema from  Juju 3.0-beta1 at the git SHA 61c87ab7e1.
   Do not manually edit this file.
 */
 
@@ -43,6 +43,9 @@ interface AddMachinesResults {
 }
 
 interface Address {
+  cidr?: string;
+  'config-type'?: string;
+  'is-secondary'?: boolean;
   scope: string;
   'space-id'?: string;
   'space-name'?: string;
@@ -195,6 +198,7 @@ interface Value {
   container: string;
   cores: number;
   'cpu-power': number;
+  'instance-role': string;
   'instance-type': string;
   mem: number;
   'root-disk': number;
@@ -210,7 +214,7 @@ interface AdditionalProperties {
 }
 
 /**
-  Version 6 of Machine Manager API.
+  MachineManagerAPIV6 defines the Version 6 of Machine Manager API.
   Changes input parameters to DestroyMachineWithParams and ForceDestroyMachine.
 */
 class MachineManagerV6 {
@@ -338,7 +342,8 @@ class MachineManagerV6 {
   }
   
   /**
-    UpgradeSeriesComplete marks a machine as having completed a managed series upgrade.
+    UpgradeSeriesComplete marks a machine as having completed a managed series
+    upgrade.
   */
   upgradeSeriesComplete(params: UpdateSeriesArg): Promise<ErrorResult> {
     return new Promise((resolve, reject) => {
@@ -392,7 +397,8 @@ class MachineManagerV6 {
   }
   
   /**
-    WatchUpgradeSeriesNotifications returns a watcher that fires on upgrade series events.
+    WatchUpgradeSeriesNotifications returns a watcher that fires on upgrade
+    series events.
   */
   watchUpgradeSeriesNotifications(params: Entities): Promise<NotifyWatchResults> {
     return new Promise((resolve, reject) => {

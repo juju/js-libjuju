@@ -3,8 +3,8 @@
   This facade is available on:
     Models
 
-  NOTE: This file was generated on Wed, 19 May 2021 21:37:19 GMT using
-  the Juju schema from  Juju 2.9-rc3 at the git SHA cb361902f8.
+  NOTE: This file was generated on Wed, 06 Oct 2021 18:15:31 GMT using
+  the Juju schema from  Juju 3.0-beta1 at the git SHA 61c87ab7e1.
   Do not manually edit this file.
 */
 
@@ -40,6 +40,7 @@ interface Charm {
   actions?: CharmActions;
   config: AdditionalProperties;
   'lxd-profile'?: CharmLXDProfile;
+  manifest?: CharmManifest;
   meta?: CharmMeta;
   metrics?: CharmMetrics;
   revision: number;
@@ -55,9 +56,15 @@ interface CharmActions {
   specs: AdditionalProperties;
 }
 
+interface CharmBase {
+  architectures: string[];
+  channel: string;
+  name: string;
+}
+
 interface CharmContainer {
   mounts: CharmMount[];
-  systems: CharmSystem[];
+  resource: string;
 }
 
 interface CharmDeployment {
@@ -81,8 +88,12 @@ interface CharmLXDProfile {
   devices: AdditionalProperties;
 }
 
+interface CharmManifest {
+  bases: CharmBase[];
+}
+
 interface CharmMeta {
-  architectures?: string[];
+  assumes?: string[];
   categories?: string[];
   containers?: AdditionalProperties;
   deployment?: CharmDeployment;
@@ -93,7 +104,6 @@ interface CharmMeta {
   name: string;
   'payload-classes'?: AdditionalProperties;
   peers?: AdditionalProperties;
-  platforms?: string[];
   provides?: AdditionalProperties;
   requires?: AdditionalProperties;
   resources?: AdditionalProperties;
@@ -101,7 +111,6 @@ interface CharmMeta {
   storage?: AdditionalProperties;
   subordinate: boolean;
   summary: string;
-  systems?: CharmSystem[];
   tags?: string[];
   terms?: string[];
 }
@@ -128,12 +137,17 @@ interface CharmOption {
 }
 
 interface CharmOrigin {
+  architecture?: string;
   hash?: string;
   id: string;
+  'instance-key'?: string;
+  os?: string;
   revision?: number;
   risk?: string;
+  series?: string;
   source: string;
   track?: string;
+  type: string;
 }
 
 interface CharmOriginResult {
@@ -159,11 +173,40 @@ interface CharmRelation {
   scope: string;
 }
 
+interface CharmResource {
+  description?: string;
+  fingerprint: number[];
+  name: string;
+  origin: string;
+  path: string;
+  revision: number;
+  size: number;
+  type: string;
+}
+
 interface CharmResourceMeta {
   description: string;
   name: string;
   path: string;
   type: string;
+}
+
+interface CharmResourceResult {
+  CharmResource: CharmResource;
+  ErrorResult: ErrorResult;
+  description?: string;
+  error?: Error;
+  fingerprint: number[];
+  name: string;
+  origin: string;
+  path: string;
+  revision: number;
+  size: number;
+  type: string;
+}
+
+interface CharmResourcesResults {
+  results: CharmResourceResult[][];
 }
 
 interface CharmStorage {
@@ -179,14 +222,18 @@ interface CharmStorage {
   type: string;
 }
 
-interface CharmSystem {
-  channel: string;
-  os: string;
-  resource: string;
-}
-
 interface CharmURL {
   url: string;
+}
+
+interface CharmURLAndOrigin {
+  'charm-origin': CharmOrigin;
+  'charm-url': string;
+  macaroon?: Macaroon;
+}
+
+interface CharmURLAndOrigins {
+  entities: CharmURLAndOrigin[];
 }
 
 interface CharmsList {
@@ -195,6 +242,15 @@ interface CharmsList {
 
 interface CharmsListResult {
   'charm-urls': string[];
+}
+
+interface DownloadInfoResult {
+  'charm-origin': CharmOrigin;
+  url: string;
+}
+
+interface DownloadInfoResults {
+  results: DownloadInfoResult[];
 }
 
 interface Error {
@@ -222,6 +278,7 @@ interface Macaroon {
 interface ResolveCharmWithChannel {
   'charm-origin': CharmOrigin;
   reference: string;
+  'switch-charm'?: boolean;
 }
 
 interface ResolveCharmWithChannelResult {
@@ -308,7 +365,6 @@ class CharmsV4 {
   
   /**
     CharmInfo returns information about the requested charm.
-    NOTE: thumper 2016-06-29, this is not a bulk call and probably should be.
   */
   charmInfo(params: CharmURL): Promise<Charm> {
     return new Promise((resolve, reject) => {
@@ -334,6 +390,24 @@ class CharmsV4 {
       const req: JujuRequest = {
         type: 'Charms',
         request: 'CheckCharmPlacement',
+        version: 4,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
+    GetDownloadInfos attempts to get the bundle corresponding to the charm url
+    and origin.
+  */
+  getDownloadInfos(params: CharmURLAndOrigins): Promise<DownloadInfoResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'Charms',
+        request: 'GetDownloadInfos',
         version: 4,
         params: params,
       };
@@ -370,6 +444,23 @@ class CharmsV4 {
       const req: JujuRequest = {
         type: 'Charms',
         request: 'List',
+        version: 4,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
+    ListCharmResources returns a series of resources for a given charm.
+  */
+  listCharmResources(params: CharmURLAndOrigins): Promise<CharmResourcesResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'Charms',
+        request: 'ListCharmResources',
         version: 4,
         params: params,
       };
