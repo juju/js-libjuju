@@ -6,8 +6,8 @@
     Unit-agent
     Controllers
 
-  NOTE: This file was generated on Wed, 19 May 2021 21:37:19 GMT using
-  the Juju schema from  Juju 2.9-rc3 at the git SHA cb361902f8.
+  NOTE: This file was generated on Wed, 06 Oct 2021 18:15:31 GMT using
+  the Juju schema from  Juju 3.0-beta1 at the git SHA 61c87ab7e1.
   Do not manually edit this file.
 */
 
@@ -374,7 +374,7 @@ class ApplicationOffersV3 {
   
   /**
     RemoteApplicationInfo returns information about the requested remote application.
-    This call currently has no client side API, only there for the GUI at this stage.
+    This call currently has no client side API, only there for the Dashboard at this stage.
   */
   remoteApplicationInfo(params: OfferURLs): Promise<RemoteApplicationInfoResults> {
     return new Promise((resolve, reject) => {

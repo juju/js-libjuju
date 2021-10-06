@@ -6,8 +6,8 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Wed, 19 May 2021 21:37:19 GMT using
-  the Juju schema from  Juju 2.9-rc3 at the git SHA cb361902f8.
+  NOTE: This file was generated on Wed, 06 Oct 2021 18:15:31 GMT using
+  the Juju schema from  Juju 3.0-beta1 at the git SHA 61c87ab7e1.
   Do not manually edit this file.
 */
 
@@ -62,10 +62,6 @@ interface CharmOption {
   type: string;
 }
 
-interface Entity {
-  tag: string;
-}
-
 interface ErrorResponse {
   'error-list': CharmHubError;
 }
@@ -74,12 +70,18 @@ interface FindResponse {
   architectures?: string[];
   id: string;
   name: string;
+  os?: string[];
   publisher: string;
   series?: string[];
   'store-url': string;
   summary: string;
   type: string;
   version: string;
+}
+
+interface Info {
+  channel?: string;
+  tag: string;
 }
 
 interface InfoResponse {
@@ -105,7 +107,14 @@ interface Platform {
 }
 
 interface Query {
+  category?: string;
+  channel?: string;
+  platforms?: string;
+  publisher?: string;
   query: string;
+  'relation-provides'?: string;
+  'relation-requires'?: string;
+  type?: string;
 }
 
 interface AdditionalProperties {
@@ -152,7 +161,7 @@ class CharmHubV1 {
   /**
     Info queries the CharmHub API with a given entity ID.
   */
-  info(params: Entity): Promise<CharmHubEntityInfoResult> {
+  info(params: Info): Promise<CharmHubEntityInfoResult> {
     return new Promise((resolve, reject) => {
 
       const req: JujuRequest = {

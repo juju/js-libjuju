@@ -6,8 +6,8 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Wed, 19 May 2021 21:37:19 GMT using
-  the Juju schema from  Juju 2.9-rc3 at the git SHA cb361902f8.
+  NOTE: This file was generated on Wed, 06 Oct 2021 18:15:31 GMT using
+  the Juju schema from  Juju 3.0-beta1 at the git SHA 61c87ab7e1.
   Do not manually edit this file.
 */
 
@@ -162,12 +162,6 @@ interface ApplicationResult {
   tag: string;
 }
 
-interface ApplicationSet {
-  application: string;
-  branch: string;
-  options: AdditionalProperties;
-}
-
 interface ApplicationSetCharm {
   application: string;
   channel: string;
@@ -200,12 +194,17 @@ interface ApplicationsDeploy {
 }
 
 interface CharmOrigin {
+  architecture?: string;
   hash?: string;
   id: string;
+  'instance-key'?: string;
+  os?: string;
   revision?: number;
   risk?: string;
+  series?: string;
   source: string;
   track?: string;
+  type: string;
 }
 
 interface CharmRelation {
@@ -459,11 +458,6 @@ interface StorageConstraints {
   size: number;
 }
 
-interface StringResult {
-  error?: Error;
-  result: string;
-}
-
 interface Subnet {
   cidr: string;
   life: string;
@@ -520,6 +514,7 @@ interface Value {
   container: string;
   cores: number;
   'cpu-power': number;
+  'instance-role': string;
   'instance-type': string;
   mem: number;
   'root-disk': number;
@@ -536,8 +531,6 @@ interface AdditionalProperties {
 
 /**
   APIv13 provides the Application API facade for version 13.
-  It adds CharmOrigin. The ApplicationsInfo call populates the exposed
-  endpoints field in its response entries.
 */
 class ApplicationV13 {
   static NAME: string = 'Application';
@@ -835,24 +828,6 @@ class ApplicationV13 {
   }
   
   /**
-    GetCharmURL returns the charm URL the given application is
-    running at present.
-  */
-  getCharmURL(params: ApplicationGet): Promise<StringResult> {
-    return new Promise((resolve, reject) => {
-
-      const req: JujuRequest = {
-        type: 'Application',
-        request: 'GetCharmURL',
-        version: 13,
-        params: params,
-      };
-
-      this._transport.write(req, resolve, reject);
-    });
-  }
-  
-  /**
     GetCharmURLOrigin returns the charm URL and charm origin the given
     application is running at present.
   */
@@ -957,25 +932,6 @@ class ApplicationV13 {
   }
   
   /**
-    Set implements the server side of Application.Set.
-    It does not unset values that are set to an empty string.
-    Unset should be used for that.
-  */
-  set(params: ApplicationSet): Promise<undefined> {
-    return new Promise((resolve, reject) => {
-
-      const req: JujuRequest = {
-        type: 'Application',
-        request: 'Set',
-        version: 13,
-        params: params,
-      };
-
-      this._transport.write(req, resolve, reject);
-    });
-  }
-  
-  /**
     SetCharm sets the charm for a given for the application.
   */
   setCharm(params: ApplicationSetCharm): Promise<undefined> {
@@ -993,7 +949,7 @@ class ApplicationV13 {
   }
   
   /**
-    SetConfig implements the server side of Application.SetConfig.  Both
+    SetConfigs implements the server side of Application.SetConfig.  Both
     application and charm config are set. It does not unset values in
     Config map that are set to an empty string. Unset should be used for that.
   */
@@ -1089,23 +1045,6 @@ class ApplicationV13 {
       const req: JujuRequest = {
         type: 'Application',
         request: 'UnitsInfo',
-        version: 13,
-        params: params,
-      };
-
-      this._transport.write(req, resolve, reject);
-    });
-  }
-  
-  /**
-    Unset implements the server side of Client.Unset.
-  */
-  unset(params: ApplicationUnset): Promise<undefined> {
-    return new Promise((resolve, reject) => {
-
-      const req: JujuRequest = {
-        type: 'Application',
-        request: 'Unset',
         version: 13,
         params: params,
       };
