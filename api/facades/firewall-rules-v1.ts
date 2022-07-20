@@ -6,8 +6,8 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Wed, 06 Oct 2021 18:15:31 GMT using
-  the Juju schema from  Juju 3.0-beta1 at the git SHA 61c87ab7e1.
+  NOTE: This file was generated on Wed, 20 Jul 2022 18:17:45 GMT using
+  the Juju schema from  Juju 3.0-beta3 at the git SHA 1ec5e6d156.
   Do not manually edit this file.
 */
 
