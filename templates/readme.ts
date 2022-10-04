@@ -50,9 +50,14 @@ Visit the [full API documentation](https://juju.github.io/js-libjuju/) for detai
 
 Detailed Facade documentation is available as part of the [full API documentation](https://juju.github.io/js-libjuju/) or you can visit the facade source directly using the following links:
 
-${r.facadeList
-  .map((f) => {
-    return `- [${f.name}](${f.path})`;
+|Facade|Versions|
+|-|-|
+${Object.keys(r.facadeList)
+  .map((facadeName) => {
+    const versionsList = r.facadeList[facadeName]
+      .map((f) => `<li>[${f.name}](${f.path})</li>`)
+      .join("");
+    return `|${facadeName}|<ul>${versionsList}</ul>|`;
   })
   .join("\n")}
 

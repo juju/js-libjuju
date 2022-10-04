@@ -12,7 +12,7 @@ export interface FacadeTemplate {
 export interface ReadmeTemplate {
   clientAPIInfo: string;
   exampleList: FileInfo[];
-  facadeList: FileInfo[];
+  facadeList: { [key: string]: FileInfo[] };
 }
 
 export interface FileInfo {

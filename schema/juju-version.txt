@@ -1,1 +1,1 @@
-3.0-beta1
+juju-3.0-beta4
