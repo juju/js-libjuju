@@ -6,8 +6,8 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Wed, 06 Oct 2021 18:15:31 GMT using
-  the Juju schema from  Juju 3.0-beta1 at the git SHA 61c87ab7e1.
+  NOTE: This file was generated on Tue, 04 Oct 2022 16:14:09 GMT using
+  the Juju schema from  Juju juju-3.0-beta4 at the git SHA a13ab81a.
   Do not manually edit this file.
 */
 
@@ -132,6 +132,7 @@ interface RemoteRelation {
   'remote-endpoint-name': string;
   'source-model-uuid': string;
   suspended: boolean;
+  'unit-count': number;
 }
 
 interface RemoteRelationChangeEvent {
@@ -146,7 +147,7 @@ interface RemoteRelationChangeEvent {
   'relation-token': string;
   suspended?: boolean;
   'suspended-reason'?: string;
-  'unit-count'?: number;
+  'unit-count': number;
 }
 
 interface RemoteRelationResult {

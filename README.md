@@ -47,147 +47,123 @@ Visit the [full API documentation](https://juju.github.io/js-libjuju/) for detai
 
 Detailed Facade documentation is available as part of the [full API documentation](https://juju.github.io/js-libjuju/) or you can visit the facade source directly using the following links:
 
-- [action-pruner-v1.ts](api/facades/action-pruner-v1.ts)
-- [action-v6.ts](api/facades/action-v6.ts)
-- [action-v7.ts](api/facades/action-v7.ts)
-- [admin-v3.ts](api/facades/admin-v3.ts)
-- [agent-tools-v1.ts](api/facades/agent-tools-v1.ts)
-- [agent-v3.ts](api/facades/agent-v3.ts)
-- [all-model-watcher-v2.ts](api/facades/all-model-watcher-v2.ts)
-- [all-watcher-v1.ts](api/facades/all-watcher-v1.ts)
-- [annotations-v2.ts](api/facades/annotations-v2.ts)
-- [application-offers-v2.ts](api/facades/application-offers-v2.ts)
-- [application-offers-v3.ts](api/facades/application-offers-v3.ts)
-- [application-scaler-v1.ts](api/facades/application-scaler-v1.ts)
-- [application-v12.ts](api/facades/application-v12.ts)
-- [application-v13.ts](api/facades/application-v13.ts)
-- [backups-v2.ts](api/facades/backups-v2.ts)
-- [backups-v3.ts](api/facades/backups-v3.ts)
-- [block-v2.ts](api/facades/block-v2.ts)
-- [bundle-v1.ts](api/facades/bundle-v1.ts)
-- [bundle-v4.ts](api/facades/bundle-v4.ts)
-- [bundle-v5.ts](api/facades/bundle-v5.ts)
-- [caasadmission-v1.ts](api/facades/caasadmission-v1.ts)
-- [caasagent-v2.ts](api/facades/caasagent-v2.ts)
-- [caasapplication-provisioner-v1.ts](api/facades/caasapplication-provisioner-v1.ts)
-- [caasapplication-v1.ts](api/facades/caasapplication-v1.ts)
-- [caasfirewaller-embedded-v1.ts](api/facades/caasfirewaller-embedded-v1.ts)
-- [caasfirewaller-v1.ts](api/facades/caasfirewaller-v1.ts)
-- [caasmodel-config-manager-v1.ts](api/facades/caasmodel-config-manager-v1.ts)
-- [caasmodel-operator-v1.ts](api/facades/caasmodel-operator-v1.ts)
-- [caasoperator-provisioner-v1.ts](api/facades/caasoperator-provisioner-v1.ts)
-- [caasoperator-upgrader-v1.ts](api/facades/caasoperator-upgrader-v1.ts)
-- [caasoperator-v1.ts](api/facades/caasoperator-v1.ts)
-- [caasunit-provisioner-v2.ts](api/facades/caasunit-provisioner-v2.ts)
-- [charm-downloader-v1.ts](api/facades/charm-downloader-v1.ts)
-- [charm-hub-v1.ts](api/facades/charm-hub-v1.ts)
-- [charm-revision-updater-v2.ts](api/facades/charm-revision-updater-v2.ts)
-- [charms-v2.ts](api/facades/charms-v2.ts)
-- [charms-v4.ts](api/facades/charms-v4.ts)
-- [cleaner-v2.ts](api/facades/cleaner-v2.ts)
-- [client-v2.ts](api/facades/client-v2.ts)
-- [client-v3.ts](api/facades/client-v3.ts)
-- [cloud-v1.ts](api/facades/cloud-v1.ts)
-- [cloud-v2.ts](api/facades/cloud-v2.ts)
-- [cloud-v3.ts](api/facades/cloud-v3.ts)
-- [cloud-v4.ts](api/facades/cloud-v4.ts)
-- [cloud-v5.ts](api/facades/cloud-v5.ts)
-- [cloud-v7.ts](api/facades/cloud-v7.ts)
-- [controller-v11.ts](api/facades/controller-v11.ts)
-- [controller-v3.ts](api/facades/controller-v3.ts)
-- [controller-v4.ts](api/facades/controller-v4.ts)
-- [controller-v5.ts](api/facades/controller-v5.ts)
-- [controller-v6.ts](api/facades/controller-v6.ts)
-- [controller-v7.ts](api/facades/controller-v7.ts)
-- [controller-v8.ts](api/facades/controller-v8.ts)
-- [controller-v9.ts](api/facades/controller-v9.ts)
-- [credential-manager-v1.ts](api/facades/credential-manager-v1.ts)
-- [credential-validator-v2.ts](api/facades/credential-validator-v2.ts)
-- [cross-controller-v1.ts](api/facades/cross-controller-v1.ts)
-- [cross-model-relations-v2.ts](api/facades/cross-model-relations-v2.ts)
-- [deployer-v1.ts](api/facades/deployer-v1.ts)
-- [disk-manager-v2.ts](api/facades/disk-manager-v2.ts)
-- [entity-watcher-v2.ts](api/facades/entity-watcher-v2.ts)
-- [external-controller-updater-v1.ts](api/facades/external-controller-updater-v1.ts)
-- [fan-configurer-v1.ts](api/facades/fan-configurer-v1.ts)
-- [filesystem-attachments-watcher-v2.ts](api/facades/filesystem-attachments-watcher-v2.ts)
-- [firewall-rules-v1.ts](api/facades/firewall-rules-v1.ts)
-- [firewaller-v7.ts](api/facades/firewaller-v7.ts)
-- [high-availability-v2.ts](api/facades/high-availability-v2.ts)
-- [host-key-reporter-v1.ts](api/facades/host-key-reporter-v1.ts)
-- [image-manager-v2.ts](api/facades/image-manager-v2.ts)
-- [image-metadata-manager-v1.ts](api/facades/image-metadata-manager-v1.ts)
-- [image-metadata-v3.ts](api/facades/image-metadata-v3.ts)
-- [instance-mutater-v2.ts](api/facades/instance-mutater-v2.ts)
-- [instance-poller-v4.ts](api/facades/instance-poller-v4.ts)
-- [key-manager-v1.ts](api/facades/key-manager-v1.ts)
-- [key-updater-v1.ts](api/facades/key-updater-v1.ts)
-- [leadership-service-v2.ts](api/facades/leadership-service-v2.ts)
-- [life-flag-v1.ts](api/facades/life-flag-v1.ts)
-- [log-forwarding-v1.ts](api/facades/log-forwarding-v1.ts)
-- [logger-v1.ts](api/facades/logger-v1.ts)
-- [machine-actions-v1.ts](api/facades/machine-actions-v1.ts)
-- [machine-manager-v6.ts](api/facades/machine-manager-v6.ts)
-- [machine-undertaker-v1.ts](api/facades/machine-undertaker-v1.ts)
-- [machiner-v5.ts](api/facades/machiner-v5.ts)
-- [meter-status-v2.ts](api/facades/meter-status-v2.ts)
-- [metrics-adder-v2.ts](api/facades/metrics-adder-v2.ts)
-- [metrics-debug-v2.ts](api/facades/metrics-debug-v2.ts)
-- [metrics-manager-v1.ts](api/facades/metrics-manager-v1.ts)
-- [migration-flag-v1.ts](api/facades/migration-flag-v1.ts)
-- [migration-master-v3.ts](api/facades/migration-master-v3.ts)
-- [migration-minion-v1.ts](api/facades/migration-minion-v1.ts)
-- [migration-status-watcher-v1.ts](api/facades/migration-status-watcher-v1.ts)
-- [migration-target-v1.ts](api/facades/migration-target-v1.ts)
-- [model-config-v2.ts](api/facades/model-config-v2.ts)
-- [model-generation-v4.ts](api/facades/model-generation-v4.ts)
-- [model-manager-v2.ts](api/facades/model-manager-v2.ts)
-- [model-manager-v3.ts](api/facades/model-manager-v3.ts)
-- [model-manager-v4.ts](api/facades/model-manager-v4.ts)
-- [model-manager-v5.ts](api/facades/model-manager-v5.ts)
-- [model-manager-v8.ts](api/facades/model-manager-v8.ts)
-- [model-manager-v9.ts](api/facades/model-manager-v9.ts)
-- [model-summary-watcher-v1.ts](api/facades/model-summary-watcher-v1.ts)
-- [model-upgrader-v1.ts](api/facades/model-upgrader-v1.ts)
-- [notify-watcher-v1.ts](api/facades/notify-watcher-v1.ts)
-- [offer-status-watcher-v1.ts](api/facades/offer-status-watcher-v1.ts)
-- [payloads-hook-context-v1.ts](api/facades/payloads-hook-context-v1.ts)
-- [payloads-v1.ts](api/facades/payloads-v1.ts)
-- [pinger-v1.ts](api/facades/pinger-v1.ts)
-- [provisioner-v11.ts](api/facades/provisioner-v11.ts)
-- [proxy-updater-v2.ts](api/facades/proxy-updater-v2.ts)
-- [raft-lease-v1.ts](api/facades/raft-lease-v1.ts)
-- [reboot-v2.ts](api/facades/reboot-v2.ts)
-- [relation-status-watcher-v1.ts](api/facades/relation-status-watcher-v1.ts)
-- [relation-units-watcher-v1.ts](api/facades/relation-units-watcher-v1.ts)
-- [remote-relation-watcher-v1.ts](api/facades/remote-relation-watcher-v1.ts)
-- [remote-relations-v2.ts](api/facades/remote-relations-v2.ts)
-- [resources-hook-context-v1.ts](api/facades/resources-hook-context-v1.ts)
-- [resources-v1.ts](api/facades/resources-v1.ts)
-- [resources-v2.ts](api/facades/resources-v2.ts)
-- [resumer-v2.ts](api/facades/resumer-v2.ts)
-- [retry-strategy-v1.ts](api/facades/retry-strategy-v1.ts)
-- [secrets-manager-v1.ts](api/facades/secrets-manager-v1.ts)
-- [secrets-rotation-watcher-v1.ts](api/facades/secrets-rotation-watcher-v1.ts)
-- [secrets-v1.ts](api/facades/secrets-v1.ts)
-- [singular-v2.ts](api/facades/singular-v2.ts)
-- [spaces-v6.ts](api/facades/spaces-v6.ts)
-- [sshclient-v2.ts](api/facades/sshclient-v2.ts)
-- [status-history-v2.ts](api/facades/status-history-v2.ts)
-- [storage-provisioner-v4.ts](api/facades/storage-provisioner-v4.ts)
-- [storage-v6.ts](api/facades/storage-v6.ts)
-- [strings-watcher-v1.ts](api/facades/strings-watcher-v1.ts)
-- [subnets-v4.ts](api/facades/subnets-v4.ts)
-- [undertaker-v1.ts](api/facades/undertaker-v1.ts)
-- [unit-assigner-v1.ts](api/facades/unit-assigner-v1.ts)
-- [uniter-v18.ts](api/facades/uniter-v18.ts)
-- [upgrade-series-v3.ts](api/facades/upgrade-series-v3.ts)
-- [upgrade-steps-v2.ts](api/facades/upgrade-steps-v2.ts)
-- [upgrader-v1.ts](api/facades/upgrader-v1.ts)
-- [user-manager-v1.ts](api/facades/user-manager-v1.ts)
-- [user-manager-v2.ts](api/facades/user-manager-v2.ts)
-- [volume-attachment-plans-watcher-v1.ts](api/facades/volume-attachment-plans-watcher-v1.ts)
-- [volume-attachments-watcher-v2.ts](api/facades/volume-attachments-watcher-v2.ts)
+|Facade|Versions|
+|-|-|
+|action-pruner|<ul><li>[action-pruner-v1.ts](api/facades/action-pruner-v1.ts)</li></ul>|
+|action|<ul><li>[action-v6.ts](api/facades/action-v6.ts)</li><li>[action-v7.ts](api/facades/action-v7.ts)</li></ul>|
+|admin|<ul><li>[admin-v3.ts](api/facades/admin-v3.ts)</li></ul>|
+|agent-tools|<ul><li>[agent-tools-v1.ts](api/facades/agent-tools-v1.ts)</li></ul>|
+|agent|<ul><li>[agent-v3.ts](api/facades/agent-v3.ts)</li></ul>|
+|all-model-watcher|<ul><li>[all-model-watcher-v2.ts](api/facades/all-model-watcher-v2.ts)</li><li>[all-model-watcher-v3.ts](api/facades/all-model-watcher-v3.ts)</li></ul>|
+|all-watcher|<ul><li>[all-watcher-v1.ts](api/facades/all-watcher-v1.ts)</li><li>[all-watcher-v2.ts](api/facades/all-watcher-v2.ts)</li></ul>|
+|annotations|<ul><li>[annotations-v2.ts](api/facades/annotations-v2.ts)</li></ul>|
+|application-offers|<ul><li>[application-offers-v2.ts](api/facades/application-offers-v2.ts)</li><li>[application-offers-v3.ts](api/facades/application-offers-v3.ts)</li><li>[application-offers-v4.ts](api/facades/application-offers-v4.ts)</li></ul>|
+|application-scaler|<ul><li>[application-scaler-v1.ts](api/facades/application-scaler-v1.ts)</li></ul>|
+|application|<ul><li>[application-v12.ts](api/facades/application-v12.ts)</li><li>[application-v13.ts](api/facades/application-v13.ts)</li><li>[application-v14.ts](api/facades/application-v14.ts)</li></ul>|
+|backups|<ul><li>[backups-v2.ts](api/facades/backups-v2.ts)</li><li>[backups-v3.ts](api/facades/backups-v3.ts)</li></ul>|
+|block|<ul><li>[block-v2.ts](api/facades/block-v2.ts)</li></ul>|
+|bundle|<ul><li>[bundle-v1.ts](api/facades/bundle-v1.ts)</li><li>[bundle-v4.ts](api/facades/bundle-v4.ts)</li><li>[bundle-v5.ts](api/facades/bundle-v5.ts)</li><li>[bundle-v6.ts](api/facades/bundle-v6.ts)</li></ul>|
+|caasadmission|<ul><li>[caasadmission-v1.ts](api/facades/caasadmission-v1.ts)</li></ul>|
+|caasagent|<ul><li>[caasagent-v2.ts](api/facades/caasagent-v2.ts)</li></ul>|
+|caasapplication-provisioner|<ul><li>[caasapplication-provisioner-v1.ts](api/facades/caasapplication-provisioner-v1.ts)</li></ul>|
+|caasapplication|<ul><li>[caasapplication-v1.ts](api/facades/caasapplication-v1.ts)</li></ul>|
+|caasfirewaller-embedded|<ul><li>[caasfirewaller-embedded-v1.ts](api/facades/caasfirewaller-embedded-v1.ts)</li></ul>|
+|caasfirewaller|<ul><li>[caasfirewaller-v1.ts](api/facades/caasfirewaller-v1.ts)</li></ul>|
+|caasmodel-config-manager|<ul><li>[caasmodel-config-manager-v1.ts](api/facades/caasmodel-config-manager-v1.ts)</li></ul>|
+|caasmodel-operator|<ul><li>[caasmodel-operator-v1.ts](api/facades/caasmodel-operator-v1.ts)</li></ul>|
+|caasoperator-provisioner|<ul><li>[caasoperator-provisioner-v1.ts](api/facades/caasoperator-provisioner-v1.ts)</li></ul>|
+|caasoperator-upgrader|<ul><li>[caasoperator-upgrader-v1.ts](api/facades/caasoperator-upgrader-v1.ts)</li></ul>|
+|caasoperator|<ul><li>[caasoperator-v1.ts](api/facades/caasoperator-v1.ts)</li></ul>|
+|caasunit-provisioner|<ul><li>[caasunit-provisioner-v2.ts](api/facades/caasunit-provisioner-v2.ts)</li></ul>|
+|charm-downloader|<ul><li>[charm-downloader-v1.ts](api/facades/charm-downloader-v1.ts)</li></ul>|
+|charm-hub|<ul><li>[charm-hub-v1.ts](api/facades/charm-hub-v1.ts)</li></ul>|
+|charm-revision-updater|<ul><li>[charm-revision-updater-v2.ts](api/facades/charm-revision-updater-v2.ts)</li></ul>|
+|charms|<ul><li>[charms-v2.ts](api/facades/charms-v2.ts)</li><li>[charms-v4.ts](api/facades/charms-v4.ts)</li></ul>|
+|cleaner|<ul><li>[cleaner-v2.ts](api/facades/cleaner-v2.ts)</li></ul>|
+|client|<ul><li>[client-v2.ts](api/facades/client-v2.ts)</li><li>[client-v3.ts](api/facades/client-v3.ts)</li><li>[client-v5.ts](api/facades/client-v5.ts)</li></ul>|
+|cloud|<ul><li>[cloud-v1.ts](api/facades/cloud-v1.ts)</li><li>[cloud-v2.ts](api/facades/cloud-v2.ts)</li><li>[cloud-v3.ts](api/facades/cloud-v3.ts)</li><li>[cloud-v4.ts](api/facades/cloud-v4.ts)</li><li>[cloud-v5.ts](api/facades/cloud-v5.ts)</li><li>[cloud-v7.ts](api/facades/cloud-v7.ts)</li></ul>|
+|controller|<ul><li>[controller-v11.ts](api/facades/controller-v11.ts)</li><li>[controller-v3.ts](api/facades/controller-v3.ts)</li><li>[controller-v4.ts](api/facades/controller-v4.ts)</li><li>[controller-v5.ts](api/facades/controller-v5.ts)</li><li>[controller-v6.ts](api/facades/controller-v6.ts)</li><li>[controller-v7.ts](api/facades/controller-v7.ts)</li><li>[controller-v8.ts](api/facades/controller-v8.ts)</li><li>[controller-v9.ts](api/facades/controller-v9.ts)</li></ul>|
+|credential-manager|<ul><li>[credential-manager-v1.ts](api/facades/credential-manager-v1.ts)</li></ul>|
+|credential-validator|<ul><li>[credential-validator-v2.ts](api/facades/credential-validator-v2.ts)</li></ul>|
+|cross-controller|<ul><li>[cross-controller-v1.ts](api/facades/cross-controller-v1.ts)</li></ul>|
+|cross-model-relations|<ul><li>[cross-model-relations-v2.ts](api/facades/cross-model-relations-v2.ts)</li></ul>|
+|deployer|<ul><li>[deployer-v1.ts](api/facades/deployer-v1.ts)</li></ul>|
+|disk-manager|<ul><li>[disk-manager-v2.ts](api/facades/disk-manager-v2.ts)</li></ul>|
+|entity-watcher|<ul><li>[entity-watcher-v2.ts](api/facades/entity-watcher-v2.ts)</li></ul>|
+|environ-upgrader|<ul><li>[environ-upgrader-v1.ts](api/facades/environ-upgrader-v1.ts)</li></ul>|
+|external-controller-updater|<ul><li>[external-controller-updater-v1.ts](api/facades/external-controller-updater-v1.ts)</li></ul>|
+|fan-configurer|<ul><li>[fan-configurer-v1.ts](api/facades/fan-configurer-v1.ts)</li></ul>|
+|filesystem-attachments-watcher|<ul><li>[filesystem-attachments-watcher-v2.ts](api/facades/filesystem-attachments-watcher-v2.ts)</li></ul>|
+|firewall-rules|<ul><li>[firewall-rules-v1.ts](api/facades/firewall-rules-v1.ts)</li></ul>|
+|firewaller|<ul><li>[firewaller-v7.ts](api/facades/firewaller-v7.ts)</li></ul>|
+|high-availability|<ul><li>[high-availability-v2.ts](api/facades/high-availability-v2.ts)</li></ul>|
+|host-key-reporter|<ul><li>[host-key-reporter-v1.ts](api/facades/host-key-reporter-v1.ts)</li></ul>|
+|image-manager|<ul><li>[image-manager-v2.ts](api/facades/image-manager-v2.ts)</li></ul>|
+|image-metadata-manager|<ul><li>[image-metadata-manager-v1.ts](api/facades/image-metadata-manager-v1.ts)</li></ul>|
+|image-metadata|<ul><li>[image-metadata-v3.ts](api/facades/image-metadata-v3.ts)</li></ul>|
+|instance-mutater|<ul><li>[instance-mutater-v2.ts](api/facades/instance-mutater-v2.ts)</li><li>[instance-mutater-v3.ts](api/facades/instance-mutater-v3.ts)</li></ul>|
+|instance-poller|<ul><li>[instance-poller-v4.ts](api/facades/instance-poller-v4.ts)</li></ul>|
+|key-manager|<ul><li>[key-manager-v1.ts](api/facades/key-manager-v1.ts)</li></ul>|
+|key-updater|<ul><li>[key-updater-v1.ts](api/facades/key-updater-v1.ts)</li></ul>|
+|leadership-service|<ul><li>[leadership-service-v2.ts](api/facades/leadership-service-v2.ts)</li></ul>|
+|life-flag|<ul><li>[life-flag-v1.ts](api/facades/life-flag-v1.ts)</li></ul>|
+|log-forwarding|<ul><li>[log-forwarding-v1.ts](api/facades/log-forwarding-v1.ts)</li></ul>|
+|logger|<ul><li>[logger-v1.ts](api/facades/logger-v1.ts)</li></ul>|
+|machine-actions|<ul><li>[machine-actions-v1.ts](api/facades/machine-actions-v1.ts)</li></ul>|
+|machine-manager|<ul><li>[machine-manager-v6.ts](api/facades/machine-manager-v6.ts)</li><li>[machine-manager-v7.ts](api/facades/machine-manager-v7.ts)</li></ul>|
+|machine-undertaker|<ul><li>[machine-undertaker-v1.ts](api/facades/machine-undertaker-v1.ts)</li></ul>|
+|machiner|<ul><li>[machiner-v5.ts](api/facades/machiner-v5.ts)</li></ul>|
+|meter-status|<ul><li>[meter-status-v2.ts](api/facades/meter-status-v2.ts)</li></ul>|
+|metrics-adder|<ul><li>[metrics-adder-v2.ts](api/facades/metrics-adder-v2.ts)</li></ul>|
+|metrics-debug|<ul><li>[metrics-debug-v2.ts](api/facades/metrics-debug-v2.ts)</li></ul>|
+|metrics-manager|<ul><li>[metrics-manager-v1.ts](api/facades/metrics-manager-v1.ts)</li></ul>|
+|migration-flag|<ul><li>[migration-flag-v1.ts](api/facades/migration-flag-v1.ts)</li></ul>|
+|migration-master|<ul><li>[migration-master-v3.ts](api/facades/migration-master-v3.ts)</li></ul>|
+|migration-minion|<ul><li>[migration-minion-v1.ts](api/facades/migration-minion-v1.ts)</li></ul>|
+|migration-status-watcher|<ul><li>[migration-status-watcher-v1.ts](api/facades/migration-status-watcher-v1.ts)</li></ul>|
+|migration-target|<ul><li>[migration-target-v1.ts](api/facades/migration-target-v1.ts)</li></ul>|
+|model-config|<ul><li>[model-config-v2.ts](api/facades/model-config-v2.ts)</li><li>[model-config-v3.ts](api/facades/model-config-v3.ts)</li></ul>|
+|model-generation|<ul><li>[model-generation-v4.ts](api/facades/model-generation-v4.ts)</li></ul>|
+|model-manager|<ul><li>[model-manager-v2.ts](api/facades/model-manager-v2.ts)</li><li>[model-manager-v3.ts](api/facades/model-manager-v3.ts)</li><li>[model-manager-v4.ts](api/facades/model-manager-v4.ts)</li><li>[model-manager-v5.ts](api/facades/model-manager-v5.ts)</li><li>[model-manager-v8.ts](api/facades/model-manager-v8.ts)</li><li>[model-manager-v9.ts](api/facades/model-manager-v9.ts)</li></ul>|
+|model-summary-watcher|<ul><li>[model-summary-watcher-v1.ts](api/facades/model-summary-watcher-v1.ts)</li></ul>|
+|model-upgrader|<ul><li>[model-upgrader-v1.ts](api/facades/model-upgrader-v1.ts)</li></ul>|
+|notify-watcher|<ul><li>[notify-watcher-v1.ts](api/facades/notify-watcher-v1.ts)</li></ul>|
+|offer-status-watcher|<ul><li>[offer-status-watcher-v1.ts](api/facades/offer-status-watcher-v1.ts)</li></ul>|
+|payloads-hook-context|<ul><li>[payloads-hook-context-v1.ts](api/facades/payloads-hook-context-v1.ts)</li></ul>|
+|payloads|<ul><li>[payloads-v1.ts](api/facades/payloads-v1.ts)</li></ul>|
+|pinger|<ul><li>[pinger-v1.ts](api/facades/pinger-v1.ts)</li></ul>|
+|provisioner|<ul><li>[provisioner-v11.ts](api/facades/provisioner-v11.ts)</li></ul>|
+|proxy-updater|<ul><li>[proxy-updater-v2.ts](api/facades/proxy-updater-v2.ts)</li></ul>|
+|raft-lease|<ul><li>[raft-lease-v1.ts](api/facades/raft-lease-v1.ts)</li><li>[raft-lease-v2.ts](api/facades/raft-lease-v2.ts)</li></ul>|
+|reboot|<ul><li>[reboot-v2.ts](api/facades/reboot-v2.ts)</li></ul>|
+|relation-status-watcher|<ul><li>[relation-status-watcher-v1.ts](api/facades/relation-status-watcher-v1.ts)</li></ul>|
+|relation-units-watcher|<ul><li>[relation-units-watcher-v1.ts](api/facades/relation-units-watcher-v1.ts)</li></ul>|
+|remote-relation-watcher|<ul><li>[remote-relation-watcher-v1.ts](api/facades/remote-relation-watcher-v1.ts)</li></ul>|
+|remote-relations|<ul><li>[remote-relations-v2.ts](api/facades/remote-relations-v2.ts)</li></ul>|
+|resources-hook-context|<ul><li>[resources-hook-context-v1.ts](api/facades/resources-hook-context-v1.ts)</li></ul>|
+|resources|<ul><li>[resources-v1.ts](api/facades/resources-v1.ts)</li><li>[resources-v2.ts](api/facades/resources-v2.ts)</li></ul>|
+|resumer|<ul><li>[resumer-v2.ts](api/facades/resumer-v2.ts)</li></ul>|
+|retry-strategy|<ul><li>[retry-strategy-v1.ts](api/facades/retry-strategy-v1.ts)</li></ul>|
+|secrets-manager|<ul><li>[secrets-manager-v1.ts](api/facades/secrets-manager-v1.ts)</li></ul>|
+|secrets-rotation-watcher|<ul><li>[secrets-rotation-watcher-v1.ts](api/facades/secrets-rotation-watcher-v1.ts)</li></ul>|
+|secrets|<ul><li>[secrets-v1.ts](api/facades/secrets-v1.ts)</li></ul>|
+|singular|<ul><li>[singular-v2.ts](api/facades/singular-v2.ts)</li></ul>|
+|spaces|<ul><li>[spaces-v6.ts](api/facades/spaces-v6.ts)</li></ul>|
+|sshclient|<ul><li>[sshclient-v2.ts](api/facades/sshclient-v2.ts)</li><li>[sshclient-v3.ts](api/facades/sshclient-v3.ts)</li></ul>|
+|status-history|<ul><li>[status-history-v2.ts](api/facades/status-history-v2.ts)</li></ul>|
+|storage-provisioner|<ul><li>[storage-provisioner-v4.ts](api/facades/storage-provisioner-v4.ts)</li></ul>|
+|storage|<ul><li>[storage-v6.ts](api/facades/storage-v6.ts)</li></ul>|
+|strings-watcher|<ul><li>[strings-watcher-v1.ts](api/facades/strings-watcher-v1.ts)</li></ul>|
+|subnets|<ul><li>[subnets-v4.ts](api/facades/subnets-v4.ts)</li></ul>|
+|undertaker|<ul><li>[undertaker-v1.ts](api/facades/undertaker-v1.ts)</li></ul>|
+|unit-assigner|<ul><li>[unit-assigner-v1.ts](api/facades/unit-assigner-v1.ts)</li></ul>|
+|uniter|<ul><li>[uniter-v18.ts](api/facades/uniter-v18.ts)</li></ul>|
+|upgrade-series|<ul><li>[upgrade-series-v3.ts](api/facades/upgrade-series-v3.ts)</li></ul>|
+|upgrade-steps|<ul><li>[upgrade-steps-v2.ts](api/facades/upgrade-steps-v2.ts)</li></ul>|
+|upgrader|<ul><li>[upgrader-v1.ts](api/facades/upgrader-v1.ts)</li></ul>|
+|user-manager|<ul><li>[user-manager-v1.ts](api/facades/user-manager-v1.ts)</li><li>[user-manager-v2.ts](api/facades/user-manager-v2.ts)</li><li>[user-manager-v3.ts](api/facades/user-manager-v3.ts)</li></ul>|
+|volume-attachment-plans-watcher|<ul><li>[volume-attachment-plans-watcher-v1.ts](api/facades/volume-attachment-plans-watcher-v1.ts)</li></ul>|
+|volume-attachments-watcher|<ul><li>[volume-attachments-watcher-v2.ts](api/facades/volume-attachments-watcher-v2.ts)</li></ul>|
 
 ## Examples
 

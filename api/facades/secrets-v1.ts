@@ -3,8 +3,8 @@
   This facade is available on:
     Models
 
-  NOTE: This file was generated on Wed, 06 Oct 2021 18:15:31 GMT using
-  the Juju schema from  Juju 3.0-beta1 at the git SHA 61c87ab7e1.
+  NOTE: This file was generated on Tue, 04 Oct 2022 16:14:09 GMT using
+  the Juju schema from  Juju juju-3.0-beta4 at the git SHA a13ab81a.
   Do not manually edit this file.
 */
 
@@ -21,16 +21,17 @@ interface Error {
 interface ListSecretResult {
   'create-time': string;
   description?: string;
-  int: number;
-  path: string;
+  label?: string;
+  'latest-expire-time'?: string;
+  'latest-revision': number;
+  'next-rotate-time'?: string;
+  'owner-tag': string;
   provider: string;
   'provider-id'?: string;
-  revision: number;
-  'rotate-interval': number;
-  status: string;
-  tags?: AdditionalProperties;
+  revisions: SecretRevision[];
+  'rotate-policy'?: string;
   'update-time': string;
-  url: string;
+  uri: string;
   value?: SecretValueResult;
   version: number;
 }
@@ -40,12 +41,26 @@ interface ListSecretResults {
 }
 
 interface ListSecretsArgs {
+  filter: SecretsFilter;
   'show-secrets': boolean;
+}
+
+interface SecretRevision {
+  'create-time': string;
+  'expire-time'?: string;
+  revision: number;
+  'update-time': string;
 }
 
 interface SecretValueResult {
   data: AdditionalProperties;
   error: Error;
+}
+
+interface SecretsFilter {
+  'owner-tag': string;
+  revision: number;
+  uri: string;
 }
 
 interface AdditionalProperties {

@@ -3,8 +3,8 @@
   This facade is available on:
     Models
 
-  NOTE: This file was generated on Wed, 06 Oct 2021 18:15:31 GMT using
-  the Juju schema from  Juju 3.0-beta1 at the git SHA 61c87ab7e1.
+  NOTE: This file was generated on Tue, 04 Oct 2022 16:14:09 GMT using
+  the Juju schema from  Juju juju-3.0-beta4 at the git SHA a13ab81a.
   Do not manually edit this file.
 */
 
@@ -93,7 +93,7 @@ interface CharmManifest {
 }
 
 interface CharmMeta {
-  assumes?: string[];
+  'assumes-expr'?: ExpressionTree;
   categories?: string[];
   containers?: AdditionalProperties;
   deployment?: CharmDeployment;
@@ -138,6 +138,7 @@ interface CharmOption {
 
 interface CharmOrigin {
   architecture?: string;
+  branch?: string;
   hash?: string;
   id: string;
   'instance-key'?: string;
@@ -265,6 +266,10 @@ interface ErrorResult {
 
 interface ErrorResults {
   results: ErrorResult[];
+}
+
+interface ExpressionTree {
+  Expression: AdditionalProperties;
 }
 
 interface IsMeteredResult {

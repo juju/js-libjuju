@@ -6,8 +6,8 @@
     Unit-agent
     Controllers
 
-  NOTE: This file was generated on Wed, 06 Oct 2021 18:15:31 GMT using
-  the Juju schema from  Juju 3.0-beta1 at the git SHA 61c87ab7e1.
+  NOTE: This file was generated on Tue, 04 Oct 2022 16:14:09 GMT using
+  the Juju schema from  Juju juju-3.0-beta4 at the git SHA a13ab81a.
   Do not manually edit this file.
 */
 
@@ -73,6 +73,22 @@ interface ControllerConfigSet {
 interface ControllerVersionResults {
   'git-commit': string;
   version: string;
+}
+
+interface DashboardConnectionInfo {
+  error?: Error;
+  'proxy-connection': DashboardConnectionProxy;
+  'ssh-connection': DashboardConnectionSSHTunnel;
+}
+
+interface DashboardConnectionProxy {
+  config: AdditionalProperties;
+  type: string;
+}
+
+interface DashboardConnectionSSHTunnel {
+  host: string;
+  port: string;
 }
 
 interface DestroyControllerArgs {
@@ -406,6 +422,23 @@ class ControllerV11 {
       const req: JujuRequest = {
         type: 'Controller',
         request: 'ControllerVersion',
+        version: 11,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
+    DashboardConnectionInfo returns the connection information for a client to
+    connect to the Juju Dashboard including any proxying information.
+  */
+  dashboardConnectionInfo(): Promise<DashboardConnectionInfo> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'Controller',
+        request: 'DashboardConnectionInfo',
         version: 11,
       };
 
