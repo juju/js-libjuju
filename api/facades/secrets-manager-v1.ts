@@ -6,8 +6,8 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Wed, 06 Oct 2021 18:15:31 GMT using
-  the Juju schema from  Juju 3.0-beta1 at the git SHA 61c87ab7e1.
+  NOTE: This file was generated on Tue, 04 Oct 2022 16:14:09 GMT using
+  the Juju schema from  Juju juju-3.0-beta4 at the git SHA a13ab81a.
   Do not manually edit this file.
 */
 
@@ -16,14 +16,14 @@ import type { JujuRequest } from "../../generator/interfaces";
 
 
 interface CreateSecretArg {
+  UpsertSecretArg: UpsertSecretArg;
   data?: AdditionalProperties;
   description?: string;
+  'expire-time'?: string;
+  label?: string;
+  'owner-tag': string;
   params?: AdditionalProperties;
-  path: string;
-  'rotate-interval': number;
-  status: string;
-  tags?: AdditionalProperties;
-  type: string;
+  'rotate-policy'?: string;
 }
 
 interface CreateSecretArgs {
@@ -52,17 +52,54 @@ interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface GetSecretArg {
-  id: string;
-  url: string;
+interface GetSecretConsumerInfoArgs {
+  'consumer-tag': string;
+  uris: string[];
 }
 
-interface GetSecretArgs {
-  args: GetSecretArg[];
+interface GetSecretValueArg {
+  label?: string;
+  peek?: boolean;
+  update?: boolean;
+  uri: string;
+}
+
+interface GetSecretValueArgs {
+  args: GetSecretValueArg[];
+}
+
+interface GrantRevokeSecretArg {
+  role: string;
+  'scope-tag': string;
+  'subject-tags': string[];
+  uri: string;
+}
+
+interface GrantRevokeSecretArgs {
+  args: GrantRevokeSecretArg[];
+}
+
+interface SecretConsumerInfoResult {
+  error?: Error;
+  label: string;
+  revision: number;
+}
+
+interface SecretConsumerInfoResults {
+  results: SecretConsumerInfoResult[];
+}
+
+interface SecretIdResult {
+  label: string;
+}
+
+interface SecretIdResults {
+  error?: Error;
+  result: AdditionalProperties;
 }
 
 interface SecretRotatedArg {
-  url: string;
+  uri: string;
   when: string;
 }
 
@@ -73,8 +110,7 @@ interface SecretRotatedArgs {
 interface SecretRotationChange {
   'last-rotate-time': string;
   'rotate-interval': number;
-  'secret-id': number;
-  url: string;
+  uri: string;
 }
 
 interface SecretRotationWatchResult {
@@ -85,6 +121,14 @@ interface SecretRotationWatchResult {
 
 interface SecretRotationWatchResults {
   results: SecretRotationWatchResult[];
+}
+
+interface SecretURIArg {
+  uri: string;
+}
+
+interface SecretURIArgs {
+  args: SecretURIArg[];
 }
 
 interface SecretValueResult {
@@ -105,18 +149,38 @@ interface StringResults {
   results: StringResult[];
 }
 
+interface StringsWatchResult {
+  changes?: string[];
+  error?: Error;
+  'watcher-id': string;
+}
+
+interface StringsWatchResults {
+  results: StringsWatchResult[];
+}
+
 interface UpdateSecretArg {
+  UpsertSecretArg: UpsertSecretArg;
   data?: AdditionalProperties;
   description?: string;
+  'expire-time'?: string;
+  label?: string;
   params?: AdditionalProperties;
-  'rotate-interval': number;
-  status: string;
-  tags?: AdditionalProperties;
-  url: string;
+  'rotate-policy'?: string;
+  uri: string;
 }
 
 interface UpdateSecretArgs {
   args: UpdateSecretArg[];
+}
+
+interface UpsertSecretArg {
+  data: AdditionalProperties;
+  description: string;
+  'expire-time': string;
+  label: string;
+  params: AdditionalProperties;
+  'rotate-policy': string;
 }
 
 interface AdditionalProperties {
@@ -161,14 +225,98 @@ class SecretsManagerV1 {
   }
   
   /**
+    GetLatestSecretsRevisionInfo returns the latest secret revisions for the specified secrets.
+  */
+  getLatestSecretsRevisionInfo(params: GetSecretConsumerInfoArgs): Promise<SecretConsumerInfoResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'SecretsManager',
+        request: 'GetLatestSecretsRevisionInfo',
+        version: 1,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
+    GetSecretIds returns the caller's secret ids and their labels.
+  */
+  getSecretIds(): Promise<SecretIdResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'SecretsManager',
+        request: 'GetSecretIds',
+        version: 1,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
     GetSecretValues returns the secret values for the specified secrets.
   */
-  getSecretValues(params: GetSecretArgs): Promise<SecretValueResults> {
+  getSecretValues(params: GetSecretValueArgs): Promise<SecretValueResults> {
     return new Promise((resolve, reject) => {
 
       const req: JujuRequest = {
         type: 'SecretsManager',
         request: 'GetSecretValues',
+        version: 1,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
+    RemoveSecrets removes the specified secrets.
+  */
+  removeSecrets(params: SecretURIArgs): Promise<ErrorResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'SecretsManager',
+        request: 'RemoveSecrets',
+        version: 1,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
+    SecretsGrant grants access to a secret for the specified subjects.
+  */
+  secretsGrant(params: GrantRevokeSecretArgs): Promise<ErrorResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'SecretsManager',
+        request: 'SecretsGrant',
+        version: 1,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
+    SecretsRevoke revokes access to a secret for the specified subjects.
+  */
+  secretsRevoke(params: GrantRevokeSecretArgs): Promise<ErrorResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'SecretsManager',
+        request: 'SecretsRevoke',
         version: 1,
         params: params,
       };
@@ -197,12 +345,29 @@ class SecretsManagerV1 {
   /**
     UpdateSecrets updates the specified secrets.
   */
-  updateSecrets(params: UpdateSecretArgs): Promise<StringResults> {
+  updateSecrets(params: UpdateSecretArgs): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
 
       const req: JujuRequest = {
         type: 'SecretsManager',
         request: 'UpdateSecrets',
+        version: 1,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
+    WatchSecretsChanges sets up a watcher to notify of changes to secret revisions for the specified consumers.
+  */
+  watchSecretsChanges(params: Entities): Promise<StringsWatchResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'SecretsManager',
+        request: 'WatchSecretsChanges',
         version: 1,
         params: params,
       };

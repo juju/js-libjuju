@@ -6,8 +6,8 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Wed, 06 Oct 2021 18:15:31 GMT using
-  the Juju schema from  Juju 3.0-beta1 at the git SHA 61c87ab7e1.
+  NOTE: This file was generated on Tue, 04 Oct 2022 16:14:09 GMT using
+  the Juju schema from  Juju juju-3.0-beta4 at the git SHA a13ab81a.
   Do not manually edit this file.
 */
 
@@ -141,6 +141,10 @@ interface CommitHookChangesArg {
   'open-ports'?: EntityPortRange[];
   'pod-spec'?: PodSpec;
   'relation-unit-settings'?: RelationUnitSettings[];
+  'secret-deletes'?: SecretURIArg[];
+  'secret-grants'?: GrantRevokeSecretArg[];
+  'secret-revokes'?: GrantRevokeSecretArg[];
+  'secret-updates'?: UpdateSecretArg[];
   'set-raw-k8s-spec'?: PodSpec;
   tag: string;
   'unit-state'?: SetUnitStateArg;
@@ -160,6 +164,21 @@ interface ConfigSettingsResults {
   results: ConfigSettingsResult[];
 }
 
+interface CreateSecretArg {
+  UpsertSecretArg: UpsertSecretArg;
+  data?: AdditionalProperties;
+  description?: string;
+  'expire-time'?: string;
+  label?: string;
+  'owner-tag': string;
+  params?: AdditionalProperties;
+  'rotate-policy'?: string;
+}
+
+interface CreateSecretArgs {
+  args: CreateSecretArg[];
+}
+
 interface Endpoint {
   'application-name': string;
   relation: CharmRelation;
@@ -171,10 +190,6 @@ interface Entities {
 
 interface EntitiesCharmURL {
   entities: EntityCharmURL[];
-}
-
-interface EntitiesPortRanges {
-  entities: EntityPortRange[];
 }
 
 interface Entity {
@@ -238,6 +253,22 @@ interface GetLeadershipSettingsResult {
   settings: AdditionalProperties;
 }
 
+interface GetSecretConsumerInfoArgs {
+  'consumer-tag': string;
+  uris: string[];
+}
+
+interface GetSecretValueArg {
+  label?: string;
+  peek?: boolean;
+  update?: boolean;
+  uri: string;
+}
+
+interface GetSecretValueArgs {
+  args: GetSecretValueArg[];
+}
+
 interface GoalState {
   relations: AdditionalProperties;
   units: AdditionalProperties;
@@ -255,6 +286,17 @@ interface GoalStateResults {
 interface GoalStateStatus {
   since: string;
   status: string;
+}
+
+interface GrantRevokeSecretArg {
+  role: string;
+  'scope-tag': string;
+  'subject-tags': string[];
+  uri: string;
+}
+
+interface GrantRevokeSecretArgs {
+  args: GrantRevokeSecretArg[];
 }
 
 interface HostPort {
@@ -481,10 +523,6 @@ interface RelationUnitsChange {
   departed?: string[];
 }
 
-interface RelationUnitsSettings {
-  'relation-units': RelationUnitSettings[];
-}
-
 interface RelationUnitsWatchResult {
   changes: RelationUnitsChange;
   error?: Error;
@@ -502,6 +540,67 @@ interface ResolvedModeResult {
 
 interface ResolvedModeResults {
   results: ResolvedModeResult[];
+}
+
+interface SecretConsumerInfoResult {
+  error?: Error;
+  label: string;
+  revision: number;
+}
+
+interface SecretConsumerInfoResults {
+  results: SecretConsumerInfoResult[];
+}
+
+interface SecretIdResult {
+  label: string;
+}
+
+interface SecretIdResults {
+  error?: Error;
+  result: AdditionalProperties;
+}
+
+interface SecretRotatedArg {
+  uri: string;
+  when: string;
+}
+
+interface SecretRotatedArgs {
+  args: SecretRotatedArg[];
+}
+
+interface SecretRotationChange {
+  'last-rotate-time': string;
+  'rotate-interval': number;
+  uri: string;
+}
+
+interface SecretRotationWatchResult {
+  changes: SecretRotationChange[];
+  error?: Error;
+  'watcher-id': string;
+}
+
+interface SecretRotationWatchResults {
+  results: SecretRotationWatchResult[];
+}
+
+interface SecretURIArg {
+  uri: string;
+}
+
+interface SecretURIArgs {
+  args: SecretURIArg[];
+}
+
+interface SecretValueResult {
+  data: AdditionalProperties;
+  error: Error;
+}
+
+interface SecretValueResults {
+  results: SecretValueResult[];
 }
 
 interface SetStatus {
@@ -592,10 +691,6 @@ interface StorageConstraints {
   size: number;
 }
 
-interface StoragesAddParams {
-  storages: StorageAddParams[];
-}
-
 interface StringBoolResult {
   error?: Error;
   ok: boolean;
@@ -658,6 +753,21 @@ interface UnitStateResults {
   results: UnitStateResult[];
 }
 
+interface UpdateSecretArg {
+  UpsertSecretArg: UpsertSecretArg;
+  data?: AdditionalProperties;
+  description?: string;
+  'expire-time'?: string;
+  label?: string;
+  params?: AdditionalProperties;
+  'rotate-policy'?: string;
+  uri: string;
+}
+
+interface UpdateSecretArgs {
+  args: UpdateSecretArg[];
+}
+
 interface UpgradeSeriesStatusParam {
   entity: Entity;
   message: string;
@@ -678,14 +788,21 @@ interface UpgradeSeriesStatusResults {
   results: UpgradeSeriesStatusResult[];
 }
 
+interface UpsertSecretArg {
+  data: AdditionalProperties;
+  description: string;
+  'expire-time': string;
+  label: string;
+  params: AdditionalProperties;
+  'rotate-policy': string;
+}
+
 interface AdditionalProperties {
   [key: string]: any;
 }
 
 /**
-  UniterAPI implements the latest version (v18) of the Uniter API, which
-  augments the payload of the CommitHookChanges API call and introduces
-  the OpenedMachinePortRanges call as a replacement for AllMachinePorts.
+  UniterAPI implements the latest version (v18) of the Uniter API.
 */
 class UniterV18 {
   static NAME: string = 'Uniter';
@@ -780,25 +897,6 @@ class UniterV18 {
       const req: JujuRequest = {
         type: 'Uniter',
         request: 'AddMetricBatches',
-        version: 18,
-        params: params,
-      };
-
-      this._transport.write(req, resolve, reject);
-    });
-  }
-  
-  /**
-    AddUnitStorage validates and creates additional storage instances for units.
-    Failures on an individual storage instance do not block remaining
-    instances from being processed.
-  */
-  addUnitStorage(params: StoragesAddParams): Promise<ErrorResults> {
-    return new Promise((resolve, reject) => {
-
-      const req: JujuRequest = {
-        type: 'Uniter',
-        request: 'AddUnitStorage',
         version: 18,
         params: params,
       };
@@ -966,24 +1064,6 @@ class UniterV18 {
   }
   
   /**
-    ClosePorts sets the policy of the port range with protocol to be
-    closed, for all given units.
-  */
-  closePorts(params: EntitiesPortRanges): Promise<ErrorResults> {
-    return new Promise((resolve, reject) => {
-
-      const req: JujuRequest = {
-        type: 'Uniter',
-        request: 'ClosePorts',
-        version: 18,
-        params: params,
-      };
-
-      this._transport.write(req, resolve, reject);
-    });
-  }
-  
-  /**
     CloudAPIVersion returns the cloud API version, if available.
   */
   cloudAPIVersion(): Promise<StringResult> {
@@ -1047,6 +1127,23 @@ class UniterV18 {
       const req: JujuRequest = {
         type: 'Uniter',
         request: 'ConfigSettings',
+        version: 18,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
+    CreateSecrets creates new secrets.
+  */
+  createSecrets(params: CreateSecretArgs): Promise<StringResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'Uniter',
+        request: 'CreateSecrets',
         version: 18,
         params: params,
       };
@@ -1180,6 +1277,23 @@ class UniterV18 {
   }
   
   /**
+    GetLatestSecretsRevisionInfo returns the latest secret revisions for the specified secrets.
+  */
+  getLatestSecretsRevisionInfo(params: GetSecretConsumerInfoArgs): Promise<SecretConsumerInfoResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'Uniter',
+        request: 'GetLatestSecretsRevisionInfo',
+        version: 18,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
 
   */
   getMeterStatus(params: Entities): Promise<MeterStatusResults> {
@@ -1240,6 +1354,39 @@ class UniterV18 {
       const req: JujuRequest = {
         type: 'Uniter',
         request: 'GetRawK8sSpec',
+        version: 18,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
+    GetSecretIds returns the caller's secret ids and their labels.
+  */
+  getSecretIds(): Promise<SecretIdResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'Uniter',
+        request: 'GetSecretIds',
+        version: 18,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
+    GetSecretValues returns the secret values for the specified secrets.
+  */
+  getSecretValues(params: GetSecretValueArgs): Promise<SecretValueResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'Uniter',
+        request: 'GetSecretValues',
         version: 18,
         params: params,
       };
@@ -1431,23 +1578,6 @@ class UniterV18 {
       const req: JujuRequest = {
         type: 'Uniter',
         request: 'NetworkInfo',
-        version: 18,
-        params: params,
-      };
-
-      this._transport.write(req, resolve, reject);
-    });
-  }
-  
-  /**
-
-  */
-  openPorts(params: EntitiesPortRanges): Promise<ErrorResults> {
-    return new Promise((resolve, reject) => {
-
-      const req: JujuRequest = {
-        type: 'Uniter',
-        request: 'OpenPorts',
         version: 18,
         params: params,
       };
@@ -1677,6 +1807,23 @@ class UniterV18 {
   }
   
   /**
+    RemoveSecrets removes the specified secrets.
+  */
+  removeSecrets(params: SecretURIArgs): Promise<ErrorResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'Uniter',
+        request: 'RemoveSecrets',
+        version: 18,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
     RemoveStorageAttachments removes the specified storage
     attachments from state.
   */
@@ -1738,6 +1885,57 @@ class UniterV18 {
         type: 'Uniter',
         request: 'SLALevel',
         version: 18,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
+    SecretsGrant grants access to a secret for the specified subjects.
+  */
+  secretsGrant(params: GrantRevokeSecretArgs): Promise<ErrorResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'Uniter',
+        request: 'SecretsGrant',
+        version: 18,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
+    SecretsRevoke revokes access to a secret for the specified subjects.
+  */
+  secretsRevoke(params: GrantRevokeSecretArgs): Promise<ErrorResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'Uniter',
+        request: 'SecretsRevoke',
+        version: 18,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
+    SecretsRotated records when secrets were last rotated.
+  */
+  secretsRotated(params: SecretRotatedArgs): Promise<ErrorResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'Uniter',
+        request: 'SecretsRotated',
+        version: 18,
+        params: params,
       };
 
       this._transport.write(req, resolve, reject);
@@ -2013,16 +2211,14 @@ class UniterV18 {
   }
   
   /**
-    UpdateSettings persists all changes made to the local settings of
-    all given pairs of relation and unit. Keys with empty values are
-    considered a signal to delete these values.
+    UpdateSecrets updates the specified secrets.
   */
-  updateSettings(params: RelationUnitsSettings): Promise<ErrorResults> {
+  updateSecrets(params: UpdateSecretArgs): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
 
       const req: JujuRequest = {
         type: 'Uniter',
-        request: 'UpdateSettings',
+        request: 'UpdateSecrets',
         version: 18,
         params: params,
       };
@@ -2207,6 +2403,40 @@ class UniterV18 {
       const req: JujuRequest = {
         type: 'Uniter',
         request: 'WatchRelationUnits',
+        version: 18,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
+    WatchSecretsChanges sets up a watcher to notify of changes to secret revisions for the specified consumers.
+  */
+  watchSecretsChanges(params: Entities): Promise<StringsWatchResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'Uniter',
+        request: 'WatchSecretsChanges',
+        version: 18,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
+    WatchSecretsRotationChanges sets up a watcher to notify of changes to secret rotation config.
+  */
+  watchSecretsRotationChanges(params: Entities): Promise<SecretRotationWatchResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'Uniter',
+        request: 'WatchSecretsRotationChanges',
         version: 18,
         params: params,
       };

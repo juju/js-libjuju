@@ -2,7 +2,12 @@ import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "fs";
 import { execSync } from "child_process";
 import { resolve } from "path";
 
-import { FacadeTemplate, FacadeMethod, ReadmeTemplate } from "./interfaces";
+import {
+  FacadeTemplate,
+  FacadeMethod,
+  ReadmeTemplate,
+  FileInfo,
+} from "./interfaces";
 import facadeTemplateGenerator from "../templates/facade.js";
 import readmeTemplateGenerator from "../templates/readme.js";
 
@@ -104,18 +109,28 @@ const clientAPIInfo: string = execSync(
   "./node_modules/.bin/documentation build api/client.js --document-exported --shallow --markdown-toc false -f md",
   { encoding: "utf8" }
 );
+
+const facadeList = {};
+readdirSync("api/facades")
+  .filter((f) => f.split(".")[1] === "ts")
+  .map((f) => ({
+    name: f,
+    path: `api\/facades\/${f}`,
+  }))
+  .forEach((fileInfo: FileInfo) => {
+    const facadeName = fileInfo.name.match(/(?<name>.+)-v\d+\.ts/).groups?.name;
+    if (!facadeName) return;
+    if (!facadeList[facadeName]) facadeList[facadeName] = [];
+    facadeList[facadeName].push(fileInfo);
+  });
+
 const readmeTemplateData: ReadmeTemplate = {
   clientAPIInfo,
   exampleList: readdirSync("examples").map((f) => ({
     name: f,
     path: `examples\/${f}`,
   })),
-  facadeList: readdirSync("api/facades")
-    .filter((f) => f.split(".")[1] === "ts")
-    .map((f) => ({
-      name: f,
-      path: `api\/facades\/${f}`,
-    })),
+  facadeList,
 };
 generateReadmeFile(readmeTemplateData);
 
@@ -250,10 +265,11 @@ function generateTypes(
 
 function generateFile(facadeTemplateData: FacadeTemplate): void {
   const output: string = facadeTemplateGenerator(facadeTemplateData);
-  const filename: string = `${facadeTemplateData.name}-v${facadeTemplateData.version}`
-    .replace(/\W+/g, "-")
-    .replace(/([a-z\d])([A-Z])/g, "$1-$2")
-    .toLowerCase();
+  const filename: string =
+    `${facadeTemplateData.name}-v${facadeTemplateData.version}`
+      .replace(/\W+/g, "-")
+      .replace(/([a-z\d])([A-Z])/g, "$1-$2")
+      .toLowerCase();
   writeFileSync(`api/facades/${filename}.ts`, output);
 }
 

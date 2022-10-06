@@ -6,8 +6,8 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Wed, 06 Oct 2021 18:15:31 GMT using
-  the Juju schema from  Juju 3.0-beta1 at the git SHA 61c87ab7e1.
+  NOTE: This file was generated on Tue, 04 Oct 2022 16:14:09 GMT using
+  the Juju schema from  Juju juju-3.0-beta4 at the git SHA a13ab81a.
   Do not manually edit this file.
 */
 
@@ -66,10 +66,11 @@ interface CAASApplicationProvisioningInfo {
   devices?: KubernetesDeviceParams[];
   error?: Error;
   filesystems?: KubernetesFilesystemParams[];
-  'image-path': string;
   'image-repo'?: DockerImageInfo;
+  scale?: number;
   series?: string;
   tags?: AdditionalProperties;
+  trust?: boolean;
   version: Number;
   volumes?: KubernetesVolumeParams[];
 }
@@ -149,7 +150,7 @@ interface CharmManifest {
 }
 
 interface CharmMeta {
-  assumes?: string[];
+  'assumes-expr'?: ExpressionTree;
   categories?: string[];
   containers?: AdditionalProperties;
   deployment?: CharmDeployment;
@@ -302,6 +303,10 @@ interface ErrorResults {
   results: ErrorResult[];
 }
 
+interface ExpressionTree {
+  Expression: AdditionalProperties;
+}
+
 interface KubernetesDeviceParams {
   Attributes: AdditionalProperties;
   Count: number;
@@ -394,6 +399,10 @@ interface StringsWatchResult {
   changes?: string[];
   error?: Error;
   'watcher-id': string;
+}
+
+interface StringsWatchResults {
+  results: StringsWatchResult[];
 }
 
 interface UnitStatus {
@@ -547,6 +556,24 @@ class CAASApplicationProvisionerV1 {
   }
   
   /**
+    ClearApplicationsResources clears the flags which indicate
+    applications still have resources in the cluster.
+  */
+  clearApplicationsResources(params: Entities): Promise<ErrorResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'CAASApplicationProvisioner',
+        request: 'ClearApplicationsResources',
+        version: 1,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
     Life returns the life status of every supplied entity, where available.
   */
   life(params: Entities): Promise<LifeResults> {
@@ -572,6 +599,24 @@ class CAASApplicationProvisionerV1 {
       const req: JujuRequest = {
         type: 'CAASApplicationProvisioner',
         request: 'ProvisioningInfo',
+        version: 1,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
+    Remove removes every given entity from state, calling EnsureDead
+    first, then Remove. It will fail if the entity is not present.
+  */
+  remove(params: Entities): Promise<ErrorResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'CAASApplicationProvisioner',
+        request: 'Remove',
         version: 1,
         params: params,
       };
@@ -677,6 +722,25 @@ class CAASApplicationProvisionerV1 {
         type: 'CAASApplicationProvisioner',
         request: 'WatchApplications',
         version: 1,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
+    WatchUnits starts a StringsWatcher to watch changes to the
+    lifecycle states of units for the specified applications in
+    this model.
+  */
+  watchUnits(params: Entities): Promise<StringsWatchResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'CAASApplicationProvisioner',
+        request: 'WatchUnits',
+        version: 1,
+        params: params,
       };
 
       this._transport.write(req, resolve, reject);

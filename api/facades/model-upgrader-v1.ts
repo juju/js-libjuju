@@ -2,9 +2,12 @@
   Juju ModelUpgrader version 1.
   This facade is available on:
     Controller-machine-agent
+    Machine-agent
+    Unit-agent
+    Controllers
 
-  NOTE: This file was generated on Wed, 06 Oct 2021 18:15:31 GMT using
-  the Juju schema from  Juju 3.0-beta1 at the git SHA 61c87ab7e1.
+  NOTE: This file was generated on Tue, 04 Oct 2022 16:14:09 GMT using
+  the Juju schema from  Juju juju-3.0-beta4 at the git SHA a13ab81a.
   Do not manually edit this file.
 */
 
@@ -12,64 +15,35 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface Entities {
-  entities: Entity[];
-}
-
-interface Entity {
-  tag: string;
-}
-
-interface EntityStatusArgs {
-  data: AdditionalProperties;
-  info: string;
-  status: string;
-  tag: string;
-}
-
 interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
-  error: Error;
-}
-
-interface ErrorResults {
-  results: ErrorResult[];
-}
-
-interface IntResult {
-  error?: Error;
-  result: number;
-}
-
-interface IntResults {
-  results: IntResult[];
-}
-
-interface NotifyWatchResult {
-  NotifyWatcherId: string;
-  error?: Error;
-}
-
-interface NotifyWatchResults {
-  results: NotifyWatchResult[];
-}
-
-interface SetModelEnvironVersion {
+interface ModelParam {
   'model-tag': string;
-  version: number;
 }
 
-interface SetModelEnvironVersions {
-  models: SetModelEnvironVersion[];
+interface Number {
+  Build: number;
+  Major: number;
+  Minor: number;
+  Patch: number;
+  Tag: string;
 }
 
-interface SetStatus {
-  entities: EntityStatusArgs[];
+interface UpgradeModelParams {
+  'agent-stream'?: string;
+  'dry-run'?: boolean;
+  'ignore-agent-versions'?: boolean;
+  'model-tag': string;
+  'target-version': Number;
+}
+
+interface UpgradeModelResult {
+  'chosen-version': Number;
+  error?: Error;
 }
 
 interface AdditionalProperties {
@@ -77,7 +51,8 @@ interface AdditionalProperties {
 }
 
 /**
-
+  ModelUpgraderAPI implements the model upgrader interface and is
+  the concrete implementation of the api end point.
 */
 class ModelUpgraderV1 {
   static NAME: string = 'ModelUpgrader';
@@ -97,15 +72,15 @@ class ModelUpgraderV1 {
   }
   
   /**
-    ModelEnvironVersion returns the current version of the environ corresponding
-    to each specified model.
+    AbortModelUpgrade aborts and archives the model upgrade
+    synchronisation record, if any.
   */
-  modelEnvironVersion(params: Entities): Promise<IntResults> {
+  abortModelUpgrade(params: ModelParam): Promise<undefined> {
     return new Promise((resolve, reject) => {
 
       const req: JujuRequest = {
         type: 'ModelUpgrader',
-        request: 'ModelEnvironVersion',
+        request: 'AbortModelUpgrade',
         version: 1,
         params: params,
       };
@@ -115,72 +90,14 @@ class ModelUpgraderV1 {
   }
   
   /**
-    ModelTargetEnvironVersion returns the target version of the environ
-    corresponding to each specified model. The target version is the
-    environ provider's version.
+    UpgradeModel upgrades a model.
   */
-  modelTargetEnvironVersion(params: Entities): Promise<IntResults> {
+  upgradeModel(params: UpgradeModelParams): Promise<UpgradeModelResult> {
     return new Promise((resolve, reject) => {
 
       const req: JujuRequest = {
         type: 'ModelUpgrader',
-        request: 'ModelTargetEnvironVersion',
-        version: 1,
-        params: params,
-      };
-
-      this._transport.write(req, resolve, reject);
-    });
-  }
-  
-  /**
-    SetModelEnvironVersion sets the current version of the environ corresponding
-    to each specified model.
-  */
-  setModelEnvironVersion(params: SetModelEnvironVersions): Promise<ErrorResults> {
-    return new Promise((resolve, reject) => {
-
-      const req: JujuRequest = {
-        type: 'ModelUpgrader',
-        request: 'SetModelEnvironVersion',
-        version: 1,
-        params: params,
-      };
-
-      this._transport.write(req, resolve, reject);
-    });
-  }
-  
-  /**
-    SetModelStatus sets the status of each given model.
-  */
-  setModelStatus(params: SetStatus): Promise<ErrorResults> {
-    return new Promise((resolve, reject) => {
-
-      const req: JujuRequest = {
-        type: 'ModelUpgrader',
-        request: 'SetModelStatus',
-        version: 1,
-        params: params,
-      };
-
-      this._transport.write(req, resolve, reject);
-    });
-  }
-  
-  /**
-    WatchModelEnvironVersion watches for changes to the environ version of the
-    specified models.
-    
-    NOTE(axw) this is currently implemented in terms of state.Model.Watch, so
-    the client may be notified of changes unrelated to the environ version.
-  */
-  watchModelEnvironVersion(params: Entities): Promise<NotifyWatchResults> {
-    return new Promise((resolve, reject) => {
-
-      const req: JujuRequest = {
-        type: 'ModelUpgrader',
-        request: 'WatchModelEnvironVersion',
+        request: 'UpgradeModel',
         version: 1,
         params: params,
       };

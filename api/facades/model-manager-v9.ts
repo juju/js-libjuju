@@ -6,8 +6,8 @@
     Unit-agent
     Controllers
 
-  NOTE: This file was generated on Wed, 06 Oct 2021 18:15:31 GMT using
-  the Juju schema from  Juju 3.0-beta1 at the git SHA 61c87ab7e1.
+  NOTE: This file was generated on Tue, 04 Oct 2022 16:14:09 GMT using
+  the Juju schema from  Juju juju-3.0-beta4 at the git SHA a13ab81a.
   Do not manually edit this file.
 */
 
@@ -156,6 +156,7 @@ interface ModelInfo {
   'provider-type'?: string;
   sla: ModelSLAInfo;
   status?: EntityStatus;
+  'supported-features'?: SupportedFeature[];
   type: string;
   users: ModelUserInfo[];
   uuid: string;
@@ -257,6 +258,7 @@ interface ModelUserInfo {
   access: string;
   'display-name': string;
   'last-connection': string;
+  'model-tag': string;
   user: string;
 }
 
@@ -305,6 +307,12 @@ interface StringResults {
   results: StringResult[];
 }
 
+interface SupportedFeature {
+  description: string;
+  name: string;
+  version?: string;
+}
+
 interface UnsetModelDefaults {
   keys: ModelUnsetKeys[];
 }
@@ -316,15 +324,6 @@ interface UserModel {
 
 interface UserModelList {
   'user-models': UserModel[];
-}
-
-interface ValidateModelUpgradeParam {
-  'model-tag': string;
-}
-
-interface ValidateModelUpgradeParams {
-  force: boolean;
-  model: ValidateModelUpgradeParam[];
 }
 
 interface AdditionalProperties {
@@ -580,27 +579,6 @@ class ModelManagerV9 {
       const req: JujuRequest = {
         type: 'ModelManager',
         request: 'UnsetModelDefaults',
-        version: 9,
-        params: params,
-      };
-
-      this._transport.write(req, resolve, reject);
-    });
-  }
-  
-  /**
-    ValidateModelUpgrades validates if a model is allowed to perform an upgrade.
-    Examples of why you would want to block a model upgrade, would be situations
-    like upgrade-series. If performing an upgrade-series we don't know the
-    current status of the machine, so performing an upgrade-model can lead to
-    bad unintended errors down the line.
-  */
-  validateModelUpgrades(params: ValidateModelUpgradeParams): Promise<ErrorResults> {
-    return new Promise((resolve, reject) => {
-
-      const req: JujuRequest = {
-        type: 'ModelManager',
-        request: 'ValidateModelUpgrades',
         version: 9,
         params: params,
       };
