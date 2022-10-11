@@ -33,7 +33,7 @@
   "homepage": "https://github.com/juju/js-libjuju#readme",
   "devDependencies": {
     "@types/node": "15.3.0",
-    "documentation": "13.2.5",
+    "documentation": "14.0.0",
     "eslint": "8.25.0",
     "prettier": "2.7.1",
     "sinon": "14.0.1",
