@@ -3,7 +3,7 @@
   "version": "2.0.0-beta.8",
   "description": "Juju API client",
   "main": "dist/api/client.js",
-  "types": "index.t.ds",
+  "types": "dist/api/client.d.ts",
   "type": "module",
   "scripts": {
     "build": "npm run build-generator && npm run generate-facades && npm run build-facades && npm run build-api-docs",
