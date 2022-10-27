@@ -12,7 +12,7 @@ import Admin from "./facades/admin-v3.js";
 import { createAsyncHandler } from "./utils.js";
 import type { Callback, JujuRequest } from "../generator/interfaces";
 
-interface ConnectOptions {
+export interface ConnectOptions {
   bakery?: any;
   closeCallback?: Function;
   debug?: boolean;
@@ -20,7 +20,7 @@ interface ConnectOptions {
   wsclass?: WebSocket;
 }
 
-interface ConnectionInfo {
+export interface ConnectionInfo {
   controllerTag: string;
   serverVersion: string;
   servers: object[];
@@ -28,13 +28,13 @@ interface ConnectionInfo {
   getFacade: (string) => Facade;
 }
 
-interface Credentials {
+export interface Credentials {
   username?: string;
   password?: string;
   macaroons?: object;
 }
 
-interface LoginArguments {
+export interface LoginArguments {
   "auth-tag"?: string; // username prefixed with 'user-'
   "client-version"?: string; // the client version in the format 3.0.0
   credentials?: string; // password
@@ -44,9 +44,9 @@ interface LoginArguments {
 // XXX Expand on these types.
 // Facades are wrapped which makes the class types break. Can we do that
 // override differently to avoid this issue?
-type AdminV3 = any;
-type Bakery = any;
-type Facade = any;
+export type AdminV3 = any;
+export type Bakery = any;
+export type Facade = any;
 
 /**
   Connect to the Juju controller or model at the given URL.
