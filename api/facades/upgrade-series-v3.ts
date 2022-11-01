@@ -6,8 +6,8 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 04 Oct 2022 16:14:09 GMT using
-  the Juju schema from  Juju juju-3.0-beta4 at the git SHA a13ab81a.
+  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
 
@@ -88,14 +88,14 @@ interface StringResults {
   results: StringResult[];
 }
 
-interface UpdateSeriesArg {
+interface UpdateChannelArg {
+  channel: string;
   force: boolean;
-  series: string;
   tag: Entity;
 }
 
-interface UpdateSeriesArgs {
-  args: UpdateSeriesArg[];
+interface UpdateChannelArgs {
+  args: UpdateChannelArg[];
 }
 
 interface UpgradeSeriesStartUnitCompletionParam {
@@ -128,7 +128,7 @@ interface AdditionalProperties {
 }
 
 /**
-  API serves methods required by the machine agent upgrade-series worker.
+  API serves methods required by the machine agent upgrade-machine worker.
 */
 class UpgradeSeriesV3 {
   static NAME: string = 'UpgradeSeries';
@@ -150,7 +150,7 @@ class UpgradeSeriesV3 {
   /**
     CurrentSeries returns what Juju thinks the current series of the machine is.
     Note that a machine could have been upgraded out-of-band by running
-    do-release-upgrade outside of the upgrade-series workflow,
+    do-release-upgrade outside of the upgrade-machine workflow,
     making this value incorrect.
   */
   currentSeries(params: Entities): Promise<StringResults> {
@@ -171,9 +171,9 @@ class UpgradeSeriesV3 {
     FinishUpgradeSeries is the last action in the upgrade workflow and is
     called after all machine and unit statuses are "completed".
     It updates the machine series to reflect the completed upgrade, then
-    removes the upgrade-series lock.
+    removes the upgrade-machine lock.
   */
-  finishUpgradeSeries(params: UpdateSeriesArgs): Promise<ErrorResults> {
+  finishUpgradeSeries(params: UpdateChannelArgs): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
 
       const req: JujuRequest = {
@@ -188,7 +188,7 @@ class UpgradeSeriesV3 {
   }
   
   /**
-    MachineStatus gets the current upgrade-series status of a machine.
+    MachineStatus gets the current upgrade-machine status of a machine.
   */
   machineStatus(params: Entities): Promise<UpgradeSeriesStatusResults> {
     return new Promise((resolve, reject) => {
@@ -256,7 +256,7 @@ class UpgradeSeriesV3 {
   }
   
   /**
-    SetMachineStatus sets the current upgrade-series status of a machine.
+    SetMachineStatus sets the current upgrade-machine status of a machine.
   */
   setMachineStatus(params: UpgradeSeriesStatusParams): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
@@ -328,7 +328,7 @@ class UpgradeSeriesV3 {
   
   /**
     UnitsCompleted returns the units running on this machine that have completed
-    the upgrade-series workflow and are in their normal running state.
+    the upgrade-machine workflow and are in their normal running state.
   */
   unitsCompleted(params: Entities): Promise<EntitiesResults> {
     return new Promise((resolve, reject) => {
@@ -346,7 +346,7 @@ class UpgradeSeriesV3 {
   
   /**
     UnitsPrepared returns the units running on this machine that have completed
-    their upgrade-series preparation, and are ready to be stopped and have their
+    their upgrade-machine preparation, and are ready to be stopped and have their
     unit agent services converted for the target series.
   */
   unitsPrepared(params: Entities): Promise<EntitiesResults> {

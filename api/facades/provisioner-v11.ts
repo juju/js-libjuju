@@ -4,8 +4,8 @@
     Controller-machine-agent
     Machine-agent
 
-  NOTE: This file was generated on Tue, 04 Oct 2022 16:14:09 GMT using
-  the Juju schema from  Juju juju-3.0-beta4 at the git SHA a13ab81a.
+  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
 
@@ -26,6 +26,11 @@ interface Address {
   'space-name'?: string;
   type: string;
   value: string;
+}
+
+interface Base {
+  channel: string;
+  name: string;
 }
 
 interface Binary {
@@ -65,7 +70,6 @@ interface CloudImageMetadata {
   region: string;
   'root-storage-size'?: number;
   'root-storage-type'?: string;
-  series: string;
   source: string;
   stream?: string;
   version: string;
@@ -343,6 +347,7 @@ interface Number {
 
 interface ProvisioningInfo {
   ProvisioningNetworkTopology: ProvisioningNetworkTopology;
+  base: Base;
   'charm-lxd-profiles'?: string[];
   'cloudinit-userdata'?: AdditionalProperties;
   constraints: Value;
@@ -352,7 +357,6 @@ interface ProvisioningInfo {
   jobs: string[];
   placement: string;
   'root-disk'?: VolumeParams;
-  series: string;
   'space-subnets': AdditionalProperties;
   'subnet-zones': AdditionalProperties;
   tags?: AdditionalProperties;
@@ -1045,23 +1049,6 @@ class ProvisionerV11 {
       const req: JujuRequest = {
         type: 'Provisioner',
         request: 'Remove',
-        version: 11,
-        params: params,
-      };
-
-      this._transport.write(req, resolve, reject);
-    });
-  }
-  
-  /**
-    Series returns the deployed series for each given machine entity.
-  */
-  series(params: Entities): Promise<StringResults> {
-    return new Promise((resolve, reject) => {
-
-      const req: JujuRequest = {
-        type: 'Provisioner',
-        request: 'Series',
         version: 11,
         params: params,
       };
