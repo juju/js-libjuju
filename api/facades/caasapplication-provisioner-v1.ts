@@ -6,8 +6,8 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 04 Oct 2022 16:14:09 GMT using
-  the Juju schema from  Juju juju-3.0-beta4 at the git SHA a13ab81a.
+  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
 
@@ -30,6 +30,11 @@ interface ApplicationUnitParams {
   stateful?: boolean;
   status: string;
   'unit-tag': string;
+}
+
+interface Base {
+  channel: string;
+  name: string;
 }
 
 interface CAASApplicationGarbageCollectArg {
@@ -59,6 +64,7 @@ interface CAASApplicationOCIResources {
 
 interface CAASApplicationProvisioningInfo {
   'api-addresses': string[];
+  base?: Base;
   'ca-cert': string;
   'charm-modified-version'?: number;
   'charm-url'?: string;
@@ -68,7 +74,6 @@ interface CAASApplicationProvisioningInfo {
   filesystems?: KubernetesFilesystemParams[];
   'image-repo'?: DockerImageInfo;
   scale?: number;
-  series?: string;
   tags?: AdditionalProperties;
   trust?: boolean;
   version: Number;

@@ -3,8 +3,8 @@
   This facade is available on:
     Models
 
-  NOTE: This file was generated on Tue, 04 Oct 2022 16:14:09 GMT using
-  the Juju schema from  Juju juju-3.0-beta4 at the git SHA a13ab81a.
+  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
 
@@ -26,8 +26,6 @@ interface ListSecretResult {
   'latest-revision': number;
   'next-rotate-time'?: string;
   'owner-tag': string;
-  provider: string;
-  'provider-id'?: string;
   revisions: SecretRevision[];
   'rotate-policy'?: string;
   'update-time': string;
@@ -46,10 +44,11 @@ interface ListSecretsArgs {
 }
 
 interface SecretRevision {
-  'create-time': string;
+  'create-time'?: string;
   'expire-time'?: string;
+  'provider-id'?: string;
   revision: number;
-  'update-time': string;
+  'update-time'?: string;
 }
 
 interface SecretValueResult {

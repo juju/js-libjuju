@@ -6,8 +6,8 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 04 Oct 2022 16:14:09 GMT using
-  the Juju schema from  Juju juju-3.0-beta4 at the git SHA a13ab81a.
+  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
 
@@ -141,7 +141,8 @@ interface CommitHookChangesArg {
   'open-ports'?: EntityPortRange[];
   'pod-spec'?: PodSpec;
   'relation-unit-settings'?: RelationUnitSettings[];
-  'secret-deletes'?: SecretURIArg[];
+  'secret-creates'?: CreateSecretArg[];
+  'secret-deletes'?: DeleteSecretArg[];
   'secret-grants'?: GrantRevokeSecretArg[];
   'secret-revokes'?: GrantRevokeSecretArg[];
   'secret-updates'?: UpdateSecretArg[];
@@ -166,17 +167,31 @@ interface ConfigSettingsResults {
 
 interface CreateSecretArg {
   UpsertSecretArg: UpsertSecretArg;
-  data?: AdditionalProperties;
+  content?: SecretContentParams;
   description?: string;
   'expire-time'?: string;
   label?: string;
   'owner-tag': string;
   params?: AdditionalProperties;
   'rotate-policy'?: string;
+  uri?: string;
 }
 
 interface CreateSecretArgs {
   args: CreateSecretArg[];
+}
+
+interface CreateSecretURIsArg {
+  count: number;
+}
+
+interface DeleteSecretArg {
+  revisions?: number[];
+  uri: string;
+}
+
+interface DeleteSecretArgs {
+  args: DeleteSecretArg[];
 }
 
 interface Endpoint {
@@ -258,15 +273,15 @@ interface GetSecretConsumerInfoArgs {
   uris: string[];
 }
 
-interface GetSecretValueArg {
+interface GetSecretContentArg {
   label?: string;
   peek?: boolean;
   update?: boolean;
   uri: string;
 }
 
-interface GetSecretValueArgs {
-  args: GetSecretValueArg[];
+interface GetSecretContentArgs {
+  args: GetSecretContentArg[];
 }
 
 interface GoalState {
@@ -334,6 +349,26 @@ interface LifeResult {
 
 interface LifeResults {
   results: LifeResult[];
+}
+
+interface ListSecretResult {
+  'create-time': string;
+  description?: string;
+  label?: string;
+  'latest-expire-time'?: string;
+  'latest-revision': number;
+  'next-rotate-time'?: string;
+  'owner-tag': string;
+  revisions: SecretRevision[];
+  'rotate-policy'?: string;
+  'update-time': string;
+  uri: string;
+  value?: SecretValueResult;
+  version: number;
+}
+
+interface ListSecretResults {
+  results: ListSecretResult[];
 }
 
 interface MergeLeadershipSettingsBulkParams {
@@ -552,55 +587,58 @@ interface SecretConsumerInfoResults {
   results: SecretConsumerInfoResult[];
 }
 
-interface SecretIdResult {
-  label: string;
+interface SecretContentParams {
+  data: AdditionalProperties;
+  'provider-id': string;
 }
 
-interface SecretIdResults {
+interface SecretContentResult {
+  content: SecretContentParams;
   error?: Error;
-  result: AdditionalProperties;
+}
+
+interface SecretContentResults {
+  results: SecretContentResult[];
+}
+
+interface SecretRevision {
+  'create-time'?: string;
+  'expire-time'?: string;
+  'provider-id'?: string;
+  revision: number;
+  'update-time'?: string;
 }
 
 interface SecretRotatedArg {
+  'original-revision': number;
+  skip: boolean;
   uri: string;
-  when: string;
 }
 
 interface SecretRotatedArgs {
   args: SecretRotatedArg[];
 }
 
-interface SecretRotationChange {
-  'last-rotate-time': string;
-  'rotate-interval': number;
+interface SecretStoreConfig {
+  params?: AdditionalProperties;
+  type: string;
+}
+
+interface SecretTriggerChange {
+  'next-trigger-time': string;
+  revision?: number;
   uri: string;
 }
 
-interface SecretRotationWatchResult {
-  changes: SecretRotationChange[];
+interface SecretTriggerWatchResult {
+  changes: SecretTriggerChange[];
   error?: Error;
   'watcher-id': string;
-}
-
-interface SecretRotationWatchResults {
-  results: SecretRotationWatchResult[];
-}
-
-interface SecretURIArg {
-  uri: string;
-}
-
-interface SecretURIArgs {
-  args: SecretURIArg[];
 }
 
 interface SecretValueResult {
   data: AdditionalProperties;
   error: Error;
-}
-
-interface SecretValueResults {
-  results: SecretValueResult[];
 }
 
 interface SetStatus {
@@ -611,6 +649,7 @@ interface SetUnitStateArg {
   'charm-state'?: AdditionalProperties;
   'meter-status-state'?: string;
   'relation-state'?: AdditionalProperties;
+  'secret-state'?: string;
   'storage-state'?: string;
   tag: string;
   'uniter-state'?: string;
@@ -745,6 +784,7 @@ interface UnitStateResult {
   error: Error;
   'meter-status-state': string;
   'relation-state': AdditionalProperties;
+  'secret-state': string;
   'storage-state': string;
   'uniter-state': string;
 }
@@ -755,7 +795,7 @@ interface UnitStateResults {
 
 interface UpdateSecretArg {
   UpsertSecretArg: UpsertSecretArg;
-  data?: AdditionalProperties;
+  content?: SecretContentParams;
   description?: string;
   'expire-time'?: string;
   label?: string;
@@ -789,7 +829,7 @@ interface UpgradeSeriesStatusResults {
 }
 
 interface UpsertSecretArg {
-  data: AdditionalProperties;
+  content: SecretContentParams;
   description: string;
   'expire-time': string;
   label: string;
@@ -1136,6 +1176,23 @@ class UniterV18 {
   }
   
   /**
+    CreateSecretURIs creates new secret URIs.
+  */
+  createSecretURIs(params: CreateSecretURIsArg): Promise<StringResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'Uniter',
+        request: 'CreateSecretURIs',
+        version: 18,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
     CreateSecrets creates new secrets.
   */
   createSecrets(params: CreateSecretArgs): Promise<StringResults> {
@@ -1277,14 +1334,14 @@ class UniterV18 {
   }
   
   /**
-    GetLatestSecretsRevisionInfo returns the latest secret revisions for the specified secrets.
+    GetConsumerSecretsRevisionInfo returns the latest secret revisions for the specified secrets.
   */
-  getLatestSecretsRevisionInfo(params: GetSecretConsumerInfoArgs): Promise<SecretConsumerInfoResults> {
+  getConsumerSecretsRevisionInfo(params: GetSecretConsumerInfoArgs): Promise<SecretConsumerInfoResults> {
     return new Promise((resolve, reject) => {
 
       const req: JujuRequest = {
         type: 'Uniter',
-        request: 'GetLatestSecretsRevisionInfo',
+        request: 'GetConsumerSecretsRevisionInfo',
         version: 18,
         params: params,
       };
@@ -1363,14 +1420,31 @@ class UniterV18 {
   }
   
   /**
-    GetSecretIds returns the caller's secret ids and their labels.
+    GetSecretContentInfo returns the secret values for the specified secrets.
   */
-  getSecretIds(): Promise<SecretIdResults> {
+  getSecretContentInfo(params: GetSecretContentArgs): Promise<SecretContentResults> {
     return new Promise((resolve, reject) => {
 
       const req: JujuRequest = {
         type: 'Uniter',
-        request: 'GetSecretIds',
+        request: 'GetSecretContentInfo',
+        version: 18,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
+    GetSecretMetadata returns metadata for the caller's secrets.
+  */
+  getSecretMetadata(): Promise<ListSecretResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'Uniter',
+        request: 'GetSecretMetadata',
         version: 18,
       };
 
@@ -1379,16 +1453,15 @@ class UniterV18 {
   }
   
   /**
-    GetSecretValues returns the secret values for the specified secrets.
+    GetSecretStoreConfig gets the config needed to create a client to the model's secret store.
   */
-  getSecretValues(params: GetSecretValueArgs): Promise<SecretValueResults> {
+  getSecretStoreConfig(): Promise<SecretStoreConfig> {
     return new Promise((resolve, reject) => {
 
       const req: JujuRequest = {
         type: 'Uniter',
-        request: 'GetSecretValues',
+        request: 'GetSecretStoreConfig',
         version: 18,
-        params: params,
       };
 
       this._transport.write(req, resolve, reject);
@@ -1809,7 +1882,7 @@ class UniterV18 {
   /**
     RemoveSecrets removes the specified secrets.
   */
-  removeSecrets(params: SecretURIArgs): Promise<ErrorResults> {
+  removeSecrets(params: DeleteSecretArgs): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
 
       const req: JujuRequest = {
@@ -2321,6 +2394,23 @@ class UniterV18 {
   }
   
   /**
+    WatchConsumedSecretsChanges sets up a watcher to notify of changes to secret revisions for the specified consumers.
+  */
+  watchConsumedSecretsChanges(params: Entities): Promise<StringsWatchResults> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'Uniter',
+        request: 'WatchConsumedSecretsChanges',
+        version: 18,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
     WatchForModelConfigChanges returns a NotifyWatcher that observes
     changes to the model configuration.
     Note that although the NotifyWatchResult contains an Error field,
@@ -2393,6 +2483,29 @@ class UniterV18 {
   }
   
   /**
+    WatchObsolete returns a watcher for notifying when:
+      - a secret owned by the entity is deleted
+      - a secret revision owed by the entity no longer
+        has any consumers
+    
+    Obsolete revisions results are "uri/revno" and deleted
+    secret results are "uri".
+  */
+  watchObsolete(params: Entities): Promise<StringsWatchResult> {
+    return new Promise((resolve, reject) => {
+
+      const req: JujuRequest = {
+        type: 'Uniter',
+        request: 'WatchObsolete',
+        version: 18,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+  
+  /**
     WatchRelationUnits returns a RelationUnitsWatcher for observing
     changes to every unit in the supplied relation that is visible to
     the supplied unit. See also state/watcher.go:RelationUnit.Watch().
@@ -2412,14 +2525,14 @@ class UniterV18 {
   }
   
   /**
-    WatchSecretsChanges sets up a watcher to notify of changes to secret revisions for the specified consumers.
+    WatchSecretRevisionsExpiryChanges sets up a watcher to notify of changes to secret revision expiry config.
   */
-  watchSecretsChanges(params: Entities): Promise<StringsWatchResults> {
+  watchSecretRevisionsExpiryChanges(params: Entities): Promise<SecretTriggerWatchResult> {
     return new Promise((resolve, reject) => {
 
       const req: JujuRequest = {
         type: 'Uniter',
-        request: 'WatchSecretsChanges',
+        request: 'WatchSecretRevisionsExpiryChanges',
         version: 18,
         params: params,
       };
@@ -2431,7 +2544,7 @@ class UniterV18 {
   /**
     WatchSecretsRotationChanges sets up a watcher to notify of changes to secret rotation config.
   */
-  watchSecretsRotationChanges(params: Entities): Promise<SecretRotationWatchResults> {
+  watchSecretsRotationChanges(params: Entities): Promise<SecretTriggerWatchResult> {
     return new Promise((resolve, reject) => {
 
       const req: JujuRequest = {
