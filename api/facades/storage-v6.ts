@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,65 +15,65 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface AddStorageDetails {
+export interface AddStorageDetails {
   'storage-tags': string[];
 }
 
-interface AddStorageResult {
+export interface AddStorageResult {
   error: Error;
   result: AddStorageDetails;
 }
 
-interface AddStorageResults {
+export interface AddStorageResults {
   results: AddStorageResult[];
 }
 
-interface BulkImportStorageParams {
+export interface BulkImportStorageParams {
   storage: ImportStorageParams[];
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface EntityStatus {
+export interface EntityStatus {
   data?: AdditionalProperties;
   info: string;
   since: string;
   status: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface FilesystemAttachmentDetails {
+export interface FilesystemAttachmentDetails {
   FilesystemAttachmentInfo: FilesystemAttachmentInfo;
   life?: string;
   'mount-point'?: string;
   'read-only'?: boolean;
 }
 
-interface FilesystemAttachmentInfo {
+export interface FilesystemAttachmentInfo {
   'mount-point': string;
   'read-only': boolean;
 }
 
-interface FilesystemDetails {
+export interface FilesystemDetails {
   'filesystem-tag': string;
   info: FilesystemInfo;
   life?: string;
@@ -84,54 +84,54 @@ interface FilesystemDetails {
   'volume-tag'?: string;
 }
 
-interface FilesystemDetailsListResult {
+export interface FilesystemDetailsListResult {
   error: Error;
   result: FilesystemDetails[];
 }
 
-interface FilesystemDetailsListResults {
+export interface FilesystemDetailsListResults {
   results: FilesystemDetailsListResult[];
 }
 
-interface FilesystemFilter {
+export interface FilesystemFilter {
   machines: string[];
 }
 
-interface FilesystemFilters {
+export interface FilesystemFilters {
   filters: FilesystemFilter[];
 }
 
-interface FilesystemInfo {
+export interface FilesystemInfo {
   'filesystem-id': string;
   pool: string;
   size: number;
 }
 
-interface ImportStorageDetails {
+export interface ImportStorageDetails {
   'storage-tag': string;
 }
 
-interface ImportStorageParams {
+export interface ImportStorageParams {
   kind: number;
   pool: string;
   'provider-id': string;
   'storage-name': string;
 }
 
-interface ImportStorageResult {
+export interface ImportStorageResult {
   error: Error;
   result: ImportStorageDetails;
 }
 
-interface ImportStorageResults {
+export interface ImportStorageResults {
   results: ImportStorageResult[];
 }
 
-interface RemoveStorage {
+export interface RemoveStorage {
   storage: RemoveStorageInstance[];
 }
 
-interface RemoveStorageInstance {
+export interface RemoveStorageInstance {
   'destroy-attachments'?: boolean;
   'destroy-storage'?: boolean;
   force?: boolean;
@@ -139,13 +139,13 @@ interface RemoveStorageInstance {
   tag: string;
 }
 
-interface StorageAddParams {
+export interface StorageAddParams {
   name: string;
   storage: StorageConstraints;
   unit: string;
 }
 
-interface StorageAttachmentDetails {
+export interface StorageAttachmentDetails {
   life?: string;
   location?: string;
   'machine-tag': string;
@@ -153,28 +153,28 @@ interface StorageAttachmentDetails {
   'unit-tag': string;
 }
 
-interface StorageAttachmentId {
+export interface StorageAttachmentId {
   'storage-tag': string;
   'unit-tag': string;
 }
 
-interface StorageAttachmentIds {
+export interface StorageAttachmentIds {
   ids: StorageAttachmentId[];
 }
 
-interface StorageConstraints {
+export interface StorageConstraints {
   count: number;
   pool: string;
   size: number;
 }
 
-interface StorageDetachmentParams {
+export interface StorageDetachmentParams {
   force?: boolean;
   ids: StorageAttachmentIds;
   'max-wait'?: number;
 }
 
-interface StorageDetails {
+export interface StorageDetails {
   attachments?: AdditionalProperties;
   kind: number;
   life?: string;
@@ -184,73 +184,73 @@ interface StorageDetails {
   'storage-tag': string;
 }
 
-interface StorageDetailsListResult {
+export interface StorageDetailsListResult {
   error: Error;
   result: StorageDetails[];
 }
 
-interface StorageDetailsListResults {
+export interface StorageDetailsListResults {
   results: StorageDetailsListResult[];
 }
 
-interface StorageDetailsResult {
+export interface StorageDetailsResult {
   error: Error;
   result: StorageDetails;
 }
 
-interface StorageDetailsResults {
+export interface StorageDetailsResults {
   results: StorageDetailsResult[];
 }
 
-interface StorageFilter {
+export interface StorageFilter {
   [key: string]: AdditionalProperties;
 }
 
-interface StorageFilters {
+export interface StorageFilters {
   filters: StorageFilter[];
 }
 
-interface StoragePool {
+export interface StoragePool {
   attrs: AdditionalProperties;
   name: string;
   provider: string;
 }
 
-interface StoragePoolArgs {
+export interface StoragePoolArgs {
   pools: StoragePool[];
 }
 
-interface StoragePoolDeleteArg {
+export interface StoragePoolDeleteArg {
   name: string;
 }
 
-interface StoragePoolDeleteArgs {
+export interface StoragePoolDeleteArgs {
   pools: StoragePoolDeleteArg[];
 }
 
-interface StoragePoolFilter {
+export interface StoragePoolFilter {
   names: string[];
   providers: string[];
 }
 
-interface StoragePoolFilters {
+export interface StoragePoolFilters {
   filters: StoragePoolFilter[];
 }
 
-interface StoragePoolsResult {
+export interface StoragePoolsResult {
   error: Error;
   'storage-pools': StoragePool[];
 }
 
-interface StoragePoolsResults {
+export interface StoragePoolsResults {
   results: StoragePoolsResult[];
 }
 
-interface StoragesAddParams {
+export interface StoragesAddParams {
   storages: StorageAddParams[];
 }
 
-interface VolumeAttachmentDetails {
+export interface VolumeAttachmentDetails {
   VolumeAttachmentInfo: VolumeAttachmentInfo;
   'bus-address'?: string;
   'device-link'?: string;
@@ -260,7 +260,7 @@ interface VolumeAttachmentDetails {
   'read-only'?: boolean;
 }
 
-interface VolumeAttachmentInfo {
+export interface VolumeAttachmentInfo {
   'bus-address': string;
   'device-link': string;
   'device-name': string;
@@ -268,12 +268,12 @@ interface VolumeAttachmentInfo {
   'read-only': boolean;
 }
 
-interface VolumeAttachmentPlanInfo {
+export interface VolumeAttachmentPlanInfo {
   'device-attributes': AdditionalProperties;
   'device-type': string;
 }
 
-interface VolumeDetails {
+export interface VolumeDetails {
   info: VolumeInfo;
   life?: string;
   'machine-attachments'?: AdditionalProperties;
@@ -283,24 +283,24 @@ interface VolumeDetails {
   'volume-tag': string;
 }
 
-interface VolumeDetailsListResult {
+export interface VolumeDetailsListResult {
   error: Error;
   result: VolumeDetails[];
 }
 
-interface VolumeDetailsListResults {
+export interface VolumeDetailsListResults {
   results: VolumeDetailsListResult[];
 }
 
-interface VolumeFilter {
+export interface VolumeFilter {
   machines: string[];
 }
 
-interface VolumeFilters {
+export interface VolumeFilters {
   filters: VolumeFilter[];
 }
 
-interface VolumeInfo {
+export interface VolumeInfo {
   'hardware-id'?: string;
   persistent: boolean;
   pool?: string;
@@ -309,7 +309,7 @@ interface VolumeInfo {
   wwn?: string;
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

@@ -3,7 +3,7 @@
   This facade is available on:
     Controller-machine-agent
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -12,67 +12,67 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface EntityStatusArgs {
+export interface EntityStatusArgs {
   data: AdditionalProperties;
   info: string;
   status: string;
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface IntResult {
+export interface IntResult {
   error?: Error;
   result: number;
 }
 
-interface IntResults {
+export interface IntResults {
   results: IntResult[];
 }
 
-interface NotifyWatchResult {
+export interface NotifyWatchResult {
   NotifyWatcherId: string;
   error?: Error;
 }
 
-interface NotifyWatchResults {
+export interface NotifyWatchResults {
   results: NotifyWatchResult[];
 }
 
-interface SetModelEnvironVersion {
+export interface SetModelEnvironVersion {
   'model-tag': string;
   version: number;
 }
 
-interface SetModelEnvironVersions {
+export interface SetModelEnvironVersions {
   models: SetModelEnvironVersion[];
 }
 
-interface SetStatus {
+export interface SetStatus {
   entities: EntityStatusArgs[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

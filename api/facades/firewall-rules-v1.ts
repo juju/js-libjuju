@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,34 +15,34 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface FirewallRule {
+export interface FirewallRule {
   'known-service': string;
   'whitelist-cidrs'?: string[];
 }
 
-interface FirewallRuleArgs {
+export interface FirewallRuleArgs {
   args: FirewallRule[];
 }
 
-interface ListFirewallRulesResults {
+export interface ListFirewallRulesResults {
   Rules: FirewallRule[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

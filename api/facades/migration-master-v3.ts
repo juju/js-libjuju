@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,20 +15,20 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface MasterMigrationStatus {
+export interface MasterMigrationStatus {
   'migration-id': string;
   phase: string;
   'phase-changed-time': string;
   spec: MigrationSpec;
 }
 
-interface MigrationModelInfo {
+export interface MigrationModelInfo {
   'agent-version': Number;
   'controller-agent-version': Number;
   name: string;
@@ -36,12 +36,12 @@ interface MigrationModelInfo {
   uuid: string;
 }
 
-interface MigrationSpec {
+export interface MigrationSpec {
   'model-tag': string;
   'target-info': MigrationTargetInfo;
 }
 
-interface MigrationTargetInfo {
+export interface MigrationTargetInfo {
   addrs: string[];
   'auth-tag': string;
   'ca-cert': string;
@@ -51,7 +51,7 @@ interface MigrationTargetInfo {
   password?: string;
 }
 
-interface MinionReports {
+export interface MinionReports {
   failed: string[];
   'migration-id': string;
   phase: string;
@@ -60,12 +60,12 @@ interface MinionReports {
   'unknown-sample': string[];
 }
 
-interface NotifyWatchResult {
+export interface NotifyWatchResult {
   NotifyWatcherId: string;
   error?: Error;
 }
 
-interface Number {
+export interface Number {
   Build: number;
   Major: number;
   Minor: number;
@@ -73,22 +73,22 @@ interface Number {
   Tag: string;
 }
 
-interface PrechecksArgs {
+export interface PrechecksArgs {
   'target-controller-version': Number;
 }
 
-interface ProcessRelations {
+export interface ProcessRelations {
   'controller-alias': string;
 }
 
-interface SerializedModel {
+export interface SerializedModel {
   bytes: number[];
   charms: string[];
   resources: SerializedModelResource[];
   tools: SerializedModelTools[];
 }
 
-interface SerializedModelResource {
+export interface SerializedModelResource {
   application: string;
   'application-revision': SerializedModelResourceRevision;
   'charmstore-revision': SerializedModelResourceRevision;
@@ -96,7 +96,7 @@ interface SerializedModelResource {
   'unit-revisions': AdditionalProperties;
 }
 
-interface SerializedModelResourceRevision {
+export interface SerializedModelResourceRevision {
   description: string;
   fingerprint: string;
   origin: string;
@@ -108,25 +108,25 @@ interface SerializedModelResourceRevision {
   username?: string;
 }
 
-interface SerializedModelTools {
+export interface SerializedModelTools {
   uri: string;
   version: string;
 }
 
-interface SetMigrationPhaseArgs {
+export interface SetMigrationPhaseArgs {
   phase: string;
 }
 
-interface SetMigrationStatusMessageArgs {
+export interface SetMigrationStatusMessageArgs {
   message: string;
 }
 
-interface StringResult {
+export interface StringResult {
   error?: Error;
   result: string;
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

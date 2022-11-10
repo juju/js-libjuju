@@ -3,7 +3,7 @@
   This facade is available on:
     Controller-machine-agent
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -12,40 +12,40 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface LogForwardingGetLastSentParams {
+export interface LogForwardingGetLastSentParams {
   ids: LogForwardingID[];
 }
 
-interface LogForwardingGetLastSentResult {
+export interface LogForwardingGetLastSentResult {
   err: Error;
   'record-id': number;
   'record-timestamp': number;
 }
 
-interface LogForwardingGetLastSentResults {
+export interface LogForwardingGetLastSentResults {
   results: LogForwardingGetLastSentResult[];
 }
 
-interface LogForwardingID {
+export interface LogForwardingID {
   model: string;
   sink: string;
 }
 
-interface LogForwardingSetLastSentParam {
+export interface LogForwardingSetLastSentParam {
   LogForwardingID: LogForwardingID;
   model: string;
   'record-id': number;
@@ -53,11 +53,11 @@ interface LogForwardingSetLastSentParam {
   sink: string;
 }
 
-interface LogForwardingSetLastSentParams {
+export interface LogForwardingSetLastSentParams {
   params: LogForwardingSetLastSentParam[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

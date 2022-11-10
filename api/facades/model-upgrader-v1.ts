@@ -6,7 +6,7 @@
     Unit-agent
     Controllers
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,17 +15,17 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ModelParam {
+export interface ModelParam {
   'model-tag': string;
 }
 
-interface Number {
+export interface Number {
   Build: number;
   Major: number;
   Minor: number;
@@ -33,7 +33,7 @@ interface Number {
   Tag: string;
 }
 
-interface UpgradeModelParams {
+export interface UpgradeModelParams {
   'agent-stream'?: string;
   'dry-run'?: boolean;
   'ignore-agent-versions'?: boolean;
@@ -41,12 +41,12 @@ interface UpgradeModelParams {
   'target-version': Number;
 }
 
-interface UpgradeModelResult {
+export interface UpgradeModelResult {
   'chosen-version': Number;
   error?: Error;
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

@@ -5,7 +5,7 @@
     Machine-agent
     Unit-agent
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -14,24 +14,24 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface AgentGetEntitiesResult {
+export interface AgentGetEntitiesResult {
   'container-type': string;
   error?: Error;
   jobs: string[];
   life: string;
 }
 
-interface AgentGetEntitiesResults {
+export interface AgentGetEntitiesResults {
   entities: AgentGetEntitiesResult[];
 }
 
-interface CloudCredential {
+export interface CloudCredential {
   attrs?: AdditionalProperties;
   'auth-type': string;
   redacted?: string[];
 }
 
-interface CloudSpec {
+export interface CloudSpec {
   cacertificates?: string[];
   credential?: CloudCredential;
   endpoint?: string;
@@ -44,82 +44,82 @@ interface CloudSpec {
   type: string;
 }
 
-interface CloudSpecResult {
+export interface CloudSpecResult {
   error: Error;
   result: CloudSpec;
 }
 
-interface CloudSpecResults {
+export interface CloudSpecResults {
   results: CloudSpecResult[];
 }
 
-interface ControllerAPIInfoResult {
+export interface ControllerAPIInfoResult {
   addresses: string[];
   cacert: string;
   error?: Error;
 }
 
-interface ControllerAPIInfoResults {
+export interface ControllerAPIInfoResults {
   results: ControllerAPIInfoResult[];
 }
 
-interface ControllerConfigResult {
+export interface ControllerConfigResult {
   config: AdditionalProperties;
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface EntityPassword {
+export interface EntityPassword {
   password: string;
   tag: string;
 }
 
-interface EntityPasswords {
+export interface EntityPasswords {
   changes: EntityPassword[];
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface IsMasterResult {
+export interface IsMasterResult {
   master: boolean;
 }
 
-interface ModelConfigResult {
+export interface ModelConfigResult {
   config: AdditionalProperties;
 }
 
-interface ModelTag {
+export interface ModelTag {
   [key: string]: AdditionalProperties;
 }
 
-interface NotifyWatchResult {
+export interface NotifyWatchResult {
   NotifyWatcherId: string;
   error?: Error;
 }
 
-interface NotifyWatchResults {
+export interface NotifyWatchResults {
   results: NotifyWatchResult[];
 }
 
-interface StateServingInfo {
+export interface StateServingInfo {
   'api-port': number;
   'ca-private-key': string;
   cert: string;
@@ -130,7 +130,7 @@ interface StateServingInfo {
   'system-identity': string;
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

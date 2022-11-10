@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,7 +15,7 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface Binary {
+export interface Binary {
   Arch: string;
   Build: number;
   Major: number;
@@ -26,47 +26,47 @@ interface Binary {
   Tag: string;
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface EntitiesVersion {
+export interface EntitiesVersion {
   'agent-tools': EntityVersion[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface EntityVersion {
+export interface EntityVersion {
   tag: string;
   tools: Version;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface NotifyWatchResult {
+export interface NotifyWatchResult {
   NotifyWatcherId: string;
   error?: Error;
 }
 
-interface NotifyWatchResults {
+export interface NotifyWatchResults {
   results: NotifyWatchResult[];
 }
 
-interface Number {
+export interface Number {
   Build: number;
   Major: number;
   Minor: number;
@@ -74,36 +74,36 @@ interface Number {
   Tag: string;
 }
 
-interface Tools {
+export interface Tools {
   sha256?: string;
   size: number;
   url: string;
   version: Binary;
 }
 
-interface ToolsResult {
+export interface ToolsResult {
   error?: Error;
   tools: Tools[];
 }
 
-interface ToolsResults {
+export interface ToolsResults {
   results: ToolsResult[];
 }
 
-interface Version {
+export interface Version {
   version: Binary;
 }
 
-interface VersionResult {
+export interface VersionResult {
   error: Error;
   version: Number;
 }
 
-interface VersionResults {
+export interface VersionResults {
   results: VersionResult[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

@@ -4,7 +4,7 @@
     Controller-machine-agent
     Machine-agent
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -13,39 +13,39 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface NotifyWatchResult {
+export interface NotifyWatchResult {
   NotifyWatcherId: string;
   error?: Error;
 }
 
-interface NotifyWatchResults {
+export interface NotifyWatchResults {
   results: NotifyWatchResult[];
 }
 
-interface StringsResult {
+export interface StringsResult {
   error: Error;
   result: string[];
 }
 
-interface StringsResults {
+export interface StringsResults {
   results: StringsResult[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

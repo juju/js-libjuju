@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,35 +15,35 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface ApplicationTag {
+export interface ApplicationTag {
   Name: string;
 }
 
-interface ClaimLeadershipBulkParams {
+export interface ClaimLeadershipBulkParams {
   params: ClaimLeadershipParams[];
 }
 
-interface ClaimLeadershipBulkResults {
+export interface ClaimLeadershipBulkResults {
   results: ErrorResult[];
 }
 
-interface ClaimLeadershipParams {
+export interface ClaimLeadershipParams {
   'application-tag': string;
   duration: number;
   'unit-tag': string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

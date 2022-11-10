@@ -3,7 +3,7 @@
   This facade is available on:
     Controllers
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -12,30 +12,30 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface AdoptResourcesArgs {
+export interface AdoptResourcesArgs {
   'model-tag': string;
   'source-controller-version': Number;
 }
 
-interface BytesResult {
+export interface BytesResult {
   result: number[];
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface MigrationModelInfo {
+export interface MigrationModelInfo {
   'agent-version': Number;
   'controller-agent-version': Number;
   name: string;
@@ -43,11 +43,11 @@ interface MigrationModelInfo {
   uuid: string;
 }
 
-interface ModelArgs {
+export interface ModelArgs {
   'model-tag': string;
 }
 
-interface Number {
+export interface Number {
   Build: number;
   Major: number;
   Minor: number;
@@ -55,14 +55,14 @@ interface Number {
   Tag: string;
 }
 
-interface SerializedModel {
+export interface SerializedModel {
   bytes: number[];
   charms: string[];
   resources: SerializedModelResource[];
   tools: SerializedModelTools[];
 }
 
-interface SerializedModelResource {
+export interface SerializedModelResource {
   application: string;
   'application-revision': SerializedModelResourceRevision;
   'charmstore-revision': SerializedModelResourceRevision;
@@ -70,7 +70,7 @@ interface SerializedModelResource {
   'unit-revisions': AdditionalProperties;
 }
 
-interface SerializedModelResourceRevision {
+export interface SerializedModelResourceRevision {
   description: string;
   fingerprint: string;
   origin: string;
@@ -82,12 +82,12 @@ interface SerializedModelResourceRevision {
   username?: string;
 }
 
-interface SerializedModelTools {
+export interface SerializedModelTools {
   uri: string;
   version: string;
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

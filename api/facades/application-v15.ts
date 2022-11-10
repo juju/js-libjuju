@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,7 +15,7 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface AddApplicationUnits {
+export interface AddApplicationUnits {
   application: string;
   'attach-storage'?: string[];
   'num-units': number;
@@ -23,37 +23,37 @@ interface AddApplicationUnits {
   policy?: string;
 }
 
-interface AddApplicationUnitsResults {
+export interface AddApplicationUnitsResults {
   units: string[];
 }
 
-interface AddRelation {
+export interface AddRelation {
   endpoints: string[];
   'via-cidrs'?: string[];
 }
 
-interface AddRelationResults {
+export interface AddRelationResults {
   endpoints: AdditionalProperties;
 }
 
-interface ApplicationCharmRelations {
+export interface ApplicationCharmRelations {
   application: string;
 }
 
-interface ApplicationCharmRelationsResults {
+export interface ApplicationCharmRelationsResults {
   'charm-relations': string[];
 }
 
-interface ApplicationConfigUnsetArgs {
+export interface ApplicationConfigUnsetArgs {
   Args: ApplicationUnset[];
 }
 
-interface ApplicationConstraint {
+export interface ApplicationConstraint {
   constraints: Value;
   error?: Error;
 }
 
-interface ApplicationDeploy {
+export interface ApplicationDeploy {
   Force: boolean;
   application: string;
   'attach-storage'?: string[];
@@ -72,33 +72,33 @@ interface ApplicationDeploy {
   storage?: AdditionalProperties;
 }
 
-interface ApplicationDestroy {
+export interface ApplicationDestroy {
   application: string;
 }
 
-interface ApplicationExpose {
+export interface ApplicationExpose {
   application: string;
   'exposed-endpoints'?: AdditionalProperties;
 }
 
-interface ApplicationGet {
+export interface ApplicationGet {
   application: string;
   branch: string;
 }
 
-interface ApplicationGetArgs {
+export interface ApplicationGetArgs {
   args: ApplicationGet[];
 }
 
-interface ApplicationGetConfigResults {
+export interface ApplicationGetConfigResults {
   Results: ConfigResult[];
 }
 
-interface ApplicationGetConstraintsResults {
+export interface ApplicationGetConstraintsResults {
   results: ApplicationConstraint[];
 }
 
-interface ApplicationGetResults {
+export interface ApplicationGetResults {
   application: string;
   'application-config'?: AdditionalProperties;
   base: Base;
@@ -109,35 +109,35 @@ interface ApplicationGetResults {
   'endpoint-bindings'?: AdditionalProperties;
 }
 
-interface ApplicationInfoResult {
+export interface ApplicationInfoResult {
   error: Error;
   result: ApplicationResult;
 }
 
-interface ApplicationInfoResults {
+export interface ApplicationInfoResults {
   results: ApplicationInfoResult[];
 }
 
-interface ApplicationMergeBindings {
+export interface ApplicationMergeBindings {
   'application-tag': string;
   bindings: AdditionalProperties;
   force: boolean;
 }
 
-interface ApplicationMergeBindingsArgs {
+export interface ApplicationMergeBindingsArgs {
   args: ApplicationMergeBindings[];
 }
 
-interface ApplicationMetricCredential {
+export interface ApplicationMetricCredential {
   application: string;
   'metrics-credentials': number[];
 }
 
-interface ApplicationMetricCredentials {
+export interface ApplicationMetricCredentials {
   creds: ApplicationMetricCredential[];
 }
 
-interface ApplicationOfferDetails {
+export interface ApplicationOfferDetails {
   'application-description': string;
   bindings?: AdditionalProperties;
   endpoints?: RemoteEndpoint[];
@@ -149,7 +149,7 @@ interface ApplicationOfferDetails {
   users?: OfferUserDetails[];
 }
 
-interface ApplicationResult {
+export interface ApplicationResult {
   base?: Base;
   channel?: string;
   charm?: string;
@@ -163,7 +163,7 @@ interface ApplicationResult {
   tag: string;
 }
 
-interface ApplicationSetCharm {
+export interface ApplicationSetCharm {
   application: string;
   channel: string;
   'charm-origin'?: CharmOrigin;
@@ -179,27 +179,27 @@ interface ApplicationSetCharm {
   'storage-constraints'?: AdditionalProperties;
 }
 
-interface ApplicationUnexpose {
+export interface ApplicationUnexpose {
   application: string;
   'exposed-endpoints': string[];
 }
 
-interface ApplicationUnset {
+export interface ApplicationUnset {
   application: string;
   branch: string;
   options: string[];
 }
 
-interface ApplicationsDeploy {
+export interface ApplicationsDeploy {
   applications: ApplicationDeploy[];
 }
 
-interface Base {
+export interface Base {
   channel: string;
   name: string;
 }
 
-interface CharmOrigin {
+export interface CharmOrigin {
   architecture?: string;
   base?: Base;
   branch?: string;
@@ -213,7 +213,7 @@ interface CharmOrigin {
   type: string;
 }
 
-interface CharmRelation {
+export interface CharmRelation {
   interface: string;
   limit: number;
   name: string;
@@ -222,35 +222,35 @@ interface CharmRelation {
   scope: string;
 }
 
-interface CharmURLOriginResult {
+export interface CharmURLOriginResult {
   'charm-origin': CharmOrigin;
   error?: Error;
   url: string;
 }
 
-interface ConfigResult {
+export interface ConfigResult {
   config: AdditionalProperties;
   error?: Error;
 }
 
-interface ConfigSet {
+export interface ConfigSet {
   application: string;
   config: AdditionalProperties;
   'config-yaml': string;
   generation: string;
 }
 
-interface ConfigSetArgs {
+export interface ConfigSetArgs {
   Args: ConfigSet[];
 }
 
-interface Constraints {
+export interface Constraints {
   Count: number;
   Pool: string;
   Size: number;
 }
 
-interface ConsumeApplicationArg {
+export interface ConsumeApplicationArg {
   ApplicationOfferDetails: ApplicationOfferDetails;
   'application-alias'?: string;
   'application-description': string;
@@ -266,83 +266,83 @@ interface ConsumeApplicationArg {
   users?: OfferUserDetails[];
 }
 
-interface ConsumeApplicationArgs {
+export interface ConsumeApplicationArgs {
   args: ConsumeApplicationArg[];
 }
 
-interface DestroyApplicationInfo {
+export interface DestroyApplicationInfo {
   'destroyed-storage': Entity[];
   'destroyed-units': Entity[];
   'detached-storage': Entity[];
 }
 
-interface DestroyApplicationParams {
+export interface DestroyApplicationParams {
   'application-tag': string;
   'destroy-storage'?: boolean;
   force: boolean;
   'max-wait'?: number;
 }
 
-interface DestroyApplicationResult {
+export interface DestroyApplicationResult {
   error: Error;
   info: DestroyApplicationInfo;
 }
 
-interface DestroyApplicationResults {
+export interface DestroyApplicationResults {
   results: DestroyApplicationResult[];
 }
 
-interface DestroyApplicationUnits {
+export interface DestroyApplicationUnits {
   'unit-names': string[];
 }
 
-interface DestroyApplicationsParams {
+export interface DestroyApplicationsParams {
   applications: DestroyApplicationParams[];
 }
 
-interface DestroyConsumedApplicationParams {
+export interface DestroyConsumedApplicationParams {
   'application-tag': string;
   force?: boolean;
   'max-wait'?: number;
 }
 
-interface DestroyConsumedApplicationsParams {
+export interface DestroyConsumedApplicationsParams {
   applications: DestroyConsumedApplicationParams[];
 }
 
-interface DestroyRelation {
+export interface DestroyRelation {
   endpoints?: string[];
   force?: boolean;
   'max-wait'?: number;
   'relation-id': number;
 }
 
-interface DestroyUnitInfo {
+export interface DestroyUnitInfo {
   'destroyed-storage': Entity[];
   'detached-storage': Entity[];
 }
 
-interface DestroyUnitParams {
+export interface DestroyUnitParams {
   'destroy-storage'?: boolean;
   force: boolean;
   'max-wait'?: number;
   'unit-tag': string;
 }
 
-interface DestroyUnitResult {
+export interface DestroyUnitResult {
   error: Error;
   info: DestroyUnitInfo;
 }
 
-interface DestroyUnitResults {
+export interface DestroyUnitResults {
   results: DestroyUnitResult[];
 }
 
-interface DestroyUnitsParams {
+export interface DestroyUnitsParams {
   units: DestroyUnitParams[];
 }
 
-interface EndpointRelationData {
+export interface EndpointRelationData {
   ApplicationData: AdditionalProperties;
   'cross-model': boolean;
   endpoint: string;
@@ -351,78 +351,78 @@ interface EndpointRelationData {
   'unit-relation-data': AdditionalProperties;
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface ExposedEndpoint {
+export interface ExposedEndpoint {
   'expose-to-cidrs': string[];
   'expose-to-spaces': string[];
 }
 
-interface ExternalControllerInfo {
+export interface ExternalControllerInfo {
   addrs: string[];
   'ca-cert': string;
   'controller-alias': string;
   'controller-tag': string;
 }
 
-interface Macaroon {
+export interface Macaroon {
   [key: string]: AdditionalProperties;
 }
 
-interface OfferUserDetails {
+export interface OfferUserDetails {
   access: string;
   'display-name': string;
   user: string;
 }
 
-interface Placement {
+export interface Placement {
   directive: string;
   scope: string;
 }
 
-interface RelationData {
+export interface RelationData {
   InScope: boolean;
   UnitData: AdditionalProperties;
 }
 
-interface RelationSuspendedArg {
+export interface RelationSuspendedArg {
   message: string;
   'relation-id': number;
   suspended: boolean;
 }
 
-interface RelationSuspendedArgs {
+export interface RelationSuspendedArgs {
   args: RelationSuspendedArg[];
 }
 
-interface RemoteEndpoint {
+export interface RemoteEndpoint {
   interface: string;
   limit: number;
   name: string;
   role: string;
 }
 
-interface RemoteSpace {
+export interface RemoteSpace {
   'cloud-type': string;
   name: string;
   'provider-attributes': AdditionalProperties;
@@ -430,47 +430,47 @@ interface RemoteSpace {
   subnets: Subnet[];
 }
 
-interface ScaleApplicationInfo {
+export interface ScaleApplicationInfo {
   'num-units': number;
 }
 
-interface ScaleApplicationParams {
+export interface ScaleApplicationParams {
   'application-tag': string;
   force: boolean;
   scale: number;
   'scale-change'?: number;
 }
 
-interface ScaleApplicationResult {
+export interface ScaleApplicationResult {
   error: Error;
   info: ScaleApplicationInfo;
 }
 
-interface ScaleApplicationResults {
+export interface ScaleApplicationResults {
   results: ScaleApplicationResult[];
 }
 
-interface ScaleApplicationsParams {
+export interface ScaleApplicationsParams {
   applications: ScaleApplicationParams[];
 }
 
-interface SetConstraints {
+export interface SetConstraints {
   application: string;
   constraints: Value;
 }
 
-interface StorageConstraints {
+export interface StorageConstraints {
   count: number;
   pool: string;
   size: number;
 }
 
-interface StringResult {
+export interface StringResult {
   error?: Error;
   result: string;
 }
 
-interface Subnet {
+export interface Subnet {
   cidr: string;
   life: string;
   'provider-id'?: string;
@@ -482,16 +482,16 @@ interface Subnet {
   zones: string[];
 }
 
-interface UnitInfoResult {
+export interface UnitInfoResult {
   error: Error;
   result: UnitResult;
 }
 
-interface UnitInfoResults {
+export interface UnitInfoResults {
   results: UnitInfoResult[];
 }
 
-interface UnitResult {
+export interface UnitResult {
   address?: string;
   charm: string;
   leader?: boolean;
@@ -505,23 +505,23 @@ interface UnitResult {
   'workload-version': string;
 }
 
-interface UnitsResolved {
+export interface UnitsResolved {
   all: boolean;
   retry: boolean;
   tags: Entities;
 }
 
-interface UpdateChannelArg {
+export interface UpdateChannelArg {
   channel: string;
   force: boolean;
   tag: Entity;
 }
 
-interface UpdateChannelArgs {
+export interface UpdateChannelArgs {
   args: UpdateChannelArg[];
 }
 
-interface Value {
+export interface Value {
   'allocate-public-ip': boolean;
   arch: string;
   container: string;
@@ -538,7 +538,7 @@ interface Value {
   zones: string[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

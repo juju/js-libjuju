@@ -7,7 +7,7 @@
     Controllers
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -16,60 +16,60 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface ConfigValue {
+export interface ConfigValue {
   source: string;
   value: AdditionalProperties;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface GetConstraintsResults {
+export interface GetConstraintsResults {
   constraints: Value;
 }
 
-interface ModelConfigResults {
+export interface ModelConfigResults {
   config: AdditionalProperties;
 }
 
-interface ModelSLA {
+export interface ModelSLA {
   ModelSLAInfo: ModelSLAInfo;
   creds: number[];
   level: string;
   owner: string;
 }
 
-interface ModelSLAInfo {
+export interface ModelSLAInfo {
   level: string;
   owner: string;
 }
 
-interface ModelSequencesResult {
+export interface ModelSequencesResult {
   sequences: AdditionalProperties;
 }
 
-interface ModelSet {
+export interface ModelSet {
   config: AdditionalProperties;
 }
 
-interface ModelUnset {
+export interface ModelUnset {
   keys: string[];
 }
 
-interface SetConstraints {
+export interface SetConstraints {
   application: string;
   constraints: Value;
 }
 
-interface StringResult {
+export interface StringResult {
   error?: Error;
   result: string;
 }
 
-interface Value {
+export interface Value {
   'allocate-public-ip': boolean;
   arch: string;
   container: string;
@@ -86,7 +86,7 @@ interface Value {
   zones: string[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

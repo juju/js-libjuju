@@ -6,7 +6,7 @@
     Unit-agent
     Controllers
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,16 +15,16 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface ChangeModelCredentialParams {
+export interface ChangeModelCredentialParams {
   'credential-tag': string;
   'model-tag': string;
 }
 
-interface ChangeModelCredentialsParams {
+export interface ChangeModelCredentialsParams {
   'model-credentials': ChangeModelCredentialParams[];
 }
 
-interface DestroyModelParams {
+export interface DestroyModelParams {
   'destroy-storage'?: boolean;
   force?: boolean;
   'max-wait'?: number;
@@ -32,45 +32,45 @@ interface DestroyModelParams {
   timeout?: number;
 }
 
-interface DestroyModelsParams {
+export interface DestroyModelsParams {
   models: DestroyModelParams[];
 }
 
-interface DumpModelRequest {
+export interface DumpModelRequest {
   entities: Entity[];
   simplified: boolean;
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface EntityStatus {
+export interface EntityStatus {
   data?: AdditionalProperties;
   info: string;
   since: string;
   status: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface MachineHardware {
+export interface MachineHardware {
   arch: string;
   'availability-zone': string;
   cores: number;
@@ -80,23 +80,23 @@ interface MachineHardware {
   tags: string[];
 }
 
-interface MapResult {
+export interface MapResult {
   error?: Error;
   result: AdditionalProperties;
 }
 
-interface MapResults {
+export interface MapResults {
   results: MapResult[];
 }
 
-interface Model {
+export interface Model {
   name: string;
   'owner-tag': string;
   type: string;
   uuid: string;
 }
 
-interface ModelCreateArgs {
+export interface ModelCreateArgs {
   'cloud-tag'?: string;
   config?: AdditionalProperties;
   credential?: string;
@@ -105,33 +105,33 @@ interface ModelCreateArgs {
   region?: string;
 }
 
-interface ModelDefaultValues {
+export interface ModelDefaultValues {
   'cloud-region'?: string;
   'cloud-tag'?: string;
   config: AdditionalProperties;
 }
 
-interface ModelDefaults {
+export interface ModelDefaults {
   controller: AdditionalProperties;
   default: AdditionalProperties;
   regions: RegionDefaults[];
 }
 
-interface ModelDefaultsResult {
+export interface ModelDefaultsResult {
   config: AdditionalProperties;
   error?: Error;
 }
 
-interface ModelDefaultsResults {
+export interface ModelDefaultsResults {
   results: ModelDefaultsResult[];
 }
 
-interface ModelEntityCount {
+export interface ModelEntityCount {
   count: number;
   entity: string;
 }
 
-interface ModelFilesystemInfo {
+export interface ModelFilesystemInfo {
   detachable?: boolean;
   id: string;
   message?: string;
@@ -139,7 +139,7 @@ interface ModelFilesystemInfo {
   status?: string;
 }
 
-interface ModelInfo {
+export interface ModelInfo {
   'agent-version': Number;
   'cloud-credential-tag'?: string;
   'cloud-credential-validity'?: boolean;
@@ -162,16 +162,16 @@ interface ModelInfo {
   uuid: string;
 }
 
-interface ModelInfoResult {
+export interface ModelInfoResult {
   error: Error;
   result: ModelInfo;
 }
 
-interface ModelInfoResults {
+export interface ModelInfoResults {
   results: ModelInfoResult[];
 }
 
-interface ModelMachineInfo {
+export interface ModelMachineInfo {
   'display-name'?: string;
   'ha-primary'?: boolean;
   hardware?: MachineHardware;
@@ -183,18 +183,18 @@ interface ModelMachineInfo {
   'wants-vote'?: boolean;
 }
 
-interface ModelMigrationStatus {
+export interface ModelMigrationStatus {
   end?: string;
   start: string;
   status: string;
 }
 
-interface ModelSLAInfo {
+export interface ModelSLAInfo {
   level: string;
   owner: string;
 }
 
-interface ModelStatus {
+export interface ModelStatus {
   'application-count': number;
   error?: Error;
   filesystems?: ModelFilesystemInfo[];
@@ -208,16 +208,16 @@ interface ModelStatus {
   volumes?: ModelVolumeInfo[];
 }
 
-interface ModelStatusResults {
+export interface ModelStatusResults {
   models: ModelStatus[];
 }
 
-interface ModelSummariesRequest {
+export interface ModelSummariesRequest {
   all?: boolean;
   'user-tag': string;
 }
 
-interface ModelSummary {
+export interface ModelSummary {
   'agent-version': Number;
   'cloud-credential-tag'?: string;
   'cloud-region'?: string;
@@ -239,22 +239,22 @@ interface ModelSummary {
   uuid: string;
 }
 
-interface ModelSummaryResult {
+export interface ModelSummaryResult {
   error: Error;
   result: ModelSummary;
 }
 
-interface ModelSummaryResults {
+export interface ModelSummaryResults {
   results: ModelSummaryResult[];
 }
 
-interface ModelUnsetKeys {
+export interface ModelUnsetKeys {
   'cloud-region'?: string;
   'cloud-tag'?: string;
   keys: string[];
 }
 
-interface ModelUserInfo {
+export interface ModelUserInfo {
   access: string;
   'display-name': string;
   'last-connection': string;
@@ -262,7 +262,7 @@ interface ModelUserInfo {
   user: string;
 }
 
-interface ModelVolumeInfo {
+export interface ModelVolumeInfo {
   detachable?: boolean;
   id: string;
   message?: string;
@@ -270,18 +270,18 @@ interface ModelVolumeInfo {
   status?: string;
 }
 
-interface ModifyModelAccess {
+export interface ModifyModelAccess {
   access: string;
   action: string;
   'model-tag': string;
   'user-tag': string;
 }
 
-interface ModifyModelAccessRequest {
+export interface ModifyModelAccessRequest {
   changes: ModifyModelAccess[];
 }
 
-interface Number {
+export interface Number {
   Build: number;
   Major: number;
   Minor: number;
@@ -289,44 +289,44 @@ interface Number {
   Tag: string;
 }
 
-interface RegionDefaults {
+export interface RegionDefaults {
   'region-name': string;
   value: AdditionalProperties;
 }
 
-interface SetModelDefaults {
+export interface SetModelDefaults {
   config: ModelDefaultValues[];
 }
 
-interface StringResult {
+export interface StringResult {
   error?: Error;
   result: string;
 }
 
-interface StringResults {
+export interface StringResults {
   results: StringResult[];
 }
 
-interface SupportedFeature {
+export interface SupportedFeature {
   description: string;
   name: string;
   version?: string;
 }
 
-interface UnsetModelDefaults {
+export interface UnsetModelDefaults {
   keys: ModelUnsetKeys[];
 }
 
-interface UserModel {
+export interface UserModel {
   'last-connection': string;
   model: Model;
 }
 
-interface UserModelList {
+export interface UserModelList {
   'user-models': UserModel[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

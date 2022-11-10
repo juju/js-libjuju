@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,7 +15,7 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface CreateSecretArg {
+export interface CreateSecretArg {
   UpsertSecretArg: UpsertSecretArg;
   content?: SecretContentParams;
   description?: string;
@@ -27,73 +27,73 @@ interface CreateSecretArg {
   uri?: string;
 }
 
-interface CreateSecretArgs {
+export interface CreateSecretArgs {
   args: CreateSecretArg[];
 }
 
-interface CreateSecretURIsArg {
+export interface CreateSecretURIsArg {
   count: number;
 }
 
-interface DeleteSecretArg {
+export interface DeleteSecretArg {
   revisions?: number[];
   uri: string;
 }
 
-interface DeleteSecretArgs {
+export interface DeleteSecretArgs {
   args: DeleteSecretArg[];
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface GetSecretConsumerInfoArgs {
+export interface GetSecretConsumerInfoArgs {
   'consumer-tag': string;
   uris: string[];
 }
 
-interface GetSecretContentArg {
+export interface GetSecretContentArg {
   label?: string;
   peek?: boolean;
   update?: boolean;
   uri: string;
 }
 
-interface GetSecretContentArgs {
+export interface GetSecretContentArgs {
   args: GetSecretContentArg[];
 }
 
-interface GrantRevokeSecretArg {
+export interface GrantRevokeSecretArg {
   role: string;
   'scope-tag': string;
   'subject-tags': string[];
   uri: string;
 }
 
-interface GrantRevokeSecretArgs {
+export interface GrantRevokeSecretArgs {
   args: GrantRevokeSecretArg[];
 }
 
-interface ListSecretResult {
+export interface ListSecretResult {
   'create-time': string;
   description?: string;
   label?: string;
@@ -109,35 +109,35 @@ interface ListSecretResult {
   version: number;
 }
 
-interface ListSecretResults {
+export interface ListSecretResults {
   results: ListSecretResult[];
 }
 
-interface SecretConsumerInfoResult {
+export interface SecretConsumerInfoResult {
   error?: Error;
   label: string;
   revision: number;
 }
 
-interface SecretConsumerInfoResults {
+export interface SecretConsumerInfoResults {
   results: SecretConsumerInfoResult[];
 }
 
-interface SecretContentParams {
+export interface SecretContentParams {
   data: AdditionalProperties;
   'provider-id': string;
 }
 
-interface SecretContentResult {
+export interface SecretContentResult {
   content: SecretContentParams;
   error?: Error;
 }
 
-interface SecretContentResults {
+export interface SecretContentResults {
   results: SecretContentResult[];
 }
 
-interface SecretRevision {
+export interface SecretRevision {
   'create-time'?: string;
   'expire-time'?: string;
   'provider-id'?: string;
@@ -145,58 +145,58 @@ interface SecretRevision {
   'update-time'?: string;
 }
 
-interface SecretRotatedArg {
+export interface SecretRotatedArg {
   'original-revision': number;
   skip: boolean;
   uri: string;
 }
 
-interface SecretRotatedArgs {
+export interface SecretRotatedArgs {
   args: SecretRotatedArg[];
 }
 
-interface SecretStoreConfig {
+export interface SecretStoreConfig {
   params?: AdditionalProperties;
   type: string;
 }
 
-interface SecretTriggerChange {
+export interface SecretTriggerChange {
   'next-trigger-time': string;
   revision?: number;
   uri: string;
 }
 
-interface SecretTriggerWatchResult {
+export interface SecretTriggerWatchResult {
   changes: SecretTriggerChange[];
   error?: Error;
   'watcher-id': string;
 }
 
-interface SecretValueResult {
+export interface SecretValueResult {
   data: AdditionalProperties;
   error: Error;
 }
 
-interface StringResult {
+export interface StringResult {
   error?: Error;
   result: string;
 }
 
-interface StringResults {
+export interface StringResults {
   results: StringResult[];
 }
 
-interface StringsWatchResult {
+export interface StringsWatchResult {
   changes?: string[];
   error?: Error;
   'watcher-id': string;
 }
 
-interface StringsWatchResults {
+export interface StringsWatchResults {
   results: StringsWatchResult[];
 }
 
-interface UpdateSecretArg {
+export interface UpdateSecretArg {
   UpsertSecretArg: UpsertSecretArg;
   content?: SecretContentParams;
   description?: string;
@@ -207,11 +207,11 @@ interface UpdateSecretArg {
   uri: string;
 }
 
-interface UpdateSecretArgs {
+export interface UpdateSecretArgs {
   args: UpdateSecretArg[];
 }
 
-interface UpsertSecretArg {
+export interface UpsertSecretArg {
   content: SecretContentParams;
   description: string;
   'expire-time': string;
@@ -220,7 +220,7 @@ interface UpsertSecretArg {
   'rotate-policy': string;
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

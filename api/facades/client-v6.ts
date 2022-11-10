@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,11 +15,11 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface AllWatcherId {
+export interface AllWatcherId {
   'watcher-id': string;
 }
 
-interface ApplicationOfferStatus {
+export interface ApplicationOfferStatus {
   'active-connected-count': number;
   'application-name': string;
   charm: string;
@@ -29,7 +29,7 @@ interface ApplicationOfferStatus {
   'total-connected-count': number;
 }
 
-interface ApplicationStatus {
+export interface ApplicationStatus {
   base: Base;
   'can-upgrade-to': string;
   charm: string;
@@ -52,12 +52,12 @@ interface ApplicationStatus {
   'workload-version': string;
 }
 
-interface Base {
+export interface Base {
   channel: string;
   name: string;
 }
 
-interface Binary {
+export interface Binary {
   Arch: string;
   Build: number;
   Major: number;
@@ -68,13 +68,13 @@ interface Binary {
   Tag: string;
 }
 
-interface BranchStatus {
+export interface BranchStatus {
   'assigned-units': AdditionalProperties;
   created: number;
   'created-by': string;
 }
 
-interface DetailedStatus {
+export interface DetailedStatus {
   data: AdditionalProperties;
   err?: Error;
   info: string;
@@ -85,25 +85,25 @@ interface DetailedStatus {
   version: string;
 }
 
-interface EndpointStatus {
+export interface EndpointStatus {
   application: string;
   name: string;
   role: string;
   subordinate: boolean;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ExposedEndpoint {
+export interface ExposedEndpoint {
   'expose-to-cidrs': string[];
   'expose-to-spaces': string[];
 }
 
-interface FindToolsParams {
+export interface FindToolsParams {
   agentstream: string;
   arch: string;
   major: number;
@@ -112,12 +112,12 @@ interface FindToolsParams {
   'os-type': string;
 }
 
-interface FindToolsResult {
+export interface FindToolsResult {
   error?: Error;
   list: Tools[];
 }
 
-interface FullStatus {
+export interface FullStatus {
   applications: AdditionalProperties;
   branches: AdditionalProperties;
   'controller-timestamp': string;
@@ -128,18 +128,18 @@ interface FullStatus {
   'remote-applications': AdditionalProperties;
 }
 
-interface History {
+export interface History {
   error?: Error;
   statuses: DetailedStatus[];
 }
 
-interface LXDProfile {
+export interface LXDProfile {
   config: AdditionalProperties;
   description: string;
   devices: AdditionalProperties;
 }
 
-interface MachineStatus {
+export interface MachineStatus {
   'agent-status': DetailedStatus;
   base: Base;
   constraints: string;
@@ -161,12 +161,12 @@ interface MachineStatus {
   'wants-vote': boolean;
 }
 
-interface MeterStatus {
+export interface MeterStatus {
   color: string;
   message: string;
 }
 
-interface ModelStatusInfo {
+export interface ModelStatusInfo {
   'available-version': string;
   'cloud-tag': string;
   'meter-status': MeterStatus;
@@ -178,7 +178,7 @@ interface ModelStatusInfo {
   version: string;
 }
 
-interface NetworkInterface {
+export interface NetworkInterface {
   'dns-nameservers'?: string[];
   gateway?: string;
   'ip-addresses': string[];
@@ -187,7 +187,7 @@ interface NetworkInterface {
   space?: string;
 }
 
-interface Number {
+export interface Number {
   Build: number;
   Major: number;
   Minor: number;
@@ -195,7 +195,7 @@ interface Number {
   Tag: string;
 }
 
-interface RelationStatus {
+export interface RelationStatus {
   endpoints: EndpointStatus[];
   id: number;
   interface: string;
@@ -204,7 +204,7 @@ interface RelationStatus {
   status: DetailedStatus;
 }
 
-interface RemoteApplicationStatus {
+export interface RemoteApplicationStatus {
   endpoints: RemoteEndpoint[];
   err?: Error;
   life: string;
@@ -214,52 +214,52 @@ interface RemoteApplicationStatus {
   status: DetailedStatus;
 }
 
-interface RemoteEndpoint {
+export interface RemoteEndpoint {
   interface: string;
   limit: number;
   name: string;
   role: string;
 }
 
-interface StatusHistoryFilter {
+export interface StatusHistoryFilter {
   date: string;
   delta: number;
   exclude: string[];
   size: number;
 }
 
-interface StatusHistoryRequest {
+export interface StatusHistoryRequest {
   filter: StatusHistoryFilter;
   historyKind: string;
   size: number;
   tag: string;
 }
 
-interface StatusHistoryRequests {
+export interface StatusHistoryRequests {
   requests: StatusHistoryRequest[];
 }
 
-interface StatusHistoryResult {
+export interface StatusHistoryResult {
   error?: Error;
   history: History;
 }
 
-interface StatusHistoryResults {
+export interface StatusHistoryResults {
   results: StatusHistoryResult[];
 }
 
-interface StatusParams {
+export interface StatusParams {
   patterns: string[];
 }
 
-interface Tools {
+export interface Tools {
   sha256?: string;
   size: number;
   url: string;
   version: Binary;
 }
 
-interface UnitStatus {
+export interface UnitStatus {
   address?: string;
   'agent-status': DetailedStatus;
   charm: string;
@@ -273,7 +273,7 @@ interface UnitStatus {
   'workload-version': string;
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

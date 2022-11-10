@@ -3,7 +3,7 @@
   This facade is available on:
     Controllers
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -12,58 +12,58 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface AddUser {
+export interface AddUser {
   'display-name': string;
   password?: string;
   username: string;
 }
 
-interface AddUserResult {
+export interface AddUserResult {
   error: Error;
   'secret-key': number[];
   tag: string;
 }
 
-interface AddUserResults {
+export interface AddUserResults {
   results: AddUserResult[];
 }
 
-interface AddUsers {
+export interface AddUsers {
   users: AddUser[];
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface EntityPassword {
+export interface EntityPassword {
   password: string;
   tag: string;
 }
 
-interface EntityPasswords {
+export interface EntityPasswords {
   changes: EntityPassword[];
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface ModelUserInfo {
+export interface ModelUserInfo {
   access: string;
   'display-name': string;
   'last-connection': string;
@@ -71,16 +71,16 @@ interface ModelUserInfo {
   user: string;
 }
 
-interface ModelUserInfoResult {
+export interface ModelUserInfoResult {
   error: Error;
   result: ModelUserInfo;
 }
 
-interface ModelUserInfoResults {
+export interface ModelUserInfoResults {
   results: ModelUserInfoResult[];
 }
 
-interface UserInfo {
+export interface UserInfo {
   access: string;
   'created-by': string;
   'date-created': string;
@@ -90,21 +90,21 @@ interface UserInfo {
   username: string;
 }
 
-interface UserInfoRequest {
+export interface UserInfoRequest {
   entities: Entity[];
   'include-disabled': boolean;
 }
 
-interface UserInfoResult {
+export interface UserInfoResult {
   error: Error;
   result: UserInfo;
 }
 
-interface UserInfoResults {
+export interface UserInfoResults {
   results: UserInfoResult[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

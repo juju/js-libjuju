@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,11 +15,11 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface APIHostPortsResult {
+export interface APIHostPortsResult {
   servers: HostPort[][];
 }
 
-interface Address {
+export interface Address {
   cidr?: string;
   'config-type'?: string;
   'is-secondary'?: boolean;
@@ -30,7 +30,7 @@ interface Address {
   value: string;
 }
 
-interface Charm {
+export interface Charm {
   actions?: CharmActions;
   config: AdditionalProperties;
   'lxd-profile'?: CharmLXDProfile;
@@ -41,34 +41,34 @@ interface Charm {
   url: string;
 }
 
-interface CharmActionSpec {
+export interface CharmActionSpec {
   description: string;
   params: AdditionalProperties;
 }
 
-interface CharmActions {
+export interface CharmActions {
   specs: AdditionalProperties;
 }
 
-interface CharmBase {
+export interface CharmBase {
   architectures: string[];
   channel: string;
   name: string;
 }
 
-interface CharmContainer {
+export interface CharmContainer {
   mounts: CharmMount[];
   resource: string;
 }
 
-interface CharmDeployment {
+export interface CharmDeployment {
   'min-version': string;
   mode: string;
   service: string;
   type: string;
 }
 
-interface CharmDevice {
+export interface CharmDevice {
   CountMax: number;
   CountMin: number;
   Description: string;
@@ -76,17 +76,17 @@ interface CharmDevice {
   Type: string;
 }
 
-interface CharmLXDProfile {
+export interface CharmLXDProfile {
   config: AdditionalProperties;
   description: string;
   devices: AdditionalProperties;
 }
 
-interface CharmManifest {
+export interface CharmManifest {
   bases: CharmBase[];
 }
 
-interface CharmMeta {
+export interface CharmMeta {
   'assumes-expr'?: ExpressionTree;
   categories?: string[];
   containers?: AdditionalProperties;
@@ -109,37 +109,37 @@ interface CharmMeta {
   terms?: string[];
 }
 
-interface CharmMetric {
+export interface CharmMetric {
   description: string;
   type: string;
 }
 
-interface CharmMetrics {
+export interface CharmMetrics {
   metrics: AdditionalProperties;
   plan: CharmPlan;
 }
 
-interface CharmMount {
+export interface CharmMount {
   location: string;
   storage: string;
 }
 
-interface CharmOption {
+export interface CharmOption {
   default?: AdditionalProperties;
   description?: string;
   type: string;
 }
 
-interface CharmPayloadClass {
+export interface CharmPayloadClass {
   name: string;
   type: string;
 }
 
-interface CharmPlan {
+export interface CharmPlan {
   required: boolean;
 }
 
-interface CharmRelation {
+export interface CharmRelation {
   interface: string;
   limit: number;
   name: string;
@@ -148,14 +148,14 @@ interface CharmRelation {
   scope: string;
 }
 
-interface CharmResourceMeta {
+export interface CharmResourceMeta {
   description: string;
   name: string;
   path: string;
   type: string;
 }
 
-interface CharmStorage {
+export interface CharmStorage {
   'count-max': number;
   'count-min': number;
   description: string;
@@ -168,11 +168,11 @@ interface CharmStorage {
   type: string;
 }
 
-interface CharmURL {
+export interface CharmURL {
   url: string;
 }
 
-interface DockerImageInfo {
+export interface DockerImageInfo {
   auth?: string;
   email?: string;
   identitytoken?: string;
@@ -184,42 +184,42 @@ interface DockerImageInfo {
   username?: string;
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface EntityPassword {
+export interface EntityPassword {
   password: string;
   tag: string;
 }
 
-interface EntityPasswords {
+export interface EntityPasswords {
   changes: EntityPassword[];
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface ExpressionTree {
+export interface ExpressionTree {
   Expression: AdditionalProperties;
 }
 
-interface HostPort {
+export interface HostPort {
   Address: Address;
   cidr?: string;
   'config-type'?: string;
@@ -232,24 +232,24 @@ interface HostPort {
   value: string;
 }
 
-interface IssueOperatorCertificateResult {
+export interface IssueOperatorCertificateResult {
   'ca-cert': string;
   cert: string;
   error?: Error;
   'private-key': string;
 }
 
-interface IssueOperatorCertificateResults {
+export interface IssueOperatorCertificateResults {
   results: IssueOperatorCertificateResult[];
 }
 
-interface KubernetesFilesystemAttachmentParams {
+export interface KubernetesFilesystemAttachmentParams {
   'mount-point'?: string;
   provider: string;
   'read-only'?: boolean;
 }
 
-interface KubernetesFilesystemParams {
+export interface KubernetesFilesystemParams {
   attachment?: KubernetesFilesystemAttachmentParams;
   attributes?: AdditionalProperties;
   provider: string;
@@ -258,21 +258,21 @@ interface KubernetesFilesystemParams {
   tags?: AdditionalProperties;
 }
 
-interface LifeResult {
+export interface LifeResult {
   error?: Error;
   life: string;
 }
 
-interface LifeResults {
+export interface LifeResults {
   results: LifeResult[];
 }
 
-interface NotifyWatchResult {
+export interface NotifyWatchResult {
   NotifyWatcherId: string;
   error?: Error;
 }
 
-interface Number {
+export interface Number {
   Build: number;
   Major: number;
   Minor: number;
@@ -280,7 +280,7 @@ interface Number {
   Tag: string;
 }
 
-interface OperatorProvisioningInfo {
+export interface OperatorProvisioningInfo {
   'api-addresses': string[];
   'base-image-details': DockerImageInfo;
   'charm-storage'?: KubernetesFilesystemParams;
@@ -290,27 +290,27 @@ interface OperatorProvisioningInfo {
   version: Number;
 }
 
-interface OperatorProvisioningInfoResults {
+export interface OperatorProvisioningInfoResults {
   results: OperatorProvisioningInfo[];
 }
 
-interface StringResult {
+export interface StringResult {
   error?: Error;
   result: string;
 }
 
-interface StringsResult {
+export interface StringsResult {
   error: Error;
   result: string[];
 }
 
-interface StringsWatchResult {
+export interface StringsWatchResult {
   changes?: string[];
   error?: Error;
   'watcher-id': string;
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

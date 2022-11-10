@@ -4,7 +4,7 @@
     Controllers
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -13,39 +13,39 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface ControllersChangeResult {
+export interface ControllersChangeResult {
   error?: Error;
   result: ControllersChanges;
 }
 
-interface ControllersChangeResults {
+export interface ControllersChangeResults {
   results: ControllersChangeResult[];
 }
 
-interface ControllersChanges {
+export interface ControllersChanges {
   added: string[];
   converted: string[];
   maintained: string[];
   removed: string[];
 }
 
-interface ControllersSpec {
+export interface ControllersSpec {
   constraints?: Value;
   'num-controllers': number;
   placement?: string[];
 }
 
-interface ControllersSpecs {
+export interface ControllersSpecs {
   specs: ControllersSpec[];
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface Value {
+export interface Value {
   'allocate-public-ip': boolean;
   arch: string;
   container: string;
@@ -62,7 +62,7 @@ interface Value {
   zones: string[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

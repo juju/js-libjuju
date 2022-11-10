@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,13 +15,13 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface CloudCredential {
+export interface CloudCredential {
   attrs?: AdditionalProperties;
   'auth-type': string;
   redacted?: string[];
 }
 
-interface CloudSpec {
+export interface CloudSpec {
   cacertificates?: string[];
   credential?: CloudCredential;
   endpoint?: string;
@@ -34,57 +34,57 @@ interface CloudSpec {
   type: string;
 }
 
-interface CloudSpecResult {
+export interface CloudSpecResult {
   error: Error;
   result: CloudSpec;
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface SSHAddressResult {
+export interface SSHAddressResult {
   address: string;
   error: Error;
 }
 
-interface SSHAddressResults {
+export interface SSHAddressResults {
   results: SSHAddressResult[];
 }
 
-interface SSHAddressesResult {
+export interface SSHAddressesResult {
   addresses: string[];
   error?: Error;
 }
 
-interface SSHAddressesResults {
+export interface SSHAddressesResults {
   results: SSHAddressesResult[];
 }
 
-interface SSHProxyResult {
+export interface SSHProxyResult {
   'use-proxy': boolean;
 }
 
-interface SSHPublicKeysResult {
+export interface SSHPublicKeysResult {
   error: Error;
   'public-keys': string[];
 }
 
-interface SSHPublicKeysResults {
+export interface SSHPublicKeysResults {
   results: SSHPublicKeysResult[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 
