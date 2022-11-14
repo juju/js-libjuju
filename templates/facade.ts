@@ -44,7 +44,7 @@ ${generateAvailableList(f.availableTo)}
   Do not manually edit this file.
 */
 
-import { autoBind } from "../utils.js";
+import { autoBind } from "../utils";
 import type { JujuRequest } from "../../generator/interfaces";
 
 ${f.interfaces.map(generateInterface).join('\n')}
