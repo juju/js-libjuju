@@ -1,6 +1,6 @@
 {
   "name": "@canonical/jujulib",
-  "version": "2.0.0-beta.8",
+  "version": "3.0.0",
   "description": "Juju API client",
   "main": "dist/api/client.js",
   "types": "dist/api/client.d.ts",
@@ -30,7 +30,7 @@
   "bugs": {
     "url": "https://github.com/juju/js-libjuju/issues"
   },
-  "homepage": "https://github.com/juju/js-libjuju#readme",
+  "homepage": "juju.github.io/js-libjuju/",
   "devDependencies": {
     "@types/node": "15.3.0",
     "documentation": "13.2.5",
