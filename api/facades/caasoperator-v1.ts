@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,11 +15,11 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface APIHostPortsResult {
+export interface APIHostPortsResult {
   servers: HostPort[][];
 }
 
-interface Address {
+export interface Address {
   cidr?: string;
   'config-type'?: string;
   'is-secondary'?: boolean;
@@ -30,7 +30,7 @@ interface Address {
   value: string;
 }
 
-interface ApplicationCharm {
+export interface ApplicationCharm {
   'charm-modified-version': number;
   'deployment-mode'?: string;
   'force-upgrade'?: boolean;
@@ -38,16 +38,16 @@ interface ApplicationCharm {
   url: string;
 }
 
-interface ApplicationCharmResult {
+export interface ApplicationCharmResult {
   error: Error;
   result: ApplicationCharm;
 }
 
-interface ApplicationCharmResults {
+export interface ApplicationCharmResults {
   results: ApplicationCharmResult[];
 }
 
-interface Binary {
+export interface Binary {
   Arch: string;
   Build: number;
   Major: number;
@@ -58,50 +58,50 @@ interface Binary {
   Tag: string;
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface EntitiesVersion {
+export interface EntitiesVersion {
   'agent-tools': EntityVersion[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface EntityStatusArgs {
+export interface EntityStatusArgs {
   data: AdditionalProperties;
   info: string;
   status: string;
   tag: string;
 }
 
-interface EntityString {
+export interface EntityString {
   tag: string;
   value: string;
 }
 
-interface EntityVersion {
+export interface EntityVersion {
   tag: string;
   tools: Version;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface HostPort {
+export interface HostPort {
   Address: Address;
   cidr?: string;
   'config-type'?: string;
@@ -114,32 +114,32 @@ interface HostPort {
   value: string;
 }
 
-interface LifeResult {
+export interface LifeResult {
   error?: Error;
   life: string;
 }
 
-interface LifeResults {
+export interface LifeResults {
   results: LifeResult[];
 }
 
-interface ModelResult {
+export interface ModelResult {
   error?: Error;
   name: string;
   type: string;
   uuid: string;
 }
 
-interface NotifyWatchResult {
+export interface NotifyWatchResult {
   NotifyWatcherId: string;
   error?: Error;
 }
 
-interface NotifyWatchResults {
+export interface NotifyWatchResults {
   results: NotifyWatchResult[];
 }
 
-interface Number {
+export interface Number {
   Build: number;
   Major: number;
   Minor: number;
@@ -147,48 +147,48 @@ interface Number {
   Tag: string;
 }
 
-interface SetPodSpecParams {
+export interface SetPodSpecParams {
   specs: EntityString[];
 }
 
-interface SetStatus {
+export interface SetStatus {
   entities: EntityStatusArgs[];
 }
 
-interface StringResult {
+export interface StringResult {
   error?: Error;
   result: string;
 }
 
-interface StringsResult {
+export interface StringsResult {
   error: Error;
   result: string[];
 }
 
-interface StringsWatchResult {
+export interface StringsWatchResult {
   changes?: string[];
   error?: Error;
   'watcher-id': string;
 }
 
-interface StringsWatchResults {
+export interface StringsWatchResults {
   results: StringsWatchResult[];
 }
 
-interface Version {
+export interface Version {
   version: Binary;
 }
 
-interface WatchContainerStartArg {
+export interface WatchContainerStartArg {
   container?: string;
   entity: Entity;
 }
 
-interface WatchContainerStartArgs {
+export interface WatchContainerStartArgs {
   args: WatchContainerStartArg[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

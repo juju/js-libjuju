@@ -3,7 +3,7 @@
   This facade is available on:
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -12,44 +12,44 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface EntityMetrics {
+export interface EntityMetrics {
   error: Error;
   metrics: MetricResult[];
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface MeterStatusParam {
+export interface MeterStatusParam {
   code: string;
   info?: string;
   tag: string;
 }
 
-interface MeterStatusParams {
+export interface MeterStatusParams {
   statues: MeterStatusParam[];
 }
 
-interface MetricResult {
+export interface MetricResult {
   key: string;
   labels: AdditionalProperties;
   time: string;
@@ -57,11 +57,11 @@ interface MetricResult {
   value: string;
 }
 
-interface MetricResults {
+export interface MetricResults {
   results: EntityMetrics[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

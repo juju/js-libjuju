@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,12 +15,12 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface ApplicationUnitInfo {
+export interface ApplicationUnitInfo {
   'provider-id': string;
   'unit-tag': string;
 }
 
-interface ApplicationUnitParams {
+export interface ApplicationUnitParams {
   address: string;
   data?: AdditionalProperties;
   'filesystem-info'?: KubernetesFilesystemInfo[];
@@ -32,12 +32,12 @@ interface ApplicationUnitParams {
   'unit-tag': string;
 }
 
-interface Base {
+export interface Base {
   channel: string;
   name: string;
 }
 
-interface CAASApplicationGarbageCollectArg {
+export interface CAASApplicationGarbageCollectArg {
   'active-pod-names': string[];
   application: Entity;
   'desired-replicas': number;
@@ -45,24 +45,24 @@ interface CAASApplicationGarbageCollectArg {
   'observed-units': Entities;
 }
 
-interface CAASApplicationGarbageCollectArgs {
+export interface CAASApplicationGarbageCollectArgs {
   args: CAASApplicationGarbageCollectArg[];
 }
 
-interface CAASApplicationOCIResourceResult {
+export interface CAASApplicationOCIResourceResult {
   error: Error;
   result: CAASApplicationOCIResources;
 }
 
-interface CAASApplicationOCIResourceResults {
+export interface CAASApplicationOCIResourceResults {
   results: CAASApplicationOCIResourceResult[];
 }
 
-interface CAASApplicationOCIResources {
+export interface CAASApplicationOCIResources {
   images: AdditionalProperties;
 }
 
-interface CAASApplicationProvisioningInfo {
+export interface CAASApplicationProvisioningInfo {
   'api-addresses': string[];
   base?: Base;
   'ca-cert': string;
@@ -80,25 +80,25 @@ interface CAASApplicationProvisioningInfo {
   volumes?: KubernetesVolumeParams[];
 }
 
-interface CAASApplicationProvisioningInfoResults {
+export interface CAASApplicationProvisioningInfoResults {
   results: CAASApplicationProvisioningInfo[];
 }
 
-interface CAASUnitInfo {
+export interface CAASUnitInfo {
   tag: string;
   'unit-status'?: UnitStatus;
 }
 
-interface CAASUnitsResult {
+export interface CAASUnitsResult {
   error: Error;
   units: CAASUnitInfo[];
 }
 
-interface CAASUnitsResults {
+export interface CAASUnitsResults {
   results: CAASUnitsResult[];
 }
 
-interface Charm {
+export interface Charm {
   actions?: CharmActions;
   config: AdditionalProperties;
   'lxd-profile'?: CharmLXDProfile;
@@ -109,34 +109,34 @@ interface Charm {
   url: string;
 }
 
-interface CharmActionSpec {
+export interface CharmActionSpec {
   description: string;
   params: AdditionalProperties;
 }
 
-interface CharmActions {
+export interface CharmActions {
   specs: AdditionalProperties;
 }
 
-interface CharmBase {
+export interface CharmBase {
   architectures: string[];
   channel: string;
   name: string;
 }
 
-interface CharmContainer {
+export interface CharmContainer {
   mounts: CharmMount[];
   resource: string;
 }
 
-interface CharmDeployment {
+export interface CharmDeployment {
   'min-version': string;
   mode: string;
   service: string;
   type: string;
 }
 
-interface CharmDevice {
+export interface CharmDevice {
   CountMax: number;
   CountMin: number;
   Description: string;
@@ -144,17 +144,17 @@ interface CharmDevice {
   Type: string;
 }
 
-interface CharmLXDProfile {
+export interface CharmLXDProfile {
   config: AdditionalProperties;
   description: string;
   devices: AdditionalProperties;
 }
 
-interface CharmManifest {
+export interface CharmManifest {
   bases: CharmBase[];
 }
 
-interface CharmMeta {
+export interface CharmMeta {
   'assumes-expr'?: ExpressionTree;
   categories?: string[];
   containers?: AdditionalProperties;
@@ -177,37 +177,37 @@ interface CharmMeta {
   terms?: string[];
 }
 
-interface CharmMetric {
+export interface CharmMetric {
   description: string;
   type: string;
 }
 
-interface CharmMetrics {
+export interface CharmMetrics {
   metrics: AdditionalProperties;
   plan: CharmPlan;
 }
 
-interface CharmMount {
+export interface CharmMount {
   location: string;
   storage: string;
 }
 
-interface CharmOption {
+export interface CharmOption {
   default?: AdditionalProperties;
   description?: string;
   type: string;
 }
 
-interface CharmPayloadClass {
+export interface CharmPayloadClass {
   name: string;
   type: string;
 }
 
-interface CharmPlan {
+export interface CharmPlan {
   required: boolean;
 }
 
-interface CharmRelation {
+export interface CharmRelation {
   interface: string;
   limit: number;
   name: string;
@@ -216,14 +216,14 @@ interface CharmRelation {
   scope: string;
 }
 
-interface CharmResourceMeta {
+export interface CharmResourceMeta {
   description: string;
   name: string;
   path: string;
   type: string;
 }
 
-interface CharmStorage {
+export interface CharmStorage {
   'count-max': number;
   'count-min': number;
   description: string;
@@ -236,11 +236,11 @@ interface CharmStorage {
   type: string;
 }
 
-interface CharmURL {
+export interface CharmURL {
   url: string;
 }
 
-interface DetailedStatus {
+export interface DetailedStatus {
   data: AdditionalProperties;
   err?: Error;
   info: string;
@@ -251,7 +251,7 @@ interface DetailedStatus {
   version: string;
 }
 
-interface DockerImageInfo {
+export interface DockerImageInfo {
   auth?: string;
   email?: string;
   identitytoken?: string;
@@ -263,68 +263,68 @@ interface DockerImageInfo {
   username?: string;
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface EntityPassword {
+export interface EntityPassword {
   password: string;
   tag: string;
 }
 
-interface EntityPasswords {
+export interface EntityPasswords {
   changes: EntityPassword[];
 }
 
-interface EntityStatus {
+export interface EntityStatus {
   data?: AdditionalProperties;
   info: string;
   since: string;
   status: string;
 }
 
-interface EntityStatusArgs {
+export interface EntityStatusArgs {
   data: AdditionalProperties;
   info: string;
   status: string;
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface ExpressionTree {
+export interface ExpressionTree {
   Expression: AdditionalProperties;
 }
 
-interface KubernetesDeviceParams {
+export interface KubernetesDeviceParams {
   Attributes: AdditionalProperties;
   Count: number;
   Type: string;
 }
 
-interface KubernetesFilesystemAttachmentParams {
+export interface KubernetesFilesystemAttachmentParams {
   'mount-point'?: string;
   provider: string;
   'read-only'?: boolean;
 }
 
-interface KubernetesFilesystemInfo {
+export interface KubernetesFilesystemInfo {
   data?: AdditionalProperties;
   'filesystem-id': string;
   info: string;
@@ -337,7 +337,7 @@ interface KubernetesFilesystemInfo {
   volume: KubernetesVolumeInfo;
 }
 
-interface KubernetesFilesystemParams {
+export interface KubernetesFilesystemParams {
   attachment?: KubernetesFilesystemAttachmentParams;
   attributes?: AdditionalProperties;
   provider: string;
@@ -346,12 +346,12 @@ interface KubernetesFilesystemParams {
   tags?: AdditionalProperties;
 }
 
-interface KubernetesVolumeAttachmentParams {
+export interface KubernetesVolumeAttachmentParams {
   provider: string;
   'read-only'?: boolean;
 }
 
-interface KubernetesVolumeInfo {
+export interface KubernetesVolumeInfo {
   data?: AdditionalProperties;
   info: string;
   persistent: boolean;
@@ -361,7 +361,7 @@ interface KubernetesVolumeInfo {
   'volume-id': string;
 }
 
-interface KubernetesVolumeParams {
+export interface KubernetesVolumeParams {
   attachment?: KubernetesVolumeAttachmentParams;
   attributes?: AdditionalProperties;
   provider: string;
@@ -370,25 +370,25 @@ interface KubernetesVolumeParams {
   tags?: AdditionalProperties;
 }
 
-interface LifeResult {
+export interface LifeResult {
   error?: Error;
   life: string;
 }
 
-interface LifeResults {
+export interface LifeResults {
   results: LifeResult[];
 }
 
-interface NotifyWatchResult {
+export interface NotifyWatchResult {
   NotifyWatcherId: string;
   error?: Error;
 }
 
-interface NotifyWatchResults {
+export interface NotifyWatchResults {
   results: NotifyWatchResult[];
 }
 
-interface Number {
+export interface Number {
   Build: number;
   Major: number;
   Minor: number;
@@ -396,21 +396,21 @@ interface Number {
   Tag: string;
 }
 
-interface SetStatus {
+export interface SetStatus {
   entities: EntityStatusArgs[];
 }
 
-interface StringsWatchResult {
+export interface StringsWatchResult {
   changes?: string[];
   error?: Error;
   'watcher-id': string;
 }
 
-interface StringsWatchResults {
+export interface StringsWatchResults {
   results: StringsWatchResult[];
 }
 
-interface UnitStatus {
+export interface UnitStatus {
   address?: string;
   'agent-status': DetailedStatus;
   charm: string;
@@ -424,20 +424,20 @@ interface UnitStatus {
   'workload-version': string;
 }
 
-interface UpdateApplicationUnitArgs {
+export interface UpdateApplicationUnitArgs {
   args: UpdateApplicationUnits[];
 }
 
-interface UpdateApplicationUnitResult {
+export interface UpdateApplicationUnitResult {
   error: Error;
   info: UpdateApplicationUnitsInfo;
 }
 
-interface UpdateApplicationUnitResults {
+export interface UpdateApplicationUnitResults {
   results: UpdateApplicationUnitResult[];
 }
 
-interface UpdateApplicationUnits {
+export interface UpdateApplicationUnits {
   'application-tag': string;
   generation?: number;
   scale?: number;
@@ -445,11 +445,11 @@ interface UpdateApplicationUnits {
   units: ApplicationUnitParams[];
 }
 
-interface UpdateApplicationUnitsInfo {
+export interface UpdateApplicationUnitsInfo {
   units: ApplicationUnitInfo[];
 }
 
-interface Value {
+export interface Value {
   'allocate-public-ip': boolean;
   arch: string;
   container: string;
@@ -466,7 +466,7 @@ interface Value {
   zones: string[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

@@ -3,7 +3,7 @@
   This facade is available on:
     Controllers
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -12,16 +12,16 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface AllWatcherNextResults {
+export interface AllWatcherNextResults {
   deltas: Delta[];
 }
 
-interface Delta {
+export interface Delta {
   entity: AdditionalProperties;
   removed: boolean;
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

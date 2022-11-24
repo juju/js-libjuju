@@ -3,7 +3,7 @@
   This facade is available on:
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -12,7 +12,7 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface Payload {
+export interface Payload {
   class: string;
   id: string;
   labels: string[];
@@ -22,15 +22,15 @@ interface Payload {
   unit: string;
 }
 
-interface PayloadListArgs {
+export interface PayloadListArgs {
   patterns: string[];
 }
 
-interface PayloadListResults {
+export interface PayloadListResults {
   results: Payload[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

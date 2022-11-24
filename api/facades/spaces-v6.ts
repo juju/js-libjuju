@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,118 +15,118 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface CreateSpaceParams {
+export interface CreateSpaceParams {
   cidrs: string[];
   'provider-id'?: string;
   public: boolean;
   'space-tag': string;
 }
 
-interface CreateSpacesParams {
+export interface CreateSpacesParams {
   spaces: CreateSpaceParams[];
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface ListSpacesResults {
+export interface ListSpacesResults {
   results: Space[];
 }
 
-interface MoveSubnetsParam {
+export interface MoveSubnetsParam {
   force: boolean;
   'space-tag': string;
   subnets: string[];
 }
 
-interface MoveSubnetsParams {
+export interface MoveSubnetsParams {
   args: MoveSubnetsParam[];
 }
 
-interface MoveSubnetsResult {
+export interface MoveSubnetsResult {
   error?: Error;
   'moved-subnets'?: MovedSubnet[];
   'new-space': string;
 }
 
-interface MoveSubnetsResults {
+export interface MoveSubnetsResults {
   results: MoveSubnetsResult[];
 }
 
-interface MovedSubnet {
+export interface MovedSubnet {
   cidr: string;
   'old-space': string;
   subnet: string;
 }
 
-interface RemoveSpaceParam {
+export interface RemoveSpaceParam {
   'dry-run'?: boolean;
   force?: boolean;
   space: Entity;
 }
 
-interface RemoveSpaceParams {
+export interface RemoveSpaceParams {
   'space-param': RemoveSpaceParam[];
 }
 
-interface RemoveSpaceResult {
+export interface RemoveSpaceResult {
   bindings: Entity[];
   constraints: Entity[];
   'controller-settings': string[];
   error: Error;
 }
 
-interface RemoveSpaceResults {
+export interface RemoveSpaceResults {
   results: RemoveSpaceResult[];
 }
 
-interface RenameSpaceParams {
+export interface RenameSpaceParams {
   'from-space-tag': string;
   'to-space-tag': string;
 }
 
-interface RenameSpacesParams {
+export interface RenameSpacesParams {
   changes: RenameSpaceParams[];
 }
 
-interface ShowSpaceResult {
+export interface ShowSpaceResult {
   applications: string[];
   error?: Error;
   'machine-count': number;
   space: Space;
 }
 
-interface ShowSpaceResults {
+export interface ShowSpaceResults {
   results: ShowSpaceResult[];
 }
 
-interface Space {
+export interface Space {
   error?: Error;
   id: string;
   name: string;
   subnets: Subnet[];
 }
 
-interface Subnet {
+export interface Subnet {
   cidr: string;
   life: string;
   'provider-id'?: string;
@@ -138,7 +138,7 @@ interface Subnet {
   zones: string[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

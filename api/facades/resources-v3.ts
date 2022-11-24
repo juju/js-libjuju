@@ -3,7 +3,7 @@
   This facade is available on:
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -12,7 +12,7 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface AddPendingResourcesArgsV2 {
+export interface AddPendingResourcesArgsV2 {
   Entity: Entity;
   'charm-origin': CharmOrigin;
   macaroon: Macaroon;
@@ -21,18 +21,18 @@ interface AddPendingResourcesArgsV2 {
   url: string;
 }
 
-interface AddPendingResourcesResult {
+export interface AddPendingResourcesResult {
   ErrorResult: ErrorResult;
   error?: Error;
   'pending-ids': string[];
 }
 
-interface Base {
+export interface Base {
   channel: string;
   name: string;
 }
 
-interface CharmOrigin {
+export interface CharmOrigin {
   architecture?: string;
   base?: Base;
   branch?: string;
@@ -46,7 +46,7 @@ interface CharmOrigin {
   type: string;
 }
 
-interface CharmResource {
+export interface CharmResource {
   description?: string;
   fingerprint: number[];
   name: string;
@@ -57,29 +57,29 @@ interface CharmResource {
   type: string;
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ListResourcesArgs {
+export interface ListResourcesArgs {
   entities: Entity[];
 }
 
-interface Macaroon {
+export interface Macaroon {
   [key: string]: AdditionalProperties;
 }
 
-interface Resource {
+export interface Resource {
   CharmResource: CharmResource;
   application: string;
   description?: string;
@@ -96,7 +96,7 @@ interface Resource {
   username: string;
 }
 
-interface ResourcesResult {
+export interface ResourcesResult {
   ErrorResult: ErrorResult;
   'charm-store-resources': CharmResource[];
   error?: Error;
@@ -104,18 +104,18 @@ interface ResourcesResult {
   'unit-resources': UnitResources[];
 }
 
-interface ResourcesResults {
+export interface ResourcesResults {
   results: ResourcesResult[];
 }
 
-interface UnitResources {
+export interface UnitResources {
   Entity: Entity;
   'download-progress': AdditionalProperties;
   resources: Resource[];
   tag: string;
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

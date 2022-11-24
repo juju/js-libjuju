@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,48 +15,48 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface MeterStatusResult {
+export interface MeterStatusResult {
   code: string;
   error?: Error;
   info: string;
 }
 
-interface MeterStatusResults {
+export interface MeterStatusResults {
   results: MeterStatusResult[];
 }
 
-interface NotifyWatchResult {
+export interface NotifyWatchResult {
   NotifyWatcherId: string;
   error?: Error;
 }
 
-interface NotifyWatchResults {
+export interface NotifyWatchResults {
   results: NotifyWatchResult[];
 }
 
-interface SetUnitStateArg {
+export interface SetUnitStateArg {
   'charm-state'?: AdditionalProperties;
   'meter-status-state'?: string;
   'relation-state'?: AdditionalProperties;
@@ -66,11 +66,11 @@ interface SetUnitStateArg {
   'uniter-state'?: string;
 }
 
-interface SetUnitStateArgs {
+export interface SetUnitStateArgs {
   args: SetUnitStateArg[];
 }
 
-interface UnitStateResult {
+export interface UnitStateResult {
   'charm-state': AdditionalProperties;
   error: Error;
   'meter-status-state': string;
@@ -80,11 +80,11 @@ interface UnitStateResult {
   'uniter-state': string;
 }
 
-interface UnitStateResults {
+export interface UnitStateResults {
   results: UnitStateResult[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

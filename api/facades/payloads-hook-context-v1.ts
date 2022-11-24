@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,30 +15,30 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface LookUpPayloadArg {
+export interface LookUpPayloadArg {
   id: string;
   name: string;
 }
 
-interface LookUpPayloadArgs {
+export interface LookUpPayloadArgs {
   args: LookUpPayloadArg[];
 }
 
-interface Payload {
+export interface Payload {
   class: string;
   id: string;
   labels: string[];
@@ -48,7 +48,7 @@ interface Payload {
   unit: string;
 }
 
-interface PayloadResult {
+export interface PayloadResult {
   Entity: Entity;
   error?: Error;
   'not-found': boolean;
@@ -56,25 +56,25 @@ interface PayloadResult {
   tag: string;
 }
 
-interface PayloadResults {
+export interface PayloadResults {
   results: PayloadResult[];
 }
 
-interface SetPayloadStatusArg {
+export interface SetPayloadStatusArg {
   Entity: Entity;
   status: string;
   tag: string;
 }
 
-interface SetPayloadStatusArgs {
+export interface SetPayloadStatusArgs {
   args: SetPayloadStatusArg[];
 }
 
-interface TrackPayloadArgs {
+export interface TrackPayloadArgs {
   payloads: Payload[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

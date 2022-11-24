@@ -3,7 +3,7 @@
   This facade is available on:
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -12,13 +12,13 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ListSecretResult {
+export interface ListSecretResult {
   'create-time': string;
   description?: string;
   label?: string;
@@ -34,16 +34,16 @@ interface ListSecretResult {
   version: number;
 }
 
-interface ListSecretResults {
+export interface ListSecretResults {
   results: ListSecretResult[];
 }
 
-interface ListSecretsArgs {
+export interface ListSecretsArgs {
   filter: SecretsFilter;
   'show-secrets': boolean;
 }
 
-interface SecretRevision {
+export interface SecretRevision {
   'create-time'?: string;
   'expire-time'?: string;
   'provider-id'?: string;
@@ -51,18 +51,18 @@ interface SecretRevision {
   'update-time'?: string;
 }
 
-interface SecretValueResult {
+export interface SecretValueResult {
   data: AdditionalProperties;
   error: Error;
 }
 
-interface SecretsFilter {
+export interface SecretsFilter {
   'owner-tag': string;
   revision: number;
   uri: string;
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

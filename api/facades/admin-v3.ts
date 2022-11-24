@@ -7,7 +7,7 @@
     Controllers
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -16,7 +16,7 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface Address {
+export interface Address {
   cidr?: string;
   'config-type'?: string;
   'is-secondary'?: boolean;
@@ -27,7 +27,7 @@ interface Address {
   value: string;
 }
 
-interface AuthUserInfo {
+export interface AuthUserInfo {
   'controller-access': string;
   credentials?: string;
   'display-name': string;
@@ -36,12 +36,12 @@ interface AuthUserInfo {
   'model-access': string;
 }
 
-interface FacadeVersions {
+export interface FacadeVersions {
   name: string;
   versions: number[];
 }
 
-interface HostPort {
+export interface HostPort {
   Address: Address;
   cidr?: string;
   'config-type'?: string;
@@ -54,7 +54,7 @@ interface HostPort {
   value: string;
 }
 
-interface LoginRequest {
+export interface LoginRequest {
   'auth-tag': string;
   'bakery-version'?: number;
   'cli-args'?: string;
@@ -65,7 +65,7 @@ interface LoginRequest {
   'user-data': string;
 }
 
-interface LoginResult {
+export interface LoginResult {
   'bakery-discharge-required': Macaroon;
   'controller-tag': string;
   'discharge-required': Macaroon;
@@ -78,16 +78,16 @@ interface LoginResult {
   'user-info': AuthUserInfo;
 }
 
-interface Macaroon {
+export interface Macaroon {
   [key: string]: AdditionalProperties;
 }
 
-interface RedirectInfoResult {
+export interface RedirectInfoResult {
   'ca-cert': string;
   servers: HostPort[][];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

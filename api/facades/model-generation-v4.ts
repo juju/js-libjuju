@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,50 +15,50 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface BoolResult {
+export interface BoolResult {
   error?: Error;
   result: boolean;
 }
 
-interface BranchArg {
+export interface BranchArg {
   branch: string;
 }
 
-interface BranchInfoArgs {
+export interface BranchInfoArgs {
   branches: string[];
   detailed: boolean;
 }
 
-interface BranchResults {
+export interface BranchResults {
   error?: Error;
   generations: Generation[];
 }
 
-interface BranchTrackArg {
+export interface BranchTrackArg {
   branch: string;
   entities: Entity[];
   'num-units'?: number;
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface Generation {
+export interface Generation {
   applications: GenerationApplication[];
   branch: string;
   completed?: number;
@@ -68,7 +68,7 @@ interface Generation {
   'generation-id'?: number;
 }
 
-interface GenerationApplication {
+export interface GenerationApplication {
   application: string;
   config: AdditionalProperties;
   pending?: string[];
@@ -76,21 +76,21 @@ interface GenerationApplication {
   tracking?: string[];
 }
 
-interface GenerationId {
+export interface GenerationId {
   'generation-id': number;
 }
 
-interface GenerationResult {
+export interface GenerationResult {
   error?: Error;
   generation: Generation;
 }
 
-interface IntResult {
+export interface IntResult {
   error?: Error;
   result: number;
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

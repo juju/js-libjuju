@@ -6,7 +6,7 @@
     Unit-agent
     Controllers
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,13 +15,13 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface AddCloudArgs {
+export interface AddCloudArgs {
   cloud: Cloud;
   force?: boolean;
   name: string;
 }
 
-interface Cloud {
+export interface Cloud {
   'auth-types'?: string[];
   'ca-certificates'?: string[];
   config?: AdditionalProperties;
@@ -36,32 +36,32 @@ interface Cloud {
   type: string;
 }
 
-interface CloudCredential {
+export interface CloudCredential {
   attrs?: AdditionalProperties;
   'auth-type': string;
   redacted?: string[];
 }
 
-interface CloudCredentialArg {
+export interface CloudCredentialArg {
   'cloud-name': string;
   'credential-name': string;
 }
 
-interface CloudCredentialArgs {
+export interface CloudCredentialArgs {
   credentials?: CloudCredentialArg[];
   'include-secrets': boolean;
 }
 
-interface CloudCredentialResult {
+export interface CloudCredentialResult {
   error: Error;
   result: CloudCredential;
 }
 
-interface CloudCredentialResults {
+export interface CloudCredentialResults {
   results: CloudCredentialResult[];
 }
 
-interface CloudDetails {
+export interface CloudDetails {
   'auth-types'?: string[];
   endpoint?: string;
   'identity-endpoint'?: string;
@@ -70,62 +70,62 @@ interface CloudDetails {
   type: string;
 }
 
-interface CloudInfo {
+export interface CloudInfo {
   CloudDetails: CloudDetails;
   users: CloudUserInfo[];
 }
 
-interface CloudInfoResult {
+export interface CloudInfoResult {
   error: Error;
   result: CloudInfo;
 }
 
-interface CloudInfoResults {
+export interface CloudInfoResults {
   results: CloudInfoResult[];
 }
 
-interface CloudInstanceTypesConstraint {
+export interface CloudInstanceTypesConstraint {
   'cloud-tag': string;
   constraints?: Value;
   region: string;
 }
 
-interface CloudInstanceTypesConstraints {
+export interface CloudInstanceTypesConstraints {
   constraints: CloudInstanceTypesConstraint[];
 }
 
-interface CloudRegion {
+export interface CloudRegion {
   endpoint?: string;
   'identity-endpoint'?: string;
   name: string;
   'storage-endpoint'?: string;
 }
 
-interface CloudResult {
+export interface CloudResult {
   cloud: Cloud;
   error: Error;
 }
 
-interface CloudResults {
+export interface CloudResults {
   results: CloudResult[];
 }
 
-interface CloudUserInfo {
+export interface CloudUserInfo {
   access: string;
   'display-name': string;
   user: string;
 }
 
-interface CloudsResult {
+export interface CloudsResult {
   clouds: AdditionalProperties;
 }
 
-interface ControllerCredentialInfo {
+export interface ControllerCredentialInfo {
   content: CredentialContent;
   models: ModelAccess[];
 }
 
-interface CredentialContent {
+export interface CredentialContent {
   attrs?: AdditionalProperties;
   'auth-type': string;
   cloud: string;
@@ -133,38 +133,38 @@ interface CredentialContent {
   valid?: boolean;
 }
 
-interface CredentialContentResult {
+export interface CredentialContentResult {
   error: Error;
   result: ControllerCredentialInfo;
 }
 
-interface CredentialContentResults {
+export interface CredentialContentResults {
   results: CredentialContentResult[];
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface InstanceType {
+export interface InstanceType {
   arches: string[];
   cost?: number;
   'cpu-cores': number;
@@ -175,7 +175,7 @@ interface InstanceType {
   'virt-type'?: string;
 }
 
-interface InstanceTypesResult {
+export interface InstanceTypesResult {
   'cost-currency': string;
   'cost-divisor': number;
   'cost-unit': string;
@@ -183,107 +183,107 @@ interface InstanceTypesResult {
   'instance-types': InstanceType[];
 }
 
-interface InstanceTypesResults {
+export interface InstanceTypesResults {
   results: InstanceTypesResult[];
 }
 
-interface ListCloudInfo {
+export interface ListCloudInfo {
   CloudDetails: CloudDetails;
   'user-access': string;
 }
 
-interface ListCloudInfoResult {
+export interface ListCloudInfoResult {
   error: Error;
   result: ListCloudInfo;
 }
 
-interface ListCloudInfoResults {
+export interface ListCloudInfoResults {
   results: ListCloudInfoResult[];
 }
 
-interface ListCloudsRequest {
+export interface ListCloudsRequest {
   all?: boolean;
   'user-tag': string;
 }
 
-interface ModelAccess {
+export interface ModelAccess {
   access: string;
   model: string;
 }
 
-interface ModifyCloudAccess {
+export interface ModifyCloudAccess {
   access: string;
   action: string;
   'cloud-tag': string;
   'user-tag': string;
 }
 
-interface ModifyCloudAccessRequest {
+export interface ModifyCloudAccessRequest {
   changes: ModifyCloudAccess[];
 }
 
-interface RevokeCredentialArg {
+export interface RevokeCredentialArg {
   force: boolean;
   tag: string;
 }
 
-interface RevokeCredentialArgs {
+export interface RevokeCredentialArgs {
   credentials: RevokeCredentialArg[];
 }
 
-interface StringsResult {
+export interface StringsResult {
   error: Error;
   result: string[];
 }
 
-interface StringsResults {
+export interface StringsResults {
   results: StringsResult[];
 }
 
-interface TaggedCredential {
+export interface TaggedCredential {
   credential: CloudCredential;
   tag: string;
 }
 
-interface TaggedCredentials {
+export interface TaggedCredentials {
   credentials: TaggedCredential[];
 }
 
-interface UpdateCloudArgs {
+export interface UpdateCloudArgs {
   clouds: AddCloudArgs[];
 }
 
-interface UpdateCredentialArgs {
+export interface UpdateCredentialArgs {
   credentials: TaggedCredential[];
   force: boolean;
 }
 
-interface UpdateCredentialModelResult {
+export interface UpdateCredentialModelResult {
   errors?: ErrorResult[];
   name: string;
   uuid: string;
 }
 
-interface UpdateCredentialResult {
+export interface UpdateCredentialResult {
   error?: Error;
   models?: UpdateCredentialModelResult[];
   tag: string;
 }
 
-interface UpdateCredentialResults {
+export interface UpdateCredentialResults {
   results: UpdateCredentialResult[];
 }
 
-interface UserCloud {
+export interface UserCloud {
   'cloud-tag': string;
   'user-tag': string;
 }
 
-interface UserClouds {
+export interface UserClouds {
   'user-clouds': UserCloud[];
 }
 
-interface Value {
+export interface Value {
   'allocate-public-ip': boolean;
   arch: string;
   container: string;
@@ -300,7 +300,7 @@ interface Value {
   zones: string[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

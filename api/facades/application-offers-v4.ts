@@ -6,7 +6,7 @@
     Unit-agent
     Controllers
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,7 +15,7 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface AddApplicationOffer {
+export interface AddApplicationOffer {
   'application-description': string;
   'application-name': string;
   endpoints: AdditionalProperties;
@@ -24,11 +24,11 @@ interface AddApplicationOffer {
   'owner-tag'?: string;
 }
 
-interface AddApplicationOffers {
+export interface AddApplicationOffers {
   Offers: AddApplicationOffer[];
 }
 
-interface ApplicationOfferAdminDetails {
+export interface ApplicationOfferAdminDetails {
   ApplicationOfferDetails: ApplicationOfferDetails;
   'application-description': string;
   'application-name': string;
@@ -44,7 +44,7 @@ interface ApplicationOfferAdminDetails {
   users?: OfferUserDetails[];
 }
 
-interface ApplicationOfferDetails {
+export interface ApplicationOfferDetails {
   'application-description': string;
   bindings?: AdditionalProperties;
   endpoints?: RemoteEndpoint[];
@@ -56,27 +56,27 @@ interface ApplicationOfferDetails {
   users?: OfferUserDetails[];
 }
 
-interface ApplicationOfferResult {
+export interface ApplicationOfferResult {
   error: Error;
   result: ApplicationOfferAdminDetails;
 }
 
-interface ApplicationOffersResults {
+export interface ApplicationOffersResults {
   results: ApplicationOfferResult[];
 }
 
-interface ConsumeOfferDetails {
+export interface ConsumeOfferDetails {
   'external-controller': ExternalControllerInfo;
   macaroon: Macaroon;
   offer: ApplicationOfferDetails;
 }
 
-interface ConsumeOfferDetailsArg {
+export interface ConsumeOfferDetailsArg {
   'offer-urls': OfferURLs;
   'user-tag'?: string;
 }
 
-interface ConsumeOfferDetailsResult {
+export interface ConsumeOfferDetailsResult {
   ConsumeOfferDetails: ConsumeOfferDetails;
   error?: Error;
   'external-controller'?: ExternalControllerInfo;
@@ -84,65 +84,65 @@ interface ConsumeOfferDetailsResult {
   offer?: ApplicationOfferDetails;
 }
 
-interface ConsumeOfferDetailsResults {
+export interface ConsumeOfferDetailsResults {
   results: ConsumeOfferDetailsResult[];
 }
 
-interface DestroyApplicationOffers {
+export interface DestroyApplicationOffers {
   force?: boolean;
   'offer-urls': string[];
 }
 
-interface EndpointFilterAttributes {
+export interface EndpointFilterAttributes {
   interface: string;
   name: string;
   role: string;
 }
 
-interface EntityStatus {
+export interface EntityStatus {
   data?: AdditionalProperties;
   info: string;
   since: string;
   status: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface ExternalControllerInfo {
+export interface ExternalControllerInfo {
   addrs: string[];
   'ca-cert': string;
   'controller-alias': string;
   'controller-tag': string;
 }
 
-interface Macaroon {
+export interface Macaroon {
   [key: string]: AdditionalProperties;
 }
 
-interface ModifyOfferAccess {
+export interface ModifyOfferAccess {
   access: string;
   action: string;
   'offer-url': string;
   'user-tag': string;
 }
 
-interface ModifyOfferAccessRequest {
+export interface ModifyOfferAccessRequest {
   changes: ModifyOfferAccess[];
 }
 
-interface OfferConnection {
+export interface OfferConnection {
   endpoint: string;
   'ingress-subnets': string[];
   'relation-id': number;
@@ -151,7 +151,7 @@ interface OfferConnection {
   username: string;
 }
 
-interface OfferFilter {
+export interface OfferFilter {
   'allowed-users': string[];
   'application-description': string;
   'application-name': string;
@@ -163,26 +163,26 @@ interface OfferFilter {
   'owner-name': string;
 }
 
-interface OfferFilters {
+export interface OfferFilters {
   Filters: OfferFilter[];
 }
 
-interface OfferURLs {
+export interface OfferURLs {
   'bakery-version': number;
   'offer-urls': string[];
 }
 
-interface OfferUserDetails {
+export interface OfferUserDetails {
   access: string;
   'display-name': string;
   user: string;
 }
 
-interface QueryApplicationOffersResults {
+export interface QueryApplicationOffersResults {
   results: ApplicationOfferAdminDetails[];
 }
 
-interface RemoteApplicationInfo {
+export interface RemoteApplicationInfo {
   description: string;
   endpoints: RemoteEndpoint[];
   'icon-url-path': string;
@@ -192,23 +192,23 @@ interface RemoteApplicationInfo {
   'source-model-label'?: string;
 }
 
-interface RemoteApplicationInfoResult {
+export interface RemoteApplicationInfoResult {
   error: Error;
   result: RemoteApplicationInfo;
 }
 
-interface RemoteApplicationInfoResults {
+export interface RemoteApplicationInfoResults {
   results: RemoteApplicationInfoResult[];
 }
 
-interface RemoteEndpoint {
+export interface RemoteEndpoint {
   interface: string;
   limit: number;
   name: string;
   role: string;
 }
 
-interface RemoteSpace {
+export interface RemoteSpace {
   'cloud-type': string;
   name: string;
   'provider-attributes': AdditionalProperties;
@@ -216,7 +216,7 @@ interface RemoteSpace {
   subnets: Subnet[];
 }
 
-interface Subnet {
+export interface Subnet {
   cidr: string;
   life: string;
   'provider-id'?: string;
@@ -228,7 +228,7 @@ interface Subnet {
   zones: string[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

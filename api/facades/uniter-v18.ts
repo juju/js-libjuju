@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,11 +15,11 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface APIHostPortsResult {
+export interface APIHostPortsResult {
   servers: HostPort[][];
 }
 
-interface Action {
+export interface Action {
   'execution-group'?: string;
   name: string;
   parallel?: boolean;
@@ -28,27 +28,27 @@ interface Action {
   tag: string;
 }
 
-interface ActionExecutionResult {
+export interface ActionExecutionResult {
   'action-tag': string;
   message?: string;
   results?: AdditionalProperties;
   status: string;
 }
 
-interface ActionExecutionResults {
+export interface ActionExecutionResults {
   results: ActionExecutionResult[];
 }
 
-interface ActionMessage {
+export interface ActionMessage {
   message: string;
   timestamp: string;
 }
 
-interface ActionMessageParams {
+export interface ActionMessageParams {
   messages: EntityString[];
 }
 
-interface ActionResult {
+export interface ActionResult {
   action: Action;
   completed: string;
   enqueued: string;
@@ -60,11 +60,11 @@ interface ActionResult {
   status: string;
 }
 
-interface ActionResults {
+export interface ActionResults {
   results: ActionResult[];
 }
 
-interface Address {
+export interface Address {
   cidr?: string;
   'config-type'?: string;
   'is-secondary'?: boolean;
@@ -75,26 +75,26 @@ interface Address {
   value: string;
 }
 
-interface ApplicationStatusResult {
+export interface ApplicationStatusResult {
   application: StatusResult;
   error?: Error;
   units: AdditionalProperties;
 }
 
-interface ApplicationStatusResults {
+export interface ApplicationStatusResults {
   results: ApplicationStatusResult[];
 }
 
-interface BoolResult {
+export interface BoolResult {
   error?: Error;
   result: boolean;
 }
 
-interface BoolResults {
+export interface BoolResults {
   results: BoolResult[];
 }
 
-interface CharmRelation {
+export interface CharmRelation {
   interface: string;
   limit: number;
   name: string;
@@ -103,21 +103,21 @@ interface CharmRelation {
   scope: string;
 }
 
-interface CharmURL {
+export interface CharmURL {
   url: string;
 }
 
-interface CharmURLs {
+export interface CharmURLs {
   urls: CharmURL[];
 }
 
-interface CloudCredential {
+export interface CloudCredential {
   attrs?: AdditionalProperties;
   'auth-type': string;
   redacted?: string[];
 }
 
-interface CloudSpec {
+export interface CloudSpec {
   cacertificates?: string[];
   credential?: CloudCredential;
   endpoint?: string;
@@ -130,12 +130,12 @@ interface CloudSpec {
   type: string;
 }
 
-interface CloudSpecResult {
+export interface CloudSpecResult {
   error: Error;
   result: CloudSpec;
 }
 
-interface CommitHookChangesArg {
+export interface CommitHookChangesArg {
   'add-storage'?: StorageAddParams[];
   'close-ports'?: EntityPortRange[];
   'open-ports'?: EntityPortRange[];
@@ -152,20 +152,20 @@ interface CommitHookChangesArg {
   'update-network-info': boolean;
 }
 
-interface CommitHookChangesArgs {
+export interface CommitHookChangesArgs {
   args: CommitHookChangesArg[];
 }
 
-interface ConfigSettingsResult {
+export interface ConfigSettingsResult {
   error?: Error;
   settings: AdditionalProperties;
 }
 
-interface ConfigSettingsResults {
+export interface ConfigSettingsResults {
   results: ConfigSettingsResult[];
 }
 
-interface CreateSecretArg {
+export interface CreateSecretArg {
   UpsertSecretArg: UpsertSecretArg;
   content?: SecretContentParams;
   description?: string;
@@ -177,46 +177,46 @@ interface CreateSecretArg {
   uri?: string;
 }
 
-interface CreateSecretArgs {
+export interface CreateSecretArgs {
   args: CreateSecretArg[];
 }
 
-interface CreateSecretURIsArg {
+export interface CreateSecretURIsArg {
   count: number;
 }
 
-interface DeleteSecretArg {
+export interface DeleteSecretArg {
   revisions?: number[];
   uri: string;
 }
 
-interface DeleteSecretArgs {
+export interface DeleteSecretArgs {
   args: DeleteSecretArg[];
 }
 
-interface Endpoint {
+export interface Endpoint {
   'application-name': string;
   relation: CharmRelation;
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface EntitiesCharmURL {
+export interface EntitiesCharmURL {
   entities: EntityCharmURL[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface EntityCharmURL {
+export interface EntityCharmURL {
   'charm-url': string;
   tag: string;
 }
 
-interface EntityPortRange {
+export interface EntityPortRange {
   endpoint: string;
   'from-port': number;
   protocol: string;
@@ -224,97 +224,97 @@ interface EntityPortRange {
   'to-port': number;
 }
 
-interface EntityStatusArgs {
+export interface EntityStatusArgs {
   data: AdditionalProperties;
   info: string;
   status: string;
   tag: string;
 }
 
-interface EntityString {
+export interface EntityString {
   tag: string;
   value: string;
 }
 
-interface EntityWorkloadVersion {
+export interface EntityWorkloadVersion {
   tag: string;
   'workload-version': string;
 }
 
-interface EntityWorkloadVersions {
+export interface EntityWorkloadVersions {
   entities: EntityWorkloadVersion[];
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface GetLeadershipSettingsBulkResults {
+export interface GetLeadershipSettingsBulkResults {
   results: GetLeadershipSettingsResult[];
 }
 
-interface GetLeadershipSettingsResult {
+export interface GetLeadershipSettingsResult {
   error?: Error;
   settings: AdditionalProperties;
 }
 
-interface GetSecretConsumerInfoArgs {
+export interface GetSecretConsumerInfoArgs {
   'consumer-tag': string;
   uris: string[];
 }
 
-interface GetSecretContentArg {
+export interface GetSecretContentArg {
   label?: string;
   peek?: boolean;
   update?: boolean;
   uri: string;
 }
 
-interface GetSecretContentArgs {
+export interface GetSecretContentArgs {
   args: GetSecretContentArg[];
 }
 
-interface GoalState {
+export interface GoalState {
   relations: AdditionalProperties;
   units: AdditionalProperties;
 }
 
-interface GoalStateResult {
+export interface GoalStateResult {
   error: Error;
   result: GoalState;
 }
 
-interface GoalStateResults {
+export interface GoalStateResults {
   results: GoalStateResult[];
 }
 
-interface GoalStateStatus {
+export interface GoalStateStatus {
   since: string;
   status: string;
 }
 
-interface GrantRevokeSecretArg {
+export interface GrantRevokeSecretArg {
   role: string;
   'scope-tag': string;
   'subject-tags': string[];
   uri: string;
 }
 
-interface GrantRevokeSecretArgs {
+export interface GrantRevokeSecretArgs {
   args: GrantRevokeSecretArg[];
 }
 
-interface HostPort {
+export interface HostPort {
   Address: Address;
   cidr?: string;
   'config-type'?: string;
@@ -327,31 +327,31 @@ interface HostPort {
   value: string;
 }
 
-interface IntResult {
+export interface IntResult {
   error?: Error;
   result: number;
 }
 
-interface IntResults {
+export interface IntResults {
   results: IntResult[];
 }
 
-interface InterfaceAddress {
+export interface InterfaceAddress {
   cidr: string;
   hostname: string;
   value: string;
 }
 
-interface LifeResult {
+export interface LifeResult {
   error?: Error;
   life: string;
 }
 
-interface LifeResults {
+export interface LifeResults {
   results: LifeResult[];
 }
 
-interface ListSecretResult {
+export interface ListSecretResult {
   'create-time': string;
   description?: string;
   label?: string;
@@ -367,126 +367,126 @@ interface ListSecretResult {
   version: number;
 }
 
-interface ListSecretResults {
+export interface ListSecretResults {
   results: ListSecretResult[];
 }
 
-interface MergeLeadershipSettingsBulkParams {
+export interface MergeLeadershipSettingsBulkParams {
   params: MergeLeadershipSettingsParam[];
 }
 
-interface MergeLeadershipSettingsParam {
+export interface MergeLeadershipSettingsParam {
   'application-tag'?: string;
   settings: AdditionalProperties;
   'unit-tag'?: string;
 }
 
-interface MeterStatusResult {
+export interface MeterStatusResult {
   code: string;
   error?: Error;
   info: string;
 }
 
-interface MeterStatusResults {
+export interface MeterStatusResults {
   results: MeterStatusResult[];
 }
 
-interface Metric {
+export interface Metric {
   key: string;
   labels?: AdditionalProperties;
   time: string;
   value: string;
 }
 
-interface MetricBatch {
+export interface MetricBatch {
   'charm-url': string;
   created: string;
   metrics: Metric[];
   uuid: string;
 }
 
-interface MetricBatchParam {
+export interface MetricBatchParam {
   batch: MetricBatch;
   tag: string;
 }
 
-interface MetricBatchParams {
+export interface MetricBatchParams {
   batches: MetricBatchParam[];
 }
 
-interface ModelConfigResult {
+export interface ModelConfigResult {
   config: AdditionalProperties;
 }
 
-interface ModelResult {
+export interface ModelResult {
   error?: Error;
   name: string;
   type: string;
   uuid: string;
 }
 
-interface NetworkInfo {
+export interface NetworkInfo {
   addresses: InterfaceAddress[];
   'interface-name': string;
   'mac-address': string;
 }
 
-interface NetworkInfoParams {
+export interface NetworkInfoParams {
   bindings: string[];
   'relation-id'?: number;
   unit: string;
 }
 
-interface NetworkInfoResult {
+export interface NetworkInfoResult {
   'bind-addresses': NetworkInfo[];
   'egress-subnets': string[];
   error: Error;
   'ingress-addresses': string[];
 }
 
-interface NetworkInfoResults {
+export interface NetworkInfoResults {
   results: AdditionalProperties;
 }
 
-interface NotifyWatchResult {
+export interface NotifyWatchResult {
   NotifyWatcherId: string;
   error?: Error;
 }
 
-interface NotifyWatchResults {
+export interface NotifyWatchResults {
   results: NotifyWatchResult[];
 }
 
-interface OpenMachinePortRangesByEndpointResult {
+export interface OpenMachinePortRangesByEndpointResult {
   error?: Error;
   'unit-port-ranges': AdditionalProperties;
 }
 
-interface OpenMachinePortRangesByEndpointResults {
+export interface OpenMachinePortRangesByEndpointResults {
   results: OpenMachinePortRangesByEndpointResult[];
 }
 
-interface OpenUnitPortRangesByEndpoint {
+export interface OpenUnitPortRangesByEndpoint {
   endpoint: string;
   'port-ranges': PortRange[];
 }
 
-interface PodSpec {
+export interface PodSpec {
   spec?: string;
   tag: string;
 }
 
-interface PortRange {
+export interface PortRange {
   'from-port': number;
   protocol: string;
   'to-port': number;
 }
 
-interface RelationIds {
+export interface RelationIds {
   'relation-ids': number[];
 }
 
-interface RelationResult {
+export interface RelationResult {
   bool?: boolean;
   endpoint: Endpoint;
   error?: Error;
@@ -496,112 +496,112 @@ interface RelationResult {
   'other-application'?: string;
 }
 
-interface RelationResults {
+export interface RelationResults {
   results: RelationResult[];
 }
 
-interface RelationStatusArg {
+export interface RelationStatusArg {
   message: string;
   'relation-id': number;
   status: string;
   'unit-tag': string;
 }
 
-interface RelationStatusArgs {
+export interface RelationStatusArgs {
   args: RelationStatusArg[];
 }
 
-interface RelationUnit {
+export interface RelationUnit {
   relation: string;
   unit: string;
 }
 
-interface RelationUnitPair {
+export interface RelationUnitPair {
   'local-unit': string;
   relation: string;
   'remote-unit': string;
 }
 
-interface RelationUnitPairs {
+export interface RelationUnitPairs {
   'relation-unit-pairs': RelationUnitPair[];
 }
 
-interface RelationUnitSettings {
+export interface RelationUnitSettings {
   'application-settings': AdditionalProperties;
   relation: string;
   settings: AdditionalProperties;
   unit: string;
 }
 
-interface RelationUnitStatus {
+export interface RelationUnitStatus {
   'in-scope': boolean;
   'relation-tag': string;
   suspended: boolean;
 }
 
-interface RelationUnitStatusResult {
+export interface RelationUnitStatusResult {
   error?: Error;
   results: RelationUnitStatus[];
 }
 
-interface RelationUnitStatusResults {
+export interface RelationUnitStatusResults {
   results: RelationUnitStatusResult[];
 }
 
-interface RelationUnits {
+export interface RelationUnits {
   'relation-units': RelationUnit[];
 }
 
-interface RelationUnitsChange {
+export interface RelationUnitsChange {
   'app-changed'?: AdditionalProperties;
   changed: AdditionalProperties;
   departed?: string[];
 }
 
-interface RelationUnitsWatchResult {
+export interface RelationUnitsWatchResult {
   changes: RelationUnitsChange;
   error?: Error;
   'watcher-id': string;
 }
 
-interface RelationUnitsWatchResults {
+export interface RelationUnitsWatchResults {
   results: RelationUnitsWatchResult[];
 }
 
-interface ResolvedModeResult {
+export interface ResolvedModeResult {
   error?: Error;
   mode: string;
 }
 
-interface ResolvedModeResults {
+export interface ResolvedModeResults {
   results: ResolvedModeResult[];
 }
 
-interface SecretConsumerInfoResult {
+export interface SecretConsumerInfoResult {
   error?: Error;
   label: string;
   revision: number;
 }
 
-interface SecretConsumerInfoResults {
+export interface SecretConsumerInfoResults {
   results: SecretConsumerInfoResult[];
 }
 
-interface SecretContentParams {
+export interface SecretContentParams {
   data: AdditionalProperties;
   'provider-id': string;
 }
 
-interface SecretContentResult {
+export interface SecretContentResult {
   content: SecretContentParams;
   error?: Error;
 }
 
-interface SecretContentResults {
+export interface SecretContentResults {
   results: SecretContentResult[];
 }
 
-interface SecretRevision {
+export interface SecretRevision {
   'create-time'?: string;
   'expire-time'?: string;
   'provider-id'?: string;
@@ -609,43 +609,43 @@ interface SecretRevision {
   'update-time'?: string;
 }
 
-interface SecretRotatedArg {
+export interface SecretRotatedArg {
   'original-revision': number;
   skip: boolean;
   uri: string;
 }
 
-interface SecretRotatedArgs {
+export interface SecretRotatedArgs {
   args: SecretRotatedArg[];
 }
 
-interface SecretStoreConfig {
+export interface SecretStoreConfig {
   params?: AdditionalProperties;
   type: string;
 }
 
-interface SecretTriggerChange {
+export interface SecretTriggerChange {
   'next-trigger-time': string;
   revision?: number;
   uri: string;
 }
 
-interface SecretTriggerWatchResult {
+export interface SecretTriggerWatchResult {
   changes: SecretTriggerChange[];
   error?: Error;
   'watcher-id': string;
 }
 
-interface SecretValueResult {
+export interface SecretValueResult {
   data: AdditionalProperties;
   error: Error;
 }
 
-interface SetStatus {
+export interface SetStatus {
   entities: EntityStatusArgs[];
 }
 
-interface SetUnitStateArg {
+export interface SetUnitStateArg {
   'charm-state'?: AdditionalProperties;
   'meter-status-state'?: string;
   'relation-state'?: AdditionalProperties;
@@ -655,20 +655,20 @@ interface SetUnitStateArg {
   'uniter-state'?: string;
 }
 
-interface SetUnitStateArgs {
+export interface SetUnitStateArgs {
   args: SetUnitStateArg[];
 }
 
-interface SettingsResult {
+export interface SettingsResult {
   error?: Error;
   settings: AdditionalProperties;
 }
 
-interface SettingsResults {
+export interface SettingsResults {
   results: SettingsResult[];
 }
 
-interface StatusResult {
+export interface StatusResult {
   data: AdditionalProperties;
   error?: Error;
   id: string;
@@ -678,17 +678,17 @@ interface StatusResult {
   status: string;
 }
 
-interface StatusResults {
+export interface StatusResults {
   results: StatusResult[];
 }
 
-interface StorageAddParams {
+export interface StorageAddParams {
   name: string;
   storage: StorageConstraints;
   unit: string;
 }
 
-interface StorageAttachment {
+export interface StorageAttachment {
   kind: number;
   life: string;
   location: string;
@@ -697,89 +697,89 @@ interface StorageAttachment {
   'unit-tag': string;
 }
 
-interface StorageAttachmentId {
+export interface StorageAttachmentId {
   'storage-tag': string;
   'unit-tag': string;
 }
 
-interface StorageAttachmentIds {
+export interface StorageAttachmentIds {
   ids: StorageAttachmentId[];
 }
 
-interface StorageAttachmentIdsResult {
+export interface StorageAttachmentIdsResult {
   error?: Error;
   result: StorageAttachmentIds;
 }
 
-interface StorageAttachmentIdsResults {
+export interface StorageAttachmentIdsResults {
   results: StorageAttachmentIdsResult[];
 }
 
-interface StorageAttachmentResult {
+export interface StorageAttachmentResult {
   error?: Error;
   result: StorageAttachment;
 }
 
-interface StorageAttachmentResults {
+export interface StorageAttachmentResults {
   results: StorageAttachmentResult[];
 }
 
-interface StorageConstraints {
+export interface StorageConstraints {
   count: number;
   pool: string;
   size: number;
 }
 
-interface StringBoolResult {
+export interface StringBoolResult {
   error?: Error;
   ok: boolean;
   result: string;
 }
 
-interface StringBoolResults {
+export interface StringBoolResults {
   results: StringBoolResult[];
 }
 
-interface StringResult {
+export interface StringResult {
   error?: Error;
   result: string;
 }
 
-interface StringResults {
+export interface StringResults {
   results: StringResult[];
 }
 
-interface StringsResult {
+export interface StringsResult {
   error: Error;
   result: string[];
 }
 
-interface StringsWatchResult {
+export interface StringsWatchResult {
   changes?: string[];
   error?: Error;
   'watcher-id': string;
 }
 
-interface StringsWatchResults {
+export interface StringsWatchResults {
   results: StringsWatchResult[];
 }
 
-interface UnitRefreshResult {
+export interface UnitRefreshResult {
   Error: Error;
   Life: string;
   Resolved: string;
   'provider-id'?: string;
 }
 
-interface UnitRefreshResults {
+export interface UnitRefreshResults {
   Results: UnitRefreshResult[];
 }
 
-interface UnitSettings {
+export interface UnitSettings {
   version: number;
 }
 
-interface UnitStateResult {
+export interface UnitStateResult {
   'charm-state': AdditionalProperties;
   error: Error;
   'meter-status-state': string;
@@ -789,11 +789,11 @@ interface UnitStateResult {
   'uniter-state': string;
 }
 
-interface UnitStateResults {
+export interface UnitStateResults {
   results: UnitStateResult[];
 }
 
-interface UpdateSecretArg {
+export interface UpdateSecretArg {
   UpsertSecretArg: UpsertSecretArg;
   content?: SecretContentParams;
   description?: string;
@@ -804,31 +804,31 @@ interface UpdateSecretArg {
   uri: string;
 }
 
-interface UpdateSecretArgs {
+export interface UpdateSecretArgs {
   args: UpdateSecretArg[];
 }
 
-interface UpgradeSeriesStatusParam {
+export interface UpgradeSeriesStatusParam {
   entity: Entity;
   message: string;
   status: string;
 }
 
-interface UpgradeSeriesStatusParams {
+export interface UpgradeSeriesStatusParams {
   params: UpgradeSeriesStatusParam[];
 }
 
-interface UpgradeSeriesStatusResult {
+export interface UpgradeSeriesStatusResult {
   error: Error;
   status: string;
   target: string;
 }
 
-interface UpgradeSeriesStatusResults {
+export interface UpgradeSeriesStatusResults {
   results: UpgradeSeriesStatusResult[];
 }
 
-interface UpsertSecretArg {
+export interface UpsertSecretArg {
   content: SecretContentParams;
   description: string;
   'expire-time': string;
@@ -837,7 +837,7 @@ interface UpsertSecretArg {
   'rotate-policy': string;
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

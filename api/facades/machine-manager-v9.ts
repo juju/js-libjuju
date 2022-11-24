@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,7 +15,7 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface AddMachineParams {
+export interface AddMachineParams {
   addresses: Address[];
   base?: Base;
   constraints: Value;
@@ -29,20 +29,20 @@ interface AddMachineParams {
   placement?: Placement;
 }
 
-interface AddMachines {
+export interface AddMachines {
   params: AddMachineParams[];
 }
 
-interface AddMachinesResult {
+export interface AddMachinesResult {
   error?: Error;
   machine: string;
 }
 
-interface AddMachinesResults {
+export interface AddMachinesResults {
   machines: AddMachinesResult[];
 }
 
-interface Address {
+export interface Address {
   cidr?: string;
   'config-type'?: string;
   'is-secondary'?: boolean;
@@ -53,18 +53,18 @@ interface Address {
   value: string;
 }
 
-interface Base {
+export interface Base {
   channel: string;
   name: string;
 }
 
-interface Constraints {
+export interface Constraints {
   Count: number;
   Pool: string;
   Size: number;
 }
 
-interface DestroyMachineInfo {
+export interface DestroyMachineInfo {
   'destroyed-containers'?: DestroyMachineResult[];
   'destroyed-storage'?: Entity[];
   'destroyed-units'?: Entity[];
@@ -72,45 +72,45 @@ interface DestroyMachineInfo {
   'machine-id': string;
 }
 
-interface DestroyMachineResult {
+export interface DestroyMachineResult {
   error: Error;
   info: DestroyMachineInfo;
 }
 
-interface DestroyMachineResults {
+export interface DestroyMachineResults {
   results: DestroyMachineResult[];
 }
 
-interface DestroyMachinesParams {
+export interface DestroyMachinesParams {
   force?: boolean;
   keep?: boolean;
   'machine-tags': string[];
   'max-wait'?: number;
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface HardwareCharacteristics {
+export interface HardwareCharacteristics {
   arch: string;
   'availability-zone': string;
   'cpu-cores': number;
@@ -121,7 +121,7 @@ interface HardwareCharacteristics {
   tags: string[];
 }
 
-interface InstanceType {
+export interface InstanceType {
   arches: string[];
   cost?: number;
   'cpu-cores': number;
@@ -132,7 +132,7 @@ interface InstanceType {
   'virt-type'?: string;
 }
 
-interface InstanceTypesResult {
+export interface InstanceTypesResult {
   'cost-currency': string;
   'cost-divisor': number;
   'cost-unit': string;
@@ -140,86 +140,86 @@ interface InstanceTypesResult {
   'instance-types': InstanceType[];
 }
 
-interface InstanceTypesResults {
+export interface InstanceTypesResults {
   results: InstanceTypesResult[];
 }
 
-interface ModelInstanceTypesConstraint {
+export interface ModelInstanceTypesConstraint {
   value: Value;
 }
 
-interface ModelInstanceTypesConstraints {
+export interface ModelInstanceTypesConstraints {
   constraints: ModelInstanceTypesConstraint[];
 }
 
-interface NotifyWatchResult {
+export interface NotifyWatchResult {
   NotifyWatcherId: string;
   error?: Error;
 }
 
-interface NotifyWatchResults {
+export interface NotifyWatchResults {
   results: NotifyWatchResult[];
 }
 
-interface Placement {
+export interface Placement {
   directive: string;
   scope: string;
 }
 
-interface ProvisioningScriptParams {
+export interface ProvisioningScriptParams {
   'data-dir': string;
   'disable-package-commands': boolean;
   'machine-id': string;
   nonce: string;
 }
 
-interface ProvisioningScriptResult {
+export interface ProvisioningScriptResult {
   script: string;
 }
 
-interface RetryProvisioningArgs {
+export interface RetryProvisioningArgs {
   all: boolean;
   machines?: string[];
 }
 
-interface StringsResult {
+export interface StringsResult {
   error: Error;
   result: string[];
 }
 
-interface StringsResults {
+export interface StringsResults {
   results: StringsResult[];
 }
 
-interface UpdateChannelArg {
+export interface UpdateChannelArg {
   channel: string;
   force: boolean;
   tag: Entity;
 }
 
-interface UpdateChannelArgs {
+export interface UpdateChannelArgs {
   args: UpdateChannelArg[];
 }
 
-interface UpgradeSeriesNotificationParam {
+export interface UpgradeSeriesNotificationParam {
   entity: Entity;
   'watcher-id': string;
 }
 
-interface UpgradeSeriesNotificationParams {
+export interface UpgradeSeriesNotificationParams {
   params: UpgradeSeriesNotificationParam[];
 }
 
-interface UpgradeSeriesUnitsResult {
+export interface UpgradeSeriesUnitsResult {
   error?: Error;
   'unit-names': string[];
 }
 
-interface UpgradeSeriesUnitsResults {
+export interface UpgradeSeriesUnitsResults {
   Results: UpgradeSeriesUnitsResult[];
 }
 
-interface Value {
+export interface Value {
   'allocate-public-ip': boolean;
   arch: string;
   container: string;
@@ -236,7 +236,7 @@ interface Value {
   zones: string[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

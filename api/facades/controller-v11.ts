@@ -6,7 +6,7 @@
     Unit-agent
     Controllers
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,17 +15,17 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface AllWatcherId {
+export interface AllWatcherId {
   'watcher-id': string;
 }
 
-interface CloudCredential {
+export interface CloudCredential {
   attrs?: AdditionalProperties;
   'auth-type': string;
   redacted?: string[];
 }
 
-interface CloudSpec {
+export interface CloudSpec {
   cacertificates?: string[];
   credential?: CloudCredential;
   endpoint?: string;
@@ -38,60 +38,60 @@ interface CloudSpec {
   type: string;
 }
 
-interface CloudSpecResult {
+export interface CloudSpecResult {
   error: Error;
   result: CloudSpec;
 }
 
-interface CloudSpecResults {
+export interface CloudSpecResults {
   results: CloudSpecResult[];
 }
 
-interface ConfigValue {
+export interface ConfigValue {
   source: string;
   value: AdditionalProperties;
 }
 
-interface ControllerAPIInfoResult {
+export interface ControllerAPIInfoResult {
   addresses: string[];
   cacert: string;
   error?: Error;
 }
 
-interface ControllerAPIInfoResults {
+export interface ControllerAPIInfoResults {
   results: ControllerAPIInfoResult[];
 }
 
-interface ControllerConfigResult {
+export interface ControllerConfigResult {
   config: AdditionalProperties;
 }
 
-interface ControllerConfigSet {
+export interface ControllerConfigSet {
   config: AdditionalProperties;
 }
 
-interface ControllerVersionResults {
+export interface ControllerVersionResults {
   'git-commit': string;
   version: string;
 }
 
-interface DashboardConnectionInfo {
+export interface DashboardConnectionInfo {
   error?: Error;
   'proxy-connection': DashboardConnectionProxy;
   'ssh-connection': DashboardConnectionSSHTunnel;
 }
 
-interface DashboardConnectionProxy {
+export interface DashboardConnectionProxy {
   config: AdditionalProperties;
   type: string;
 }
 
-interface DashboardConnectionSSHTunnel {
+export interface DashboardConnectionSSHTunnel {
   host: string;
   port: string;
 }
 
-interface DestroyControllerArgs {
+export interface DestroyControllerArgs {
   'destroy-models': boolean;
   'destroy-storage'?: boolean;
   force?: boolean;
@@ -99,29 +99,29 @@ interface DestroyControllerArgs {
   'model-timeout'?: number;
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface HostedModelConfig {
+export interface HostedModelConfig {
   'cloud-spec'?: CloudSpec;
   config?: AdditionalProperties;
   error?: Error;
@@ -129,25 +129,25 @@ interface HostedModelConfig {
   owner: string;
 }
 
-interface HostedModelConfigsResults {
+export interface HostedModelConfigsResults {
   models: HostedModelConfig[];
 }
 
-interface InitiateMigrationArgs {
+export interface InitiateMigrationArgs {
   specs: MigrationSpec[];
 }
 
-interface InitiateMigrationResult {
+export interface InitiateMigrationResult {
   error?: Error;
   'migration-id': string;
   'model-tag': string;
 }
 
-interface InitiateMigrationResults {
+export interface InitiateMigrationResults {
   results: InitiateMigrationResult[];
 }
 
-interface MachineHardware {
+export interface MachineHardware {
   arch: string;
   'availability-zone': string;
   cores: number;
@@ -157,12 +157,12 @@ interface MachineHardware {
   tags: string[];
 }
 
-interface MigrationSpec {
+export interface MigrationSpec {
   'model-tag': string;
   'target-info': MigrationTargetInfo;
 }
 
-interface MigrationTargetInfo {
+export interface MigrationTargetInfo {
   addrs: string[];
   'auth-tag': string;
   'ca-cert': string;
@@ -172,29 +172,29 @@ interface MigrationTargetInfo {
   password?: string;
 }
 
-interface Model {
+export interface Model {
   name: string;
   'owner-tag': string;
   type: string;
   uuid: string;
 }
 
-interface ModelBlockInfo {
+export interface ModelBlockInfo {
   blocks: string[];
   'model-uuid': string;
   name: string;
   'owner-tag': string;
 }
 
-interface ModelBlockInfoList {
+export interface ModelBlockInfoList {
   models: ModelBlockInfo[];
 }
 
-interface ModelConfigResults {
+export interface ModelConfigResults {
   config: AdditionalProperties;
 }
 
-interface ModelFilesystemInfo {
+export interface ModelFilesystemInfo {
   detachable?: boolean;
   id: string;
   message?: string;
@@ -202,7 +202,7 @@ interface ModelFilesystemInfo {
   status?: string;
 }
 
-interface ModelMachineInfo {
+export interface ModelMachineInfo {
   'display-name'?: string;
   'ha-primary'?: boolean;
   hardware?: MachineHardware;
@@ -214,7 +214,7 @@ interface ModelMachineInfo {
   'wants-vote'?: boolean;
 }
 
-interface ModelStatus {
+export interface ModelStatus {
   'application-count': number;
   error?: Error;
   filesystems?: ModelFilesystemInfo[];
@@ -228,15 +228,15 @@ interface ModelStatus {
   volumes?: ModelVolumeInfo[];
 }
 
-interface ModelStatusResults {
+export interface ModelStatusResults {
   models: ModelStatus[];
 }
 
-interface ModelTag {
+export interface ModelTag {
   [key: string]: AdditionalProperties;
 }
 
-interface ModelVolumeInfo {
+export interface ModelVolumeInfo {
   detachable?: boolean;
   id: string;
   message?: string;
@@ -244,62 +244,62 @@ interface ModelVolumeInfo {
   status?: string;
 }
 
-interface ModifyControllerAccess {
+export interface ModifyControllerAccess {
   access: string;
   action: string;
   'user-tag': string;
 }
 
-interface ModifyControllerAccessRequest {
+export interface ModifyControllerAccessRequest {
   changes: ModifyControllerAccess[];
 }
 
-interface NotifyWatchResult {
+export interface NotifyWatchResult {
   NotifyWatcherId: string;
   error?: Error;
 }
 
-interface NotifyWatchResults {
+export interface NotifyWatchResults {
   results: NotifyWatchResult[];
 }
 
-interface RemoveBlocksArgs {
+export interface RemoveBlocksArgs {
   all: boolean;
 }
 
-interface StringResult {
+export interface StringResult {
   error?: Error;
   result: string;
 }
 
-interface SummaryWatcherID {
+export interface SummaryWatcherID {
   'watcher-id': string;
 }
 
-interface UserAccess {
+export interface UserAccess {
   access: string;
   'user-tag': string;
 }
 
-interface UserAccessResult {
+export interface UserAccessResult {
   error: Error;
   result: UserAccess;
 }
 
-interface UserAccessResults {
+export interface UserAccessResults {
   results: UserAccessResult[];
 }
 
-interface UserModel {
+export interface UserModel {
   'last-connection': string;
   model: Model;
 }
 
-interface UserModelList {
+export interface UserModelList {
   'user-models': UserModel[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

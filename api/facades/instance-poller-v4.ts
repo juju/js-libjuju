@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,7 +15,7 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface Address {
+export interface Address {
   cidr?: string;
   'config-type'?: string;
   'is-secondary'?: boolean;
@@ -26,72 +26,72 @@ interface Address {
   value: string;
 }
 
-interface BoolResult {
+export interface BoolResult {
   error?: Error;
   result: boolean;
 }
 
-interface BoolResults {
+export interface BoolResults {
   results: BoolResult[];
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface EntityStatusArgs {
+export interface EntityStatusArgs {
   data: AdditionalProperties;
   info: string;
   status: string;
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface LifeResult {
+export interface LifeResult {
   error?: Error;
   life: string;
 }
 
-interface LifeResults {
+export interface LifeResults {
   results: LifeResult[];
 }
 
-interface MachineAddresses {
+export interface MachineAddresses {
   addresses: Address[];
   tag: string;
 }
 
-interface MachineAddressesResult {
+export interface MachineAddressesResult {
   addresses: Address[];
   error?: Error;
 }
 
-interface MachineAddressesResults {
+export interface MachineAddressesResults {
   results: MachineAddressesResult[];
 }
 
-interface ModelConfigResult {
+export interface ModelConfigResult {
   config: AdditionalProperties;
 }
 
-interface NetworkConfig {
+export interface NetworkConfig {
   address?: string;
   addresses?: Address[];
   cidr: string;
@@ -121,45 +121,45 @@ interface NetworkConfig {
   'vlan-tag': number;
 }
 
-interface NetworkRoute {
+export interface NetworkRoute {
   'destination-cidr': string;
   'gateway-ip': string;
   metric: number;
 }
 
-interface NotifyWatchResult {
+export interface NotifyWatchResult {
   NotifyWatcherId: string;
   error?: Error;
 }
 
-interface ProviderNetworkConfig {
+export interface ProviderNetworkConfig {
   config: NetworkConfig[];
   tag: string;
 }
 
-interface SetMachinesAddresses {
+export interface SetMachinesAddresses {
   'machine-addresses': MachineAddresses[];
 }
 
-interface SetProviderNetworkConfig {
+export interface SetProviderNetworkConfig {
   args: ProviderNetworkConfig[];
 }
 
-interface SetProviderNetworkConfigResult {
+export interface SetProviderNetworkConfigResult {
   addresses: Address[];
   error?: Error;
   modified: boolean;
 }
 
-interface SetProviderNetworkConfigResults {
+export interface SetProviderNetworkConfigResults {
   results: SetProviderNetworkConfigResult[];
 }
 
-interface SetStatus {
+export interface SetStatus {
   entities: EntityStatusArgs[];
 }
 
-interface StatusResult {
+export interface StatusResult {
   data: AdditionalProperties;
   error?: Error;
   id: string;
@@ -169,26 +169,26 @@ interface StatusResult {
   status: string;
 }
 
-interface StatusResults {
+export interface StatusResults {
   results: StatusResult[];
 }
 
-interface StringResult {
+export interface StringResult {
   error?: Error;
   result: string;
 }
 
-interface StringResults {
+export interface StringResults {
   results: StringResult[];
 }
 
-interface StringsWatchResult {
+export interface StringsWatchResult {
   changes?: string[];
   error?: Error;
   'watcher-id': string;
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

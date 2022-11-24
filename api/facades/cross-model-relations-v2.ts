@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,28 +15,28 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface EntityStatus {
+export interface EntityStatus {
   data?: AdditionalProperties;
   info: string;
   since: string;
   status: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface IngressNetworksChangeEvent {
+export interface IngressNetworksChangeEvent {
   'application-token': string;
   'bakery-version'?: number;
   'ingress-required': boolean;
@@ -45,40 +45,40 @@ interface IngressNetworksChangeEvent {
   'relation-token': string;
 }
 
-interface IngressNetworksChanges {
+export interface IngressNetworksChanges {
   changes: IngressNetworksChangeEvent[];
 }
 
-interface Macaroon {
+export interface Macaroon {
   [key: string]: AdditionalProperties;
 }
 
-interface OfferArg {
+export interface OfferArg {
   'bakery-version'?: number;
   macaroons?: Macaroon[];
   'offer-uuid': string;
 }
 
-interface OfferArgs {
+export interface OfferArgs {
   args: OfferArg[];
 }
 
-interface OfferStatusChange {
+export interface OfferStatusChange {
   'offer-name': string;
   status: EntityStatus;
 }
 
-interface OfferStatusWatchResult {
+export interface OfferStatusWatchResult {
   changes: OfferStatusChange[];
   error?: Error;
   'watcher-id': string;
 }
 
-interface OfferStatusWatchResults {
+export interface OfferStatusWatchResults {
   results: OfferStatusWatchResult[];
 }
 
-interface RegisterRemoteRelationArg {
+export interface RegisterRemoteRelationArg {
   'application-token': string;
   'bakery-version'?: number;
   'consume-version'?: number;
@@ -91,54 +91,54 @@ interface RegisterRemoteRelationArg {
   'source-model-tag': string;
 }
 
-interface RegisterRemoteRelationArgs {
+export interface RegisterRemoteRelationArgs {
   relations: RegisterRemoteRelationArg[];
 }
 
-interface RegisterRemoteRelationResult {
+export interface RegisterRemoteRelationResult {
   error: Error;
   result: RemoteRelationDetails;
 }
 
-interface RegisterRemoteRelationResults {
+export interface RegisterRemoteRelationResults {
   results: RegisterRemoteRelationResult[];
 }
 
-interface RelationLifeSuspendedStatusChange {
+export interface RelationLifeSuspendedStatusChange {
   key: string;
   life: string;
   suspended: boolean;
   'suspended-reason': string;
 }
 
-interface RelationLifeSuspendedStatusWatchResult {
+export interface RelationLifeSuspendedStatusWatchResult {
   changes: RelationLifeSuspendedStatusChange[];
   error?: Error;
   'watcher-id': string;
 }
 
-interface RelationStatusWatchResults {
+export interface RelationStatusWatchResults {
   results: RelationLifeSuspendedStatusWatchResult[];
 }
 
-interface RemoteEndpoint {
+export interface RemoteEndpoint {
   interface: string;
   limit: number;
   name: string;
   role: string;
 }
 
-interface RemoteEntityArg {
+export interface RemoteEntityArg {
   'bakery-version'?: number;
   macaroons?: Macaroon[];
   'relation-token': string;
 }
 
-interface RemoteEntityArgs {
+export interface RemoteEntityArgs {
   args: RemoteEntityArg[];
 }
 
-interface RemoteRelationChangeEvent {
+export interface RemoteRelationChangeEvent {
   'application-settings'?: AdditionalProperties;
   'application-token': string;
   'bakery-version'?: number;
@@ -153,32 +153,32 @@ interface RemoteRelationChangeEvent {
   'unit-count': number;
 }
 
-interface RemoteRelationDetails {
+export interface RemoteRelationDetails {
   'bakery-version'?: number;
   macaroon?: Macaroon;
   'relation-token': string;
 }
 
-interface RemoteRelationUnitChange {
+export interface RemoteRelationUnitChange {
   settings?: AdditionalProperties;
   'unit-id': number;
 }
 
-interface RemoteRelationWatchResult {
+export interface RemoteRelationWatchResult {
   changes: RemoteRelationChangeEvent;
   error?: Error;
   'watcher-id': string;
 }
 
-interface RemoteRelationWatchResults {
+export interface RemoteRelationWatchResults {
   results: RemoteRelationWatchResult[];
 }
 
-interface RemoteRelationsChanges {
+export interface RemoteRelationsChanges {
   changes: RemoteRelationChangeEvent[];
 }
 
-interface RemoteSpace {
+export interface RemoteSpace {
   'cloud-type': string;
   name: string;
   'provider-attributes': AdditionalProperties;
@@ -186,17 +186,17 @@ interface RemoteSpace {
   subnets: Subnet[];
 }
 
-interface StringsWatchResult {
+export interface StringsWatchResult {
   changes?: string[];
   error?: Error;
   'watcher-id': string;
 }
 
-interface StringsWatchResults {
+export interface StringsWatchResults {
   results: StringsWatchResult[];
 }
 
-interface Subnet {
+export interface Subnet {
   cidr: string;
   life: string;
   'provider-id'?: string;
@@ -208,7 +208,7 @@ interface Subnet {
   zones: string[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,115 +15,115 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface EntitiesResult {
+export interface EntitiesResult {
   entities: Entity[];
   error?: Error;
 }
 
-interface EntitiesResults {
+export interface EntitiesResults {
   results: EntitiesResult[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface EntityStatusArgs {
+export interface EntityStatusArgs {
   data: AdditionalProperties;
   info: string;
   status: string;
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface NotifyWatchResult {
+export interface NotifyWatchResult {
   NotifyWatcherId: string;
   error?: Error;
 }
 
-interface NotifyWatchResults {
+export interface NotifyWatchResults {
   results: NotifyWatchResult[];
 }
 
-interface PinApplicationResult {
+export interface PinApplicationResult {
   'application-name': string;
   error?: Error;
 }
 
-interface PinApplicationsResults {
+export interface PinApplicationsResults {
   results: PinApplicationResult[];
 }
 
-interface PinnedLeadershipResult {
+export interface PinnedLeadershipResult {
   result: AdditionalProperties;
 }
 
-interface SetStatus {
+export interface SetStatus {
   entities: EntityStatusArgs[];
 }
 
-interface StringResult {
+export interface StringResult {
   error?: Error;
   result: string;
 }
 
-interface StringResults {
+export interface StringResults {
   results: StringResult[];
 }
 
-interface UpdateChannelArg {
+export interface UpdateChannelArg {
   channel: string;
   force: boolean;
   tag: Entity;
 }
 
-interface UpdateChannelArgs {
+export interface UpdateChannelArgs {
   args: UpdateChannelArg[];
 }
 
-interface UpgradeSeriesStartUnitCompletionParam {
+export interface UpgradeSeriesStartUnitCompletionParam {
   entities: Entity[];
   message: string;
 }
 
-interface UpgradeSeriesStatusParam {
+export interface UpgradeSeriesStatusParam {
   entity: Entity;
   message: string;
   status: string;
 }
 
-interface UpgradeSeriesStatusParams {
+export interface UpgradeSeriesStatusParams {
   params: UpgradeSeriesStatusParam[];
 }
 
-interface UpgradeSeriesStatusResult {
+export interface UpgradeSeriesStatusResult {
   error: Error;
   status: string;
   target: string;
 }
 
-interface UpgradeSeriesStatusResults {
+export interface UpgradeSeriesStatusResults {
   results: UpgradeSeriesStatusResult[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,7 +15,7 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface CharmResource {
+export interface CharmResource {
   description?: string;
   fingerprint: number[];
   name: string;
@@ -26,21 +26,21 @@ interface CharmResource {
   type: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ListUnitResourcesArgs {
+export interface ListUnitResourcesArgs {
   'resource-names': string[];
 }
 
-interface Resource {
+export interface Resource {
   CharmResource: CharmResource;
   application: string;
   description?: string;
@@ -57,19 +57,19 @@ interface Resource {
   username: string;
 }
 
-interface UnitResourceResult {
+export interface UnitResourceResult {
   ErrorResult: ErrorResult;
   error?: Error;
   resource: Resource;
 }
 
-interface UnitResourcesResult {
+export interface UnitResourcesResult {
   ErrorResult: ErrorResult;
   error?: Error;
   resources: UnitResourceResult[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

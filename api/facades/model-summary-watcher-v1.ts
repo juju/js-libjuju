@@ -3,7 +3,7 @@
   This facade is available on:
     Controllers
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -12,7 +12,7 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface ModelAbstract {
+export interface ModelAbstract {
   admins?: string[];
   annotations?: AdditionalProperties;
   cloud?: string;
@@ -27,12 +27,12 @@ interface ModelAbstract {
   uuid: string;
 }
 
-interface ModelSummaryMessage {
+export interface ModelSummaryMessage {
   agent: string;
   message: string;
 }
 
-interface ModelSummarySize {
+export interface ModelSummarySize {
   applications: number;
   containers: number;
   machines: number;
@@ -40,11 +40,11 @@ interface ModelSummarySize {
   units: number;
 }
 
-interface SummaryWatcherNextResults {
+export interface SummaryWatcherNextResults {
   models: ModelAbstract[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

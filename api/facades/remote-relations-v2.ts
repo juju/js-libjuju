@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,78 +15,78 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface ControllerAPIInfoResult {
+export interface ControllerAPIInfoResult {
   addresses: string[];
   cacert: string;
   error?: Error;
 }
 
-interface ControllerAPIInfoResults {
+export interface ControllerAPIInfoResults {
   results: ControllerAPIInfoResult[];
 }
 
-interface ControllerConfigResult {
+export interface ControllerConfigResult {
   config: AdditionalProperties;
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface EntityMacaroonArg {
+export interface EntityMacaroonArg {
   macaroon: Macaroon;
   tag: string;
 }
 
-interface EntityMacaroonArgs {
+export interface EntityMacaroonArgs {
   Args: EntityMacaroonArg[];
 }
 
-interface EntityStatusArgs {
+export interface EntityStatusArgs {
   data: AdditionalProperties;
   info: string;
   status: string;
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface ExternalControllerInfo {
+export interface ExternalControllerInfo {
   addrs: string[];
   'ca-cert': string;
   'controller-alias': string;
   'controller-tag': string;
 }
 
-interface GetTokenArg {
+export interface GetTokenArg {
   tag: string;
 }
 
-interface GetTokenArgs {
+export interface GetTokenArgs {
   Args: GetTokenArg[];
 }
 
-interface Macaroon {
+export interface Macaroon {
   [key: string]: AdditionalProperties;
 }
 
-interface RemoteApplication {
+export interface RemoteApplication {
   'consume-version'?: number;
   'is-consumer-proxy': boolean;
   life?: string;
@@ -97,32 +97,32 @@ interface RemoteApplication {
   status?: string;
 }
 
-interface RemoteApplicationResult {
+export interface RemoteApplicationResult {
   error: Error;
   result: RemoteApplication;
 }
 
-interface RemoteApplicationResults {
+export interface RemoteApplicationResults {
   results: RemoteApplicationResult[];
 }
 
-interface RemoteEndpoint {
+export interface RemoteEndpoint {
   interface: string;
   limit: number;
   name: string;
   role: string;
 }
 
-interface RemoteEntityTokenArg {
+export interface RemoteEntityTokenArg {
   tag: string;
   token?: string;
 }
 
-interface RemoteEntityTokenArgs {
+export interface RemoteEntityTokenArgs {
   Args: RemoteEntityTokenArg[];
 }
 
-interface RemoteRelation {
+export interface RemoteRelation {
   'application-name': string;
   endpoint: RemoteEndpoint;
   id: number;
@@ -135,7 +135,7 @@ interface RemoteRelation {
   'unit-count': number;
 }
 
-interface RemoteRelationChangeEvent {
+export interface RemoteRelationChangeEvent {
   'application-settings'?: AdditionalProperties;
   'application-token': string;
   'bakery-version'?: number;
@@ -150,76 +150,76 @@ interface RemoteRelationChangeEvent {
   'unit-count': number;
 }
 
-interface RemoteRelationResult {
+export interface RemoteRelationResult {
   error: Error;
   result: RemoteRelation;
 }
 
-interface RemoteRelationResults {
+export interface RemoteRelationResults {
   results: RemoteRelationResult[];
 }
 
-interface RemoteRelationUnitChange {
+export interface RemoteRelationUnitChange {
   settings?: AdditionalProperties;
   'unit-id': number;
 }
 
-interface RemoteRelationWatchResult {
+export interface RemoteRelationWatchResult {
   changes: RemoteRelationChangeEvent;
   error?: Error;
   'watcher-id': string;
 }
 
-interface RemoteRelationWatchResults {
+export interface RemoteRelationWatchResults {
   results: RemoteRelationWatchResult[];
 }
 
-interface RemoteRelationsChanges {
+export interface RemoteRelationsChanges {
   changes: RemoteRelationChangeEvent[];
 }
 
-interface SetStatus {
+export interface SetStatus {
   entities: EntityStatusArgs[];
 }
 
-interface StringResult {
+export interface StringResult {
   error?: Error;
   result: string;
 }
 
-interface StringResults {
+export interface StringResults {
   results: StringResult[];
 }
 
-interface StringsWatchResult {
+export interface StringsWatchResult {
   changes?: string[];
   error?: Error;
   'watcher-id': string;
 }
 
-interface StringsWatchResults {
+export interface StringsWatchResults {
   results: StringsWatchResult[];
 }
 
-interface TokenResult {
+export interface TokenResult {
   error: Error;
   token: string;
 }
 
-interface TokenResults {
+export interface TokenResults {
   results: TokenResult[];
 }
 
-interface UpdateControllerForModel {
+export interface UpdateControllerForModel {
   info: ExternalControllerInfo;
   'model-tag': string;
 }
 
-interface UpdateControllersForModelsParams {
+export interface UpdateControllersForModelsParams {
   changes: UpdateControllerForModel[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

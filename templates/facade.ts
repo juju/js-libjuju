@@ -22,7 +22,7 @@ export default (f: FacadeTemplate): string => {
 
   const generateInterface = (i) => {
     return `
-interface ${i.name} {
+export interface ${i.name} {
 ${i.types.map(t => {
   let name: string = t.name;
   if (name.indexOf('-') !== -1) {

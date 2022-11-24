@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,7 +15,7 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface BlockDevice {
+export interface BlockDevice {
   BusAddress: string;
   DeviceLinks: string[];
   DeviceName: string;
@@ -30,62 +30,62 @@ interface BlockDevice {
   WWN: string;
 }
 
-interface BlockDeviceResult {
+export interface BlockDeviceResult {
   error?: Error;
   result: BlockDevice;
 }
 
-interface BlockDeviceResults {
+export interface BlockDeviceResults {
   results: BlockDeviceResult[];
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface EntityStatusArgs {
+export interface EntityStatusArgs {
   data: AdditionalProperties;
   info: string;
   status: string;
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface Filesystem {
+export interface Filesystem {
   'filesystem-tag': string;
   info: FilesystemInfo;
   'volume-tag'?: string;
 }
 
-interface FilesystemAttachment {
+export interface FilesystemAttachment {
   'filesystem-tag': string;
   info: FilesystemAttachmentInfo;
   'machine-tag': string;
 }
 
-interface FilesystemAttachmentInfo {
+export interface FilesystemAttachmentInfo {
   'mount-point': string;
   'read-only': boolean;
 }
 
-interface FilesystemAttachmentParams {
+export interface FilesystemAttachmentParams {
   'filesystem-id'?: string;
   'filesystem-tag': string;
   'instance-id'?: string;
@@ -95,35 +95,35 @@ interface FilesystemAttachmentParams {
   'read-only'?: boolean;
 }
 
-interface FilesystemAttachmentParamsResult {
+export interface FilesystemAttachmentParamsResult {
   error?: Error;
   result: FilesystemAttachmentParams;
 }
 
-interface FilesystemAttachmentParamsResults {
+export interface FilesystemAttachmentParamsResults {
   results: FilesystemAttachmentParamsResult[];
 }
 
-interface FilesystemAttachmentResult {
+export interface FilesystemAttachmentResult {
   error?: Error;
   result: FilesystemAttachment;
 }
 
-interface FilesystemAttachmentResults {
+export interface FilesystemAttachmentResults {
   results: FilesystemAttachmentResult[];
 }
 
-interface FilesystemAttachments {
+export interface FilesystemAttachments {
   'filesystem-attachments': FilesystemAttachment[];
 }
 
-interface FilesystemInfo {
+export interface FilesystemInfo {
   'filesystem-id': string;
   pool: string;
   size: number;
 }
 
-interface FilesystemParams {
+export interface FilesystemParams {
   attachment?: FilesystemAttachmentParams;
   attributes?: AdditionalProperties;
   'filesystem-tag': string;
@@ -133,130 +133,130 @@ interface FilesystemParams {
   'volume-tag'?: string;
 }
 
-interface FilesystemParamsResult {
+export interface FilesystemParamsResult {
   error?: Error;
   result: FilesystemParams;
 }
 
-interface FilesystemParamsResults {
+export interface FilesystemParamsResults {
   results: FilesystemParamsResult[];
 }
 
-interface FilesystemResult {
+export interface FilesystemResult {
   error?: Error;
   result: Filesystem;
 }
 
-interface FilesystemResults {
+export interface FilesystemResults {
   results: FilesystemResult[];
 }
 
-interface Filesystems {
+export interface Filesystems {
   filesystems: Filesystem[];
 }
 
-interface LifeResult {
+export interface LifeResult {
   error?: Error;
   life: string;
 }
 
-interface LifeResults {
+export interface LifeResults {
   results: LifeResult[];
 }
 
-interface MachineStorageId {
+export interface MachineStorageId {
   'attachment-tag': string;
   'machine-tag': string;
 }
 
-interface MachineStorageIds {
+export interface MachineStorageIds {
   ids: MachineStorageId[];
 }
 
-interface MachineStorageIdsWatchResult {
+export interface MachineStorageIdsWatchResult {
   changes: MachineStorageId[];
   error?: Error;
   'watcher-id': string;
 }
 
-interface MachineStorageIdsWatchResults {
+export interface MachineStorageIdsWatchResults {
   results: MachineStorageIdsWatchResult[];
 }
 
-interface NotifyWatchResult {
+export interface NotifyWatchResult {
   NotifyWatcherId: string;
   error?: Error;
 }
 
-interface NotifyWatchResults {
+export interface NotifyWatchResults {
   results: NotifyWatchResult[];
 }
 
-interface RemoveFilesystemParams {
+export interface RemoveFilesystemParams {
   destroy?: boolean;
   'filesystem-id': string;
   provider: string;
 }
 
-interface RemoveFilesystemParamsResult {
+export interface RemoveFilesystemParamsResult {
   error?: Error;
   result: RemoveFilesystemParams;
 }
 
-interface RemoveFilesystemParamsResults {
+export interface RemoveFilesystemParamsResults {
   results: RemoveFilesystemParamsResult[];
 }
 
-interface RemoveVolumeParams {
+export interface RemoveVolumeParams {
   destroy?: boolean;
   provider: string;
   'volume-id': string;
 }
 
-interface RemoveVolumeParamsResult {
+export interface RemoveVolumeParamsResult {
   error?: Error;
   result: RemoveVolumeParams;
 }
 
-interface RemoveVolumeParamsResults {
+export interface RemoveVolumeParamsResults {
   results: RemoveVolumeParamsResult[];
 }
 
-interface SetStatus {
+export interface SetStatus {
   entities: EntityStatusArgs[];
 }
 
-interface StringResult {
+export interface StringResult {
   error?: Error;
   result: string;
 }
 
-interface StringResults {
+export interface StringResults {
   results: StringResult[];
 }
 
-interface StringsWatchResult {
+export interface StringsWatchResult {
   changes?: string[];
   error?: Error;
   'watcher-id': string;
 }
 
-interface StringsWatchResults {
+export interface StringsWatchResults {
   results: StringsWatchResult[];
 }
 
-interface Volume {
+export interface Volume {
   info: VolumeInfo;
   'volume-tag': string;
 }
 
-interface VolumeAttachment {
+export interface VolumeAttachment {
   info: VolumeAttachmentInfo;
   'machine-tag': string;
   'volume-tag': string;
 }
 
-interface VolumeAttachmentInfo {
+export interface VolumeAttachmentInfo {
   'bus-address': string;
   'device-link': string;
   'device-name': string;
@@ -264,7 +264,7 @@ interface VolumeAttachmentInfo {
   'read-only': boolean;
 }
 
-interface VolumeAttachmentParams {
+export interface VolumeAttachmentParams {
   'instance-id'?: string;
   'machine-tag': string;
   provider: string;
@@ -273,16 +273,16 @@ interface VolumeAttachmentParams {
   'volume-tag': string;
 }
 
-interface VolumeAttachmentParamsResult {
+export interface VolumeAttachmentParamsResult {
   error?: Error;
   result: VolumeAttachmentParams;
 }
 
-interface VolumeAttachmentParamsResults {
+export interface VolumeAttachmentParamsResults {
   results: VolumeAttachmentParamsResult[];
 }
 
-interface VolumeAttachmentPlan {
+export interface VolumeAttachmentPlan {
   'block-device'?: BlockDevice;
   life?: string;
   'machine-tag': string;
@@ -290,38 +290,38 @@ interface VolumeAttachmentPlan {
   'volume-tag': string;
 }
 
-interface VolumeAttachmentPlanInfo {
+export interface VolumeAttachmentPlanInfo {
   'device-attributes': AdditionalProperties;
   'device-type': string;
 }
 
-interface VolumeAttachmentPlanResult {
+export interface VolumeAttachmentPlanResult {
   error?: Error;
   result: VolumeAttachmentPlan;
 }
 
-interface VolumeAttachmentPlanResults {
+export interface VolumeAttachmentPlanResults {
   results: VolumeAttachmentPlanResult[];
 }
 
-interface VolumeAttachmentPlans {
+export interface VolumeAttachmentPlans {
   'volume-plans': VolumeAttachmentPlan[];
 }
 
-interface VolumeAttachmentResult {
+export interface VolumeAttachmentResult {
   error?: Error;
   result: VolumeAttachment;
 }
 
-interface VolumeAttachmentResults {
+export interface VolumeAttachmentResults {
   results: VolumeAttachmentResult[];
 }
 
-interface VolumeAttachments {
+export interface VolumeAttachments {
   'volume-attachments': VolumeAttachment[];
 }
 
-interface VolumeInfo {
+export interface VolumeInfo {
   'hardware-id'?: string;
   persistent: boolean;
   pool?: string;
@@ -330,7 +330,7 @@ interface VolumeInfo {
   wwn?: string;
 }
 
-interface VolumeParams {
+export interface VolumeParams {
   attachment?: VolumeAttachmentParams;
   attributes?: AdditionalProperties;
   provider: string;
@@ -339,29 +339,29 @@ interface VolumeParams {
   'volume-tag': string;
 }
 
-interface VolumeParamsResult {
+export interface VolumeParamsResult {
   error?: Error;
   result: VolumeParams;
 }
 
-interface VolumeParamsResults {
+export interface VolumeParamsResults {
   results: VolumeParamsResult[];
 }
 
-interface VolumeResult {
+export interface VolumeResult {
   error?: Error;
   result: Volume;
 }
 
-interface VolumeResults {
+export interface VolumeResults {
   results: VolumeResult[];
 }
 
-interface Volumes {
+export interface Volumes {
   volumes: Volume[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

@@ -4,7 +4,7 @@
     Controller-machine-agent
     Machine-agent
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -13,7 +13,7 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface Action {
+export interface Action {
   'execution-group'?: string;
   name: string;
   parallel?: boolean;
@@ -22,23 +22,23 @@ interface Action {
   tag: string;
 }
 
-interface ActionExecutionResult {
+export interface ActionExecutionResult {
   'action-tag': string;
   message?: string;
   results?: AdditionalProperties;
   status: string;
 }
 
-interface ActionExecutionResults {
+export interface ActionExecutionResults {
   results: ActionExecutionResult[];
 }
 
-interface ActionMessage {
+export interface ActionMessage {
   message: string;
   timestamp: string;
 }
 
-interface ActionResult {
+export interface ActionResult {
   action: Action;
   completed: string;
   enqueued: string;
@@ -50,53 +50,53 @@ interface ActionResult {
   status: string;
 }
 
-interface ActionResults {
+export interface ActionResults {
   results: ActionResult[];
 }
 
-interface ActionsByReceiver {
+export interface ActionsByReceiver {
   actions: ActionResult[];
   error: Error;
   receiver: string;
 }
 
-interface ActionsByReceivers {
+export interface ActionsByReceivers {
   actions: ActionsByReceiver[];
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface StringsWatchResult {
+export interface StringsWatchResult {
   changes?: string[];
   error?: Error;
   'watcher-id': string;
 }
 
-interface StringsWatchResults {
+export interface StringsWatchResults {
   results: StringsWatchResult[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

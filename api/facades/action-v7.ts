@@ -3,7 +3,7 @@
   This facade is available on:
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -12,7 +12,7 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface Action {
+export interface Action {
   'execution-group'?: string;
   name: string;
   parallel?: boolean;
@@ -21,12 +21,12 @@ interface Action {
   tag: string;
 }
 
-interface ActionMessage {
+export interface ActionMessage {
   message: string;
   timestamp: string;
 }
 
-interface ActionResult {
+export interface ActionResult {
   action: Action;
   completed: string;
   enqueued: string;
@@ -38,49 +38,49 @@ interface ActionResult {
   status: string;
 }
 
-interface ActionResults {
+export interface ActionResults {
   results: ActionResult[];
 }
 
-interface ActionSpec {
+export interface ActionSpec {
   description: string;
   params: AdditionalProperties;
 }
 
-interface Actions {
+export interface Actions {
   actions: Action[];
 }
 
-interface ApplicationCharmActionsResult {
+export interface ApplicationCharmActionsResult {
   actions: AdditionalProperties;
   'application-tag': string;
   error: Error;
 }
 
-interface ApplicationsCharmActionsResults {
+export interface ApplicationsCharmActionsResults {
   results: ApplicationCharmActionsResult[];
 }
 
-interface EnqueuedActions {
+export interface EnqueuedActions {
   actions?: ActionResult[];
   operation: string;
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface OperationQueryArgs {
+export interface OperationQueryArgs {
   actions: string[];
   applications: string[];
   limit: number;
@@ -90,7 +90,7 @@ interface OperationQueryArgs {
   units: string[];
 }
 
-interface OperationResult {
+export interface OperationResult {
   actions?: ActionResult[];
   completed?: string;
   enqueued?: string;
@@ -102,12 +102,12 @@ interface OperationResult {
   summary: string;
 }
 
-interface OperationResults {
+export interface OperationResults {
   results: OperationResult[];
   truncated: boolean;
 }
 
-interface RunParams {
+export interface RunParams {
   applications?: string[];
   commands: string;
   'execution-group'?: string;
@@ -118,17 +118,17 @@ interface RunParams {
   'workload-context'?: boolean;
 }
 
-interface StringsWatchResult {
+export interface StringsWatchResult {
   changes?: string[];
   error?: Error;
   'watcher-id': string;
 }
 
-interface StringsWatchResults {
+export interface StringsWatchResults {
   results: StringsWatchResult[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

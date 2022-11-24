@@ -4,7 +4,7 @@
     Controller-machine-agent
     Machine-agent
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -13,11 +13,11 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface APIHostPortsResult {
+export interface APIHostPortsResult {
   servers: HostPort[][];
 }
 
-interface Address {
+export interface Address {
   cidr?: string;
   'config-type'?: string;
   'is-secondary'?: boolean;
@@ -28,12 +28,12 @@ interface Address {
   value: string;
 }
 
-interface Base {
+export interface Base {
   channel: string;
   name: string;
 }
 
-interface Binary {
+export interface Binary {
   Arch: string;
   Build: number;
   Major: number;
@@ -44,26 +44,26 @@ interface Binary {
   Tag: string;
 }
 
-interface BoolResult {
+export interface BoolResult {
   error?: Error;
   result: boolean;
 }
 
-interface BoolResults {
+export interface BoolResults {
   results: BoolResult[];
 }
 
-interface BytesResult {
+export interface BytesResult {
   result: number[];
 }
 
-interface CharmLXDProfile {
+export interface CharmLXDProfile {
   config: AdditionalProperties;
   description: string;
   devices: AdditionalProperties;
 }
 
-interface CloudImageMetadata {
+export interface CloudImageMetadata {
   arch: string;
   'image-id': string;
   priority: number;
@@ -76,16 +76,16 @@ interface CloudImageMetadata {
   'virt-type'?: string;
 }
 
-interface ConstraintsResult {
+export interface ConstraintsResult {
   constraints: Value;
   error?: Error;
 }
 
-interface ConstraintsResults {
+export interface ConstraintsResults {
   results: ConstraintsResult[];
 }
 
-interface ContainerConfig {
+export interface ContainerConfig {
   UpdateBehavior: UpdateBehavior;
   'apt-mirror'?: string;
   'apt-proxy': Settings;
@@ -102,96 +102,96 @@ interface ContainerConfig {
   'ssl-hostname-verification': boolean;
 }
 
-interface ContainerLXDProfile {
+export interface ContainerLXDProfile {
   name: string;
   profile: CharmLXDProfile;
 }
 
-interface ContainerManagerConfig {
+export interface ContainerManagerConfig {
   config: AdditionalProperties;
 }
 
-interface ContainerManagerConfigParams {
+export interface ContainerManagerConfigParams {
   type: string;
 }
 
-interface ContainerProfileResult {
+export interface ContainerProfileResult {
   error: Error;
   'lxd-profiles': ContainerLXDProfile[];
 }
 
-interface ContainerProfileResults {
+export interface ContainerProfileResults {
   results: ContainerProfileResult[];
 }
 
-interface ControllerAPIInfoResult {
+export interface ControllerAPIInfoResult {
   addresses: string[];
   cacert: string;
   error?: Error;
 }
 
-interface ControllerAPIInfoResults {
+export interface ControllerAPIInfoResults {
   results: ControllerAPIInfoResult[];
 }
 
-interface ControllerConfigResult {
+export interface ControllerConfigResult {
   config: AdditionalProperties;
 }
 
-interface DeviceBridgeInfo {
+export interface DeviceBridgeInfo {
   'bridge-name': string;
   'host-device-name': string;
   'mac-address': string;
 }
 
-interface DistributionGroupResult {
+export interface DistributionGroupResult {
   error?: Error;
   result: string[];
 }
 
-interface DistributionGroupResults {
+export interface DistributionGroupResults {
   results: DistributionGroupResult[];
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface EntityPassword {
+export interface EntityPassword {
   password: string;
   tag: string;
 }
 
-interface EntityPasswords {
+export interface EntityPasswords {
   changes: EntityPassword[];
 }
 
-interface EntityStatusArgs {
+export interface EntityStatusArgs {
   data: AdditionalProperties;
   info: string;
   status: string;
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface FindToolsParams {
+export interface FindToolsParams {
   agentstream: string;
   arch: string;
   major: number;
@@ -200,12 +200,12 @@ interface FindToolsParams {
   'os-type': string;
 }
 
-interface FindToolsResult {
+export interface FindToolsResult {
   error?: Error;
   list: Tools[];
 }
 
-interface HardwareCharacteristics {
+export interface HardwareCharacteristics {
   arch: string;
   'availability-zone': string;
   'cpu-cores': number;
@@ -216,17 +216,17 @@ interface HardwareCharacteristics {
   tags: string[];
 }
 
-interface HostNetworkChange {
+export interface HostNetworkChange {
   error?: Error;
   'new-bridges': DeviceBridgeInfo[];
   'reconfigure-delay': number;
 }
 
-interface HostNetworkChangeResults {
+export interface HostNetworkChangeResults {
   results: HostNetworkChange[];
 }
 
-interface HostPort {
+export interface HostPort {
   Address: Address;
   cidr?: string;
   'config-type'?: string;
@@ -239,7 +239,7 @@ interface HostPort {
   value: string;
 }
 
-interface InstanceInfo {
+export interface InstanceInfo {
   characteristics: HardwareCharacteristics;
   'charm-profiles': string[];
   'display-name': string;
@@ -251,52 +251,52 @@ interface InstanceInfo {
   volumes: Volume[];
 }
 
-interface InstancesInfo {
+export interface InstancesInfo {
   machines: InstanceInfo[];
 }
 
-interface LifeResult {
+export interface LifeResult {
   error?: Error;
   life: string;
 }
 
-interface LifeResults {
+export interface LifeResults {
   results: LifeResult[];
 }
 
-interface MachineContainerResult {
+export interface MachineContainerResult {
   'container-types': string[];
   determined: boolean;
   error?: Error;
 }
 
-interface MachineContainerResults {
+export interface MachineContainerResults {
   results: MachineContainerResult[];
 }
 
-interface MachineContainers {
+export interface MachineContainers {
   'container-types': string[];
   'machine-tag': string;
 }
 
-interface MachineContainersParams {
+export interface MachineContainersParams {
   params: MachineContainers[];
 }
 
-interface MachineNetworkConfigResult {
+export interface MachineNetworkConfigResult {
   error?: Error;
   info: NetworkConfig[];
 }
 
-interface MachineNetworkConfigResults {
+export interface MachineNetworkConfigResults {
   results: MachineNetworkConfigResult[];
 }
 
-interface ModelConfigResult {
+export interface ModelConfigResult {
   config: AdditionalProperties;
 }
 
-interface NetworkConfig {
+export interface NetworkConfig {
   address?: string;
   addresses?: Address[];
   cidr: string;
@@ -326,18 +326,18 @@ interface NetworkConfig {
   'vlan-tag': number;
 }
 
-interface NetworkRoute {
+export interface NetworkRoute {
   'destination-cidr': string;
   'gateway-ip': string;
   metric: number;
 }
 
-interface NotifyWatchResult {
+export interface NotifyWatchResult {
   NotifyWatcherId: string;
   error?: Error;
 }
 
-interface Number {
+export interface Number {
   Build: number;
   Major: number;
   Minor: number;
@@ -345,7 +345,7 @@ interface Number {
   Tag: string;
 }
 
-interface ProvisioningInfo {
+export interface ProvisioningInfo {
   ProvisioningNetworkTopology: ProvisioningNetworkTopology;
   base: Base;
   'charm-lxd-profiles'?: string[];
@@ -364,39 +364,39 @@ interface ProvisioningInfo {
   volumes?: VolumeParams[];
 }
 
-interface ProvisioningInfoResult {
+export interface ProvisioningInfoResult {
   error?: Error;
   result: ProvisioningInfo;
 }
 
-interface ProvisioningInfoResults {
+export interface ProvisioningInfoResults {
   results: ProvisioningInfoResult[];
 }
 
-interface ProvisioningNetworkTopology {
+export interface ProvisioningNetworkTopology {
   'space-subnets': AdditionalProperties;
   'subnet-zones': AdditionalProperties;
 }
 
-interface SetMachineNetworkConfig {
+export interface SetMachineNetworkConfig {
   config: NetworkConfig[];
   tag: string;
 }
 
-interface SetProfileArg {
+export interface SetProfileArg {
   entity: Entity;
   profiles: string[];
 }
 
-interface SetProfileArgs {
+export interface SetProfileArgs {
   args: SetProfileArg[];
 }
 
-interface SetStatus {
+export interface SetStatus {
   entities: EntityStatusArgs[];
 }
 
-interface Settings {
+export interface Settings {
   AutoNoProxy: string;
   Ftp: string;
   Http: string;
@@ -404,7 +404,7 @@ interface Settings {
   NoProxy: string;
 }
 
-interface StatusResult {
+export interface StatusResult {
   data: AdditionalProperties;
   error?: Error;
   id: string;
@@ -414,60 +414,60 @@ interface StatusResult {
   status: string;
 }
 
-interface StatusResults {
+export interface StatusResults {
   results: StatusResult[];
 }
 
-interface StringResult {
+export interface StringResult {
   error?: Error;
   result: string;
 }
 
-interface StringResults {
+export interface StringResults {
   results: StringResult[];
 }
 
-interface StringsResult {
+export interface StringsResult {
   error: Error;
   result: string[];
 }
 
-interface StringsResults {
+export interface StringsResults {
   results: StringsResult[];
 }
 
-interface StringsWatchResult {
+export interface StringsWatchResult {
   changes?: string[];
   error?: Error;
   'watcher-id': string;
 }
 
-interface StringsWatchResults {
+export interface StringsWatchResults {
   results: StringsWatchResult[];
 }
 
-interface Tools {
+export interface Tools {
   sha256?: string;
   size: number;
   url: string;
   version: Binary;
 }
 
-interface ToolsResult {
+export interface ToolsResult {
   error?: Error;
   tools: Tools[];
 }
 
-interface ToolsResults {
+export interface ToolsResults {
   results: ToolsResult[];
 }
 
-interface UpdateBehavior {
+export interface UpdateBehavior {
   'enable-os-refresh-update': boolean;
   'enable-os-upgrade': boolean;
 }
 
-interface Value {
+export interface Value {
   'allocate-public-ip': boolean;
   arch: string;
   container: string;
@@ -484,12 +484,12 @@ interface Value {
   zones: string[];
 }
 
-interface Volume {
+export interface Volume {
   info: VolumeInfo;
   'volume-tag': string;
 }
 
-interface VolumeAttachmentInfo {
+export interface VolumeAttachmentInfo {
   'bus-address': string;
   'device-link': string;
   'device-name': string;
@@ -497,7 +497,7 @@ interface VolumeAttachmentInfo {
   'read-only': boolean;
 }
 
-interface VolumeAttachmentParams {
+export interface VolumeAttachmentParams {
   'instance-id'?: string;
   'machine-tag': string;
   provider: string;
@@ -506,12 +506,12 @@ interface VolumeAttachmentParams {
   'volume-tag': string;
 }
 
-interface VolumeAttachmentPlanInfo {
+export interface VolumeAttachmentPlanInfo {
   'device-attributes': AdditionalProperties;
   'device-type': string;
 }
 
-interface VolumeInfo {
+export interface VolumeInfo {
   'hardware-id'?: string;
   persistent: boolean;
   pool?: string;
@@ -520,7 +520,7 @@ interface VolumeInfo {
   wwn?: string;
 }
 
-interface VolumeParams {
+export interface VolumeParams {
   attachment?: VolumeAttachmentParams;
   attributes?: AdditionalProperties;
   provider: string;
@@ -529,16 +529,16 @@ interface VolumeParams {
   'volume-tag': string;
 }
 
-interface WatchContainer {
+export interface WatchContainer {
   'container-type': string;
   'machine-tag': string;
 }
 
-interface WatchContainers {
+export interface WatchContainers {
   params: WatchContainer[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

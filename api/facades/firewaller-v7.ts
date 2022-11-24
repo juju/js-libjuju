@@ -6,7 +6,7 @@
     Unit-agent
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -15,22 +15,22 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface BoolResult {
+export interface BoolResult {
   error?: Error;
   result: boolean;
 }
 
-interface BoolResults {
+export interface BoolResults {
   results: BoolResult[];
 }
 
-interface CloudCredential {
+export interface CloudCredential {
   attrs?: AdditionalProperties;
   'auth-type': string;
   redacted?: string[];
 }
 
-interface CloudSpec {
+export interface CloudSpec {
   cacertificates?: string[];
   credential?: CloudCredential;
   endpoint?: string;
@@ -43,190 +43,190 @@ interface CloudSpec {
   type: string;
 }
 
-interface CloudSpecResult {
+export interface CloudSpecResult {
   error: Error;
   result: CloudSpec;
 }
 
-interface CloudSpecResults {
+export interface CloudSpecResults {
   results: CloudSpecResult[];
 }
 
-interface ControllerAPIInfoResult {
+export interface ControllerAPIInfoResult {
   addresses: string[];
   cacert: string;
   error?: Error;
 }
 
-interface ControllerAPIInfoResults {
+export interface ControllerAPIInfoResults {
   results: ControllerAPIInfoResult[];
 }
 
-interface ControllerConfigResult {
+export interface ControllerConfigResult {
   config: AdditionalProperties;
 }
 
-interface Entities {
+export interface Entities {
   entities: Entity[];
 }
 
-interface Entity {
+export interface Entity {
   tag: string;
 }
 
-interface EntityStatusArgs {
+export interface EntityStatusArgs {
   data: AdditionalProperties;
   info: string;
   status: string;
   tag: string;
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface ExposeInfoResult {
+export interface ExposeInfoResult {
   error: Error;
   exposed: boolean;
   'exposed-endpoints': AdditionalProperties;
 }
 
-interface ExposeInfoResults {
+export interface ExposeInfoResults {
   results: ExposeInfoResult[];
 }
 
-interface ExposedEndpoint {
+export interface ExposedEndpoint {
   'expose-to-cidrs': string[];
   'expose-to-spaces': string[];
 }
 
-interface FanConfigEntry {
+export interface FanConfigEntry {
   overlay: string;
   underlay: string;
 }
 
-interface FirewallRule {
+export interface FirewallRule {
   'known-service': string;
   'whitelist-cidrs'?: string[];
 }
 
-interface KnownServiceArgs {
+export interface KnownServiceArgs {
   'known-services': string[];
 }
 
-interface LifeResult {
+export interface LifeResult {
   error?: Error;
   life: string;
 }
 
-interface LifeResults {
+export interface LifeResults {
   results: LifeResult[];
 }
 
-interface ListFirewallRulesResults {
+export interface ListFirewallRulesResults {
   Rules: FirewallRule[];
 }
 
-interface Macaroon {
+export interface Macaroon {
   [key: string]: AdditionalProperties;
 }
 
-interface MacaroonResult {
+export interface MacaroonResult {
   error: Error;
   result: Macaroon;
 }
 
-interface MacaroonResults {
+export interface MacaroonResults {
   results: MacaroonResult[];
 }
 
-interface ModelConfigResult {
+export interface ModelConfigResult {
   config: AdditionalProperties;
 }
 
-interface ModelTag {
+export interface ModelTag {
   [key: string]: AdditionalProperties;
 }
 
-interface NotifyWatchResult {
+export interface NotifyWatchResult {
   NotifyWatcherId: string;
   error?: Error;
 }
 
-interface NotifyWatchResults {
+export interface NotifyWatchResults {
   results: NotifyWatchResult[];
 }
 
-interface OpenMachinePortRangesResult {
+export interface OpenMachinePortRangesResult {
   error?: Error;
   'unit-port-ranges': AdditionalProperties;
 }
 
-interface OpenMachinePortRangesResults {
+export interface OpenMachinePortRangesResults {
   results: OpenMachinePortRangesResult[];
 }
 
-interface OpenUnitPortRanges {
+export interface OpenUnitPortRanges {
   endpoint: string;
   'port-ranges': PortRange[];
   'subnet-cidrs': string[];
 }
 
-interface PortRange {
+export interface PortRange {
   'from-port': number;
   protocol: string;
   'to-port': number;
 }
 
-interface SetStatus {
+export interface SetStatus {
   entities: EntityStatusArgs[];
 }
 
-interface SpaceInfo {
+export interface SpaceInfo {
   id: string;
   name: string;
   'provider-id'?: string;
   subnets?: SubnetV3[];
 }
 
-interface SpaceInfos {
+export interface SpaceInfos {
   'space-infos': SpaceInfo[];
 }
 
-interface SpaceInfosParams {
+export interface SpaceInfosParams {
   'space-ids': string[];
 }
 
-interface StringResult {
+export interface StringResult {
   error?: Error;
   result: string;
 }
 
-interface StringResults {
+export interface StringResults {
   results: StringResult[];
 }
 
-interface StringsWatchResult {
+export interface StringsWatchResult {
   changes?: string[];
   error?: Error;
   'watcher-id': string;
 }
 
-interface StringsWatchResults {
+export interface StringsWatchResults {
   results: StringsWatchResult[];
 }
 
-interface Subnet {
+export interface Subnet {
   cidr: string;
   life: string;
   'provider-id'?: string;
@@ -238,7 +238,7 @@ interface Subnet {
   zones: string[];
 }
 
-interface SubnetV2 {
+export interface SubnetV2 {
   Subnet: Subnet;
   cidr: string;
   id?: string;
@@ -252,7 +252,7 @@ interface SubnetV2 {
   zones: string[];
 }
 
-interface SubnetV3 {
+export interface SubnetV3 {
   Subnet: Subnet;
   SubnetV2: SubnetV2;
   cidr: string;
@@ -270,7 +270,7 @@ interface SubnetV3 {
   zones: string[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 

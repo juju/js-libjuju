@@ -3,7 +3,7 @@
   This facade is available on:
     Models
 
-  NOTE: This file was generated on Tue, 01 Nov 2022 13:55:02 GMT using
+  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
@@ -12,34 +12,34 @@ import { autoBind } from "../utils.js";
 import type { JujuRequest } from "../../generator/interfaces";
 
 
-interface AddCharmWithAuth {
+export interface AddCharmWithAuth {
   'charm-origin': CharmOrigin;
   force: boolean;
   macaroon: Macaroon;
   url: string;
 }
 
-interface AddCharmWithOrigin {
+export interface AddCharmWithOrigin {
   'charm-origin': CharmOrigin;
   force: boolean;
   url: string;
 }
 
-interface ApplicationCharmPlacement {
+export interface ApplicationCharmPlacement {
   application: string;
   'charm-url': string;
 }
 
-interface ApplicationCharmPlacements {
+export interface ApplicationCharmPlacements {
   placements: ApplicationCharmPlacement[];
 }
 
-interface Base {
+export interface Base {
   channel: string;
   name: string;
 }
 
-interface Charm {
+export interface Charm {
   actions?: CharmActions;
   config: AdditionalProperties;
   'lxd-profile'?: CharmLXDProfile;
@@ -50,34 +50,34 @@ interface Charm {
   url: string;
 }
 
-interface CharmActionSpec {
+export interface CharmActionSpec {
   description: string;
   params: AdditionalProperties;
 }
 
-interface CharmActions {
+export interface CharmActions {
   specs: AdditionalProperties;
 }
 
-interface CharmBase {
+export interface CharmBase {
   architectures: string[];
   channel: string;
   name: string;
 }
 
-interface CharmContainer {
+export interface CharmContainer {
   mounts: CharmMount[];
   resource: string;
 }
 
-interface CharmDeployment {
+export interface CharmDeployment {
   'min-version': string;
   mode: string;
   service: string;
   type: string;
 }
 
-interface CharmDevice {
+export interface CharmDevice {
   CountMax: number;
   CountMin: number;
   Description: string;
@@ -85,17 +85,17 @@ interface CharmDevice {
   Type: string;
 }
 
-interface CharmLXDProfile {
+export interface CharmLXDProfile {
   config: AdditionalProperties;
   description: string;
   devices: AdditionalProperties;
 }
 
-interface CharmManifest {
+export interface CharmManifest {
   bases: CharmBase[];
 }
 
-interface CharmMeta {
+export interface CharmMeta {
   'assumes-expr'?: ExpressionTree;
   categories?: string[];
   containers?: AdditionalProperties;
@@ -118,28 +118,28 @@ interface CharmMeta {
   terms?: string[];
 }
 
-interface CharmMetric {
+export interface CharmMetric {
   description: string;
   type: string;
 }
 
-interface CharmMetrics {
+export interface CharmMetrics {
   metrics: AdditionalProperties;
   plan: CharmPlan;
 }
 
-interface CharmMount {
+export interface CharmMount {
   location: string;
   storage: string;
 }
 
-interface CharmOption {
+export interface CharmOption {
   default?: AdditionalProperties;
   description?: string;
   type: string;
 }
 
-interface CharmOrigin {
+export interface CharmOrigin {
   architecture?: string;
   base?: Base;
   branch?: string;
@@ -153,21 +153,21 @@ interface CharmOrigin {
   type: string;
 }
 
-interface CharmOriginResult {
+export interface CharmOriginResult {
   'charm-origin': CharmOrigin;
   error?: Error;
 }
 
-interface CharmPayloadClass {
+export interface CharmPayloadClass {
   name: string;
   type: string;
 }
 
-interface CharmPlan {
+export interface CharmPlan {
   required: boolean;
 }
 
-interface CharmRelation {
+export interface CharmRelation {
   interface: string;
   limit: number;
   name: string;
@@ -176,7 +176,7 @@ interface CharmRelation {
   scope: string;
 }
 
-interface CharmResource {
+export interface CharmResource {
   description?: string;
   fingerprint: number[];
   name: string;
@@ -187,14 +187,14 @@ interface CharmResource {
   type: string;
 }
 
-interface CharmResourceMeta {
+export interface CharmResourceMeta {
   description: string;
   name: string;
   path: string;
   type: string;
 }
 
-interface CharmResourceResult {
+export interface CharmResourceResult {
   CharmResource: CharmResource;
   ErrorResult: ErrorResult;
   description?: string;
@@ -208,11 +208,11 @@ interface CharmResourceResult {
   type: string;
 }
 
-interface CharmResourcesResults {
+export interface CharmResourcesResults {
   results: CharmResourceResult[][];
 }
 
-interface CharmStorage {
+export interface CharmStorage {
   'count-max': number;
   'count-min': number;
   description: string;
@@ -225,86 +225,86 @@ interface CharmStorage {
   type: string;
 }
 
-interface CharmURL {
+export interface CharmURL {
   url: string;
 }
 
-interface CharmURLAndOrigin {
+export interface CharmURLAndOrigin {
   'charm-origin': CharmOrigin;
   'charm-url': string;
   macaroon?: Macaroon;
 }
 
-interface CharmURLAndOrigins {
+export interface CharmURLAndOrigins {
   entities: CharmURLAndOrigin[];
 }
 
-interface CharmsList {
+export interface CharmsList {
   names: string[];
 }
 
-interface CharmsListResult {
+export interface CharmsListResult {
   'charm-urls': string[];
 }
 
-interface DownloadInfoResult {
+export interface DownloadInfoResult {
   'charm-origin': CharmOrigin;
   url: string;
 }
 
-interface DownloadInfoResults {
+export interface DownloadInfoResults {
   results: DownloadInfoResult[];
 }
 
-interface Error {
+export interface Error {
   code: string;
   info?: AdditionalProperties;
   message: string;
 }
 
-interface ErrorResult {
+export interface ErrorResult {
   error: Error;
 }
 
-interface ErrorResults {
+export interface ErrorResults {
   results: ErrorResult[];
 }
 
-interface ExpressionTree {
+export interface ExpressionTree {
   Expression: AdditionalProperties;
 }
 
-interface IsMeteredResult {
+export interface IsMeteredResult {
   metered: boolean;
 }
 
-interface Macaroon {
+export interface Macaroon {
   [key: string]: AdditionalProperties;
 }
 
-interface ResolveCharmWithChannel {
+export interface ResolveCharmWithChannel {
   'charm-origin': CharmOrigin;
   reference: string;
   'switch-charm'?: boolean;
 }
 
-interface ResolveCharmWithChannelResult {
+export interface ResolveCharmWithChannelResult {
   'charm-origin': CharmOrigin;
   error?: Error;
   'supported-series': string[];
   url: string;
 }
 
-interface ResolveCharmWithChannelResults {
+export interface ResolveCharmWithChannelResults {
   Results: ResolveCharmWithChannelResult[];
 }
 
-interface ResolveCharmsWithChannel {
+export interface ResolveCharmsWithChannel {
   macaroon?: Macaroon;
   resolve: ResolveCharmWithChannel[];
 }
 
-interface AdditionalProperties {
+export interface AdditionalProperties {
   [key: string]: any;
 }
 
