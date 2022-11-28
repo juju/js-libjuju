@@ -7,12 +7,12 @@
     Controllers
     Models
 
-  NOTE: This file was generated on Wed, 09 Nov 2022 23:24:18 GMT using
+  NOTE: This file was generated on Mon, 28 Nov 2022 01:16:43 GMT using
   the Juju schema from  Juju juju-3.0 at the git SHA deb94d4.
   Do not manually edit this file.
 */
 
-import { autoBind } from "../utils.js";
+import { autoBind } from "../utils";
 import type { JujuRequest } from "../../generator/interfaces";
 
 

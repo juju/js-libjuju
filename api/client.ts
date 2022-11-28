@@ -7,9 +7,9 @@
   to use this API.
 */
 
-import Admin from "./facades/admin-v3.js";
+import Admin from "./facades/admin-v3";
 
-import { createAsyncHandler } from "./utils.js";
+import { createAsyncHandler } from "./utils";
 import type { Callback, JujuRequest } from "../generator/interfaces";
 
 export interface ConnectOptions {
@@ -17,6 +17,7 @@ export interface ConnectOptions {
   closeCallback?: Function;
   debug?: boolean;
   facades?: any[];
+  onWSCreated?: (ws: WebSocket) => void;
   wsclass?: WebSocket;
 }
 
@@ -51,8 +52,8 @@ export type Facade = any;
 /**
   Connect to the Juju controller or model at the given URL.
 
-  @param {String} url The WebSocket URL of the Juju controller or model.
-  @param {Object} options Connections options, including:
+  @param url The WebSocket URL of the Juju controller or model.
+  @param options Connections options, including:
     - facades (default=[]): the list of facade classes to include in the API
       connection object. Those classes are usually auto-generated and can be
       found in the facades directory of the project. When multiple versions of
@@ -69,7 +70,7 @@ export type Facade = any;
       see <https://www.npmjs.com/package/macaroon-bakery>;
     - closeCallback: a callback to be called with the exit code when the
       connection is closed.
-  @param {Function} [callback=null] Called when the connection is made, the
+  @param [callback=null] Called when the connection is made, the
     callback receives an error and a client object. If there are no errors, the
     client can be used to login and logout to Juju. See the docstring for the
     Client class for information on how to use the client.
@@ -113,6 +114,7 @@ function connect(
     ws.onerror = (evt) => {
       console.log("--", evt);
     };
+    options.onWSCreated?.(ws);
   });
 }
 
@@ -120,13 +122,13 @@ function connect(
   Connect to the Juju controller or model at the given URL and the authenticate
   using the given credentials.
 
-  @param {String} url The WebSocket URL of the Juju controller or model.
-  @param {Object} credentials An object with the user and password fields for
+  @param url The WebSocket URL of the Juju controller or model.
+  @param credentials An object with the user and password fields for
     userpass authentication or the macaroons field for bakery authentication.
     If an empty object is provided a full bakery discharge will be attempted
     for logging in with macaroons. Any necessary third party discharges are
     performed using the bakery instance provided in the options (see below).
-  @param {Object} options Connections options, including:
+  @param options Connections options, including:
     - facades (default=[]): the list of facade classes to include in the API
       connection object. Those classes are usually auto-generated and can be
       found in the facades directory of the project. When multiple versions of
@@ -188,21 +190,21 @@ function connectAndLogin(url: string, credentials, options) {
 /**
   Returns a URL that is to be used to connect to a supplied model uuid on the
   supplied controller host.
-  @param {String} controllerHost The url that's used to connect to the controller.
+  @param controllerHost The url that's used to connect to the controller.
     The `connectAndLogin` method handles redirections so the public URL is fine.
-  @param {String} modelUUID The UUID of the model to connect to.
-  @returns {String} The fully qualified wss URL to connect to the model.
+  @param modelUUID The UUID of the model to connect to.
+  @returns The fully qualified wss URL to connect to the model.
 */
-function generateModelURL(controllerHost, modelUUID) {
+function generateModelURL(controllerHost: string, modelUUID: string) {
   return `wss://${controllerHost}/model/${modelUUID}/api`;
 }
 
 /**
   A Juju API client allowing for logging in and get access to facades.
 
-  @param {Object} ws The WebSocket instance already connected to a Juju
+  @param ws The WebSocket instance already connected to a Juju
     controller or model.
-  @param {Object} options Connections options. See the connect documentation
+  @param options Connections options. See the connect documentation
     above for a description of available options.
 */
 class Client {
@@ -222,7 +224,7 @@ class Client {
   /**
     Log in to Juju.
 
-    @param {Object} credentials An object with the user and password fields for
+    @param credentials An object with the user and password fields for
       userpass authentication or the macaroons field for bakery authentication.
       If an empty object is provided a full bakery discharge will be attempted
       for logging in with macaroons. Any necessary third party discharges are
@@ -231,7 +233,7 @@ class Client {
       connecting, or resolved with a new connection instance. Note that the
       promise will not be resolved or rejected if a callback is provided.
   */
-  login(credentials: Credentials): Promise<any> | void {
+  login(credentials: Credentials): Promise<any> {
     const args: LoginArguments = {};
     const url = this._transport._ws.url;
     const origin = new URL(url).origin;
@@ -313,7 +315,7 @@ Ensure that you've been given 'login' permission on this controller.`;
   /**
     Log out from Juju.
 
-    @param {Function} callback Called when the logout process completes and the
+    @param callback Called when the logout process completes and the
       connection is closed, the callback receives the close code and optionally
       another callback. It is responsibility of the callback to call the
       provided callback if present.
@@ -325,8 +327,8 @@ Ensure that you've been given 'login' permission on this controller.`;
   /**
     Report whether the given error is a redirection error from Juju.
 
-    @param {Any} err The error returned by the login request.
-    @returns {Boolean} Whether the given error is a redirection error.
+    @param err The error returned by the login request.
+    @returns Whether the given error is a redirection error.
   */
   isRedirectionError(err) {
     return err instanceof RedirectionError;
@@ -351,11 +353,11 @@ class RedirectionError {
   A transport providing the ability of sending and receiving WebSocket messages
   to and from Juju controllers and models.
 
-  @param {Object} ws The WebSocket instance already connected to a Juju
+  @param ws The WebSocket instance already connected to a Juju
     controller or model.
-  @param {Function} closeCallback A callback to be called after the transport
+  @param closeCallback A callback to be called after the transport
     closes the connection. The callback receives the close code.
-  @param {Boolean} debug When enabled, all API messages are logged at debug
+  @param debug When enabled, all API messages are logged at debug
     level.
 */
 class Transport {
@@ -388,12 +390,12 @@ class Transport {
   /**
     Send a message to Juju.
 
-    @param {Object} req A Juju API request, typically in the form of an object
+    @param req A Juju API request, typically in the form of an object
       like {type: 'Client', request: 'DoSomething', version: 1, params: {}}.
       The request must not be already serialized and must not include the
       request id, as those are responsibilities of the transport.
-    @param {Function} resolve Function called when the request is successful.
-    @param {Function} reject Function called when the request is not successful.
+    @param resolve Function called when the request is successful.
+    @param reject Function called when the request is not successful.
   */
   write(req: JujuRequest, resolve: Function, reject: Function) {
     // Check that the connection is ready and sane.
@@ -418,7 +420,7 @@ class Transport {
   /**
     Close the transport, and therefore the connection.
 
-    @param {Function} callback Called after the transport is closed, the
+    @param callback Called after the transport is closed, the
       callback receives the close code and optionally another callback. It is
       responsibility of the callback to call the provided callback if present.
   */
@@ -437,7 +439,7 @@ class Transport {
   /**
     Handle responses arriving from Juju.
 
-    @param {String} data: the raw response from Juju, usually as a JSON encoded
+    @param data: the raw response from Juju, usually as a JSON encoded
       string.
   */
   _handle(data: string) {
@@ -457,16 +459,16 @@ class Transport {
   (conn.facades), to a transport connected to Juju (conn.transport) and to
   information about the connected Juju server (conn.info).
 
-  @param {Object} transport The Transport instance used to communicate with
+  @param transport The Transport instance used to communicate with
     Juju. The transport is available exposed to users via the transport
     property of the connection instance. See the Transport docstring for
     information on how to use the transport, typically calling transport.write.
-  @param {Object} facades The facade classes provided in the facades property
+  @param facades The facade classes provided in the facades property
     of the options provided to the connect function. When the connection is
     instantiated, the matching available facades as declared by Juju are
     instantiated and access to them is provided via the facades property of the
     connection.
-  @param {Object} loginResult The result to the Juju login request. It includes
+  @param loginResult The result to the Juju login request. It includes
     information about the Juju server and available facades. This info is made
     available via the info property of the connection instance.
 */
@@ -510,8 +512,8 @@ class Connection {
 /**
   Convert ThisString to thisString and THATString to thatString.
 
-  @param {String} text A StringLikeThis.
-  @returns {String} A stringLikeThis.
+  @param text A StringLikeThis.
+  @returns A stringLikeThis.
 */
 function uncapitalize(text: string): string {
   if (!text) {
@@ -536,4 +538,11 @@ function uncapitalize(text: string): string {
   return prefix.toLowerCase() + text.slice(prefix.length);
 }
 
-export { Client, connect, connectAndLogin, generateModelURL };
+export {
+  Client,
+  connect,
+  connectAndLogin,
+  Connection,
+  generateModelURL,
+  RedirectionError,
+};

@@ -6,7 +6,7 @@
   convenience purposes.
 */
 
-import { createAsyncHandler } from "./utils.js";
+import { createAsyncHandler } from "./utils";
 import type { Callback } from "../generator/interfaces";
 import type PingerV1 from "./facades/pinger-v1";
 
