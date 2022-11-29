@@ -8,7 +8,7 @@ import websocket from "websocket";
 import * as jujulib from "../api/client.js";
 import { pingForever } from "../api/helpers.js";
 
-import PingerV1 from "../api/facades/pinger-v1.js";
+import PingerV1 from "../api/facades/pinger/PingerV1.js";
 
 const url =
   "wss://10.223.241.216:17070/model/7236b7b8-5458-4d3e-8a9a-1c8f1a0046b1/api";
@@ -29,7 +29,7 @@ async function ping() {
     });
     const stopFn = pingForever(conn.facades.pinger, 1000, (resp) => {
       if (resp.error) {
-        console.log("cannot ping:", error);
+        console.log("cannot ping:", resp.error);
         process.exit(1);
       }
       console.log("pong");

@@ -7,8 +7,8 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 import websocket from "websocket";
 import * as jujulib from "../api/client.js";
 
-import AllModelWatcherV2 from "../api/facades/all-model-watcher-v2.js";
-import ControllerV9 from "../api/facades/controller-v9.js";
+import AllModelWatcherV2 from "../api/facades/all-model-watcher/AllModelWatcherV2.js";
+import ControllerV9 from "../api/facades/controller/ControllerV9.js";
 
 const url = "wss://10.223.241.216:17070/api";
 const credentials = {
@@ -34,7 +34,7 @@ async function watchAll() {
 
       setTimeout(() => {
         // Stop the multi-model watcher and log out.
-        handle.stop((err) => {
+        handle.stop((_err) => {
           console.log("watcher stopped");
           result.logout();
         });

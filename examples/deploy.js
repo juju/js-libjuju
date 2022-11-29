@@ -7,8 +7,8 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 import websocket from "websocket";
 import * as jujulib from "../api/client.js";
 
-import ApplicationV12 from "../api/facades/application-v12.js";
-import ClientV2 from "../api/facades/client-v2.js";
+import ApplicationV12 from "../api/facades/application/ApplicationV12.js";
+import ClientV2 from "../api/facades/client/ClientV2.js";
 
 const options = {
   debug: true,

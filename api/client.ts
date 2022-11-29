@@ -7,25 +7,30 @@
   to use this API.
 */
 
-import Admin from "./facades/admin-v3.js";
+import AdminV3, {
+  LoginRequest,
+  LoginResult,
+  Macaroon,
+  RedirectInfoResult,
+} from "./facades/admin/AdminV3";
 
-import { createAsyncHandler } from "./utils.js";
 import type { Callback, JujuRequest } from "../generator/interfaces";
+import { createAsyncHandler } from "./utils.js";
 
 export interface ConnectOptions {
-  bakery?: any;
-  closeCallback?: Function;
+  bakery?: Bakery;
+  closeCallback: Callback<number>;
   debug?: boolean;
-  facades?: any[];
-  wsclass?: WebSocket;
+  facades?: Facade[];
+  wsclass?: typeof WebSocket;
 }
 
 export interface ConnectionInfo {
-  controllerTag: string;
-  serverVersion: string;
-  servers: object[];
-  user: object;
-  getFacade: (string) => Facade;
+  controllerTag?: string;
+  serverVersion?: string;
+  servers?: object[];
+  user?: object;
+  getFacade?: (name: string) => Facade;
 }
 
 export interface Credentials {
@@ -41,18 +46,17 @@ export interface LoginArguments {
   macaroons?: object; // Macaroon object
 }
 
-// XXX Expand on these types.
+// TODO: Expand on these types.
 // Facades are wrapped which makes the class types break. Can we do that
 // override differently to avoid this issue?
-export type AdminV3 = any;
 export type Bakery = any;
 export type Facade = any;
 
 /**
   Connect to the Juju controller or model at the given URL.
 
-  @param {String} url The WebSocket URL of the Juju controller or model.
-  @param {Object} options Connections options, including:
+  @param url The WebSocket URL of the Juju controller or model.
+  @param options Connections options, including:
     - facades (default=[]): the list of facade classes to include in the API
       connection object. Those classes are usually auto-generated and can be
       found in the facades directory of the project. When multiple versions of
@@ -69,19 +73,22 @@ export type Facade = any;
       see <https://www.npmjs.com/package/macaroon-bakery>;
     - closeCallback: a callback to be called with the exit code when the
       connection is closed.
-  @param {Function} [callback=null] Called when the connection is made, the
+  @param callback Called when the connection is made, the
     callback receives an error and a client object. If there are no errors, the
     client can be used to login and logout to Juju. See the docstring for the
     Client class for information on how to use the client.
-  @return {Promise} This promise will be rejected if there is an error
+  @return This promise will be rejected if there is an error
     connecting, or resolved with a new Client instance. Note that the promise
     will not be resolved or rejected if a callback is provided.
 */
 function connect(
   url: string,
-  options: ConnectOptions = {},
-  callback: Callback = null
+  options?: ConnectOptions,
+  callback?: Callback<Client>
 ): Promise<any> {
+  if (!options) {
+    options = { closeCallback: () => {} };
+  }
   if (!options.bakery) {
     options.bakery = null;
   }
@@ -100,15 +107,13 @@ function connect(
   return new Promise((resolve, reject) => {
     // Instantiate the WebSocket, and make the client available when the
     // connection is open.
-    // @ts-ignore The following line is ignored because TS thinks that
-    // WebSocket is not instantiable.
-    const ws = new options.wsclass(url);
+    const ws = new options!.wsclass!(url);
     const handler = createAsyncHandler(callback, resolve, reject);
-    ws.onopen = (evt) => {
-      handler(null, new Client(ws, options));
+    ws.onopen = (_evt) => {
+      handler(null, new Client(ws, options!));
     };
     ws.onclose = (evt) => {
-      handler("cannot connect WebSocket: " + evt.reason, null);
+      handler("cannot connect WebSocket: " + evt.reason, undefined);
     };
     ws.onerror = (evt) => {
       console.log("--", evt);
@@ -120,13 +125,13 @@ function connect(
   Connect to the Juju controller or model at the given URL and the authenticate
   using the given credentials.
 
-  @param {String} url The WebSocket URL of the Juju controller or model.
-  @param {Object} credentials An object with the user and password fields for
+  @param url The WebSocket URL of the Juju controller or model.
+  @param credentials An object with the user and password fields for
     userpass authentication or the macaroons field for bakery authentication.
     If an empty object is provided a full bakery discharge will be attempted
     for logging in with macaroons. Any necessary third party discharges are
     performed using the bakery instance provided in the options (see below).
-  @param {Object} options Connections options, including:
+  @param options Connections options, including:
     - facades (default=[]): the list of facade classes to include in the API
       connection object. Those classes are usually auto-generated and can be
       found in the facades directory of the project. When multiple versions of
@@ -143,66 +148,69 @@ function connect(
       see <https://www.npmjs.com/package/macaroon-bakery>;
     - closeCallback: a callback to be called with the exit code when the
       connection is closed.
-  @return {Promise} This promise will be rejected if there is an error
+  @return This promise will be rejected if there is an error
     connecting, or resolved with a new {conn, logout} object. Note that the
     promise will not be resolved or rejected if a callback is provided.
 */
-function connectAndLogin(url: string, credentials, options) {
-  return new Promise(async (resolve, reject) => {
-    // Connect to Juju.
-    let juju;
-    try {
-      juju = await connect(url, options);
-      const conn = await juju.login(credentials);
-      resolve({ conn, logout: juju.logout.bind(juju) });
-    } catch (error) {
-      if (!juju || !juju.isRedirectionError(error)) {
-        reject(error);
-        return;
+async function connectAndLogin(
+  url: string,
+  credentials: Credentials,
+  options: ConnectOptions
+): Promise<{
+  conn?: Connection;
+  logout: typeof Client.prototype.logout;
+}> {
+  // Connect to Juju.
+  const juju: Client = await connect(url, options);
+  try {
+    const conn = await juju.login(credentials);
+    return { conn, logout: juju.logout.bind(juju) };
+  } catch (error: any) {
+    // Redirect to the real model.
+    juju && juju.logout();
+    for (let i = 0; i < error.servers.length; i++) {
+      const srv = error.servers[i][0];
+      // TODO(frankban): we should really try to connect to all servers and
+      // just use the first connection available, without second guessing
+      // that the public hostname is reachable.
+      if (srv.type === "hostname" && srv.scope === "public") {
+        // This is a public server with a dns-name, connect to it.
+        const generateURL = (
+          uuidOrURL: string,
+          srv: { value: any; port: any }
+        ) => {
+          let uuid = uuidOrURL;
+          if (uuid.startsWith("wss://") || uuid.startsWith("ws://")) {
+            const parts = uuid.split("/");
+            uuid = parts[parts.length - 2];
+          }
+          return `wss://${srv.value}:${srv.port}/model/${uuid}/api`;
+        };
+        return connectAndLogin(generateURL(url, srv), credentials, options);
       }
-      // Redirect to the real model.
-      juju && juju.logout();
-      for (let i = 0; i < error.servers.length; i++) {
-        const srv = error.servers[i][0];
-        // TODO(frankban): we should really try to connect to all servers and
-        // just use the first connection available, without second guessing
-        // that the public hostname is reachable.
-        if (srv.type === "hostname" && srv.scope === "public") {
-          // This is a public server with a dns-name, connect to it.
-          const generateURL = (uuidOrURL: string, srv) => {
-            let uuid = uuidOrURL;
-            if (uuid.startsWith("wss://") || uuid.startsWith("ws://")) {
-              const parts = uuid.split("/");
-              uuid = parts[parts.length - 2];
-            }
-            return `wss://${srv.value}:${srv.port}/model/${uuid}/api`;
-          };
-          resolve(connectAndLogin(generateURL(url, srv), credentials, options));
-        }
-      }
-      reject("cannot connect to model after redirection");
     }
-  });
+    throw new Error("cannot connect to model after redirection");
+  }
 }
 
 /**
   Returns a URL that is to be used to connect to a supplied model uuid on the
   supplied controller host.
-  @param {String} controllerHost The url that's used to connect to the controller.
+  @param controllerHost The url that's used to connect to the controller.
     The `connectAndLogin` method handles redirections so the public URL is fine.
-  @param {String} modelUUID The UUID of the model to connect to.
+  @param modelUUID The UUID of the model to connect to.
   @returns {String} The fully qualified wss URL to connect to the model.
 */
-function generateModelURL(controllerHost, modelUUID) {
+function generateModelURL(controllerHost: string, modelUUID: string): string {
   return `wss://${controllerHost}/model/${modelUUID}/api`;
 }
 
 /**
   A Juju API client allowing for logging in and get access to facades.
 
-  @param {Object} ws The WebSocket instance already connected to a Juju
+  @param ws The WebSocket instance already connected to a Juju
     controller or model.
-  @param {Object} options Connections options. See the connect documentation
+  @param options Connections options. See the connect documentation
     above for a description of available options.
 */
 class Client {
@@ -211,18 +219,23 @@ class Client {
   _bakery: Bakery;
   _admin: AdminV3;
 
-  constructor(ws: WebSocket, options) {
+  constructor(ws: WebSocket, options: ConnectOptions) {
     // Instantiate the transport, used for sending messages to the server.
-    this._transport = new Transport(ws, options.closeCallback, options.debug);
-    this._facades = options.facades;
+    this._transport = new Transport(
+      ws,
+      options.closeCallback,
+      Boolean(options.debug)
+    );
+
+    this._facades = options.facades || [];
     this._bakery = options.bakery;
-    this._admin = new Admin(this._transport, {});
+    this._admin = new AdminV3(this._transport, {});
   }
 
   /**
     Log in to Juju.
 
-    @param {Object} credentials An object with the user and password fields for
+    @param credentials An object with the user and password fields for
       userpass authentication or the macaroons field for bakery authentication.
       If an empty object is provided a full bakery discharge will be attempted
       for logging in with macaroons. Any necessary third party discharges are
@@ -231,8 +244,8 @@ class Client {
       connecting, or resolved with a new connection instance. Note that the
       promise will not be resolved or rejected if a callback is provided.
   */
-  login(credentials: Credentials): Promise<any> | void {
-    const args: LoginArguments = {};
+  async login(credentials: Credentials): Promise<Connection | undefined> {
+    const args: LoginRequest = {} as LoginRequest;
     const url = this._transport._ws.url;
     const origin = new URL(url).origin;
 
@@ -249,86 +262,80 @@ class Client {
     }
 
     // XXX This should be generated by the version of Juju
-    args["client-version"] = "3.0.0";
+    args["client-version"] = "3.0.2";
 
-    return new Promise(async (resolve, reject) => {
-      try {
-        const response = await this._admin.login(args);
-        const dischargeRequired =
-          response["discharge-required"] ||
-          response["bakery-discharge-required"];
-        if (dischargeRequired) {
-          if (!this._bakery) {
-            reject(
-              "macaroon discharge required but no bakery instance provided"
-            );
-            return;
-          }
-          const onSuccess = (macaroons) => {
-            // Store the macaroon in the bakery for the next connections.
-            const serialized = btoa(JSON.stringify(macaroons));
-            this._bakery.storage.set(origin, serialized, () => {});
-            // Send the login request again including the discharge macaroons.
-            credentials.macaroons = [macaroons];
-            return resolve(this.login(credentials));
-          };
-          const onFailure = (err) => {
-            reject("macaroon discharge failed: " + err);
-          };
-          this._bakery.discharge(dischargeRequired, onSuccess, onFailure);
-          return;
-        } else if (response === REDIRECTION_ERROR) {
-          // This is should be handled by any user of this login method.
-          throw response;
-        } else if (response === INVALIDCREDENTIALS_ERROR) {
-          throw `response
-Have you been granted permission to a model on this controller?`;
-        } else if (response === PERMISSIONDENIED_ERROR) {
-          throw `response
-Ensure that you've been given 'login' permission on this controller.`;
-        } else if (typeof response === "string") {
-          // If the response is a string and not an object it's an error
-          // message and surface that back to the user.
-          throw response;
-        }
-        resolve(new Connection(this._transport, this._facades, response));
-      } catch (error) {
-        if (error !== REDIRECTION_ERROR) {
-          reject(error);
-          return;
-        }
-        // This is a model redirection error, fetch the redirection information.
-        try {
-          const info = await this._admin.redirectInfo();
-          reject(new RedirectionError(info));
-          return;
-        } catch (error) {
-          reject(error);
-          return;
-        }
+    try {
+      const response = (await this._admin.login(args)) as
+        | typeof REDIRECTION_ERROR
+        | typeof INVALIDCREDENTIALS_ERROR
+        | typeof PERMISSIONDENIED_ERROR
+        | LoginResult;
+      if (response === REDIRECTION_ERROR) {
+        // This is should be handled by any user of this login method.
+        throw response;
+      } else if (response === INVALIDCREDENTIALS_ERROR) {
+        throw `response
+  Have you been granted permission to a model on this controller?`;
+      } else if (response === PERMISSIONDENIED_ERROR) {
+        throw `response
+  Ensure that you've been given 'login' permission on this controller.`;
+      } else if (typeof response === "string") {
+        // If the response is a string and not an object it's an error
+        // message and surface that back to the user.
+        throw response;
       }
-    });
+      const dischargeRequired: Macaroon | undefined =
+        response["discharge-required"] || response["bakery-discharge-required"];
+      if (dischargeRequired) {
+        if (!this._bakery) {
+          throw new Error(
+            "macaroon discharge required but no bakery instance provided"
+          );
+        }
+        const onSuccess = (macaroons: Macaroon[]) => {
+          // Store the macaroon in the bakery for the next connections.
+          const serialized = btoa(JSON.stringify(macaroons));
+          this._bakery.storage.set(origin, serialized, () => {});
+          // Send the login request again including the discharge macaroons.
+          credentials.macaroons = [macaroons];
+          return this.login(credentials);
+        };
+        const onFailure = (err: any) => {
+          throw new Error("macaroon discharge failed: " + err);
+        };
+        this._bakery.discharge(dischargeRequired, onSuccess, onFailure);
+        return;
+      }
+      return new Connection(this._transport, this._facades, response);
+    } catch (error) {
+      if (error !== REDIRECTION_ERROR) {
+        throw error;
+      }
+      // This is a model redirection error, fetch the redirection information.
+      const info = await this._admin.redirectInfo(null);
+      throw new RedirectionError(info);
+    }
   }
 
   /**
     Log out from Juju.
 
-    @param {Function} callback Called when the logout process completes and the
+    @param callback Called when the logout process completes and the
       connection is closed, the callback receives the close code and optionally
       another callback. It is responsibility of the callback to call the
       provided callback if present.
   */
-  logout(callback) {
+  logout(callback?: Callback<Client>) {
     this._transport.close(callback);
   }
 
   /**
     Report whether the given error is a redirection error from Juju.
 
-    @param {Any} err The error returned by the login request.
-    @returns {Boolean} Whether the given error is a redirection error.
+    @param err The error returned by the login request.
+    @returns Whether the given error is a redirection error.
   */
-  isRedirectionError(err) {
+  isRedirectionError(err: any): boolean {
     return err instanceof RedirectionError;
   }
 }
@@ -341,7 +348,7 @@ class RedirectionError {
   servers: object[];
   caCert: string;
 
-  constructor(info) {
+  constructor(info: RedirectInfoResult) {
     this.servers = info.servers;
     this.caCert = info["ca-cert"];
   }
@@ -351,21 +358,21 @@ class RedirectionError {
   A transport providing the ability of sending and receiving WebSocket messages
   to and from Juju controllers and models.
 
-  @param {Object} ws The WebSocket instance already connected to a Juju
+  @param ws The WebSocket instance already connected to a Juju
     controller or model.
-  @param {Function} closeCallback A callback to be called after the transport
+  @param closeCallback A callback to be called after the transport
     closes the connection. The callback receives the close code.
-  @param {Boolean} debug When enabled, all API messages are logged at debug
+  @param debug When enabled, all API messages are logged at debug
     level.
 */
-class Transport {
+export class Transport {
   _ws: WebSocket;
   _counter: number;
-  _callbacks: object;
-  _closeCallback: Callback;
+  _callbacks: { [k: number]: Function };
+  _closeCallback: Callback<number>;
   _debug: boolean;
 
-  constructor(ws: WebSocket, closeCallback: Callback, debug: boolean) {
+  constructor(ws: WebSocket, closeCallback: Callback<number>, debug: boolean) {
     this._ws = ws;
     this._counter = 0;
     this._callbacks = {};
@@ -388,12 +395,12 @@ class Transport {
   /**
     Send a message to Juju.
 
-    @param {Object} req A Juju API request, typically in the form of an object
+    @param req A Juju API request, typically in the form of an object
       like {type: 'Client', request: 'DoSomething', version: 1, params: {}}.
       The request must not be already serialized and must not include the
       request id, as those are responsibilities of the transport.
-    @param {Function} resolve Function called when the request is successful.
-    @param {Function} reject Function called when the request is not successful.
+    @param resolve Function called when the request is successful.
+    @param reject Function called when the request is not successful.
   */
   write(req: JujuRequest, resolve: Function, reject: Function) {
     // Check that the connection is ready and sane.
@@ -418,11 +425,11 @@ class Transport {
   /**
     Close the transport, and therefore the connection.
 
-    @param {Function} callback Called after the transport is closed, the
+    @param callback Called after the transport is closed, the
       callback receives the close code and optionally another callback. It is
       responsibility of the callback to call the provided callback if present.
   */
-  close(callback: Callback) {
+  close(callback?: Callback<any>) {
     const closeCallback = this._closeCallback;
     this._closeCallback = (code) => {
       if (callback) {
@@ -437,7 +444,7 @@ class Transport {
   /**
     Handle responses arriving from Juju.
 
-    @param {String} data: the raw response from Juju, usually as a JSON encoded
+    @param data: the raw response from Juju, usually as a JSON encoded
       string.
   */
   _handle(data: string) {
@@ -457,25 +464,29 @@ class Transport {
   (conn.facades), to a transport connected to Juju (conn.transport) and to
   information about the connected Juju server (conn.info).
 
-  @param {Object} transport The Transport instance used to communicate with
+  @param transport The Transport instance used to communicate with
     Juju. The transport is available exposed to users via the transport
     property of the connection instance. See the Transport docstring for
     information on how to use the transport, typically calling transport.write.
-  @param {Object} facades The facade classes provided in the facades property
+  @param facades The facade classes provided in the facades property
     of the options provided to the connect function. When the connection is
     instantiated, the matching available facades as declared by Juju are
     instantiated and access to them is provided via the facades property of the
     connection.
-  @param {Object} loginResult The result to the Juju login request. It includes
+  @param loginResult The result to the Juju login request. It includes
     information about the Juju server and available facades. This info is made
     available via the info property of the connection instance.
 */
 class Connection {
-  facades: Facade[];
+  facades: { [k: string]: Facade };
   transport: Transport;
   info: ConnectionInfo;
 
-  constructor(transport: Transport, facades, loginResult) {
+  constructor(
+    transport: Transport,
+    facades: Facade[],
+    loginResult: LoginResult
+  ) {
     // Store the transport used for sending messages to Juju.
     this.transport = transport;
 
@@ -495,10 +506,13 @@ class Connection {
       previous[current.NAME] = current;
       return previous;
     }, {});
+    // TODO: get the latest supported facade version instead of returning undefined
     this.facades = loginResult.facades.reduce((previous, current) => {
       const facadeClass = registered[current.name];
       if (facadeClass && current.versions.includes(facadeClass.VERSION)) {
         const facadeName = uncapitalize(facadeClass.NAME);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore: this is temporary code
         previous[facadeName] = new facadeClass(this.transport, this.info);
         return previous;
       }
@@ -510,14 +524,14 @@ class Connection {
 /**
   Convert ThisString to thisString and THATString to thatString.
 
-  @param {String} text A StringLikeThis.
+  @param text A StringLikeThis.
   @returns {String} A stringLikeThis.
 */
 function uncapitalize(text: string): string {
   if (!text) {
     return "";
   }
-  const isLower = (char) => char.toLowerCase() === char;
+  const isLower = (char: string) => char.toLowerCase() === char;
   if (isLower(text[0])) {
     return text;
   }

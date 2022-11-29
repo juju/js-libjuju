@@ -1,11 +1,13 @@
 // Copyright 2020 Canonical Ltd.
 // Licensed under the LGPLv3, see LICENCE.txt file for details.
 
+import { Callback, CallbackError } from "../generator/interfaces";
+
 /**
   Automatically bind all methods of the given object to the object itself.
-  @param {Object} obj The object whose method must be bound.
+  @param obj The object whose method must be bound.
 */
-export function autoBind(obj: object): void {
+export function autoBind(obj: { [k: string]: any }): void {
   const names = Object.getOwnPropertyNames(obj.constructor.prototype);
   for (let i = 0; i < names.length; i++) {
     const name = names[i];
@@ -29,20 +31,20 @@ export function autoBind(obj: object): void {
     resolve or reject method will be called depending on the existence of an
     error value.
 */
-export function createAsyncHandler(
-  callback: (err: string, value: any) => void,
-  resolve: (value: any) => void,
-  reject: (value: any) => void,
-  transform?: (value: any) => any
-): (err: string, value: any) => void {
+export function createAsyncHandler<T>(
+  callback: Callback<T> | undefined,
+  resolve: (value: T) => void,
+  reject: (value: CallbackError) => void,
+  transform?: (value: T) => T
+): Callback<T> {
   return (err, value) => {
     if (err) {
-      callback ? callback(err, null) : reject(err);
+      callback ? callback(err, undefined) : reject(err);
       return;
     }
     if (transform) {
-      value = transform(value);
+      value = transform(value!);
     }
-    callback ? callback(null, value) : resolve(value);
+    callback ? callback(null, value) : resolve(value!);
   };
 }
