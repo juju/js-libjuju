@@ -53,7 +53,7 @@ async function main() {
   const allSchemas = JSON.parse(
     await fs.promises.readFile(join(baseFolder, "schema-history.json"))
   );
-  await execShellCommand("npm run build");
+  await execShellCommand("yarn run build");
   for (const schema of allSchemas) {
     console.log(schema["juju-version"]);
     await downloadFile(schema.schema, join(baseFolder, "schema.json"));
@@ -65,7 +65,7 @@ async function main() {
       join(baseFolder, "juju-git-sha.txt"),
       schema["juju-git-sha"]
     );
-    await execShellCommand("npm run generate-facades");
+    await execShellCommand("yarn run generate-facades");
   }
 }
 

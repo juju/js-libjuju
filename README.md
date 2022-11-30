@@ -8,13 +8,14 @@
 This project provides a JavaScript API client library for interacting with the Juju
 WebSocket API.
 
-- [Getting Started](#getting-started)
-- [Client API Reference](#client-api-reference)
-- [Facade API Reference](#facade-api-reference)
-- [Examples](#examples)
-- [Library Maintenance](#library-maintenance)
-  - [Updating Library Facades](#updating-library-facades)
-  - [Releasing to NPM](#releasing-to-npm)
+- [JS Jujulib](#js-jujulib)
+  - [Getting Started](#getting-started)
+  - [Client API Reference](#client-api-reference)
+  - [Facade API Reference](#facade-api-reference)
+  - [Examples](#examples)
+  - [Library Maintenance](#library-maintenance)
+    - [Updating Library Facades](#updating-library-facades)
+    - [Releasing to NPM](#releasing-to-npm)
 
 ## Getting Started
 
@@ -184,9 +185,9 @@ The Juju facade API files are generated from a supplied Juju schema.
 
 To generate this schema you will need to clone the [Juju repository](https://github.com/juju/juju/) and then run `go run github.com/juju/juju/generate/schemagen -admin-facades --facade-group=client,jimm ./apiserver/facades/schema.json` to generate a schema file that contains the publicly available facades as well as the set of facades for JAAS. Other `--facade-group` options are `latest` and `all`.
 
-After generating a new schema run `npm run store-schema` which will store the updated schema and necessary meta data in this project.
+After generating a new schema run `yarn run store-schema` which will store the updated schema and necessary meta data in this project.
 
-To update the facades, run `npm run build` on this project. This will generate the facades using the locally stored schema, sha, and version the schema was generated from.
+To update the facades, run `yarn run build` on this project. This will generate the facades using the locally stored schema, sha, and version the schema was generated from.
 
 ### Releasing to NPM
 
