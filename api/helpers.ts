@@ -7,7 +7,7 @@
 */
 
 import type { Callback } from "../generator/interfaces";
-import type PingerV1 from "./facades/pinger/PingerV1";
+import type PingerV1 from "./facades/pinger/PingerV1.js";
 import { createAsyncHandler } from "./utils.js";
 
 /**

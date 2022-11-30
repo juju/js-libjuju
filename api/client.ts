@@ -12,7 +12,7 @@ import AdminV3, {
   LoginResult,
   Macaroon,
   RedirectInfoResult,
-} from "./facades/admin/AdminV3";
+} from "./facades/admin/AdminV3.js";
 
 import type { Callback, JujuRequest } from "../generator/interfaces";
 import { createAsyncHandler } from "./utils.js";
