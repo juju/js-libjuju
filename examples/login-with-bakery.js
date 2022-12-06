@@ -13,7 +13,7 @@ import xhr2 from "xhr2";
 global.XMLHttpRequest = xhr2;
 
 import * as jujulib from "../api/client.js";
-import modelManagerv5 from "../api/facades/model-manager-v5.js";
+import modelManagerv5 from "../api/facades/model-manager/ModelManagerV5.js";
 
 const options = {
   debug: true,

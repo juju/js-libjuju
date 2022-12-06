@@ -10,7 +10,7 @@ import xhr2 from "xhr2";
 global.XMLHttpRequest = xhr2;
 
 import * as jujulib from "../api/client.js";
-import ClientV2 from "../api/facades/client-v2.js";
+import ClientV2 from "../api/facades/client/ClientV2.js";
 
 const url =
   "wss://jimm.jujucharms.com:443/model/57650e3c-815f-4540-89df-81fd5d70b7ef/api";

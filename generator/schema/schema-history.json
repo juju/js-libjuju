@@ -1,0 +1,27 @@
+[
+  {
+    "juju-git-sha": "516c1904ce",
+    "juju-version": "2.8.2",
+    "schema": "https://raw.githubusercontent.com/juju/juju/516c1904ce/apiserver/facades/schema.json"
+  },
+  {
+    "juju-git-sha": "cb361902f8",
+    "juju-version": "2.9-rc3",
+    "schema": "https://raw.githubusercontent.com/juju/js-libjuju/51ae3c618f0fe44f842cc1bdf9e7e14d251f3344/schema/schema.json"
+  },
+  {
+    "juju-git-sha": "61c87ab7e1",
+    "juju-version": "3.0-beta1",
+    "schema": "https://raw.githubusercontent.com/juju/js-libjuju/d9d467ebf5d6fa56c2a1e3f654f1c5f676e0dc9b/schema/schema.json"
+  },
+  {
+    "juju-git-sha": "a13ab81a",
+    "juju-version": "3.0-beta4",
+    "schema": "https://raw.githubusercontent.com/juju/js-libjuju/dc932772b73b8f4fb930cf8a0a4f87338d13d9b1/schema/schema.json"
+  },
+  {
+    "juju-git-sha": "deb94d4",
+    "juju-version": "3.0",
+    "schema": "https://raw.githubusercontent.com/juju/js-libjuju/63c31f0991cdbd43ba2de0048cd98ee7ba36945c/schema/schema.json"
+  }
+]

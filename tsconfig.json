@@ -1,8 +1,13 @@
 {
   "compilerOptions": {
+    "target": "ES2019",
+    "module": "ES2020",
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "Node",
     "sourceMap": true,
-    "target": "ES2019"
+    "outDir": "dist",
+    "declaration": true
   }
 }

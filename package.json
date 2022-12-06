@@ -6,15 +6,14 @@
   "types": "dist/api/client.d.ts",
   "type": "module",
   "scripts": {
-    "build": "npm run build-generator && npm run generate-facades && npm run build-facades && npm run build-api-docs",
-    "build-api-docs": "typedoc api/* --out docs --entryPointStrategy expand --includeVersion --gitRemote upstream",
-    "build-facades": "tsc -p api/tsconfig.json --outdir dist",
-    "build-generator": "tsc -p generator/tsconfig.json",
+    "build": "tsc",
+    "generate-facades": "SCHEMA=generator/schema/schema.json JUJU_VERSION=`cat generator/schema/juju-version.txt` JUJU_GIT_SHA=`cat generator/schema/juju-git-sha.txt` node --enable-source-maps dist/generator/index.js",
+    "regenerate-all-facades": "node generator/regenerate-all.js",
     "store-schema": "./scripts/store-schema.sh",
-    "generate-facades": "SCHEMA=schema/schema.json JUJU_VERSION=`cat schema/juju-version.txt` JUJU_GIT_SHA=`cat schema/juju-git-sha.txt` node --enable-source-maps generator/index.js",
+    "generate-docs": "typedoc api/* --out docs --entryPointStrategy expand --includeVersion --gitRemote upstream",
     "lint": "eslint api/",
-    "test": "tap 'api/tests/test-!(helpers)*.js'",
-    "watch": "tsc --watch -t ES2019 --moduleResolution Node --allowSyntheticDefaultImports --sourceMap generator/index.ts"
+    "format": "prettier --write '**/*.(js|ts|json)' && eslint --fix .",
+    "test": "tap 'api/tests/test-!(helpers)*.js'"
   },
   "repository": {
     "type": "git",
@@ -25,16 +24,20 @@
     "api",
     "client"
   ],
-  "author": "Jeff Pihach <jeff.pihach@canonical.com> (https://fromanegg.com)",
+  "author": "Canonical (https://webteam.canonical.com/)",
   "license": "LGPL-3.0",
   "bugs": {
     "url": "https://github.com/juju/js-libjuju/issues"
   },
   "homepage": "juju.github.io/js-libjuju/",
   "devDependencies": {
+    "@types/glob": "^8.0.0",
     "@types/node": "15.3.0",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
     "documentation": "13.2.5",
     "eslint": "8.25.0",
+    "glob": "^8.0.3",
     "prettier": "2.7.1",
     "sinon": "14.0.1",
     "tap": "16.3.0",

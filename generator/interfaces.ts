@@ -2,13 +2,21 @@ export interface FacadeTemplate {
   name: string;
   version: number;
   methods: FacadeMethod[];
-  interfaces: object[];
+  interfaces: InterfaceData[];
   availableTo: string[];
   docBlock: string;
   jujuVersion: string;
   jujuGitSHA: string;
 }
-
+export interface InterfaceData {
+  name: string;
+  types: InterfaceType[];
+}
+export interface InterfaceType {
+  name: string;
+  type: string;
+  required: boolean;
+}
 export interface ReadmeTemplate {
   clientAPIInfo: string;
   exampleList: FileInfo[];
@@ -30,8 +38,10 @@ export interface FacadeMethod {
 export interface JujuRequest {
   type: string;
   request: string;
+  "request-id"?: number;
   version: number;
   params?: any; // Typed by the call signature of the facade method.
 }
 
-export type Callback = (error?: string | number, value?: any) => void;
+export type CallbackError = string | number | null;
+export type Callback<T> = (error?: CallbackError, value?: T) => void;

@@ -1,15 +1,17 @@
-import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "fs";
 import { execSync } from "child_process";
-import { resolve } from "path";
-
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "fs";
+import * as glob from "glob";
+import { join, resolve } from "path";
 import {
-  FacadeTemplate,
   FacadeMethod,
-  ReadmeTemplate,
+  FacadeTemplate,
   FileInfo,
-} from "./interfaces";
-import facadeTemplateGenerator from "../templates/facade.js";
-import readmeTemplateGenerator from "../templates/readme.js";
+  InterfaceData,
+  InterfaceType,
+  ReadmeTemplate,
+} from "./interfaces.js";
+import generateFacadeTemplate from "./templates/facade.js";
+import readmeTemplateGenerator from "./templates/readme.js";
 
 interface Facade {
   Name: string;
@@ -59,36 +61,28 @@ interface JSONSchemaType {
 }
 
 interface SchemaProperties {
-  Params: object;
-  Result: object;
+  Params: SchemaPropertyValue;
+  Result: SchemaPropertyValue;
+}
+interface SchemaPropertyValue {
+  $ref?: string;
+  type?: string;
 }
 
-interface InterfaceData {
-  name: string;
-  types: InterfaceType[];
-}
-
-interface InterfaceType {
-  name: string;
-  type: string;
-  required: boolean;
-}
-
-const schemaLocation: string = process.env.SCHEMA;
-const jujuVersion: string = process.env.JUJU_VERSION;
-const jujuGitSHA: string = process.env.JUJU_GIT_SHA;
+const schemaLocation: string = process.env.SCHEMA || "";
+const jujuVersion: string = process.env.JUJU_VERSION || "";
+const jujuGitSHA: string = process.env.JUJU_GIT_SHA || "";
 const schemaData: string = readFileSync(resolve(schemaLocation), {
   encoding: "utf8",
 });
 
-let schema: Array<Facade> = null;
+let schema: Array<Facade>;
 try {
   schema = JSON.parse(schemaData);
 } catch (e) {
   console.error("Unable to parse schema", e);
+  process.exit(1);
 }
-
-mkdirSync("api/facades", { recursive: true });
 
 schema.forEach(async (facade) => {
   const facadeTemplateData: FacadeTemplate = {
@@ -104,31 +98,54 @@ schema.forEach(async (facade) => {
 
   generateFile(facadeTemplateData);
 });
+const facadesGroupedByName: { [k: string]: number[] } = {};
+type ExistingFacade = {
+  folder: string;
+  name: string;
+  version: number;
+};
+const allExistingFacades: ExistingFacade[] = glob
+  .sync("./api/facades/*/*V[0-9]*.ts")
+  .map((f: string) => f.split("/"))
+  .map((f: string[]) => {
+    // e.g. ClientV5.ts
+    const filename = f[f.length - 1].match(
+      /(?<name>[a-z-]+)V(?<version>\d+)\.ts/i
+    )!.groups!;
+    return { folder: f[f.length - 2], ...filename };
+  }) as ExistingFacade[];
+
+allExistingFacades.forEach((facade) => {
+  if (!facadesGroupedByName[facade.name]) {
+    facadesGroupedByName[facade.name] = [];
+  }
+  facadesGroupedByName[facade.name].push(facade.version);
+});
+generateIndexTSPerFacadeName(facadesGroupedByName);
 
 const clientAPIInfo: string = execSync(
   "./node_modules/.bin/documentation build api/client.js --document-exported --shallow --markdown-toc false -f md",
   { encoding: "utf8" }
 );
 
-const facadeList = {};
-readdirSync("api/facades")
-  .filter((f) => f.split(".")[1] === "ts")
-  .map((f) => ({
-    name: f,
-    path: `api\/facades\/${f}`,
-  }))
-  .forEach((fileInfo: FileInfo) => {
-    const facadeName = fileInfo.name.match(/(?<name>.+)-v\d+\.ts/).groups?.name;
-    if (!facadeName) return;
-    if (!facadeList[facadeName]) facadeList[facadeName] = [];
-    facadeList[facadeName].push(fileInfo);
-  });
+const facadeList: {
+  [key: string]: FileInfo[];
+} = {};
+// console.log("facadesGroupedByName[facadeName]", facadesGroupedByName.Client)
+Object.keys(facadesGroupedByName).forEach((facadeName) => {
+  facadeList[facadeName] = facadesGroupedByName[facadeName].map(
+    (FacadeVersion) => ({
+      name: `v${FacadeVersion}.ts`,
+      path: `/api/facades/${facadeFolderName(facadeName)}/v${FacadeVersion}.ts`,
+    })
+  );
+});
 
 const readmeTemplateData: ReadmeTemplate = {
   clientAPIInfo,
   exampleList: readdirSync("examples").map((f) => ({
     name: f,
-    path: `examples\/${f}`,
+    path: `examples/${f}`,
   })),
   facadeList,
 };
@@ -139,13 +156,17 @@ function getRefString(ref: string): string {
   return parts[parts.length - 1];
 }
 
-function extractType(method, segment: string): string {
+function extractType(
+  method: SchemaMethod,
+  segment: keyof SchemaProperties
+): string | undefined {
   if (method.properties?.[segment]) {
-    if (method.properties[segment]["$ref"]) {
-      return getRefString(method.properties[segment]["$ref"]);
-    } else if (method.properties[segment].type) {
-      return method.properties[segment].type;
+    const ref = method.properties[segment]["$ref"];
+    const type = method.properties[segment]["type"];
+    if (ref) {
+      return getRefString(ref);
     }
+    return type;
   }
   return undefined;
 }
@@ -157,12 +178,13 @@ function extractType(method, segment: string): string {
 function generateMethods(methods: SchemaMethods): FacadeMethod[] {
   const facadeMethods: FacadeMethod[] = Object.entries(methods).map(
     (method) => {
-      return {
+      const generatedMethod: FacadeMethod = {
         name: method[0],
-        params: extractType(method[1], "Params"),
-        result: extractType(method[1], "Result"),
+        params: extractType(method[1], "Params") || "any",
+        result: extractType(method[1], "Result") || "any",
         docBlock: method[1].description,
       };
+      return generatedMethod;
     }
   );
   return facadeMethods;
@@ -187,7 +209,10 @@ function generateInterface(
 ): InterfaceData {
   let types: InterfaceType[];
   if (definition[1].properties) {
-    types = generateTypes(definition[1].properties, definition[1].required);
+    types = generateTypes(
+      definition[1].properties,
+      definition[1].required || []
+    );
   } else {
     types = [
       {
@@ -211,12 +236,12 @@ function generateTypes(
 ): InterfaceType[] {
   function extractType(values: JSONSchemaType): string {
     if (values.type) {
-      if (values.patternProperties || values.additionalProperties) {
+      if (
+        values.patternProperties ||
+        (values.additionalProperties && values.type === "object")
+      ) {
         // There are additional unknown properties defined.
-        if (values.type === "object") {
-          return "AdditionalProperties";
-        }
-        return;
+        return "AdditionalProperties";
       }
       // TODO: Recirsify this conditional.
       if (values.type === "array" && values.items) {
@@ -246,7 +271,7 @@ function generateTypes(
   }
 
   function isRequired(requiredArgs: string[], propertyName: string): boolean {
-    if (!requiredArgs) {
+    if (!requiredArgs.length) {
       // If requiredArgs doesn't exist then it's likely that this is a
       // response interface.
       return true;
@@ -264,16 +289,44 @@ function generateTypes(
 }
 
 function generateFile(facadeTemplateData: FacadeTemplate): void {
-  const output: string = facadeTemplateGenerator(facadeTemplateData);
-  const filename: string =
-    `${facadeTemplateData.name}-v${facadeTemplateData.version}`
-      .replace(/\W+/g, "-")
-      .replace(/([a-z\d])([A-Z])/g, "$1-$2")
-      .toLowerCase();
-  writeFileSync(`api/facades/${filename}.ts`, output);
+  const output: string = generateFacadeTemplate(facadeTemplateData);
+  const filename = `${facadeTemplateData.name}V${facadeTemplateData.version}`;
+  const facadeFoldername = facadeFolderName(facadeTemplateData.name);
+
+  const outputFolder = `api/facades/${facadeFoldername}/`;
+  mkdirSync(outputFolder, { recursive: true });
+  writeFileSync(join(outputFolder, `${filename}.ts`), output);
 }
 
 function generateReadmeFile(readmeTemplateData: ReadmeTemplate): void {
   const output: string = readmeTemplateGenerator(readmeTemplateData);
   writeFileSync("README.md", output);
+}
+
+function generateIndexTSPerFacadeName(facadesGroupedByName: {
+  [k: string]: number[];
+}) {
+  const indexTSTemplate = (facadeName: string, versions: number[]) =>
+    `${versions
+      .map(
+        (facadeVersion) =>
+          `export * as ${facadeName}V${facadeVersion} from "./${facadeName}V${facadeVersion}"`
+      )
+      .join("\n")}`;
+  Object.keys(facadesGroupedByName).forEach((facadeName) => {
+    const outputFolder = `api/facades/${facadeFolderName(facadeName)}/`;
+    mkdirSync(outputFolder, { recursive: true });
+    writeFileSync(
+      join(outputFolder, "index.ts"),
+      indexTSTemplate(facadeName, facadesGroupedByName[facadeName].sort())
+    );
+  });
+}
+
+function facadeFolderName(facadeName: string) {
+  // from CamelCase to kebab-case
+  return facadeName
+    .replace(/\W+/g, "-")
+    .replace(/([a-z\d])([A-Z])/g, "$1-$2")
+    .toLowerCase();
 }

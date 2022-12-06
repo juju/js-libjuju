@@ -7,8 +7,8 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 import websocket from "websocket";
 import * as jujulib from "../api/client.js";
 
-import AllWatcherV1 from "../api/facades/all-watcher-v1.js";
-import ClientV2 from "../api/facades/client-v2.js";
+import AllWatcherV1 from "../api/facades/all-watcher/AllWatcherV1.js";
+import ClientV2 from "../api/facades/client/ClientV2.js";
 
 const url =
   "wss://10.223.241.216:17070/model/7236b7b8-5458-4d3e-8a9a-1c8f1a0046b1/api";
@@ -33,7 +33,7 @@ async function watch() {
       console.log(result);
     });
     setTimeout(() => {
-      handle.stop((err) => {
+      handle.stop((_err) => {
         console.log("watcher stopped");
       });
     }, 10000);
