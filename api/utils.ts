@@ -39,7 +39,7 @@ export function createAsyncHandler<T>(
 ): Callback<T> {
   return (err, value) => {
     if (err) {
-      callback ? callback(err, undefined) : reject(err);
+      callback ? callback(err) : reject(err);
       return;
     }
     if (transform) {

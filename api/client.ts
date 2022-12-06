@@ -113,7 +113,7 @@ function connect(
       handler(null, new Client(ws, options!));
     };
     ws.onclose = (evt) => {
-      handler("cannot connect WebSocket: " + evt.reason, undefined);
+      handler("cannot connect WebSocket: " + evt.reason);
     };
     ws.onerror = (evt) => {
       console.log("--", evt);

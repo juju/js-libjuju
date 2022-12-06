@@ -23,9 +23,9 @@ To access the Juju API, a connection must be made to either a Juju
 controller or a Juju model.
 
 ```javascript
-import ApplicationV5 from "jujulib/api/facades/application-v5.js"
-import ClientV1 from "jujulib/api/facades/client-v1.js"
-import ClientV2 from "jujulib/api/facades/client-v2.js"
+import ApplicationV5 from "jujulib/api/facades/application/v5.js"
+import ClientV1 from "jujulib/api/facades/client/v1.js"
+import ClientV2 from "jujulib/api/facades/client/v2.js"
 
 const juju = await jujulib.connect("wss://example.com/model/x-y-z/api", {
   facades: [ApplicationV5, ClientV1, ClientV2],
