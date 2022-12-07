@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as CharmHubV1 from "./CharmHubV1";
+import CharmHubV1 from "./CharmHubV1.js";
 
-const CharmHub: GenericFacade = { name: "CharmHub" };
+export * as CharmHubV1 from "./CharmHubV1.js";
+
+const CharmHub: GenericFacade = {
+  name: "CharmHub",
+  versions: [CharmHubV1],
+};
+
 export default CharmHub;

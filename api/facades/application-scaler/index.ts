@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as ApplicationScalerV1 from "./ApplicationScalerV1";
+import ApplicationScalerV1 from "./ApplicationScalerV1.js";
 
-const ApplicationScaler: GenericFacade = { name: "ApplicationScaler" };
+export * as ApplicationScalerV1 from "./ApplicationScalerV1.js";
+
+const ApplicationScaler: GenericFacade = {
+  name: "ApplicationScaler",
+  versions: [ApplicationScalerV1],
+};
+
 export default ApplicationScaler;

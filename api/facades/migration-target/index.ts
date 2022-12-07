@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as MigrationTargetV1 from "./MigrationTargetV1";
+import MigrationTargetV1 from "./MigrationTargetV1.js";
 
-const MigrationTarget: GenericFacade = { name: "MigrationTarget" };
+export * as MigrationTargetV1 from "./MigrationTargetV1.js";
+
+const MigrationTarget: GenericFacade = {
+  name: "MigrationTarget",
+  versions: [MigrationTargetV1],
+};
+
 export default MigrationTarget;

@@ -8,12 +8,26 @@ function facadeIndexTS(facadeName: string, versions: number[]): string {
 ${versions
   .map(
     (facadeVersion) =>
-      `export * as ${facadeName}V${facadeVersion} from "./${facadeName}V${facadeVersion}";`
+      `import ${facadeName}V${facadeVersion} from "./${facadeName}V${facadeVersion}.js";`
   )
   .join("\n")}
 
-const ${facadeName}: GenericFacade = { name: "${facadeName}" };
-export default ${facadeName};`;
+${versions
+  .map(
+    (facadeVersion) =>
+      `export * as ${facadeName}V${facadeVersion} from "./${facadeName}V${facadeVersion}.js";`
+  )
+  .join("\n")}
+
+const ${facadeName}: GenericFacade = {
+  name: "${facadeName}",
+  versions: [${versions
+    .map((facadeVersion) => `${facadeName}V${facadeVersion}`)
+    .join(", ")}],
+};
+
+export default ${facadeName};
+`;
 }
 
 export default function generateFacadeIndexTemplate(

@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as CrossControllerV1 from "./CrossControllerV1";
+import CrossControllerV1 from "./CrossControllerV1.js";
 
-const CrossController: GenericFacade = { name: "CrossController" };
+export * as CrossControllerV1 from "./CrossControllerV1.js";
+
+const CrossController: GenericFacade = {
+  name: "CrossController",
+  versions: [CrossControllerV1],
+};
+
 export default CrossController;

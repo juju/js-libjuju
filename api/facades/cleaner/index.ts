@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as CleanerV2 from "./CleanerV2";
+import CleanerV2 from "./CleanerV2.js";
 
-const Cleaner: GenericFacade = { name: "Cleaner" };
+export * as CleanerV2 from "./CleanerV2.js";
+
+const Cleaner: GenericFacade = {
+  name: "Cleaner",
+  versions: [CleanerV2],
+};
+
 export default Cleaner;

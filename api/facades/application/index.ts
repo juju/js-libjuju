@@ -1,8 +1,17 @@
 import { GenericFacade } from "../../types";
-export * as ApplicationV12 from "./ApplicationV12";
-export * as ApplicationV13 from "./ApplicationV13";
-export * as ApplicationV14 from "./ApplicationV14";
-export * as ApplicationV15 from "./ApplicationV15";
+import ApplicationV12 from "./ApplicationV12.js";
+import ApplicationV13 from "./ApplicationV13.js";
+import ApplicationV14 from "./ApplicationV14.js";
+import ApplicationV15 from "./ApplicationV15.js";
 
-const Application: GenericFacade = { name: "Application" };
+export * as ApplicationV12 from "./ApplicationV12.js";
+export * as ApplicationV13 from "./ApplicationV13.js";
+export * as ApplicationV14 from "./ApplicationV14.js";
+export * as ApplicationV15 from "./ApplicationV15.js";
+
+const Application: GenericFacade = {
+  name: "Application",
+  versions: [ApplicationV12, ApplicationV13, ApplicationV14, ApplicationV15],
+};
+
 export default Application;

@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as CAASOperatorUpgraderV1 from "./CAASOperatorUpgraderV1";
+import CAASOperatorUpgraderV1 from "./CAASOperatorUpgraderV1.js";
 
-const CAASOperatorUpgrader: GenericFacade = { name: "CAASOperatorUpgrader" };
+export * as CAASOperatorUpgraderV1 from "./CAASOperatorUpgraderV1.js";
+
+const CAASOperatorUpgrader: GenericFacade = {
+  name: "CAASOperatorUpgrader",
+  versions: [CAASOperatorUpgraderV1],
+};
+
 export default CAASOperatorUpgrader;

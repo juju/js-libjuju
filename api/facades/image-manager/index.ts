@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as ImageManagerV2 from "./ImageManagerV2";
+import ImageManagerV2 from "./ImageManagerV2.js";
 
-const ImageManager: GenericFacade = { name: "ImageManager" };
+export * as ImageManagerV2 from "./ImageManagerV2.js";
+
+const ImageManager: GenericFacade = {
+  name: "ImageManager",
+  versions: [ImageManagerV2],
+};
+
 export default ImageManager;

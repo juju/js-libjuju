@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as LogForwardingV1 from "./LogForwardingV1";
+import LogForwardingV1 from "./LogForwardingV1.js";
 
-const LogForwarding: GenericFacade = { name: "LogForwarding" };
+export * as LogForwardingV1 from "./LogForwardingV1.js";
+
+const LogForwarding: GenericFacade = {
+  name: "LogForwarding",
+  versions: [LogForwardingV1],
+};
+
 export default LogForwarding;

@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as RelationUnitsWatcherV1 from "./RelationUnitsWatcherV1";
+import RelationUnitsWatcherV1 from "./RelationUnitsWatcherV1.js";
 
-const RelationUnitsWatcher: GenericFacade = { name: "RelationUnitsWatcher" };
+export * as RelationUnitsWatcherV1 from "./RelationUnitsWatcherV1.js";
+
+const RelationUnitsWatcher: GenericFacade = {
+  name: "RelationUnitsWatcher",
+  versions: [RelationUnitsWatcherV1],
+};
+
 export default RelationUnitsWatcher;

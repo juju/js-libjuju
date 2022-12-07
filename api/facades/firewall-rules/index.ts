@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as FirewallRulesV1 from "./FirewallRulesV1";
+import FirewallRulesV1 from "./FirewallRulesV1.js";
 
-const FirewallRules: GenericFacade = { name: "FirewallRules" };
+export * as FirewallRulesV1 from "./FirewallRulesV1.js";
+
+const FirewallRules: GenericFacade = {
+  name: "FirewallRules",
+  versions: [FirewallRulesV1],
+};
+
 export default FirewallRules;

@@ -8,6 +8,7 @@
 */
 
 import AdminV3, {
+  FacadeVersions,
   LoginRequest,
   LoginResult,
   Macaroon,
@@ -15,14 +16,20 @@ import AdminV3, {
 } from "./facades/admin/AdminV3.js";
 
 import type { Callback, JujuRequest } from "../generator/interfaces";
-import { Facade } from "./types.js";
+import {
+  ClassType,
+  Facade,
+  FacadeClass,
+  FacadeClassList,
+  GenericFacade,
+} from "./types.js";
 import { createAsyncHandler } from "./utils.js";
 
 export interface ConnectOptions {
   bakery?: Bakery;
   closeCallback: Callback<number>;
   debug?: boolean;
-  facades?: Facade[];
+  facades?: (ClassType<Facade> | GenericFacade)[];
   wsclass?: typeof WebSocket;
 }
 
@@ -213,7 +220,7 @@ function generateModelURL(controllerHost: string, modelUUID: string): string {
 */
 class Client {
   _transport: Transport;
-  _facades: Facade[];
+  _facades: (ClassType<Facade> | GenericFacade)[];
   _bakery: Bakery;
   _admin: AdminV3;
 
@@ -481,7 +488,7 @@ class Connection {
 
   constructor(
     transport: Transport,
-    facades: Facade[],
+    facades: (ClassType<Facade> | GenericFacade)[],
     loginResult: LoginResult
   ) {
     // Store the transport used for sending messages to Juju.
@@ -499,25 +506,60 @@ class Connection {
     };
 
     // Handle facades.
-    const registered = facades.reduce(
-      (previous: { [k: string]: Facade }, current) => {
-        previous[current.NAME] = current;
-        return previous;
+    const loginSupportedFacades: FacadeVersions[] = loginResult.facades;
+    const clientRequestedFacades = facades.reduce(
+      (facadeVersions: { [k: string]: FacadeClassList }, current) => {
+        if ("versions" in current) {
+          // generic facade, where we won't the best version
+          if (!facadeVersions[current.name]) facadeVersions[current.name] = [];
+          facadeVersions[current.name].push(...current.versions);
+        } else {
+          // a specific version of a facade asked by the client
+          const facade = current as FacadeClass;
+          if (!facadeVersions[facade.NAME]) facadeVersions[facade.NAME] = [];
+          facadeVersions[facade.NAME].push(facade);
+        }
+        return facadeVersions;
       },
       {}
     );
-    // TODO: get the latest supported facade version instead of returning undefined
-    this.facades = loginResult.facades.reduce((previous, current) => {
-      const facadeClass = registered[current.name];
-      if (facadeClass && current.versions.includes(facadeClass.VERSION)) {
-        const facadeName = uncapitalize(facadeClass.NAME);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore: this is temporary code
-        previous[facadeName] = new facadeClass(this.transport, this.info);
-        return previous;
-      }
-      return previous;
-    }, {});
+    // sort versions to get the latest
+    for (const facadeName in clientRequestedFacades) {
+      clientRequestedFacades[facadeName].sort((a, b) => a.VERSION - b.VERSION);
+    }
+
+    // find the most suitable facade version
+    this.facades = Object.entries(clientRequestedFacades).reduce(
+      (
+        suitableFacades: {
+          [k: string]: Facade;
+        },
+        [facadeName, requestedFacades]
+      ) => {
+        const supportedFacades = loginSupportedFacades.find(
+          (facadeVersions) => facadeVersions.name === facadeName
+        );
+        if (!supportedFacades || !supportedFacades.versions.length)
+          return suitableFacades;
+
+        const supportedFacadeVersions = new Set(supportedFacades.versions);
+        const facadeCandidates = requestedFacades.filter((facade) =>
+          supportedFacadeVersions.has(facade.VERSION)
+        );
+        // get the latest version
+        if (facadeCandidates.length) {
+          const mostSuitableFacade =
+            facadeCandidates[facadeCandidates.length - 1];
+          const facadeName = uncapitalize(mostSuitableFacade.NAME);
+          suitableFacades[facadeName] = new mostSuitableFacade(
+            this.transport,
+            this.info
+          );
+        }
+        return suitableFacades;
+      },
+      {}
+    );
   }
 }
 

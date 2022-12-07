@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as DeployerV1 from "./DeployerV1";
+import DeployerV1 from "./DeployerV1.js";
 
-const Deployer: GenericFacade = { name: "Deployer" };
+export * as DeployerV1 from "./DeployerV1.js";
+
+const Deployer: GenericFacade = {
+  name: "Deployer",
+  versions: [DeployerV1],
+};
+
 export default Deployer;

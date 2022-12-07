@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as CharmRevisionUpdaterV2 from "./CharmRevisionUpdaterV2";
+import CharmRevisionUpdaterV2 from "./CharmRevisionUpdaterV2.js";
 
-const CharmRevisionUpdater: GenericFacade = { name: "CharmRevisionUpdater" };
+export * as CharmRevisionUpdaterV2 from "./CharmRevisionUpdaterV2.js";
+
+const CharmRevisionUpdater: GenericFacade = {
+  name: "CharmRevisionUpdater",
+  versions: [CharmRevisionUpdaterV2],
+};
+
 export default CharmRevisionUpdater;

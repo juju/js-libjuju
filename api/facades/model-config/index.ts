@@ -1,6 +1,13 @@
 import { GenericFacade } from "../../types";
-export * as ModelConfigV2 from "./ModelConfigV2";
-export * as ModelConfigV3 from "./ModelConfigV3";
+import ModelConfigV2 from "./ModelConfigV2.js";
+import ModelConfigV3 from "./ModelConfigV3.js";
 
-const ModelConfig: GenericFacade = { name: "ModelConfig" };
+export * as ModelConfigV2 from "./ModelConfigV2.js";
+export * as ModelConfigV3 from "./ModelConfigV3.js";
+
+const ModelConfig: GenericFacade = {
+  name: "ModelConfig",
+  versions: [ModelConfigV2, ModelConfigV3],
+};
+
 export default ModelConfig;

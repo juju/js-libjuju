@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as EnvironUpgraderV1 from "./EnvironUpgraderV1";
+import EnvironUpgraderV1 from "./EnvironUpgraderV1.js";
 
-const EnvironUpgrader: GenericFacade = { name: "EnvironUpgrader" };
+export * as EnvironUpgraderV1 from "./EnvironUpgraderV1.js";
+
+const EnvironUpgrader: GenericFacade = {
+  name: "EnvironUpgrader",
+  versions: [EnvironUpgraderV1],
+};
+
 export default EnvironUpgrader;

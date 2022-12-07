@@ -1,6 +1,13 @@
 import { GenericFacade } from "../../types";
-export * as AgentV2 from "./AgentV2";
-export * as AgentV3 from "./AgentV3";
+import AgentV2 from "./AgentV2.js";
+import AgentV3 from "./AgentV3.js";
 
-const Agent: GenericFacade = { name: "Agent" };
+export * as AgentV2 from "./AgentV2.js";
+export * as AgentV3 from "./AgentV3.js";
+
+const Agent: GenericFacade = {
+  name: "Agent",
+  versions: [AgentV2, AgentV3],
+};
+
 export default Agent;

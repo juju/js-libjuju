@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as DiskManagerV2 from "./DiskManagerV2";
+import DiskManagerV2 from "./DiskManagerV2.js";
 
-const DiskManager: GenericFacade = { name: "DiskManager" };
+export * as DiskManagerV2 from "./DiskManagerV2.js";
+
+const DiskManager: GenericFacade = {
+  name: "DiskManager",
+  versions: [DiskManagerV2],
+};
+
 export default DiskManager;

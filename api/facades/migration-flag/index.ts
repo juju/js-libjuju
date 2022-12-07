@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as MigrationFlagV1 from "./MigrationFlagV1";
+import MigrationFlagV1 from "./MigrationFlagV1.js";
 
-const MigrationFlag: GenericFacade = { name: "MigrationFlag" };
+export * as MigrationFlagV1 from "./MigrationFlagV1.js";
+
+const MigrationFlag: GenericFacade = {
+  name: "MigrationFlag",
+  versions: [MigrationFlagV1],
+};
+
 export default MigrationFlag;

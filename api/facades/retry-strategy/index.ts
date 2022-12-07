@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as RetryStrategyV1 from "./RetryStrategyV1";
+import RetryStrategyV1 from "./RetryStrategyV1.js";
 
-const RetryStrategy: GenericFacade = { name: "RetryStrategy" };
+export * as RetryStrategyV1 from "./RetryStrategyV1.js";
+
+const RetryStrategy: GenericFacade = {
+  name: "RetryStrategy",
+  versions: [RetryStrategyV1],
+};
+
 export default RetryStrategy;

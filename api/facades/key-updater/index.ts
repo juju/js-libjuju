@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as KeyUpdaterV1 from "./KeyUpdaterV1";
+import KeyUpdaterV1 from "./KeyUpdaterV1.js";
 
-const KeyUpdater: GenericFacade = { name: "KeyUpdater" };
+export * as KeyUpdaterV1 from "./KeyUpdaterV1.js";
+
+const KeyUpdater: GenericFacade = {
+  name: "KeyUpdater",
+  versions: [KeyUpdaterV1],
+};
+
 export default KeyUpdater;

@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as RelationStatusWatcherV1 from "./RelationStatusWatcherV1";
+import RelationStatusWatcherV1 from "./RelationStatusWatcherV1.js";
 
-const RelationStatusWatcher: GenericFacade = { name: "RelationStatusWatcher" };
+export * as RelationStatusWatcherV1 from "./RelationStatusWatcherV1.js";
+
+const RelationStatusWatcher: GenericFacade = {
+  name: "RelationStatusWatcher",
+  versions: [RelationStatusWatcherV1],
+};
+
 export default RelationStatusWatcher;

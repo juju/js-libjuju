@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as UnitAssignerV1 from "./UnitAssignerV1";
+import UnitAssignerV1 from "./UnitAssignerV1.js";
 
-const UnitAssigner: GenericFacade = { name: "UnitAssigner" };
+export * as UnitAssignerV1 from "./UnitAssignerV1.js";
+
+const UnitAssigner: GenericFacade = {
+  name: "UnitAssigner",
+  versions: [UnitAssignerV1],
+};
+
 export default UnitAssigner;

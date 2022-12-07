@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as CharmDownloaderV1 from "./CharmDownloaderV1";
+import CharmDownloaderV1 from "./CharmDownloaderV1.js";
 
-const CharmDownloader: GenericFacade = { name: "CharmDownloader" };
+export * as CharmDownloaderV1 from "./CharmDownloaderV1.js";
+
+const CharmDownloader: GenericFacade = {
+  name: "CharmDownloader",
+  versions: [CharmDownloaderV1],
+};
+
 export default CharmDownloader;

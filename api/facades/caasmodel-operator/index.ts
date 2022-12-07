@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as CAASModelOperatorV1 from "./CAASModelOperatorV1";
+import CAASModelOperatorV1 from "./CAASModelOperatorV1.js";
 
-const CAASModelOperator: GenericFacade = { name: "CAASModelOperator" };
+export * as CAASModelOperatorV1 from "./CAASModelOperatorV1.js";
+
+const CAASModelOperator: GenericFacade = {
+  name: "CAASModelOperator",
+  versions: [CAASModelOperatorV1],
+};
+
 export default CAASModelOperator;

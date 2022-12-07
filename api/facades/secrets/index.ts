@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as SecretsV1 from "./SecretsV1";
+import SecretsV1 from "./SecretsV1.js";
 
-const Secrets: GenericFacade = { name: "Secrets" };
+export * as SecretsV1 from "./SecretsV1.js";
+
+const Secrets: GenericFacade = {
+  name: "Secrets",
+  versions: [SecretsV1],
+};
+
 export default Secrets;

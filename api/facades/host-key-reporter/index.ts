@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as HostKeyReporterV1 from "./HostKeyReporterV1";
+import HostKeyReporterV1 from "./HostKeyReporterV1.js";
 
-const HostKeyReporter: GenericFacade = { name: "HostKeyReporter" };
+export * as HostKeyReporterV1 from "./HostKeyReporterV1.js";
+
+const HostKeyReporter: GenericFacade = {
+  name: "HostKeyReporter",
+  versions: [HostKeyReporterV1],
+};
+
 export default HostKeyReporter;

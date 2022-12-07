@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as UpgraderV1 from "./UpgraderV1";
+import UpgraderV1 from "./UpgraderV1.js";
 
-const Upgrader: GenericFacade = { name: "Upgrader" };
+export * as UpgraderV1 from "./UpgraderV1.js";
+
+const Upgrader: GenericFacade = {
+  name: "Upgrader",
+  versions: [UpgraderV1],
+};
+
 export default Upgrader;

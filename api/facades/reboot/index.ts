@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as RebootV2 from "./RebootV2";
+import RebootV2 from "./RebootV2.js";
 
-const Reboot: GenericFacade = { name: "Reboot" };
+export * as RebootV2 from "./RebootV2.js";
+
+const Reboot: GenericFacade = {
+  name: "Reboot",
+  versions: [RebootV2],
+};
+
 export default Reboot;

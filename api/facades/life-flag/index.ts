@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as LifeFlagV1 from "./LifeFlagV1";
+import LifeFlagV1 from "./LifeFlagV1.js";
 
-const LifeFlag: GenericFacade = { name: "LifeFlag" };
+export * as LifeFlagV1 from "./LifeFlagV1.js";
+
+const LifeFlag: GenericFacade = {
+  name: "LifeFlag",
+  versions: [LifeFlagV1],
+};
+
 export default LifeFlag;

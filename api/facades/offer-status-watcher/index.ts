@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as OfferStatusWatcherV1 from "./OfferStatusWatcherV1";
+import OfferStatusWatcherV1 from "./OfferStatusWatcherV1.js";
 
-const OfferStatusWatcher: GenericFacade = { name: "OfferStatusWatcher" };
+export * as OfferStatusWatcherV1 from "./OfferStatusWatcherV1.js";
+
+const OfferStatusWatcher: GenericFacade = {
+  name: "OfferStatusWatcher",
+  versions: [OfferStatusWatcherV1],
+};
+
 export default OfferStatusWatcher;

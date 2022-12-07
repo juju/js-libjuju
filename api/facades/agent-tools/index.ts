@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as AgentToolsV1 from "./AgentToolsV1";
+import AgentToolsV1 from "./AgentToolsV1.js";
 
-const AgentTools: GenericFacade = { name: "AgentTools" };
+export * as AgentToolsV1 from "./AgentToolsV1.js";
+
+const AgentTools: GenericFacade = {
+  name: "AgentTools",
+  versions: [AgentToolsV1],
+};
+
 export default AgentTools;

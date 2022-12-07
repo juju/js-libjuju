@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as CAASApplicationV1 from "./CAASApplicationV1";
+import CAASApplicationV1 from "./CAASApplicationV1.js";
 
-const CAASApplication: GenericFacade = { name: "CAASApplication" };
+export * as CAASApplicationV1 from "./CAASApplicationV1.js";
+
+const CAASApplication: GenericFacade = {
+  name: "CAASApplication",
+  versions: [CAASApplicationV1],
+};
+
 export default CAASApplication;

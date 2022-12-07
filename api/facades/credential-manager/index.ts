@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as CredentialManagerV1 from "./CredentialManagerV1";
+import CredentialManagerV1 from "./CredentialManagerV1.js";
 
-const CredentialManager: GenericFacade = { name: "CredentialManager" };
+export * as CredentialManagerV1 from "./CredentialManagerV1.js";
+
+const CredentialManager: GenericFacade = {
+  name: "CredentialManager",
+  versions: [CredentialManagerV1],
+};
+
 export default CredentialManager;

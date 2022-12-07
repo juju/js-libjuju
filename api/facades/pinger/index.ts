@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as PingerV1 from "./PingerV1";
+import PingerV1 from "./PingerV1.js";
 
-const Pinger: GenericFacade = { name: "Pinger" };
+export * as PingerV1 from "./PingerV1.js";
+
+const Pinger: GenericFacade = {
+  name: "Pinger",
+  versions: [PingerV1],
+};
+
 export default Pinger;

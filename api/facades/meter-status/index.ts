@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as MeterStatusV2 from "./MeterStatusV2";
+import MeterStatusV2 from "./MeterStatusV2.js";
 
-const MeterStatus: GenericFacade = { name: "MeterStatus" };
+export * as MeterStatusV2 from "./MeterStatusV2.js";
+
+const MeterStatus: GenericFacade = {
+  name: "MeterStatus",
+  versions: [MeterStatusV2],
+};
+
 export default MeterStatus;

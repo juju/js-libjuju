@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as UndertakerV1 from "./UndertakerV1";
+import UndertakerV1 from "./UndertakerV1.js";
 
-const Undertaker: GenericFacade = { name: "Undertaker" };
+export * as UndertakerV1 from "./UndertakerV1.js";
+
+const Undertaker: GenericFacade = {
+  name: "Undertaker",
+  versions: [UndertakerV1],
+};
+
 export default Undertaker;

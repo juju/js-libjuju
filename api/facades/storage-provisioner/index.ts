@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as StorageProvisionerV4 from "./StorageProvisionerV4";
+import StorageProvisionerV4 from "./StorageProvisionerV4.js";
 
-const StorageProvisioner: GenericFacade = { name: "StorageProvisioner" };
+export * as StorageProvisionerV4 from "./StorageProvisionerV4.js";
+
+const StorageProvisioner: GenericFacade = {
+  name: "StorageProvisioner",
+  versions: [StorageProvisionerV4],
+};
+
 export default StorageProvisioner;

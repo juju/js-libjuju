@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as MetricsDebugV2 from "./MetricsDebugV2";
+import MetricsDebugV2 from "./MetricsDebugV2.js";
 
-const MetricsDebug: GenericFacade = { name: "MetricsDebug" };
+export * as MetricsDebugV2 from "./MetricsDebugV2.js";
+
+const MetricsDebug: GenericFacade = {
+  name: "MetricsDebug",
+  versions: [MetricsDebugV2],
+};
+
 export default MetricsDebug;

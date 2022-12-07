@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as ModelGenerationV4 from "./ModelGenerationV4";
+import ModelGenerationV4 from "./ModelGenerationV4.js";
 
-const ModelGeneration: GenericFacade = { name: "ModelGeneration" };
+export * as ModelGenerationV4 from "./ModelGenerationV4.js";
+
+const ModelGeneration: GenericFacade = {
+  name: "ModelGeneration",
+  versions: [ModelGenerationV4],
+};
+
 export default ModelGeneration;

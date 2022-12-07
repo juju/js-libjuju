@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as SecretsTriggerWatcherV1 from "./SecretsTriggerWatcherV1";
+import SecretsTriggerWatcherV1 from "./SecretsTriggerWatcherV1.js";
 
-const SecretsTriggerWatcher: GenericFacade = { name: "SecretsTriggerWatcher" };
+export * as SecretsTriggerWatcherV1 from "./SecretsTriggerWatcherV1.js";
+
+const SecretsTriggerWatcher: GenericFacade = {
+  name: "SecretsTriggerWatcher",
+  versions: [SecretsTriggerWatcherV1],
+};
+
 export default SecretsTriggerWatcher;

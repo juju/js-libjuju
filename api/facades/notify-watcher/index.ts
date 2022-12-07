@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as NotifyWatcherV1 from "./NotifyWatcherV1";
+import NotifyWatcherV1 from "./NotifyWatcherV1.js";
 
-const NotifyWatcher: GenericFacade = { name: "NotifyWatcher" };
+export * as NotifyWatcherV1 from "./NotifyWatcherV1.js";
+
+const NotifyWatcher: GenericFacade = {
+  name: "NotifyWatcher",
+  versions: [NotifyWatcherV1],
+};
+
 export default NotifyWatcher;

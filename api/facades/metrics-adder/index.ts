@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as MetricsAdderV2 from "./MetricsAdderV2";
+import MetricsAdderV2 from "./MetricsAdderV2.js";
 
-const MetricsAdder: GenericFacade = { name: "MetricsAdder" };
+export * as MetricsAdderV2 from "./MetricsAdderV2.js";
+
+const MetricsAdder: GenericFacade = {
+  name: "MetricsAdder",
+  versions: [MetricsAdderV2],
+};
+
 export default MetricsAdder;

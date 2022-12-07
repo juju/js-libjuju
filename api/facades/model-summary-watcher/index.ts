@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as ModelSummaryWatcherV1 from "./ModelSummaryWatcherV1";
+import ModelSummaryWatcherV1 from "./ModelSummaryWatcherV1.js";
 
-const ModelSummaryWatcher: GenericFacade = { name: "ModelSummaryWatcher" };
+export * as ModelSummaryWatcherV1 from "./ModelSummaryWatcherV1.js";
+
+const ModelSummaryWatcher: GenericFacade = {
+  name: "ModelSummaryWatcher",
+  versions: [ModelSummaryWatcherV1],
+};
+
 export default ModelSummaryWatcher;

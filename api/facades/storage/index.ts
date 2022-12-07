@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as StorageV6 from "./StorageV6";
+import StorageV6 from "./StorageV6.js";
 
-const Storage: GenericFacade = { name: "Storage" };
+export * as StorageV6 from "./StorageV6.js";
+
+const Storage: GenericFacade = {
+  name: "Storage",
+  versions: [StorageV6],
+};
+
 export default Storage;

@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as MachineUndertakerV1 from "./MachineUndertakerV1";
+import MachineUndertakerV1 from "./MachineUndertakerV1.js";
 
-const MachineUndertaker: GenericFacade = { name: "MachineUndertaker" };
+export * as MachineUndertakerV1 from "./MachineUndertakerV1.js";
+
+const MachineUndertaker: GenericFacade = {
+  name: "MachineUndertaker",
+  versions: [MachineUndertakerV1],
+};
+
 export default MachineUndertaker;

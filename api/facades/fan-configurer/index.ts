@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as FanConfigurerV1 from "./FanConfigurerV1";
+import FanConfigurerV1 from "./FanConfigurerV1.js";
 
-const FanConfigurer: GenericFacade = { name: "FanConfigurer" };
+export * as FanConfigurerV1 from "./FanConfigurerV1.js";
+
+const FanConfigurer: GenericFacade = {
+  name: "FanConfigurer",
+  versions: [FanConfigurerV1],
+};
+
 export default FanConfigurer;

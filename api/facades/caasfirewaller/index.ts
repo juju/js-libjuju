@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as CAASFirewallerV1 from "./CAASFirewallerV1";
+import CAASFirewallerV1 from "./CAASFirewallerV1.js";
 
-const CAASFirewaller: GenericFacade = { name: "CAASFirewaller" };
+export * as CAASFirewallerV1 from "./CAASFirewallerV1.js";
+
+const CAASFirewaller: GenericFacade = {
+  name: "CAASFirewaller",
+  versions: [CAASFirewallerV1],
+};
+
 export default CAASFirewaller;

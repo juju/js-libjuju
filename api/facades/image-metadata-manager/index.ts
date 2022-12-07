@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as ImageMetadataManagerV1 from "./ImageMetadataManagerV1";
+import ImageMetadataManagerV1 from "./ImageMetadataManagerV1.js";
 
-const ImageMetadataManager: GenericFacade = { name: "ImageMetadataManager" };
+export * as ImageMetadataManagerV1 from "./ImageMetadataManagerV1.js";
+
+const ImageMetadataManager: GenericFacade = {
+  name: "ImageMetadataManager",
+  versions: [ImageMetadataManagerV1],
+};
+
 export default ImageMetadataManager;

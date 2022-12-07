@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as AnnotationsV2 from "./AnnotationsV2";
+import AnnotationsV2 from "./AnnotationsV2.js";
 
-const Annotations: GenericFacade = { name: "Annotations" };
+export * as AnnotationsV2 from "./AnnotationsV2.js";
+
+const Annotations: GenericFacade = {
+  name: "Annotations",
+  versions: [AnnotationsV2],
+};
+
 export default Annotations;

@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as ProvisionerV11 from "./ProvisionerV11";
+import ProvisionerV11 from "./ProvisionerV11.js";
 
-const Provisioner: GenericFacade = { name: "Provisioner" };
+export * as ProvisionerV11 from "./ProvisionerV11.js";
+
+const Provisioner: GenericFacade = {
+  name: "Provisioner",
+  versions: [ProvisionerV11],
+};
+
 export default Provisioner;

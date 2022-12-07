@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as PayloadsHookContextV1 from "./PayloadsHookContextV1";
+import PayloadsHookContextV1 from "./PayloadsHookContextV1.js";
 
-const PayloadsHookContext: GenericFacade = { name: "PayloadsHookContext" };
+export * as PayloadsHookContextV1 from "./PayloadsHookContextV1.js";
+
+const PayloadsHookContext: GenericFacade = {
+  name: "PayloadsHookContext",
+  versions: [PayloadsHookContextV1],
+};
+
 export default PayloadsHookContext;

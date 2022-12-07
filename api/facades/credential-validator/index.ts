@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as CredentialValidatorV2 from "./CredentialValidatorV2";
+import CredentialValidatorV2 from "./CredentialValidatorV2.js";
 
-const CredentialValidator: GenericFacade = { name: "CredentialValidator" };
+export * as CredentialValidatorV2 from "./CredentialValidatorV2.js";
+
+const CredentialValidator: GenericFacade = {
+  name: "CredentialValidator",
+  versions: [CredentialValidatorV2],
+};
+
 export default CredentialValidator;

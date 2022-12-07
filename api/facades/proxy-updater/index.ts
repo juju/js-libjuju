@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as ProxyUpdaterV2 from "./ProxyUpdaterV2";
+import ProxyUpdaterV2 from "./ProxyUpdaterV2.js";
 
-const ProxyUpdater: GenericFacade = { name: "ProxyUpdater" };
+export * as ProxyUpdaterV2 from "./ProxyUpdaterV2.js";
+
+const ProxyUpdater: GenericFacade = {
+  name: "ProxyUpdater",
+  versions: [ProxyUpdaterV2],
+};
+
 export default ProxyUpdater;

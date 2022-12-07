@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as ResourcesHookContextV1 from "./ResourcesHookContextV1";
+import ResourcesHookContextV1 from "./ResourcesHookContextV1.js";
 
-const ResourcesHookContext: GenericFacade = { name: "ResourcesHookContext" };
+export * as ResourcesHookContextV1 from "./ResourcesHookContextV1.js";
+
+const ResourcesHookContext: GenericFacade = {
+  name: "ResourcesHookContext",
+  versions: [ResourcesHookContextV1],
+};
+
 export default ResourcesHookContext;

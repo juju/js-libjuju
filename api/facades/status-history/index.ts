@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as StatusHistoryV2 from "./StatusHistoryV2";
+import StatusHistoryV2 from "./StatusHistoryV2.js";
 
-const StatusHistory: GenericFacade = { name: "StatusHistory" };
+export * as StatusHistoryV2 from "./StatusHistoryV2.js";
+
+const StatusHistory: GenericFacade = {
+  name: "StatusHistory",
+  versions: [StatusHistoryV2],
+};
+
 export default StatusHistory;

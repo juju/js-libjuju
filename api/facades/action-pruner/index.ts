@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as ActionPrunerV1 from "./ActionPrunerV1";
+import ActionPrunerV1 from "./ActionPrunerV1.js";
 
-const ActionPruner: GenericFacade = { name: "ActionPruner" };
+export * as ActionPrunerV1 from "./ActionPrunerV1.js";
+
+const ActionPruner: GenericFacade = {
+  name: "ActionPruner",
+  versions: [ActionPrunerV1],
+};
+
 export default ActionPruner;

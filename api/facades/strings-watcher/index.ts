@@ -1,5 +1,11 @@
 import { GenericFacade } from "../../types";
-export * as StringsWatcherV1 from "./StringsWatcherV1";
+import StringsWatcherV1 from "./StringsWatcherV1.js";
 
-const StringsWatcher: GenericFacade = { name: "StringsWatcher" };
+export * as StringsWatcherV1 from "./StringsWatcherV1.js";
+
+const StringsWatcher: GenericFacade = {
+  name: "StringsWatcher",
+  versions: [StringsWatcherV1],
+};
+
 export default StringsWatcher;
