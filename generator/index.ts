@@ -1,5 +1,11 @@
 import { execSync } from "child_process";
-import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "fs";
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} from "fs";
 import glob from "glob";
 import { join, resolve } from "path";
 import {
@@ -250,7 +256,11 @@ function generateFile(facadeTemplateData: FacadeTemplate): void {
 
   const outputFolder = `api/facades/${facadeFoldername}/`;
   mkdirSync(outputFolder, { recursive: true });
-  writeFileSync(join(outputFolder, `${filename}.ts`), output);
+  const newFacadeFilePath = join(outputFolder, `${filename}.ts`);
+  // Avoid overriding existing files, in case you need to regenerate
+  // given files, delete the files first
+  if (!existsSync(newFacadeFilePath))
+    writeFileSync(join(outputFolder, `${filename}.ts`), output);
 }
 
 function generateReadmeFile(readmeTemplateData: ReadmeTemplate): void {

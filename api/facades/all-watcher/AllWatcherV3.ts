@@ -53,13 +53,13 @@ class AllWatcherV3 implements Facade {
     Next will return the current state of everything on the first call
     and subsequent calls will
   */
-  next(params: any): Promise<AllWatcherNextResults> {
+  next(id: number): Promise<AllWatcherNextResults> {
     return new Promise((resolve, reject) => {
-      const req: JujuRequest = {
+      const req: JujuRequest & { id: number } = {
         type: "AllWatcher",
         request: "Next",
         version: 3,
-        params: params,
+        id,
       };
 
       this._transport.write(req, resolve, reject);
@@ -69,13 +69,13 @@ class AllWatcherV3 implements Facade {
   /**
     Stop stops the watcher.
   */
-  stop(params: any): Promise<any> {
+  stop(id: number): Promise<any> {
     return new Promise((resolve, reject) => {
-      const req: JujuRequest = {
+      const req: JujuRequest & { id: number } = {
         type: "AllWatcher",
         request: "Stop",
         version: 3,
-        params: params,
+        id,
       };
 
       this._transport.write(req, resolve, reject);

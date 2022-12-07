@@ -266,8 +266,6 @@ class Client {
       args.macaroons = [deserialized];
     }
 
-    args["client-version"] = "3.0.2";
-
     try {
       const response = (await this._admin.login(args)) as
         | typeof REDIRECTION_ERROR
@@ -523,11 +521,6 @@ class Connection {
       },
       {}
     );
-    // sort versions to get the latest
-    for (const facadeName in clientRequestedFacades) {
-      clientRequestedFacades[facadeName].sort((a, b) => a.VERSION - b.VERSION);
-    }
-
     // find the most suitable facade version
     this.facades = Object.entries(clientRequestedFacades).reduce(
       (
@@ -546,7 +539,7 @@ class Connection {
         const facadeCandidates = requestedFacades.filter((facade) =>
           supportedFacadeVersions.has(facade.VERSION)
         );
-        // get the latest version
+        // get the last element from the list (priority)
         if (facadeCandidates.length) {
           const mostSuitableFacade =
             facadeCandidates[facadeCandidates.length - 1];
