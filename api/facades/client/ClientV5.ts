@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AllWatcherId {
@@ -57,7 +58,7 @@ export interface Binary {
   Build: number;
   Major: number;
   Minor: number;
-  Number: number;
+  Number: Number;
   Patch: number;
   Release: string;
   Tag: string;
@@ -103,7 +104,7 @@ export interface FindToolsParams {
   arch: string;
   major: number;
   minor: number;
-  number: number;
+  number: Number;
   "os-type": string;
 }
 
@@ -275,23 +276,23 @@ export interface AdditionalProperties {
 /**
   Client serves client-specific API methods.
 */
-class ClientV5 {
+class ClientV5 implements Facade {
   static NAME = "Client";
   static VERSION = 5;
 
-  version: number;
+  NAME = "Client";
+  VERSION = 5;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 5;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     FindTools returns a List containing all tools matching the given parameters.
   */

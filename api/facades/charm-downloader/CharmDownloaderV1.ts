@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Entities {
@@ -52,23 +53,23 @@ export interface AdditionalProperties {
   any entries that have not been yet downloaded to the blobstore and for
   triggering their download.
 */
-class CharmDownloaderV1 {
+class CharmDownloaderV1 implements Facade {
   static NAME = "CharmDownloader";
   static VERSION = 1;
 
-  version: number;
+  NAME = "CharmDownloader";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     DownloadApplicationCharms iterates the list of provided applications and
     downloads any referenced charms that have not yet been persisted to the

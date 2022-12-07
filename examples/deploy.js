@@ -1,5 +1,5 @@
 // Copyright 2020 Canonical Ltd.
-// Licensed under the LGPLv3, see LICENCE.txt file for details.
+// Licensed under the LGPLv3, see LICENSE.txt file for details.
 
 // Allow connecting endpoints using self-signed certs.
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";

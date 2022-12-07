@@ -11,6 +11,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface APIHostPortsResult {
@@ -38,7 +39,7 @@ export interface Binary {
   Build: number;
   Major: number;
   Minor: number;
-  Number: number;
+  Number: Number;
   Patch: number;
   Release: string;
   Tag: string;
@@ -196,7 +197,7 @@ export interface FindToolsParams {
   arch: string;
   major: number;
   minor: number;
-  number: number;
+  number: Number;
   "os-type": string;
 }
 
@@ -546,23 +547,23 @@ export interface AdditionalProperties {
   ProvisionerAPIV11 provides v10 of the provisioner facade.
   It relies on agent-set origin when calling SetHostMachineNetworkConfig.
 */
-class ProvisionerV11 {
+class ProvisionerV11 implements Facade {
   static NAME = "Provisioner";
   static VERSION = 11;
 
-  version: number;
+  NAME = "Provisioner";
+  VERSION = 11;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 11;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     APIAddresses returns the list of addresses used to connect to the API.
   */

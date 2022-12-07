@@ -10,6 +10,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Action {
@@ -167,23 +168,23 @@ export interface AdditionalProperties {
 /**
   APIv6 provides the Action API facade for version 6.
 */
-class ActionV6 {
+class ActionV6 implements Facade {
   static NAME = "Action";
   static VERSION = 6;
 
-  version: number;
+  NAME = "Action";
+  VERSION = 6;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 6;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     Actions takes a list of ActionTags, and returns the full Action for
     each ID.

@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface CIDRParams {
@@ -86,23 +87,23 @@ export interface AdditionalProperties {
 /**
   API provides the subnets API facade for version 5.
 */
-class SubnetsV5 {
+class SubnetsV5 implements Facade {
   static NAME = "Subnets";
   static VERSION = 5;
 
-  version: number;
+  NAME = "Subnets";
+  VERSION = 5;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 5;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AllZones returns all availability zones known to Juju. If a
     zone is unusable, unavailable, or deprecated the Available

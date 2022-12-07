@@ -26,14 +26,19 @@ To access the Juju API, a connection must be made to either a Juju
 controller or a Juju model.
 
 \`\`\`javascript
-import ApplicationV5 from "jujulib/api/facades/application-v5.js";
-import ClientV1 from "jujulib/api/facades/client-v1.js";
-import ClientV2 from "jujulib/api/facades/client-v2.js";
+import { connect } from "@canonical/jujulib";
 
-const juju = await jujulib.connect(
-  'wss://example.com/model/x-y-z/api',
-  {facades: [ApplicationV5, ClientV1, ClientV2]}
-);
+import ApplicationV15 from "@canonical/jujulib/dist/api/facades/application/ApplicationV15";
+import ClientV6 from "@canonical/jujulib/dist/api/facades/client/ClientV6.js";
+
+// Nodejs
+// import WebSocket from "ws";
+
+const juju = await connect("wss://example.com/model/x-y-z/api", {
+  facades: [ApplicationV15, ClientV6],
+});
+
+juju.login({ username: "username@localhost", password: "123456" });
 \`\`\`
 
 In the code above, a connection is established to the provided model API URL, and the client declares interest in using the specified set of facades.

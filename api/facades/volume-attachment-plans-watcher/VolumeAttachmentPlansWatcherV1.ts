@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Error {
@@ -45,23 +46,23 @@ export interface AdditionalProperties {
   could do with some deduplication of logic, and I don't want to add to that
   spaghetti right now.
 */
-class VolumeAttachmentPlansWatcherV1 {
+class VolumeAttachmentPlansWatcherV1 implements Facade {
   static NAME = "VolumeAttachmentPlansWatcher";
   static VERSION = 1;
 
-  version: number;
+  NAME = "VolumeAttachmentPlansWatcher";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     Next returns when a change has occurred to an entity of the
     collection being watched since the most recent call to Next

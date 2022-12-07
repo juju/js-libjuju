@@ -10,6 +10,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Error {
@@ -69,23 +70,23 @@ export interface AdditionalProperties {
 /**
   SecretsAPI is the backend for the Secrets facade.
 */
-class SecretsV1 {
+class SecretsV1 implements Facade {
   static NAME = "Secrets";
   static VERSION = 1;
 
-  version: number;
+  NAME = "Secrets";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     ListSecrets lists available secrets.
   */

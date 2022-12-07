@@ -10,6 +10,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Entities {
@@ -42,23 +43,23 @@ export interface AdditionalProperties {
   MetricsManagerAPI implements the metrics manager interface and is the concrete
   implementation of the api end point.
 */
-class MetricsManagerV1 {
+class MetricsManagerV1 implements Facade {
   static NAME = "MetricsManager";
   static VERSION = 1;
 
-  version: number;
+  NAME = "MetricsManager";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AddJujuMachineMetrics adds a metric that counts the number of
     non-container machines in the current model.

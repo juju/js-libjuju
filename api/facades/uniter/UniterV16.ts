@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface APIHostPortsResult {
@@ -675,23 +676,23 @@ export interface AdditionalProperties {
   UniterAPI implements the latest version (v16) of the Uniter API, which adds
   LXDProfileAPIv2.
 */
-class UniterV16 {
+class UniterV16 implements Facade {
   static NAME = "Uniter";
   static VERSION = 16;
 
-  version: number;
+  NAME = "Uniter";
+  VERSION = 16;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 16;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     APIAddresses returns the list of addresses used to connect to the API.
   */

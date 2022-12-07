@@ -10,6 +10,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AllWatcherNextResults {
@@ -31,23 +32,23 @@ export interface AdditionalProperties {
   current set of watchers, stored in resources. It is used by both
   the AllWatcher and AllModelWatcher facades.
 */
-class AllWatcherV3 {
+class AllWatcherV3 implements Facade {
   static NAME = "AllWatcher";
   static VERSION = 3;
 
-  version: number;
+  NAME = "AllWatcher";
+  VERSION = 3;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 3;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     Next will return the current state of everything on the first call
     and subsequent calls will

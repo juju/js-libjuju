@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AllWatcherId {
@@ -277,23 +278,23 @@ export interface AdditionalProperties {
   ControllerAPIv6 provides the v6 Controller API. The only difference
   between this and v7 is that v6 doesn't have the IdentityProviderURL method.
 */
-class ControllerV6 {
+class ControllerV6 implements Facade {
   static NAME = "Controller";
   static VERSION = 6;
 
-  version: number;
+  NAME = "Controller";
+  VERSION = 6;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 6;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AllModels allows controller administrators to get the list of all the
     models in the controller.

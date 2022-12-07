@@ -14,6 +14,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Address {
@@ -95,23 +96,23 @@ export interface AdditionalProperties {
   admin is the only object that unlogged-in clients can access. It holds any
   methods that are needed to log in.
 */
-class AdminV3 {
+class AdminV3 implements Facade {
   static NAME = "Admin";
   static VERSION = 3;
 
-  version: number;
+  NAME = "Admin";
+  VERSION = 3;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 3;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     Login logs in with the provided credentials.  All subsequent requests on the
     connection will act as the authenticated user.

@@ -11,6 +11,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface APIHostPortsResult {
@@ -128,23 +129,23 @@ export interface AdditionalProperties {
 /**
   DeployerAPI provides access to the Deployer API facade.
 */
-class DeployerV1 {
+class DeployerV1 implements Facade {
   static NAME = "Deployer";
   static VERSION = 1;
 
-  version: number;
+  NAME = "Deployer";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     APIAddresses returns the list of addresses used to connect to the API.
   */

@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Entities {
@@ -94,23 +95,23 @@ export interface AdditionalProperties {
   common.UnitStateAPI to allow meter status workers to access their
   controller-backed internal state.
 */
-class MeterStatusV2 {
+class MeterStatusV2 implements Facade {
   static NAME = "MeterStatus";
   static VERSION = 2;
 
-  version: number;
+  NAME = "MeterStatus";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     GetMeterStatus returns meter status information for each unit.
   */

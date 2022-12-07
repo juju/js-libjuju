@@ -10,6 +10,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Entities {
@@ -51,23 +52,23 @@ export interface AdditionalProperties {
 /**
 
 */
-class LifeFlagV1 {
+class LifeFlagV1 implements Facade {
   static NAME = "LifeFlag";
   static VERSION = 1;
 
-  version: number;
+  NAME = "LifeFlag";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     Life returns the life status of every supplied entity, where available.
   */

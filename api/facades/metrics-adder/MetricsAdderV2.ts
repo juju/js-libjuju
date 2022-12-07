@@ -12,6 +12,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Error {
@@ -59,23 +60,23 @@ export interface AdditionalProperties {
   MetricsAdderAPI implements the metrics adder interface and is the concrete
   implementation of the API end point.
 */
-class MetricsAdderV2 {
+class MetricsAdderV2 implements Facade {
   static NAME = "MetricsAdder";
   static VERSION = 2;
 
-  version: number;
+  NAME = "MetricsAdder";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AddMetricBatches implements the MetricsAdder interface.
   */

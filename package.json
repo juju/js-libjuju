@@ -8,11 +8,11 @@
   "scripts": {
     "build": "tsc",
     "generate-facades": "SCHEMA=generator/schema/schema.json JUJU_VERSION=`cat generator/schema/juju-version.txt` JUJU_GIT_SHA=`cat generator/schema/juju-git-sha.txt` node --enable-source-maps dist/generator/index.js",
-    "regenerate-all-facades": "node generator/regenerate-all.js",
+    "regenerate-all-facades": "node generator/schema/regenerate-all.js",
     "store-schema": "./scripts/store-schema.sh",
     "generate-docs": "typedoc api/* --out docs --entryPointStrategy expand --includeVersion --gitRemote upstream",
     "lint": "eslint api/",
-    "format": "prettier --write '**/*.(js|ts|json)' && eslint --fix .",
+    "format": "prettier --write '**/*.(js|ts|json|md)' && eslint --fix .",
     "test": "tap 'api/tests/test-!(helpers)*.js'"
   },
   "repository": {

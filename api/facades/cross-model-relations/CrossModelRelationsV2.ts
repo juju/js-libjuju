@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface EntityStatus {
@@ -215,23 +216,23 @@ export interface AdditionalProperties {
 /**
   CrossModelRelationsAPI provides access to the CrossModelRelations API facade.
 */
-class CrossModelRelationsV2 {
+class CrossModelRelationsV2 implements Facade {
   static NAME = "CrossModelRelations";
   static VERSION = 2;
 
-  version: number;
+  NAME = "CrossModelRelations";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     PublishIngressNetworkChanges publishes changes to the required
     ingress addresses to the model hosting the offer in the relation.

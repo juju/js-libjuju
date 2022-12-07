@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface ApplicationUnitInfo {
@@ -76,7 +77,7 @@ export interface CAASApplicationProvisioningInfo {
   scale?: number;
   tags?: AdditionalProperties;
   trust?: boolean;
-  version: number;
+  version: Number;
   volumes?: KubernetesVolumeParams[];
 }
 
@@ -473,23 +474,23 @@ export interface AdditionalProperties {
 /**
 
 */
-class CAASApplicationProvisionerV1 {
+class CAASApplicationProvisionerV1 implements Facade {
   static NAME = "CAASApplicationProvisioner";
   static VERSION = 1;
 
-  version: number;
+  NAME = "CAASApplicationProvisioner";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     ApplicationCharmInfo returns information about an application's charm.
   */

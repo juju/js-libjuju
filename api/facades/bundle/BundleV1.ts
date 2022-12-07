@@ -11,6 +11,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface BundleChange {
@@ -49,23 +50,23 @@ export interface AdditionalProperties {
 /**
   APIv1 provides the Bundle API facade for version 1.
 */
-class BundleV1 {
+class BundleV1 implements Facade {
   static NAME = "Bundle";
   static VERSION = 1;
 
-  version: number;
+  NAME = "Bundle";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     GetChanges returns the list of changes required to deploy the given bundle
     data. The changes are sorted by requirements, so that they can be applied in

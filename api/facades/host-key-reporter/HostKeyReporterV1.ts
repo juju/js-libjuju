@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Error {
@@ -45,23 +46,23 @@ export interface AdditionalProperties {
 /**
   Facade implements the API required by the hostkeyreporter worker.
 */
-class HostKeyReporterV1 {
+class HostKeyReporterV1 implements Facade {
   static NAME = "HostKeyReporter";
   static VERSION = 1;
 
-  version: number;
+  NAME = "HostKeyReporter";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     ReportKeys sets the SSH host keys for one or more entities.
   */

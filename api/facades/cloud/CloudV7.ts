@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AddCloudArgs {
@@ -308,23 +309,23 @@ export interface AdditionalProperties {
   CloudAPI implements the cloud interface and is the concrete implementation
   of the api end point.
 */
-class CloudV7 {
+class CloudV7 implements Facade {
   static NAME = "Cloud";
   static VERSION = 7;
 
-  version: number;
+  NAME = "Cloud";
+  VERSION = 7;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 7;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AddCloud adds a new cloud, different from the one managed by the controller.
   */

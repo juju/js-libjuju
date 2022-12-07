@@ -10,6 +10,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface ModelAbstract {
@@ -51,23 +52,23 @@ export interface AdditionalProperties {
 /**
   SrvModelSummaryWatcher defines the API methods on a ModelSummaryWatcher.
 */
-class ModelSummaryWatcherV1 {
+class ModelSummaryWatcherV1 implements Facade {
   static NAME = "ModelSummaryWatcher";
   static VERSION = 1;
 
-  version: number;
+  NAME = "ModelSummaryWatcher";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     Next will return the current state of everything on the first call
     and subsequent calls will return just those model summaries that have

@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Address {
@@ -451,23 +452,23 @@ export interface AdditionalProperties {
 /**
 
 */
-class CAASUnitProvisionerV2 {
+class CAASUnitProvisionerV2 implements Facade {
   static NAME = "CAASUnitProvisioner";
   static VERSION = 2;
 
-  version: number;
+  NAME = "CAASUnitProvisioner";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     ApplicationCharmInfo returns information about an application's charm.
   */

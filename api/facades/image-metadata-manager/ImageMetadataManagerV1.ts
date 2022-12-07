@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface CloudImageMetadata {
@@ -75,23 +76,23 @@ export interface AdditionalProperties {
   API is the concrete implementation of the api end point
   for loud image metadata manipulations.
 */
-class ImageMetadataManagerV1 {
+class ImageMetadataManagerV1 implements Facade {
   static NAME = "ImageMetadataManager";
   static VERSION = 1;
 
-  version: number;
+  NAME = "ImageMetadataManager";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     Delete deletes cloud image metadata for given image ids.
     It supports bulk calls.

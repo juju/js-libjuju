@@ -15,7 +15,9 @@ export default function generateFacadeTemplate(
     }
     const segments = doc
       .split("\n")
-      .map((segment) => segment.padStart(segment.length + indent));
+      .map((segment) =>
+        segment ? segment.padStart(segment.length + indent) : ""
+      );
     return segments.join("\n");
   };
 
@@ -34,7 +36,7 @@ ${i.types
   .map((t) => {
     let name: string = t.name;
     if (name.indexOf("-") !== -1) {
-      name = `'${name}'`;
+      name = `"${name}"`;
     }
     const optional = !t.required ? "?" : "";
     return padString(`${name}${optional}: ${t.type};`, 2);
@@ -57,23 +59,24 @@ ${generateAvailableList(facadeTemplate.availableTo)}
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
-
 ${facadeTemplate.interfaces.map(generateInterface).join("\n")}
 
 /**
 ${padString(facadeTemplate.docBlock, 2)}
 */
-class ${facadeTemplate.name}V${facadeTemplate.version} {
-  static NAME: string = '${facadeTemplate.name}';
-  static VERSION: number = ${facadeTemplate.version};
+class ${facadeTemplate.name}V${facadeTemplate.version} implements Facade {
+  static NAME = "${facadeTemplate.name}";
+  static VERSION = ${facadeTemplate.version};
 
-  version: number;
+  NAME = "${facadeTemplate.name}";
+  VERSION = ${facadeTemplate.version};
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = ${facadeTemplate.version};
     this._transport = transport;
     this._info = info;
 
@@ -82,18 +85,16 @@ class ${facadeTemplate.name}V${facadeTemplate.version} {
   }
   ${facadeTemplate.methods
     .map(
-      (m) => `
-  /**
+      (m) => `/**
 ${padString(m.docBlock, 4)}
   */
   ${lowerCaseFirstChar(m.name)}(${
         m.params ? `params: ${m.params}` : ""
       }): Promise<${m.result}> {
     return new Promise((resolve, reject) => {
-
       const req: JujuRequest = {
-        type: '${facadeTemplate.name}',
-        request: '${m.name}',
+        type: "${facadeTemplate.name}",
+        request: "${m.name}",
         version: ${facadeTemplate.version},
       ${
         m.params
@@ -105,9 +106,9 @@ ${padString(m.docBlock, 4)}
       this._transport.write(req, resolve, reject);
     });
   }
-  `
+`
     )
-    .join("")}
+    .join("\n")}
 }
 
 export default ${facadeTemplate.name}V${facadeTemplate.version};

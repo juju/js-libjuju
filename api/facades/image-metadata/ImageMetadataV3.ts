@@ -10,28 +10,29 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 /**
   API is a dummy struct for compatibility.
 */
-class ImageMetadataV3 {
+class ImageMetadataV3 implements Facade {
   static NAME = "ImageMetadata";
   static VERSION = 3;
 
-  version: number;
+  NAME = "ImageMetadata";
+  VERSION = 3;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 3;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     UpdateFromPublishedImages is now a no-op.
     It is retained for compatibility.

@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Error {
@@ -29,8 +30,8 @@ export interface MasterMigrationStatus {
 }
 
 export interface MigrationModelInfo {
-  "agent-version": number;
-  "controller-agent-version": number;
+  "agent-version": Number;
+  "controller-agent-version": Number;
   name: string;
   "owner-tag": string;
   uuid: string;
@@ -125,23 +126,23 @@ export interface AdditionalProperties {
   API implements the API required for the model migration
   master worker.
 */
-class MigrationMasterV2 {
+class MigrationMasterV2 implements Facade {
   static NAME = "MigrationMaster";
   static VERSION = 2;
 
-  version: number;
+  NAME = "MigrationMaster";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     Export serializes the model associated with the API connection.
   */

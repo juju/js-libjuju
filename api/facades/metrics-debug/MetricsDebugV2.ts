@@ -10,6 +10,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Entities {
@@ -69,23 +70,23 @@ export interface AdditionalProperties {
   MetricsDebugAPI implements the metricsdebug interface and is the concrete
   implementation of the api end point.
 */
-class MetricsDebugV2 {
+class MetricsDebugV2 implements Facade {
   static NAME = "MetricsDebug";
   static VERSION = 2;
 
-  version: number;
+  NAME = "MetricsDebug";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     GetMetrics returns all metrics stored by the state server.
   */

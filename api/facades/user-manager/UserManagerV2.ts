@@ -10,6 +10,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AddUser {
@@ -95,23 +96,23 @@ export interface AdditionalProperties {
   UserManagerAPI implements the user manager interface and is the concrete
   implementation of the api end point.
 */
-class UserManagerV2 {
+class UserManagerV2 implements Facade {
   static NAME = "UserManager";
   static VERSION = 2;
 
-  version: number;
+  NAME = "UserManager";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AddUser adds a user with a username, and either a password or
     a randomly generated secret key which will be returned.

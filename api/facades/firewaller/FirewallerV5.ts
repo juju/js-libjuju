@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface BoolResult {
@@ -214,23 +215,23 @@ export interface AdditionalProperties {
 /**
   FirewallerAPIV5 provides access to the Firewaller v5 API facade.
 */
-class FirewallerV5 {
+class FirewallerV5 implements Facade {
   static NAME = "Firewaller";
   static VERSION = 5;
 
-  version: number;
+  NAME = "Firewaller";
+  VERSION = 5;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 5;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AreManuallyProvisioned returns whether each given entity is
     manually provisioned or not. Only machine tags are accepted.

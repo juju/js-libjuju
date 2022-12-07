@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface BundleCharm {
@@ -124,23 +125,23 @@ export interface AdditionalProperties {
 /**
   CharmHubAPI API provides the CharmHub API facade for version 1.
 */
-class CharmHubV1 {
+class CharmHubV1 implements Facade {
   static NAME = "CharmHub";
   static VERSION = 1;
 
-  version: number;
+  NAME = "CharmHub";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     Find queries the CharmHub API with a given entity ID.
   */

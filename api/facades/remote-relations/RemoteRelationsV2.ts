@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface ControllerAPIInfoResult {
@@ -226,23 +227,23 @@ export interface AdditionalProperties {
 /**
   API provides access to the remote relations API facade.
 */
-class RemoteRelationsV2 {
+class RemoteRelationsV2 implements Facade {
   static NAME = "RemoteRelations";
   static VERSION = 2;
 
-  version: number;
+  NAME = "RemoteRelations";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     ConsumeRemoteRelationChanges consumes changes to settings originating
     from the remote/offering side of relations.

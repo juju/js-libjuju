@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AddMachineParams {
@@ -238,23 +239,23 @@ export interface AdditionalProperties {
 /**
   MachineManagerAPI provides access to the MachineManager API facade.
 */
-class MachineManagerV7 {
+class MachineManagerV7 implements Facade {
   static NAME = "MachineManager";
   static VERSION = 7;
 
-  version: number;
+  NAME = "MachineManager";
+  VERSION = 7;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 7;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AddMachines adds new machines with the supplied parameters.
   */

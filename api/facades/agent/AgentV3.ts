@@ -12,6 +12,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AgentGetEntitiesResult {
@@ -137,23 +138,23 @@ export interface AdditionalProperties {
 /**
   AgentAPI implements the version 3 of the API provided to an agent.
 */
-class AgentV3 {
+class AgentV3 implements Facade {
   static NAME = "Agent";
   static VERSION = 3;
 
-  version: number;
+  NAME = "Agent";
+  VERSION = 3;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 3;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     ClearReboot will clear the reboot flag on provided machines, if it exists.
   */

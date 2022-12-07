@@ -10,6 +10,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface ControllerConfigResult {
@@ -23,23 +24,23 @@ export interface AdditionalProperties {
 /**
   Facade allows model config manager clients to watch controller config changes and fetch controller config.
 */
-class CAASModelConfigManagerV1 {
+class CAASModelConfigManagerV1 implements Facade {
   static NAME = "CAASModelConfigManager";
   static VERSION = 1;
 
-  version: number;
+  NAME = "CAASModelConfigManager";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
 
   */

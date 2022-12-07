@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AddSubnetParams {
@@ -107,23 +108,23 @@ export interface AdditionalProperties {
 /**
   API provides the subnets API facade for version 4.
 */
-class SubnetsV4 {
+class SubnetsV4 implements Facade {
   static NAME = "Subnets";
   static VERSION = 4;
 
-  version: number;
+  NAME = "Subnets";
+  VERSION = 4;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 4;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AddSubnets adds existing subnets to Juju.
   */

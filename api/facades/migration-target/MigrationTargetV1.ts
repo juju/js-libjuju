@@ -10,11 +10,12 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AdoptResourcesArgs {
   "model-tag": string;
-  "source-controller-version": number;
+  "source-controller-version": Number;
 }
 
 export interface BytesResult {
@@ -36,8 +37,8 @@ export interface ErrorResults {
 }
 
 export interface MigrationModelInfo {
-  "agent-version": number;
-  "controller-agent-version": number;
+  "agent-version": Number;
+  "controller-agent-version": Number;
   name: string;
   "owner-tag": string;
   uuid: string;
@@ -95,23 +96,23 @@ export interface AdditionalProperties {
   API implements the API required for the model migration
   master worker when communicating with the target controller.
 */
-class MigrationTargetV1 {
+class MigrationTargetV1 implements Facade {
   static NAME = "MigrationTarget";
   static VERSION = 1;
 
-  version: number;
+  NAME = "MigrationTarget";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     Abort removes the specified model from the database. It is an error to
     attempt to Abort a model that has a migration mode other than importing.
