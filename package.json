@@ -7,13 +7,14 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
+    "clean": "rm -rf node_modules dist",
     "generate-facades": "SCHEMA=generator/schema/schema.json JUJU_VERSION=`cat generator/schema/juju-version.txt` JUJU_GIT_SHA=`cat generator/schema/juju-git-sha.txt` node --enable-source-maps dist/generator/index.js",
     "regenerate-all-facades": "node generator/schema/regenerate-all.js",
     "store-schema": "./scripts/store-schema.sh",
     "generate-docs": "README_FOR_DOCS=true yarn generate-facades && typedoc api/* --out docs --entryPointStrategy expand --includeVersion --gitRemote upstream",
     "lint": "eslint api/",
     "format": "prettier --write '**/*.(js|ts|json|md)' && eslint --fix .",
-    "test": "tap 'api/tests/test-!(helpers)*.js'"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -32,20 +33,23 @@
   "homepage": "juju.github.io/js-libjuju/",
   "devDependencies": {
     "@types/glob": "^8.0.0",
+    "@types/jest": "29.2.2",
     "@types/node": "15.3.0",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
     "documentation": "13.2.5",
     "eslint": "8.25.0",
+    "eslint-plugin-jest": "27.1.6",
     "glob": "^8.0.3",
+    "jest": "29.3.1",
     "prettier": "2.7.1",
-    "sinon": "14.0.1",
-    "tap": "16.3.0",
+    "ts-jest": "29.0.3",
+    "ts-node": "10.9.1",
     "typedoc": "0.23.21",
     "typescript": "4.8.4"
   },
   "dependencies": {
-    "@canonical/macaroon-bakery": "1.2.2",
+    "@canonical/macaroon-bakery": "1.3.0",
     "btoa": "1.2.1",
     "websocket": "1.0.34",
     "xhr2": "0.2.1"
