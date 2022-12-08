@@ -1,4 +1,4 @@
-name: Deploy 
+name: Deploy docs to Github pages
 on:
   push:
     branches: main
