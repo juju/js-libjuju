@@ -171,6 +171,9 @@ async function connectAndLogin(
     const conn = await juju.login(credentials);
     return { conn, logout: juju.logout.bind(juju) };
   } catch (error: any) {
+    if (!juju || !juju.isRedirectionError(error)) {
+      throw error;
+    }
     // Redirect to the real model.
     juju && juju.logout();
     for (let i = 0; i < error.servers.length; i++) {
@@ -191,7 +194,11 @@ async function connectAndLogin(
           }
           return `wss://${srv.value}:${srv.port}/model/${uuid}/api`;
         };
-        return connectAndLogin(generateURL(url, srv), credentials, options);
+        return await connectAndLogin(
+          generateURL(url, srv),
+          credentials,
+          options
+        );
       }
     }
     throw new Error("cannot connect to model after redirection");
@@ -250,7 +257,13 @@ class Client {
       promise will not be resolved or rejected if a callback is provided.
   */
   async login(credentials: Credentials): Promise<Connection | undefined> {
-    const args: LoginRequest = {} as LoginRequest;
+    const args: LoginRequest = {
+      "auth-tag": "",
+      credentials: "",
+      macaroons: [],
+      nonce: "",
+      "user-data": "",
+    };
     const url = this._transport._ws.url;
     const origin = new URL(url).origin;
 
@@ -266,57 +279,64 @@ class Client {
       args.macaroons = [deserialized];
     }
 
-    try {
-      const response = (await this._admin.login(args)) as
-        | typeof REDIRECTION_ERROR
-        | typeof INVALIDCREDENTIALS_ERROR
-        | typeof PERMISSIONDENIED_ERROR
-        | LoginResult;
-      if (response === REDIRECTION_ERROR) {
-        // This is should be handled by any user of this login method.
-        throw response;
-      } else if (response === INVALIDCREDENTIALS_ERROR) {
-        throw `response
-  Have you been granted permission to a model on this controller?`;
-      } else if (response === PERMISSIONDENIED_ERROR) {
-        throw `response
-  Ensure that you've been given 'login' permission on this controller.`;
-      } else if (typeof response === "string") {
-        // If the response is a string and not an object it's an error
-        // message and surface that back to the user.
-        throw response;
-      }
-      const dischargeRequired: Macaroon | undefined =
-        response["discharge-required"] || response["bakery-discharge-required"];
-      if (dischargeRequired) {
-        if (!this._bakery) {
-          throw new Error(
-            "macaroon discharge required but no bakery instance provided"
-          );
+    // eslint-disable-next-line no-async-promise-executor
+    return await new Promise(async (resolve, reject) => {
+      const response: any = await this._admin.login(args);
+      try {
+        const dischargeRequired: string | undefined =
+          response["discharge-required"] ||
+          response["bakery-discharge-required"];
+        if (dischargeRequired) {
+          if (!this._bakery) {
+            reject(
+              "macaroon discharge required but no bakery instance provided"
+            );
+            return;
+          }
+          const onSuccess = (macaroons: any) => {
+            // Store the macaroon in the bakery for the next connections.
+            const serialized = btoa(JSON.stringify(macaroons));
+            this._bakery.storage.set(origin, serialized, () => {});
+            // Send the login request again including the discharge macaroons.
+            credentials.macaroons = [macaroons];
+            return resolve(this.login(credentials));
+          };
+          const onFailure = (err: string) => {
+            reject("macaroon discharge failed: " + err);
+          };
+          this._bakery.discharge(dischargeRequired, onSuccess, onFailure);
+          return;
+        } else if (response === REDIRECTION_ERROR) {
+          // This is should be handled by any user of this login method.
+          throw response;
+        } else if (response === INVALIDCREDENTIALS_ERROR) {
+          throw `response
+Have you been granted permission to a model on this controller?`;
+        } else if (response === PERMISSIONDENIED_ERROR) {
+          throw `response
+Ensure that you've been given 'login' permission on this controller.`;
+        } else if (typeof response === "string") {
+          // If the response is a string and not an object it's an error
+          // message and surface that back to the user.
+          throw response;
         }
-        const onSuccess = (macaroons: Macaroon[]) => {
-          // Store the macaroon in the bakery for the next connections.
-          const serialized = btoa(JSON.stringify(macaroons));
-          this._bakery.storage.set(origin, serialized, () => {});
-          // Send the login request again including the discharge macaroons.
-          credentials.macaroons = [macaroons];
-          return this.login(credentials);
-        };
-        const onFailure = (err: any) => {
-          throw new Error("macaroon discharge failed: " + err);
-        };
-        this._bakery.discharge(dischargeRequired, onSuccess, onFailure);
-        return;
+        resolve(new Connection(this._transport, this._facades, response));
+      } catch (error) {
+        if (error !== REDIRECTION_ERROR) {
+          reject(error);
+          return;
+        }
+        // This is a model redirection error, fetch the redirection information.
+        try {
+          const info = await this._admin.redirectInfo(null);
+          reject(new RedirectionError(info));
+          return;
+        } catch (error) {
+          reject(error);
+          return;
+        }
       }
-      return new Connection(this._transport, this._facades, response);
-    } catch (error) {
-      if (error !== REDIRECTION_ERROR) {
-        throw error;
-      }
-      // This is a model redirection error, fetch the redirection information.
-      const info = await this._admin.redirectInfo(null);
-      throw new RedirectionError(info);
-    }
+    });
   }
 
   /**
