@@ -31,86 +31,64 @@ import {
   SchemaProperties,
 } from "./templates/types.js";
 
-const schemaLocation: string = process.env.SCHEMA || "";
-const jujuVersion: string = process.env.JUJU_VERSION || "";
-const jujuGitSHA: string = process.env.JUJU_GIT_SHA || "";
-const schemaData: string = readFileSync(resolve(schemaLocation), {
-  encoding: "utf8",
-});
-
-let schema: Array<Facade>;
-try {
-  schema = JSON.parse(schemaData);
-} catch (e) {
-  console.error("Unable to parse schema", e);
-  process.exit(1);
-}
-
-schema.forEach(async (facade) => {
-  const facadeTemplateData: FacadeTemplate = {
-    name: facade.Name,
-    version: facade.Version,
-    methods: generateMethods(facade.Schema.properties),
-    interfaces: generateInterfaces(facade.Schema.definitions),
-    availableTo: facade.AvailableTo,
-    docBlock: facade.Description,
-    jujuVersion,
-    jujuGitSHA,
+function main() {
+  // if present, only generate the README and use links to docs instead of Github repo
+  const onlyReadmeForDocs = Boolean(process.env.README_FOR_DOCS);
+  if (!onlyReadmeForDocs) generateFacadeFiles();
+  const facadesGroupedByName: FacadeList = {};
+  type ExistingFacade = {
+    folder: string;
+    name: string;
+    version: number;
   };
+  const allExistingFacades: ExistingFacade[] = glob
+    .sync("./api/facades/*/*V[0-9]*.ts")
+    .map((f: string) => f.split("/"))
+    .map((f: string[]) => {
+      // e.g. ClientV5.ts
+      const filename = f[f.length - 1].match(
+        /(?<name>[a-z-]+)V(?<version>\d+)\.ts/i
+      )!.groups!;
+      return { folder: f[f.length - 2], ...filename };
+    }) as ExistingFacade[];
 
-  generateFile(facadeTemplateData);
-});
-const facadesGroupedByName: FacadeList = {};
-type ExistingFacade = {
-  folder: string;
-  name: string;
-  version: number;
-};
-const allExistingFacades: ExistingFacade[] = glob
-  .sync("./api/facades/*/*V[0-9]*.ts")
-  .map((f: string) => f.split("/"))
-  .map((f: string[]) => {
-    // e.g. ClientV5.ts
-    const filename = f[f.length - 1].match(
-      /(?<name>[a-z-]+)V(?<version>\d+)\.ts/i
-    )!.groups!;
-    return { folder: f[f.length - 2], ...filename };
-  }) as ExistingFacade[];
+  allExistingFacades.forEach((facade) => {
+    if (!facadesGroupedByName[facade.name]) {
+      facadesGroupedByName[facade.name] = [];
+    }
+    facadesGroupedByName[facade.name].push(facade.version);
+  });
+  if (!onlyReadmeForDocs) generateFacadeIndexTemplate(facadesGroupedByName);
 
-allExistingFacades.forEach((facade) => {
-  if (!facadesGroupedByName[facade.name]) {
-    facadesGroupedByName[facade.name] = [];
-  }
-  facadesGroupedByName[facade.name].push(facade.version);
-});
-generateFacadeIndexTemplate(facadesGroupedByName);
-
-const clientAPIInfo: string = execSync(
-  "./node_modules/.bin/documentation build api/client.ts --document-exported --shallow --markdown-toc false -f md",
-  { encoding: "utf8" }
-);
-
-const facadeList: {
-  [key: string]: FileInfo[];
-} = {};
-Object.keys(facadesGroupedByName).forEach((facadeName) => {
-  facadeList[facadeName] = facadesGroupedByName[facadeName].map(
-    (FacadeVersion) => ({
-      name: `v${FacadeVersion}.ts`,
-      path: `/api/facades/${facadeFolderName(facadeName)}/v${FacadeVersion}.ts`,
-    })
+  const clientAPIInfo: string = execSync(
+    "./node_modules/.bin/documentation build api/client.ts --document-exported --shallow --markdown-toc false -f md",
+    { encoding: "utf8" }
   );
-});
 
-const readmeTemplateData: ReadmeTemplate = {
-  clientAPIInfo,
-  exampleList: readdirSync("examples").map((f) => ({
-    name: f,
-    path: `examples/${f}`,
-  })),
-  facadeList,
-};
-generateReadmeFile(readmeTemplateData);
+  const facadeList: {
+    [key: string]: FileInfo[];
+  } = {};
+  Object.keys(facadesGroupedByName).forEach((facadeName) => {
+    facadeList[facadeName] = facadesGroupedByName[facadeName].map(
+      (FacadeVersion) => ({
+        name: `v${FacadeVersion}.ts`,
+        path: `/api/facades/${facadeFolderName(
+          facadeName
+        )}/v${FacadeVersion}.ts`,
+      })
+    );
+  });
+
+  const readmeTemplateData: ReadmeTemplate = {
+    clientAPIInfo,
+    exampleList: readdirSync("examples").map((f) => ({
+      name: f,
+      path: `examples/${f}`,
+    })),
+    facadeList,
+  };
+  generateReadmeFile(readmeTemplateData, onlyReadmeForDocs);
+}
 
 function getRefString(ref: string): string {
   const parts = ref.split("/");
@@ -130,6 +108,37 @@ function extractType(
     return type;
   }
   return undefined;
+}
+
+function generateFacadeFiles() {
+  const schemaLocation: string = process.env.SCHEMA || "";
+  const jujuVersion: string = process.env.JUJU_VERSION || "";
+  const jujuGitSHA: string = process.env.JUJU_GIT_SHA || "";
+  let schema: Array<Facade>;
+  try {
+    const schemaData: string = readFileSync(resolve(schemaLocation), {
+      encoding: "utf8",
+    });
+    schema = JSON.parse(schemaData);
+  } catch (e) {
+    console.error("Unable to parse schema", e);
+    process.exit(1);
+  }
+
+  schema.forEach(async (facade) => {
+    const facadeTemplateData: FacadeTemplate = {
+      name: facade.Name,
+      version: facade.Version,
+      methods: generateMethods(facade.Schema.properties),
+      interfaces: generateInterfaces(facade.Schema.definitions),
+      availableTo: facade.AvailableTo,
+      docBlock: facade.Description,
+      jujuVersion,
+      jujuGitSHA,
+    };
+
+    generateFile(facadeTemplateData);
+  });
 }
 
 /**
@@ -263,7 +272,29 @@ function generateFile(facadeTemplateData: FacadeTemplate): void {
     writeFileSync(join(outputFolder, `${filename}.ts`), output);
 }
 
-function generateReadmeFile(readmeTemplateData: ReadmeTemplate): void {
+function generateReadmeFile(
+  readmeTemplateData: ReadmeTemplate,
+  onlyReadmeForDocs: boolean
+): void {
+  if (onlyReadmeForDocs) {
+    readmeTemplateData.exampleList.forEach((example) => {
+      // instead of relative path for docs page which will 404
+      // return the example page on the Github repo
+      example.path = `https://github.com/juju/js-libjuju/blob/master/${example.path}`;
+    });
+    Object.entries(readmeTemplateData.facadeList).forEach(
+      ([facadeName, facade]) =>
+        facade.forEach((facadeVersion) => {
+          // instead of the default (404) /api/facades/action-pruner/v1.ts
+          // return https://juju.github.io/js-libjuju/modules/facades_action_pruner_ActionPrunerV1.html
+          facadeVersion.path = `https://juju.github.io/js-libjuju/modules/facades_${facadeFolderName(
+            facadeName
+          ).replace("-", "_")}_${facadeName}${
+            facadeVersion.name.toUpperCase().split(".")[0]
+          }.html`;
+        })
+    );
+  }
   const output: string = readmeTemplateGenerator(readmeTemplateData);
   writeFileSync("README.md", output);
 }
@@ -275,3 +306,5 @@ export function facadeFolderName(facadeName: string) {
     .replace(/([a-z\d])([A-Z])/g, "$1-$2")
     .toLowerCase();
 }
+
+main();
