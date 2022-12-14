@@ -70,7 +70,11 @@ Detailed Facade documentation is available as part of the [full API documentatio
 ${Object.keys(r.facadeList)
   .map((facadeName) => {
     const versionsList = r.facadeList[facadeName]
-      .sort((a, b) => a.name.localeCompare(b.name))
+      .sort((a, b) =>
+        (a.name.split(".").pop() || "").localeCompare(
+          b.name.split(".").pop() || ""
+        )
+      )
       .map((f) => `<li>[${f.name}](${f.path})</li>`)
       .join("");
     return `|${facadeName}|<ul>${versionsList}</ul>|`;
