@@ -14,8 +14,8 @@ WebSocket API.
 
 - [Getting Started](#getting-started)
 - [Client API Reference](#client-api-reference)
-- [Facade API Reference](#facade-api-reference)
 - [Examples](#examples)
+- [Facade API Reference](#facade-api-reference)
 - [Library Maintenance](#library-maintenance)
   - [Updating Library Facades](#updating-library-facades)
   - [Releasing to NPM](#releasing-to-npm)
@@ -51,6 +51,16 @@ The \`connect\` method returns a \`juju\` object which is used to log into the c
 
 Visit the [full API documentation](https://juju.github.io/js-libjuju/) for detailed information on the Client API.
 
+## Examples
+
+We have a number of examples showing how to perform a few common tasks. Those can be found in the \`examples\` folder.
+
+${r.exampleList
+  .map((e) => {
+    return `- [${e.name}](${e.path})`;
+  })
+  .join("\n")}
+
 ## Facade API Reference
 
 Detailed Facade documentation is available as part of the [full API documentation](https://juju.github.io/js-libjuju/) or you can visit the facade source directly using the following links:
@@ -63,16 +73,6 @@ ${Object.keys(r.facadeList)
       .map((f) => `<li>[${f.name}](${f.path})</li>`)
       .join("");
     return `|${facadeName}|<ul>${versionsList}</ul>|`;
-  })
-  .join("\n")}
-
-## Examples
-
-We have a number of examples showing how to perform a few common tasks. Those can be found in the \`examples\` folder.
-
-${r.exampleList
-  .map((e) => {
-    return `- [${e.name}](${e.path})`;
   })
   .join("\n")}
 
