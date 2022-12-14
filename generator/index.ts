@@ -289,7 +289,7 @@ function generateReadmeFile(
           // return https://juju.github.io/js-libjuju/modules/facades_action_pruner_ActionPrunerV1.html
           facadeVersion.path = `https://juju.github.io/js-libjuju/modules/facades_${facadeFolderName(
             facadeName
-          ).replace("-", "_")}_${facadeName}${
+          ).replace(/-/g, "_")}_${facadeName}${
             facadeVersion.name.toUpperCase().split(".")[0]
           }.html`;
         })
