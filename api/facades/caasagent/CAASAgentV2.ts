@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface CloudCredential {
@@ -95,23 +96,23 @@ export interface AdditionalProperties {
 /**
   FacadeV2 is the V2 facade of the caas agent
 */
-class CAASAgentV2 {
+class CAASAgentV2 implements Facade {
   static NAME = "CAASAgent";
   static VERSION = 2;
 
-  version: number;
+  NAME = "CAASAgent";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     CloudSpec returns the model's cloud spec.
   */

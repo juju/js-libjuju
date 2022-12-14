@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Entities {
@@ -55,23 +56,23 @@ export interface AdditionalProperties {
   Facade allows controller machines to request exclusive rights to administer
   some specific model or controller for a limited time.
 */
-class SingularV2 {
+class SingularV2 implements Facade {
   static NAME = "Singular";
   static VERSION = 2;
 
-  version: number;
+  NAME = "Singular";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     Claim makes the supplied singular-controller lease requests. (In practice,
     any requests not for the connection's model or controller, or not on behalf

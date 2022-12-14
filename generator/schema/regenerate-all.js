@@ -39,10 +39,10 @@ async function downloadFile(url, targetFile) {
   });
 }
 function execShellCommand(cmd) {
-  return new Promise((resolve, _reject) => {
+  return new Promise((resolve, reject) => {
     exec(cmd, (error, stdout, stderr) => {
       if (error) {
-        console.warn(error);
+        reject(error);
       }
       resolve(stdout ? stdout : stderr);
     });
@@ -53,7 +53,12 @@ async function main() {
   const allSchemas = JSON.parse(
     await fs.promises.readFile(join(baseFolder, "schema-history.json"))
   );
-  await execShellCommand("yarn run build");
+  try {
+    await execShellCommand("yarn run build");
+  } catch (e) {
+    // ignore
+    console.error(e);
+  }
   for (const schema of allSchemas) {
     console.log(schema["juju-version"]);
     await downloadFile(schema.schema, join(baseFolder, "schema.json"));
@@ -67,6 +72,8 @@ async function main() {
     );
     await execShellCommand("yarn run generate-facades");
   }
+  await execShellCommand("yarn run format");
+  await execShellCommand("yarn run build");
 }
 
 main();

@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AllWatcherId {
@@ -277,23 +278,23 @@ export interface AdditionalProperties {
   ControllerAPIv7 provides the v7 Controller API. The only difference
   between this and v8 is that v7 doesn't have the ControllerVersion method.
 */
-class ControllerV7 {
+class ControllerV7 implements Facade {
   static NAME = "Controller";
   static VERSION = 7;
 
-  version: number;
+  NAME = "Controller";
+  VERSION = 7;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 7;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AllModels allows controller administrators to get the list of all the
     models in the controller.

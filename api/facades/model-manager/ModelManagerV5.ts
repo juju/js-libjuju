@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface ChangeModelCredentialParams {
@@ -135,7 +136,7 @@ export interface ModelFilesystemInfo {
 }
 
 export interface ModelInfo {
-  "agent-version": number;
+  "agent-version": Number;
   "cloud-credential-tag"?: string;
   "cloud-credential-validity"?: boolean;
   "cloud-region"?: string;
@@ -212,7 +213,7 @@ export interface ModelSummariesRequest {
 }
 
 export interface ModelSummary {
-  "agent-version": number;
+  "agent-version": Number;
   "cloud-credential-tag"?: string;
   "cloud-region"?: string;
   "cloud-tag": string;
@@ -330,23 +331,23 @@ export interface AdditionalProperties {
   ModelManagerAPIV5 provides a way to wrap the different calls between
   version 5 and version 6 of the model manager API
 */
-class ModelManagerV5 {
+class ModelManagerV5 implements Facade {
   static NAME = "ModelManager";
   static VERSION = 5;
 
-  version: number;
+  NAME = "ModelManager";
+  VERSION = 5;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 5;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     ChangeModelCredential changes cloud credential reference for models.
     These new cloud credentials must already exist on the controller.

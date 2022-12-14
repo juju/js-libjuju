@@ -1,5 +1,5 @@
 // Copyright 2020 Canonical Ltd.
-// Licensed under the LGPLv3, see LICENCE.txt file for details.
+// Licensed under the LGPLv3, see LICENSE.txt file for details.
 
 import { Callback, CallbackError } from "../generator/interfaces";
 

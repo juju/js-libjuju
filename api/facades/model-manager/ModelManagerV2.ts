@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Entities {
@@ -110,7 +111,7 @@ export interface ModelFilesystemInfo {
 }
 
 export interface ModelInfo {
-  "agent-version": number;
+  "agent-version": Number;
   "cloud-credential-tag"?: string;
   "cloud-credential-validity"?: boolean;
   "cloud-region"?: string;
@@ -187,7 +188,7 @@ export interface ModelSummariesRequest {
 }
 
 export interface ModelSummary {
-  "agent-version": number;
+  "agent-version": Number;
   "cloud-credential-tag"?: string;
   "cloud-region"?: string;
   "cloud-tag": string;
@@ -296,23 +297,23 @@ export interface AdditionalProperties {
   ModelManagerAPIV2 provides a way to wrap the different calls between
   version 2 and version 3 of the model manager API
 */
-class ModelManagerV2 {
+class ModelManagerV2 implements Facade {
   static NAME = "ModelManager";
   static VERSION = 2;
 
-  version: number;
+  NAME = "ModelManager";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     CreateModel creates a new model using the account and
     model config specified in the args.

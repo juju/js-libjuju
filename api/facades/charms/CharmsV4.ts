@@ -10,6 +10,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AddCharmWithAuth {
@@ -310,23 +311,23 @@ export interface AdditionalProperties {
   API implements the charms interface and is the concrete
   implementation of the API end point.
 */
-class CharmsV4 {
+class CharmsV4 implements Facade {
   static NAME = "Charms";
   static VERSION = 4;
 
-  version: number;
+  NAME = "Charms";
+  VERSION = 4;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 4;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AddCharm adds the given charm URL (which must include revision) to the
     environment, if it does not exist yet. Local charms are not supported,

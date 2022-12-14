@@ -11,6 +11,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface CharmLXDProfile {
@@ -112,23 +113,23 @@ export interface AdditionalProperties {
 /**
 
 */
-class InstanceMutaterV3 {
+class InstanceMutaterV3 implements Facade {
   static NAME = "InstanceMutater";
   static VERSION = 3;
 
-  version: number;
+  NAME = "InstanceMutater";
+  VERSION = 3;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 3;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     CharmProfilingInfo returns info to update lxd profiles on the machine. If
     the machine is not provisioned, no profile change info will be returned,

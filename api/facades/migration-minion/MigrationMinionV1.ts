@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Error {
@@ -40,23 +41,23 @@ export interface AdditionalProperties {
   API implements the API required for the model migration
   master worker.
 */
-class MigrationMinionV1 {
+class MigrationMinionV1 implements Facade {
   static NAME = "MigrationMinion";
   static VERSION = 1;
 
-  version: number;
+  NAME = "MigrationMinion";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     Report allows a migration minion to submit whether it succeeded or
     failed for a specific migration phase.

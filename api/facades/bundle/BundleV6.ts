@@ -11,6 +11,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface BundleChange {
@@ -66,23 +67,23 @@ export interface AdditionalProperties {
   identical to V5 with the exception that the V6 adds the support for
   multi-part yaml handling to GetChanges and GetChangesMapArgs.
 */
-class BundleV6 {
+class BundleV6 implements Facade {
   static NAME = "Bundle";
   static VERSION = 6;
 
-  version: number;
+  NAME = "Bundle";
+  VERSION = 6;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 6;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     ExportBundle exports the current model configuration as bundle.
   */

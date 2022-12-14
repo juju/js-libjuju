@@ -10,6 +10,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AnnotationsGetResult {
@@ -61,23 +62,23 @@ export interface AdditionalProperties {
   API implements the service interface and is the concrete
   implementation of the api end point.
 */
-class AnnotationsV2 {
+class AnnotationsV2 implements Facade {
   static NAME = "Annotations";
   static VERSION = 2;
 
-  version: number;
+  NAME = "Annotations";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     Get returns annotations for given entities.
     If annotations cannot be retrieved for a given entity, an error is returned.

@@ -21,7 +21,7 @@ part of your facades, for instance:
 ```javascript
 const { conn, logout } = await jujulib.connectAndLogin(url, credentials, {
   facades: [require("jujulib/api/facades/{{ jsname }}")],
-})
+});
 ```
 
 Facade methods at then accessible at `conn.facades.{{ lowername }}`.
@@ -63,7 +63,7 @@ Go back to [index](index.md).
 ```javascript
 {
   {
-    method.params.docstring() | indent(0)
+    method.params.docstring() | indent(0);
   }
 }
 ```
@@ -78,7 +78,7 @@ Go back to [index](index.md).
 ```javascript
 {
   {
-    method.result.docstring() | indent(0)
+    method.result.docstring() | indent(0);
   }
 }
 ```

@@ -10,6 +10,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Error {
@@ -30,23 +31,23 @@ export interface AdditionalProperties {
   CharmRevisionUpdaterAPI implements the CharmRevisionUpdater interface and is the concrete
   implementation of the api end point.
 */
-class CharmRevisionUpdaterV2 {
+class CharmRevisionUpdaterV2 implements Facade {
   static NAME = "CharmRevisionUpdater";
   static VERSION = 2;
 
-  version: number;
+  NAME = "CharmRevisionUpdater";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     UpdateLatestRevisions retrieves the latest revision information from the charm store for all deployed charms
     and records this information in state.

@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface BackupsCreateArgs {
@@ -39,7 +40,7 @@ export interface BackupsMetadataResult {
   size: number;
   started: string;
   stored: string;
-  version: number;
+  version: Number;
 }
 
 export interface Number {
@@ -57,23 +58,23 @@ export interface AdditionalProperties {
 /**
   API provides backup-specific API methods.
 */
-class BackupsV3 {
+class BackupsV3 implements Facade {
   static NAME = "Backups";
   static VERSION = 3;
 
-  version: number;
+  NAME = "Backups";
+  VERSION = 3;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 3;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     Create is the API method that requests juju to create a new backup
     of its state.

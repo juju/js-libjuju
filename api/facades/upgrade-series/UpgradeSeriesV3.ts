@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Entities {
@@ -130,23 +131,23 @@ export interface AdditionalProperties {
 /**
   API serves methods required by the machine agent upgrade-machine worker.
 */
-class UpgradeSeriesV3 {
+class UpgradeSeriesV3 implements Facade {
   static NAME = "UpgradeSeries";
   static VERSION = 3;
 
-  version: number;
+  NAME = "UpgradeSeries";
+  VERSION = 3;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 3;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     CurrentSeries returns what Juju thinks the current series of the machine is.
     Note that a machine could have been upgraded out-of-band by running

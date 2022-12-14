@@ -10,6 +10,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Entities {
@@ -47,23 +48,23 @@ export interface AdditionalProperties {
 /**
   Facade allows model-manager clients to watch and rescale services.
 */
-class ApplicationScalerV1 {
+class ApplicationScalerV1 implements Facade {
   static NAME = "ApplicationScaler";
   static VERSION = 1;
 
-  version: number;
+  NAME = "ApplicationScaler";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     Rescale causes any supplied services to be scaled up to their
     minimum size.

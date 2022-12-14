@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface EntitiesWatchResult {
@@ -38,23 +39,23 @@ export interface AdditionalProperties {
   sending the changes as a list of strings, which could be transformed
   from state entity ids to their corresponding entity tags.
 */
-class EntityWatcherV2 {
+class EntityWatcherV2 implements Facade {
   static NAME = "EntityWatcher";
   static VERSION = 2;
 
-  version: number;
+  NAME = "EntityWatcher";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     Next returns when a change has occurred to an entity of the
     collection being watched since the most recent call to Next

@@ -1,6 +1,12 @@
 import { execSync } from "child_process";
-import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "fs";
-import * as glob from "glob";
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} from "fs";
+import glob from "glob";
 import { join, resolve } from "path";
 import {
   FacadeMethod,
@@ -10,64 +16,20 @@ import {
   InterfaceType,
   ReadmeTemplate,
 } from "./interfaces.js";
+import generateFacadeIndexTemplate from "./templates/facade-index.js";
 import generateFacadeTemplate from "./templates/facade.js";
 import readmeTemplateGenerator from "./templates/readme.js";
-
-interface Facade {
-  Name: string;
-  Version: number;
-  Schema: FacadeSchema;
-  Description: string;
-  AvailableTo: string[];
-}
-
-interface FacadeSchema {
-  type: string;
-  properties: SchemaMethods;
-  definitions: SchemaDefinitions;
-}
-
-interface SchemaMethods {
-  [methodName: string]: SchemaMethod;
-}
-
-interface SchemaDefinitions {
-  [definitionName: string]: SchemaDefinition;
-}
-
-interface SchemaMethod {
-  type: string;
-  properties: SchemaProperties;
-  description: string;
-}
-
-interface SchemaDefinition {
-  type: string;
-  properties: DefinitionProperties;
-  additionalProperties?: boolean;
-  required?: string[];
-}
-
-interface DefinitionProperties {
-  [argumentName: string]: JSONSchemaType;
-}
-
-interface JSONSchemaType {
-  type: string;
-  items?: JSONSchemaType;
-  additionalProperties?: boolean;
-  patternProperties?: any;
-  $ref?: string;
-}
-
-interface SchemaProperties {
-  Params: SchemaPropertyValue;
-  Result: SchemaPropertyValue;
-}
-interface SchemaPropertyValue {
-  $ref?: string;
-  type?: string;
-}
+import {
+  DefinitionProperties,
+  Facade,
+  FacadeList,
+  JSONSchemaType,
+  SchemaDefinition,
+  SchemaDefinitions,
+  SchemaMethod,
+  SchemaMethods,
+  SchemaProperties,
+} from "./templates/types.js";
 
 const schemaLocation: string = process.env.SCHEMA || "";
 const jujuVersion: string = process.env.JUJU_VERSION || "";
@@ -98,7 +60,7 @@ schema.forEach(async (facade) => {
 
   generateFile(facadeTemplateData);
 });
-const facadesGroupedByName: { [k: string]: number[] } = {};
+const facadesGroupedByName: FacadeList = {};
 type ExistingFacade = {
   folder: string;
   name: string;
@@ -121,17 +83,16 @@ allExistingFacades.forEach((facade) => {
   }
   facadesGroupedByName[facade.name].push(facade.version);
 });
-generateIndexTSPerFacadeName(facadesGroupedByName);
+generateFacadeIndexTemplate(facadesGroupedByName);
 
 const clientAPIInfo: string = execSync(
-  "./node_modules/.bin/documentation build api/client.js --document-exported --shallow --markdown-toc false -f md",
+  "./node_modules/.bin/documentation build api/client.ts --document-exported --shallow --markdown-toc false -f md",
   { encoding: "utf8" }
 );
 
 const facadeList: {
   [key: string]: FileInfo[];
 } = {};
-// console.log("facadesGroupedByName[facadeName]", facadesGroupedByName.Client)
 Object.keys(facadesGroupedByName).forEach((facadeName) => {
   facadeList[facadeName] = facadesGroupedByName[facadeName].map(
     (FacadeVersion) => ({
@@ -295,7 +256,11 @@ function generateFile(facadeTemplateData: FacadeTemplate): void {
 
   const outputFolder = `api/facades/${facadeFoldername}/`;
   mkdirSync(outputFolder, { recursive: true });
-  writeFileSync(join(outputFolder, `${filename}.ts`), output);
+  const newFacadeFilePath = join(outputFolder, `${filename}.ts`);
+  // Avoid overriding existing files, in case you need to regenerate
+  // given files, delete the files first
+  if (!existsSync(newFacadeFilePath))
+    writeFileSync(join(outputFolder, `${filename}.ts`), output);
 }
 
 function generateReadmeFile(readmeTemplateData: ReadmeTemplate): void {
@@ -303,27 +268,7 @@ function generateReadmeFile(readmeTemplateData: ReadmeTemplate): void {
   writeFileSync("README.md", output);
 }
 
-function generateIndexTSPerFacadeName(facadesGroupedByName: {
-  [k: string]: number[];
-}) {
-  const indexTSTemplate = (facadeName: string, versions: number[]) =>
-    `${versions
-      .map(
-        (facadeVersion) =>
-          `export * as ${facadeName}V${facadeVersion} from "./${facadeName}V${facadeVersion}"`
-      )
-      .join("\n")}`;
-  Object.keys(facadesGroupedByName).forEach((facadeName) => {
-    const outputFolder = `api/facades/${facadeFolderName(facadeName)}/`;
-    mkdirSync(outputFolder, { recursive: true });
-    writeFileSync(
-      join(outputFolder, "index.ts"),
-      indexTSTemplate(facadeName, facadesGroupedByName[facadeName].sort())
-    );
-  });
-}
-
-function facadeFolderName(facadeName: string) {
+export function facadeFolderName(facadeName: string) {
   // from CamelCase to kebab-case
   return facadeName
     .replace(/\W+/g, "-")

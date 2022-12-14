@@ -11,6 +11,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Action {
@@ -104,23 +105,23 @@ export interface AdditionalProperties {
   Facade implements the machineactions interface and is the concrete
   implementation of the api end point.
 */
-class MachineActionsV1 {
+class MachineActionsV1 implements Facade {
   static NAME = "MachineActions";
   static VERSION = 1;
 
-  version: number;
+  NAME = "MachineActions";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     Actions returns the Actions by Tags passed and ensures that the machine asking
     for them is the machine that has the actions

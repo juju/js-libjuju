@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface CAASUnitIntroduction {
@@ -52,23 +53,23 @@ export interface AdditionalProperties {
 /**
 
 */
-class CAASApplicationV1 {
+class CAASApplicationV1 implements Facade {
   static NAME = "CAASApplication";
   static VERSION = 1;
 
-  version: number;
+  NAME = "CAASApplication";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     UnitIntroduction sets the status of each given entity.
   */

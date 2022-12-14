@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Entity {
@@ -52,23 +53,23 @@ export interface AdditionalProperties {
 /**
 
 */
-class CredentialValidatorV2 {
+class CredentialValidatorV2 implements Facade {
   static NAME = "CredentialValidator";
   static VERSION = 2;
 
-  version: number;
+  NAME = "CredentialValidator";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     InvalidateModelCredential marks the cloud credential for this model as invalid.
   */

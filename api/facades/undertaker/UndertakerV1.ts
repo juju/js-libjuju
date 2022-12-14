@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface EntityStatusArgs {
@@ -75,23 +76,23 @@ export interface AdditionalProperties {
 /**
   UndertakerAPI implements the API used by the model undertaker worker.
 */
-class UndertakerV1 {
+class UndertakerV1 implements Facade {
   static NAME = "Undertaker";
   static VERSION = 1;
 
-  version: number;
+  NAME = "Undertaker";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     ModelConfig returns the model's configuration.
   */

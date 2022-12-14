@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface ControllerAPIInfoResult {
@@ -47,23 +48,23 @@ export interface AdditionalProperties {
 /**
   CrossControllerAPI provides access to the CrossModelRelations API facade.
 */
-class CrossControllerV1 {
+class CrossControllerV1 implements Facade {
   static NAME = "CrossController";
   static VERSION = 1;
 
-  version: number;
+  NAME = "CrossController";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     ControllerInfo returns the API info for the controller.
   */

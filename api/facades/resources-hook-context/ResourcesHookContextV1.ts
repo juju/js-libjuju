@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface CharmResource {
@@ -76,23 +77,23 @@ export interface AdditionalProperties {
 /**
   UnitFacade is the resources portion of the uniter's API facade.
 */
-class ResourcesHookContextV1 {
+class ResourcesHookContextV1 implements Facade {
   static NAME = "ResourcesHookContext";
   static VERSION = 1;
 
-  version: number;
+  NAME = "ResourcesHookContext";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     GetResourceInfo returns the resource info for each of the given
     resource names (for the implicit application). If any one is missing then

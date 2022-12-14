@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface ApplicationTag {
@@ -51,23 +52,23 @@ export interface AdditionalProperties {
   LeadershipService implements a variant of leadership.Claimer for consumption
   over the API.
 */
-class LeadershipServiceV2 {
+class LeadershipServiceV2 implements Facade {
   static NAME = "LeadershipService";
   static VERSION = 2;
 
-  version: number;
+  NAME = "LeadershipService";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     BlockUntilLeadershipReleased blocks the caller until leadership is
     released for the given service.

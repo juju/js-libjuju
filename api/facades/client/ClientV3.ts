@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface APIHostPortsResult {
@@ -71,7 +72,7 @@ export interface Address {
 }
 
 export interface AgentVersionResult {
-  version: number;
+  version: Number;
 }
 
 export interface AllWatcherId {
@@ -116,7 +117,7 @@ export interface Binary {
   Build: number;
   Major: number;
   Minor: number;
-  Number: number;
+  Number: Number;
   Patch: number;
   Release: string;
   Tag: string;
@@ -222,7 +223,7 @@ export interface FindToolsParams {
   arch: string;
   major: number;
   minor: number;
-  number: number;
+  number: Number;
   "os-type": string;
   series: string;
 }
@@ -328,7 +329,7 @@ export interface ModelConfigResults {
 }
 
 export interface ModelInfo {
-  "agent-version": number;
+  "agent-version": Number;
   "cloud-credential-tag"?: string;
   "cloud-credential-validity"?: boolean;
   "cloud-region"?: string;
@@ -519,7 +520,7 @@ export interface SetConstraints {
 
 export interface SetModelAgentVersion {
   force?: boolean;
-  version: number;
+  version: Number;
 }
 
 export interface StatusHistoryFilter {
@@ -603,23 +604,23 @@ export interface AdditionalProperties {
 /**
   Client serves client-specific API methods.
 */
-class ClientV3 {
+class ClientV3 implements Facade {
   static NAME = "Client";
   static VERSION = 3;
 
-  version: number;
+  NAME = "Client";
+  VERSION = 3;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 3;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     APIHostPorts returns the API host/port addresses stored in state.
   */

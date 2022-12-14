@@ -10,6 +10,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AddCloudArgs {
@@ -302,23 +303,23 @@ export interface AdditionalProperties {
   CloudAPIV5 provides a way to wrap the different calls
   between version 5 and version 6 of the cloud API.
 */
-class CloudV5 {
+class CloudV5 implements Facade {
   static NAME = "Cloud";
   static VERSION = 5;
 
-  version: number;
+  NAME = "Cloud";
+  VERSION = 5;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 5;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AddCloud adds a new cloud, different from the one managed by the controller.
   */

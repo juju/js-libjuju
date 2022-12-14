@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Error {
@@ -27,7 +28,7 @@ export interface ErrorResult {
 
 export interface KubernetesUpgradeArg {
   "agent-tag": string;
-  version: number;
+  version: Number;
 }
 
 export interface Number {
@@ -45,23 +46,23 @@ export interface AdditionalProperties {
 /**
 
 */
-class CAASOperatorUpgraderV1 {
+class CAASOperatorUpgraderV1 implements Facade {
   static NAME = "CAASOperatorUpgrader";
   static VERSION = 1;
 
-  version: number;
+  NAME = "CAASOperatorUpgrader";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     UpgradeOperator upgrades the operator for the specified agents.
   */

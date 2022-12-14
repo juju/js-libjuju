@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Entities {
@@ -54,23 +55,23 @@ export interface AdditionalProperties {
 /**
   Facade lets clients watch and get models' migration phases.
 */
-class MigrationFlagV1 {
+class MigrationFlagV1 implements Facade {
   static NAME = "MigrationFlag";
   static VERSION = 1;
 
-  version: number;
+  NAME = "MigrationFlag";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     Phase returns the current migration phase or an error for every
     supplied entity.

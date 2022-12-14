@@ -10,6 +10,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Block {
@@ -51,23 +52,23 @@ export interface AdditionalProperties {
   API implements Block interface and is the concrete
   implementation of the api end point.
 */
-class BlockV2 {
+class BlockV2 implements Facade {
   static NAME = "Block";
   static VERSION = 2;
 
-  version: number;
+  NAME = "Block";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     List implements Block.List().
   */

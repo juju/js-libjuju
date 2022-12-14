@@ -11,6 +11,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface APIHostPortsResult {
@@ -161,23 +162,23 @@ export interface AdditionalProperties {
 /**
   MachinerAPI implements the API used by the machiner worker.
 */
-class MachinerV4 {
+class MachinerV4 implements Facade {
   static NAME = "Machiner";
   static VERSION = 4;
 
-  version: number;
+  NAME = "Machiner";
+  VERSION = 4;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 4;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     APIAddresses returns the list of addresses used to connect to the API.
   */

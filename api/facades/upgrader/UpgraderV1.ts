@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Binary {
@@ -20,7 +21,7 @@ export interface Binary {
   Build: number;
   Major: number;
   Minor: number;
-  Number: number;
+  Number: Number;
   Patch: number;
   Release: string;
   Tag: string;
@@ -96,7 +97,7 @@ export interface Version {
 
 export interface VersionResult {
   error: Error;
-  version: number;
+  version: Number;
 }
 
 export interface VersionResults {
@@ -110,23 +111,23 @@ export interface AdditionalProperties {
 /**
 
 */
-class UpgraderV1 {
+class UpgraderV1 implements Facade {
   static NAME = "Upgrader";
   static VERSION = 1;
 
-  version: number;
+  NAME = "Upgrader";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
 
   */

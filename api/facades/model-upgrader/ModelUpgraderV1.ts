@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Error {
@@ -38,11 +39,11 @@ export interface UpgradeModelParams {
   "dry-run"?: boolean;
   "ignore-agent-versions"?: boolean;
   "model-tag": string;
-  "target-version": number;
+  "target-version": Number;
 }
 
 export interface UpgradeModelResult {
-  "chosen-version": number;
+  "chosen-version": Number;
   error?: Error;
 }
 
@@ -54,23 +55,23 @@ export interface AdditionalProperties {
   ModelUpgraderAPI implements the model upgrader interface and is
   the concrete implementation of the api end point.
 */
-class ModelUpgraderV1 {
+class ModelUpgraderV1 implements Facade {
   static NAME = "ModelUpgrader";
   static VERSION = 1;
 
-  version: number;
+  NAME = "ModelUpgrader";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AbortModelUpgrade aborts and archives the model upgrade
     synchronisation record, if any.

@@ -13,28 +13,29 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 /**
   AgentToolsAPI implements the API used by the machine model worker.
 */
-class AgentToolsV1 {
+class AgentToolsV1 implements Facade {
   static NAME = "AgentTools";
   static VERSION = 1;
 
-  version: number;
+  NAME = "AgentTools";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     UpdateToolsAvailable invokes a lookup and further update in environ
     for new patches of the current tool versions.

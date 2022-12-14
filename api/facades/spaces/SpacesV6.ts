@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface CreateSpaceParams {
@@ -145,23 +146,23 @@ export interface AdditionalProperties {
 /**
   API provides the spaces API facade for version 6.
 */
-class SpacesV6 {
+class SpacesV6 implements Facade {
   static NAME = "Spaces";
   static VERSION = 6;
 
-  version: number;
+  NAME = "Spaces";
+  VERSION = 6;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 6;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     CreateSpaces creates a new Juju network space, associating the
     specified subnets with it (optional; can be empty).

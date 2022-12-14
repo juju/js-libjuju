@@ -10,6 +10,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AddPendingResourcesArgsV2 {
@@ -122,23 +123,23 @@ export interface AdditionalProperties {
 /**
   API is the public API facade for resources.
 */
-class ResourcesV3 {
+class ResourcesV3 implements Facade {
   static NAME = "Resources";
   static VERSION = 3;
 
-  version: number;
+  NAME = "Resources";
+  VERSION = 3;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 3;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AddPendingResources adds the provided resources (info) to the Juju
     model in a pending state, meaning they are not available until

@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AddStorageDetails {
@@ -316,23 +317,23 @@ export interface AdditionalProperties {
 /**
   StorageAPI implements the latest version (v6) of the Storage API.
 */
-class StorageV6 {
+class StorageV6 implements Facade {
   static NAME = "Storage";
   static VERSION = 6;
 
-  version: number;
+  NAME = "Storage";
+  VERSION = 6;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 6;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AddToUnit validates and creates additional storage instances for units.
     A "CHANGE" block can block this operation.

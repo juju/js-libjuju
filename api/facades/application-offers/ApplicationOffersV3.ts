@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AddApplicationOffer {
@@ -234,23 +235,23 @@ export interface AdditionalProperties {
 /**
   OffersAPIV3 implements the cross model interface V3.
 */
-class ApplicationOffersV3 {
+class ApplicationOffersV3 implements Facade {
   static NAME = "ApplicationOffers";
   static VERSION = 3;
 
-  version: number;
+  NAME = "ApplicationOffers";
+  VERSION = 3;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 3;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     ApplicationOffers gets details about remote applications that match given URLs.
   */

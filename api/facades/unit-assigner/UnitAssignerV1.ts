@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Entities {
@@ -61,23 +62,23 @@ export interface AdditionalProperties {
 /**
   API implements the functionality for assigning units to machines.
 */
-class UnitAssignerV1 {
+class UnitAssignerV1 implements Facade {
   static NAME = "UnitAssigner";
   static VERSION = 1;
 
-  version: number;
+  NAME = "UnitAssigner";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AssignUnits assigns the units with the given ids to the correct machine. The
     error results are returned in the same order as the given entities.

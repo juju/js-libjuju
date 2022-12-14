@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Entities {
@@ -81,23 +82,23 @@ export interface AdditionalProperties {
 /**
   UnitFacade serves payload-specific API methods.
 */
-class PayloadsHookContextV1 {
+class PayloadsHookContextV1 implements Facade {
   static NAME = "PayloadsHookContext";
   static VERSION = 1;
 
-  version: number;
+  NAME = "PayloadsHookContext";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     List builds the list of payload being tracked for
     the given unit and IDs. If no IDs are provided then all tracked

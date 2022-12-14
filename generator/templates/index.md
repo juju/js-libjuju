@@ -29,14 +29,14 @@ const facades = [
   require("jujulib/api/facades/client-v1"),
   require("jujulib/api/facades/client-v2"),
   require("jujulib/api/facades/pinger-v1"),
-]
+];
 jujulib.connect(
   "wss://example.com/model/x-y-z/api",
   { facades: facades },
   (err, juju) => {
     // Login here.
   }
-)
+);
 ```
 
 In the code above, a connection is being established to the provided model API
@@ -57,7 +57,7 @@ It is possible to connect and log into Juju in one single call by using
 ```javascript
 jujulib.connectAndLogin(url, credentials, options, (err, result) => {
   // Check error here or use result.conn.
-})
+});
 ```
 
 In this specific case possible redirect errors are automatically handled. The
@@ -84,15 +84,19 @@ const options = {
   facades: [require("jujulib/api/facades/client-v1.js")],
   bakery: new bakery.Bakery({
     visitPage: (resp) => {
-      console.log("visit this URL to login:", resp.Info.VisitURL)
+      console.log("visit this URL to login:", resp.Info.VisitURL);
     },
   }),
-}
+};
 
-const { conn, close } = await jujulib.connectAndLogin(url, credentials, options)
-const client = conn.facades.client
-const result = await client.addMachine({ series: "bionic" })
-console.log("machine added:", result.machine)
+const { conn, close } = await jujulib.connectAndLogin(
+  url,
+  credentials,
+  options
+);
+const client = conn.facades.client;
+const result = await client.addMachine({ series: "bionic" });
+console.log("machine added:", result.machine);
 ```
 
 ## API Reference

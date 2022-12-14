@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface BlockDevice {
@@ -368,23 +369,23 @@ export interface AdditionalProperties {
 /**
   StorageProvisionerAPIv4 provides the StorageProvisioner API v4 facade.
 */
-class StorageProvisionerV4 {
+class StorageProvisionerV4 implements Facade {
   static NAME = "StorageProvisioner";
   static VERSION = 4;
 
-  version: number;
+  NAME = "StorageProvisioner";
+  VERSION = 4;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 4;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AttachmentLife returns the lifecycle state of each specified machine
     storage attachment.

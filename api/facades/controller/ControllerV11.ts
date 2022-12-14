@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AllWatcherId {
@@ -306,23 +307,23 @@ export interface AdditionalProperties {
 /**
   ControllerAPI provides the Controller API.
 */
-class ControllerV11 {
+class ControllerV11 implements Facade {
   static NAME = "Controller";
   static VERSION = 11;
 
-  version: number;
+  NAME = "Controller";
+  VERSION = 11;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 11;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AllModels allows controller administrators to get the list of all the
     models in the controller.

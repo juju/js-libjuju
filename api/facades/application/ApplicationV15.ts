@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AddApplicationUnits {
@@ -545,23 +546,23 @@ export interface AdditionalProperties {
 /**
   APIv15 provides the Application API facade for version 15.
 */
-class ApplicationV15 {
+class ApplicationV15 implements Facade {
   static NAME = "Application";
   static VERSION = 15;
 
-  version: number;
+  NAME = "Application";
+  VERSION = 15;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 15;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AddRelation adds a relation between the specified endpoints and returns the relation info.
   */

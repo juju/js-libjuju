@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface CloudCredential {
@@ -91,23 +92,23 @@ export interface AdditionalProperties {
 /**
   Facade implements the API required by the sshclient worker.
 */
-class SSHClientV4 {
+class SSHClientV4 implements Facade {
   static NAME = "SSHClient";
   static VERSION = 4;
 
-  version: number;
+  NAME = "SSHClient";
+  VERSION = 4;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 4;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AllAddresses reports all addresses that might have SSH listening for each
     entity in args. The result is sorted with public addresses first.

@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface ActionPruneArgs {
@@ -42,23 +43,23 @@ export interface AdditionalProperties {
 /**
   API provides access to the action pruner API.
 */
-class ActionPrunerV1 {
+class ActionPrunerV1 implements Facade {
   static NAME = "ActionPruner";
   static VERSION = 1;
 
-  version: number;
+  NAME = "ActionPruner";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     ModelConfig returns the current model's configuration.
   */

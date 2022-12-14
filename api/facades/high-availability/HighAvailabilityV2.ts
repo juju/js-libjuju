@@ -11,6 +11,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface ControllersChangeResult {
@@ -70,23 +71,23 @@ export interface AdditionalProperties {
   HighAvailabilityAPI implements the HighAvailability interface and is the concrete
   implementation of the api end point.
 */
-class HighAvailabilityV2 {
+class HighAvailabilityV2 implements Facade {
   static NAME = "HighAvailability";
   static VERSION = 2;
 
-  version: number;
+  NAME = "HighAvailability";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     EnableHA adds controller machines as necessary to ensure the
     controller has the number of machines specified.

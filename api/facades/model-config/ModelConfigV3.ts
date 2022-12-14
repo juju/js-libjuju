@@ -14,6 +14,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface ConfigValue {
@@ -93,23 +94,23 @@ export interface AdditionalProperties {
 /**
   ModelConfigAPIV3 is currently the latest.
 */
-class ModelConfigV3 {
+class ModelConfigV3 implements Facade {
   static NAME = "ModelConfig";
   static VERSION = 3;
 
-  version: number;
+  NAME = "ModelConfig";
+  VERSION = 3;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 3;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     GetModelConstraints returns the constraints for the model.
   */

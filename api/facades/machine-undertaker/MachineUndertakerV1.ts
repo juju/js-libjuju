@@ -10,6 +10,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Entities {
@@ -67,23 +68,23 @@ export interface AdditionalProperties {
 /**
   API implements the API facade used by the machine undertaker.
 */
-class MachineUndertakerV1 {
+class MachineUndertakerV1 implements Facade {
   static NAME = "MachineUndertaker";
   static VERSION = 1;
 
-  version: number;
+  NAME = "MachineUndertaker";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AllMachineRemovals returns tags for all of the machines that have
     been marked for removal in the requested model.

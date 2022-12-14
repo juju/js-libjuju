@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface APIHostPortsResult {
@@ -52,7 +53,7 @@ export interface Binary {
   Build: number;
   Major: number;
   Minor: number;
-  Number: number;
+  Number: Number;
   Patch: number;
   Release: string;
   Tag: string;
@@ -195,23 +196,23 @@ export interface AdditionalProperties {
 /**
   Facade is the CAAS operator API facade.
 */
-class CAASOperatorV1 {
+class CAASOperatorV1 implements Facade {
   static NAME = "CAASOperator";
   static VERSION = 1;
 
-  version: number;
+  NAME = "CAASOperator";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     APIAddresses returns the list of addresses used to connect to the API.
   */

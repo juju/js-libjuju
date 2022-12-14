@@ -11,6 +11,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface BundleChange {
@@ -62,23 +63,23 @@ export interface AdditionalProperties {
   identical to V3 with the exception that the V4 now has GetChangesAsMap, which
   returns the same data as GetChanges, but with better args data.
 */
-class BundleV4 {
+class BundleV4 implements Facade {
   static NAME = "Bundle";
   static VERSION = 4;
 
-  version: number;
+  NAME = "Bundle";
+  VERSION = 4;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 4;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     ExportBundle exports the current model configuration as bundle.
   */

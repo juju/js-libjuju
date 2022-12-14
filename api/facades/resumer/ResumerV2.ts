@@ -10,28 +10,29 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 /**
   ResumerAPI implements the API used by the resumer worker.
 */
-class ResumerV2 {
+class ResumerV2 implements Facade {
   static NAME = "Resumer";
   static VERSION = 2;
 
-  version: number;
+  NAME = "Resumer";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
 
   */

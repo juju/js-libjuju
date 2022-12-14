@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Entities {
@@ -68,23 +69,23 @@ export interface AdditionalProperties {
 /**
   API provides the ProxyUpdater version 2 facade.
 */
-class ProxyUpdaterV2 {
+class ProxyUpdaterV2 implements Facade {
   static NAME = "ProxyUpdater";
   static VERSION = 2;
 
-  version: number;
+  NAME = "ProxyUpdater";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     ProxyConfig returns the proxy settings for the current model.
   */

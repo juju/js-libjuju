@@ -13,6 +13,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AddMachineParams {
@@ -217,23 +218,23 @@ export interface AdditionalProperties {
   MachineManagerAPIV6 defines the Version 6 of Machine Manager API.
   Changes input parameters to DestroyMachineWithParams and ForceDestroyMachine.
 */
-class MachineManagerV6 {
+class MachineManagerV6 implements Facade {
   static NAME = "MachineManager";
   static VERSION = 6;
 
-  version: number;
+  NAME = "MachineManager";
+  VERSION = 6;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 6;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     AddMachines adds new machines with the supplied parameters.
   */

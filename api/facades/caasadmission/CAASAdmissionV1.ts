@@ -11,6 +11,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface ControllerAPIInfoResult {
@@ -48,23 +49,23 @@ export interface AdditionalProperties {
 /**
 
 */
-class CAASAdmissionV1 {
+class CAASAdmissionV1 implements Facade {
   static NAME = "CAASAdmission";
   static VERSION = 1;
 
-  version: number;
+  NAME = "CAASAdmission";
+  VERSION = 1;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 1;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     ControllerAPIInfoForModels returns the controller api connection details for the specified models.
   */

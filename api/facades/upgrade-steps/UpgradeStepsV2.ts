@@ -12,6 +12,7 @@
 
 import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
+import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface Entity {
@@ -54,23 +55,23 @@ export interface AdditionalProperties {
   UpgradeStepsAPI implements version 2 of the Upgrade Steps API,
   which adds WriteUniterState.
 */
-class UpgradeStepsV2 {
+class UpgradeStepsV2 implements Facade {
   static NAME = "UpgradeSteps";
   static VERSION = 2;
 
-  version: number;
+  NAME = "UpgradeSteps";
+  VERSION = 2;
+
   _transport: Transport;
   _info: ConnectionInfo;
 
   constructor(transport: Transport, info: ConnectionInfo) {
-    this.version = 2;
     this._transport = transport;
     this._info = info;
 
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-
   /**
     ResetKVMMachineModificationStatusIdle sets the modification status
     of a kvm machine to idle if it is in an error state before upgrade.
