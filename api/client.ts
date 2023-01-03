@@ -7,6 +7,8 @@
   to use this API.
 */
 
+import { Bakery } from "@canonical/macaroon-bakery";
+
 import AdminV3, {
   FacadeVersions,
   LoginRequest,
@@ -26,10 +28,11 @@ import {
 import { createAsyncHandler } from "./utils.js";
 
 export interface ConnectOptions {
-  bakery?: Bakery;
+  bakery?: Bakery | null;
   closeCallback: Callback<number>;
   debug?: boolean;
   facades?: (ClassType<Facade> | GenericFacade)[];
+  onWSCreated?: (ws: WebSocket) => void;
   wsclass?: typeof WebSocket;
 }
 
@@ -53,9 +56,6 @@ export interface LoginArguments {
   credentials?: string; // password
   macaroons?: object; // Macaroon object
 }
-
-// TODO: Expand on these types.
-export type Bakery = any;
 
 /**
   Connect to the Juju controller or model at the given URL.
@@ -123,6 +123,7 @@ function connect(
     ws.onerror = (evt) => {
       console.log("--", evt);
     };
+    options?.onWSCreated?.(ws);
   });
 }
 
@@ -211,7 +212,7 @@ async function connectAndLogin(
   @param controllerHost The url that's used to connect to the controller.
     The `connectAndLogin` method handles redirections so the public URL is fine.
   @param modelUUID The UUID of the model to connect to.
-  @returns {String} The fully qualified wss URL to connect to the model.
+  @returns The fully qualified wss URL to connect to the model.
 */
 function generateModelURL(controllerHost: string, modelUUID: string): string {
   return `wss://${controllerHost}/model/${modelUUID}/api`;
@@ -227,8 +228,8 @@ function generateModelURL(controllerHost: string, modelUUID: string): string {
 */
 class Client {
   _transport: Transport;
+  _bakery?: Bakery | null;
   _facades: (ClassType<Facade> | GenericFacade)[];
-  _bakery: Bakery;
   _admin: AdminV3;
 
   constructor(ws: WebSocket, options: ConnectOptions) {
@@ -271,7 +272,7 @@ class Client {
       args.credentials = credentials.password;
       args["auth-tag"] = `user-${credentials.username}`;
     } else {
-      const macaroons = this._bakery.storage.get(origin);
+      const macaroons = this._bakery?.storage.get(origin);
       let deserialized;
       if (macaroons) {
         deserialized = JSON.parse(atob(macaroons));
@@ -293,10 +294,10 @@ class Client {
             );
             return;
           }
-          const onSuccess = (macaroons: any) => {
+          const onSuccess = (macaroons: Macaroon[]) => {
             // Store the macaroon in the bakery for the next connections.
             const serialized = btoa(JSON.stringify(macaroons));
-            this._bakery.storage.set(origin, serialized, () => {});
+            this._bakery?.storage.set(origin, serialized, () => {});
             // Send the login request again including the discharge macaroons.
             credentials.macaroons = [macaroons];
             return resolve(this.login(credentials));
@@ -367,7 +368,7 @@ const REDIRECTION_ERROR = "redirection required";
 const INVALIDCREDENTIALS_ERROR = "invalid entity name or password";
 const PERMISSIONDENIED_ERROR = "permission denied";
 class RedirectionError {
-  servers: object[];
+  servers: RedirectInfoResult["servers"];
   caCert: string;
 
   constructor(info: RedirectInfoResult) {
@@ -580,7 +581,7 @@ class Connection {
   Convert ThisString to thisString and THATString to thatString.
 
   @param text A StringLikeThis.
-  @returns {String} A stringLikeThis.
+  @returns A stringLikeThis.
 */
 function uncapitalize(text: string): string {
   if (!text) {
@@ -605,4 +606,11 @@ function uncapitalize(text: string): string {
   return prefix.toLowerCase() + text.slice(prefix.length);
 }
 
-export { Client, connect, connectAndLogin, generateModelURL };
+export {
+  Client,
+  connect,
+  connectAndLogin,
+  Connection,
+  generateModelURL,
+  RedirectionError,
+};
