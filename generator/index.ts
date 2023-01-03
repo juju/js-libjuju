@@ -71,10 +71,10 @@ function main() {
   Object.keys(facadesGroupedByName).forEach((facadeName) => {
     facadeList[facadeName] = facadesGroupedByName[facadeName].map(
       (FacadeVersion) => ({
-        name: `v${FacadeVersion}.ts`,
+        name: `${facadeName}V${FacadeVersion}.ts`,
         path: `/api/facades/${facadeFolderName(
           facadeName
-        )}/v${FacadeVersion}.ts`,
+        )}/${facadeName}V${FacadeVersion}.ts`,
       })
     );
   });
