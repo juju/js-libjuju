@@ -297,7 +297,7 @@ class Client {
           const onSuccess = (macaroons: Macaroon[]) => {
             // Store the macaroon in the bakery for the next connections.
             const serialized = btoa(JSON.stringify(macaroons));
-            this._bakery.storage.set(origin, serialized, () => {});
+            this._bakery?.storage.set(origin, serialized, () => {});
             // Send the login request again including the discharge macaroons.
             credentials.macaroons = [macaroons];
             return resolve(this.login(credentials));

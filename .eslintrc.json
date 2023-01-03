@@ -3,7 +3,6 @@
     "browser": true,
     "es2021": true,
     "jest/globals": true,
-    "jasmine/globals": true,
     "node": true
   },
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],

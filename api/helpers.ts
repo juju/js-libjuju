@@ -13,8 +13,8 @@ import { createAsyncHandler } from "./utils.js";
 /**
   Decorate the Admin facade class.
 
-  @param {Object} cls The auto-generated class.
-  @returns {Object} The decorated class.
+  @param cls The auto-generated class.
+  @returns The decorated class.
 */
 function wrapAdmin(cls: any): object {
   /**
@@ -22,7 +22,7 @@ function wrapAdmin(cls: any): object {
     always returns an error because the Juju controller does not multiplex
     controllers.
 
-    @param {Function} callback Called when the response from Juju is available,
+    @param callback Called when the response from Juju is available,
       the callback receives an error and the result. If there are no errors,
       the result is provided as an object like the following:
         {
@@ -85,22 +85,22 @@ function wrapAdmin(cls: any): object {
 /**
   Decorate the AllModelWatcher facade class.
 
-  @param {Object} cls The auto-generated class.
-  @returns {Object} The decorated class.
+  @param cls The auto-generated class.
+  @returns The decorated class.
 */
-function wrapAllModelWatcher(cls: any): object {
+function wrapAllModelWatcher(cls: any) {
   /**
     Ask for next watcher messages corresponding to changes in the models.
 
-    @param {String} watcherId The id of the currently used watcher. The id is
+    @param watcherId The id of the currently used watcher. The id is
       retrieved by calling the Controller.watchAllModels API call.
-    @param {Function} callback Called when the next messages arrive, the
+    @param callback Called when the next messages arrive, the
       callback receives an error and the changes. If there are no errors,
       changes are provided as an object like the following:
         {
           deltas: []anything
         }
-    @return {Promise} Rejected or resolved with the values normally passed to
+    @return Rejected or resolved with the values normally passed to
       the callback when the callback is not provided.
       This allows this method to be awaited.
   */
@@ -133,11 +133,11 @@ function wrapAllModelWatcher(cls: any): object {
   /**
     Stop watching all models.
 
-    @param {String} watcherId The id of the currently used watcher. The id is
+    @param watcherId The id of the currently used watcher. The id is
       retrieved by calling the Controller.watchAllModels API call.
-    @param {Function} callback Called after the watcher has been stopped, the
+    @param callback Called after the watcher has been stopped, the
       callback receives an error.
-    @return {Promise} Rejected or resolved with the values normally passed to
+    @return Rejected or resolved with the values normally passed to
       the callback when the callback is not provided.
       This allows this method to be awaited.
   */
@@ -168,22 +168,22 @@ function wrapAllModelWatcher(cls: any): object {
 /**
   Decorate the AllWatcher facade class.
 
-  @param {Object} cls The auto-generated class.
-  @returns {Object} The decorated class.
+  @param cls The auto-generated class.
+  @returns The decorated class.
 */
-function wrapAllWatcher(cls: any): object {
+function wrapAllWatcher(cls: any) {
   /**
     Ask for next watcher messages corresponding to changes in the model.
 
-    @param {String} watcherId The id of the currently used watcher. The id is
+    @param watcherId The id of the currently used watcher. The id is
       retrieved by calling the Client.watchAll API call.
-    @param {Function} callback Called when the next messages arrive, the
+    @param callback Called when the next messages arrive, the
       callback receives an error and the changes. If there are no errors,
       changes are provided as an object like the following:
         {
           deltas: []anything
         }
-    @return {Promise} Rejected or resolved with the values normally passed to
+    @return Rejected or resolved with the values normally passed to
       the callback when the callback is not provided.
       This allows this method to be awaited.
   */
@@ -216,11 +216,11 @@ function wrapAllWatcher(cls: any): object {
   /**
     Stop watching the model.
 
-    @param {String} watcherId The id of the currently used watcher. The id is
+    @param watcherId The id of the currently used watcher. The id is
       retrieved by calling the Client.watchAll API call.
-    @param {Function} callback Called after the watcher has been stopped, the
+    @param callback Called after the watcher has been stopped, the
       callback receives an error.
-    @return {Promise} Rejected or resolved with the values normally passed to
+    @return Rejected or resolved with the values normally passed to
       the callback when the callback is not provided.
       This allows this method to be awaited.
   */
@@ -251,10 +251,10 @@ function wrapAllWatcher(cls: any): object {
 /**
   Decorate the Client facade class.
 
-  @param {Object} cls The auto-generated class.
-  @returns {Object} The decorated class.
+  @param cls The auto-generated class.
+  @returns The decorated class.
 */
-function wrapClient(cls: any): object | undefined {
+function wrapClient(cls: any) {
   /**
     Watch changes in the current model, and call the provided callback every
     time changes arrive.
@@ -262,13 +262,13 @@ function wrapClient(cls: any): object | undefined {
     This method requires the AllWatcher facade to be loaded and available to the
     client.
 
-    @param {Function} callback Called every time changes arrive from Juju, the
+    @param callback Called every time changes arrive from Juju, the
       callback receives an error and a the changes. If there are no errors,
       changes are provided as an object like the following:
         {
           deltas: []anything
         }
-    @returns {Object} A handle that can be used to stop watching, via its stop
+    @returns A handle that can be used to stop watching, via its stop
       method which can be provided a callback receiving an error.
   */
   cls.prototype.watch = function (callback: Function): object | undefined {
@@ -320,10 +320,10 @@ function wrapClient(cls: any): object | undefined {
 /**
   Decorate the Controller facade class.
 
-  @param {Object} cls The auto-generated class.
-  @returns {Object} The decorated class.
+  @param cls The auto-generated class.
+  @returns The decorated class.
 */
-function wrapController(cls: any): object {
+function wrapController(cls: any) {
   /**
     Watch changes in the all models on this controller, and call the provided
     callback every time changes arrive.
@@ -331,13 +331,13 @@ function wrapController(cls: any): object {
     This method requires the AllModelWatcher facade to be loaded and available
     to the client.
 
-    @param {Function} callback Called every time changes arrive from Juju, the
+    @param callback Called every time changes arrive from Juju, the
       callback receives an error and a the changes. If there are no errors,
       changes are provided as an object like the following:
         {
           deltas: []anything
         }
-    @returns {Object} A handle that can be used to stop watching, via its stop
+    @returns A handle that can be used to stop watching, via its stop
       method which can be provided a callback receiving an error.
   */
   cls.prototype.watch = function (callback: Function): object | undefined {

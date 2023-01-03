@@ -21,6 +21,10 @@ import {
 } from "../client";
 import { CallbackError } from "../../generator/interfaces";
 
+const fail = () => {
+  throw new Error("Fail called");
+};
+
 describe("connect", () => {
   let ws: MockWebSocket;
   const options = {
@@ -73,8 +77,10 @@ describe("connect", () => {
       request: "Login",
       params: {
         "auth-tag": "user-who",
-        "client-version": "3.0.2",
         credentials: "secret",
+        macaroons: [],
+        nonce: "",
+        "user-data": "",
       },
       version: 3,
     });
@@ -248,12 +254,14 @@ describe("connect", () => {
       request: "Login",
       params: {
         "auth-tag": "user-who",
-        "client-version": "3.0.2",
         credentials: "secret",
+        macaroons: [],
+        nonce: "",
+        "user-data": "",
       },
       version: 3,
     });
-    expect(error.message).toBe(
+    expect(error).toBe(
       "macaroon discharge required but no bakery instance provided"
     );
   }
@@ -307,10 +315,16 @@ describe("connect", () => {
     requestEqual(ws.lastRequest, {
       type: "Admin",
       request: "Login",
-      params: { "client-version": "3.0.2", macaroons: ["fake macaroon"] },
+      params: {
+        "auth-tag": "",
+        credentials: "",
+        macaroons: ["fake macaroon"],
+        nonce: "",
+        "user-data": "",
+      },
       version: 3,
     });
-    expect(error.message).toBe("macaroon discharge failed: bad wolf");
+    expect(error).toBe("macaroon discharge failed: bad wolf");
   }
 
   it("login discharge required failure", (done) => {
@@ -364,7 +378,13 @@ describe("connect", () => {
     requestEqual(ws.lastRequest, {
       type: "Admin",
       request: "Login",
-      params: { "client-version": "3.0.2", macaroons: ["fake macaroon"] },
+      params: {
+        "auth-tag": "",
+        credentials: "",
+        macaroons: ["fake macaroon"],
+        nonce: "",
+        "user-data": "",
+      },
       version: 3,
     });
   }
@@ -504,12 +524,12 @@ describe("connect", () => {
       (conn: Connection | undefined, _ws: MockWebSocket) => {
         const client = conn?.info.getFacade?.("client");
         expect(client).not.toBe(undefined);
-        expect(client.constructor.name).toBe("ClientV2");
+        expect(client?.constructor.name).toBe("ClientV2");
         expect(conn?.info.getFacade?.("allWatcher")).toBe(undefined);
         expect(conn?.info.getFacade?.("myFacade")).toBe(undefined);
         // Check properties passed to the instantiated facade.
-        expect(client._transport).toStrictEqual(conn?.transport);
-        expect(client._info).toStrictEqual(conn?.info);
+        expect(client?._transport).toStrictEqual(conn?.transport);
+        expect(client?._info).toStrictEqual(conn?.info);
         done();
       }
     );

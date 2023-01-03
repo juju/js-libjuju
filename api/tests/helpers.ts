@@ -13,6 +13,7 @@ import {
   Transport,
 } from "../client";
 import { Macaroon } from "../facades/admin/AdminV3";
+import { Facade } from "../types";
 
 export type Response = {
   error?: string;
@@ -136,15 +137,19 @@ type LoginResponse = typeof defaultLoginResponse;
 /**
   Define a base class for test facades.
 */
-class BaseFacade {
+class BaseFacade implements Facade {
   _info: any;
   _transport: Transport;
-  version: number;
+  NAME: string;
+  VERSION: number;
+  version?: number;
 
   constructor(transport: Transport, info: any) {
     (this._transport = transport), (this._info = info);
     // This is JavaScript: implicit type conversion for the win.
-    this.version = +this.constructor.name.slice(-1);
+    this.VERSION = +this.constructor.name.slice(-1);
+    this.version = this.VERSION;
+    this.NAME = this.constructor.name;
   }
 }
 

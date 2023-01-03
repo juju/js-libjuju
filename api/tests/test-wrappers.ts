@@ -16,6 +16,9 @@ describe("wrapAllModelWatcher", () => {
   class AllModelWatcherV1 extends BaseFacade {
     static NAME = "AllModelWatcher";
     static VERSION = 1;
+
+    next(_id: number, _callback: (result: Response | CallbackError) => void) {}
+    stop(_id: number, _callback: (result: Response | CallbackError) => void) {}
   }
   const options = {
     closeCallback: jest.fn(),
@@ -24,9 +27,11 @@ describe("wrapAllModelWatcher", () => {
 
   it("next success", (done) => {
     makeConnection(options, (conn, ws) => {
-      const allModelWatcher = conn?.info.getFacade?.("allModelWatcher");
+      const allModelWatcher = conn?.info.getFacade?.(
+        "allModelWatcher"
+      ) as AllModelWatcherV1;
       const watcherId = 42;
-      allModelWatcher.next(watcherId, (result: Response) => {
+      allModelWatcher?.next(watcherId, (result) => {
         requestEqual(ws.lastRequest, {
           type: "AllModelWatcher",
           request: "Next",
@@ -55,9 +60,11 @@ describe("wrapAllModelWatcher", () => {
 
   it("next failure", (done) => {
     makeConnection(options, (conn, ws) => {
-      const allModelWatcher = conn?.info.getFacade?.("allModelWatcher");
+      const allModelWatcher = conn?.info.getFacade?.(
+        "allModelWatcher"
+      ) as AllModelWatcherV1;
       const watcherId = 42;
-      allModelWatcher.next(watcherId, (err: CallbackError) => {
+      allModelWatcher?.next(watcherId, (err) => {
         expect(err).toBe("bad wolf");
       });
       // Reply to the next request.
@@ -68,9 +75,11 @@ describe("wrapAllModelWatcher", () => {
 
   it("stop success", (done) => {
     makeConnection(options, (conn, ws) => {
-      const allModelWatcher = conn?.info.getFacade?.("allModelWatcher");
+      const allModelWatcher = conn?.info.getFacade?.(
+        "allModelWatcher"
+      ) as AllModelWatcherV1;
       const watcherId = 42;
-      allModelWatcher.stop(watcherId, (result: Response) => {
+      allModelWatcher?.stop(watcherId, (result) => {
         requestEqual(ws.lastRequest, {
           type: "AllModelWatcher",
           request: "Stop",
@@ -87,9 +96,11 @@ describe("wrapAllModelWatcher", () => {
 
   it("stop failure", (done) => {
     makeConnection(options, (conn, ws) => {
-      const allModelWatcher = conn?.info.getFacade?.("allModelWatcher");
+      const allModelWatcher = conn?.info.getFacade?.(
+        "allModelWatcher"
+      ) as AllModelWatcherV1;
       const watcherId = 42;
-      allModelWatcher.stop(watcherId, (err: CallbackError) => {
+      allModelWatcher?.stop(watcherId, (err) => {
         expect(err).toBe("bad wolf");
       });
       // Reply to the next request.
@@ -103,6 +114,9 @@ describe("wrapAllWatcher", () => {
   class AllWatcherV0 extends BaseFacade {
     static NAME = "AllWatcher";
     static VERSION = 0;
+
+    next(_id: number, _callback: (result: Response | CallbackError) => void) {}
+    stop(_id: number, _callback: (result: Response | CallbackError) => void) {}
   }
   const options = {
     closeCallback: jest.fn(),
@@ -111,9 +125,9 @@ describe("wrapAllWatcher", () => {
 
   it("next success", (done) => {
     makeConnection(options, (conn, ws) => {
-      const allWatcher = conn?.info.getFacade?.("allWatcher");
+      const allWatcher = conn?.info.getFacade?.("allWatcher") as AllWatcherV0;
       const watcherId = 42;
-      allWatcher.next(watcherId, (result: Response) => {
+      allWatcher?.next(watcherId, (result) => {
         requestEqual(ws.lastRequest, {
           type: "AllWatcher",
           request: "Next",
@@ -142,9 +156,9 @@ describe("wrapAllWatcher", () => {
 
   it("next failure", (done) => {
     makeConnection(options, (conn, ws) => {
-      const allWatcher = conn?.info.getFacade?.("allWatcher");
+      const allWatcher = conn?.info.getFacade?.("allWatcher") as AllWatcherV0;
       const watcherId = 42;
-      allWatcher.next(watcherId, (err: CallbackError) => {
+      allWatcher?.next(watcherId, (err) => {
         expect(err).toBe("bad wolf");
       });
       // Reply to the next request.
@@ -155,9 +169,9 @@ describe("wrapAllWatcher", () => {
 
   it("stop success", (done) => {
     makeConnection(options, (conn, ws) => {
-      const allWatcher = conn?.info.getFacade?.("allWatcher");
+      const allWatcher = conn?.info.getFacade?.("allWatcher") as AllWatcherV0;
       const watcherId = 42;
-      allWatcher.stop(watcherId, (result: Response) => {
+      allWatcher.stop(watcherId, (result) => {
         requestEqual(ws.lastRequest, {
           type: "AllWatcher",
           request: "Stop",
@@ -174,9 +188,9 @@ describe("wrapAllWatcher", () => {
 
   it("stop failure", (done) => {
     makeConnection(options, (conn, ws) => {
-      const allWatcher = conn?.info.getFacade?.("allWatcher");
+      const allWatcher = conn?.info.getFacade?.("allWatcher") as AllWatcherV0;
       const watcherId = 42;
-      allWatcher.stop(watcherId, (err: CallbackError) => {
+      allWatcher.stop(watcherId, (err) => {
         expect(err).toBe("bad wolf");
       });
       // Reply to the next request.
@@ -195,6 +209,10 @@ describe("wrapClient", () => {
       watchAll(callback: Callback<Record<string, number>>) {
         callback(null, { watcherId: 47 });
       }
+
+      watch(callback: Callback<Record<string, number>>) {
+        callback(null, { watcherId: 47 });
+      }
     }
     class AllWatcherV0 extends BaseFacade {
       static NAME = "AllWatcher";
@@ -205,9 +223,9 @@ describe("wrapClient", () => {
       facades: [wrapClient(ClientV3), wrapAllWatcher(AllWatcherV0)],
     };
     makeConnection(options, (conn, ws) => {
-      const client = conn?.info.getFacade?.("client");
+      const client = conn?.info.getFacade?.("client") as ClientV3;
       let callCount = 0;
-      client.watch((result: Response) => {
+      client?.watch((result) => {
         callCount += 1;
         switch (callCount) {
           case 1:
@@ -247,14 +265,16 @@ describe("wrapClient", () => {
     class ClientV3 extends BaseFacade {
       static NAME = "Client";
       static VERSION = 3;
+
+      watch(_callback: (result: Response | CallbackError) => void) {}
     }
     const options = {
       closeCallback: jest.fn(),
       facades: [wrapClient(ClientV3)],
     };
     makeConnection(options, (conn, ws) => {
-      const client = conn?.info.getFacade?.("client");
-      client.watch((err: CallbackError) => {
+      const client = conn?.info.getFacade?.("client") as ClientV3;
+      client.watch((err) => {
         expect(err).toBe("watch requires the allWatcher facade to be loaded");
         // Only the login request has been made, no other requests.
         expect(ws.requests.length).toBe(1);
@@ -270,6 +290,9 @@ describe("wrapClient", () => {
       watchAll(callback: Callback<Record<string, number>>) {
         callback("bad wolf", {});
       }
+      watch(callback: Callback<Record<string, number>>) {
+        callback("bad wolf", {});
+      }
     }
     class AllWatcherV0 extends BaseFacade {
       static NAME = "AllWatcher";
@@ -280,8 +303,8 @@ describe("wrapClient", () => {
       facades: [wrapClient(ClientV3), wrapAllWatcher(AllWatcherV0)],
     };
     makeConnection(options, (conn, _ws) => {
-      const client = conn?.info.getFacade?.("client");
-      client.watch((err: CallbackError) => {
+      const client = conn?.info.getFacade?.("client") as ClientV3;
+      client.watch((err) => {
         expect(err).toBe("bad wolf");
       });
       done();
@@ -295,6 +318,9 @@ describe("wrapClient", () => {
       watchAll(callback: Callback<Record<string, number>>) {
         callback(null, { watcherId: 47 });
       }
+      watch(callback: Callback<Record<string, number>>) {
+        callback(null, { watcherId: 47 });
+      }
     }
     class AllWatcherV0 extends BaseFacade {
       static NAME = "AllWatcher";
@@ -305,8 +331,8 @@ describe("wrapClient", () => {
       facades: [wrapClient(ClientV3), wrapAllWatcher(AllWatcherV0)],
     };
     makeConnection(options, (conn, ws) => {
-      const client = conn?.info.getFacade?.("client");
-      client.watch((err: CallbackError) => {
+      const client = conn?.info.getFacade?.("client") as ClientV3;
+      client.watch((err) => {
         expect(err).toBe("bad wolf");
       });
       // Reply to the next request.
@@ -333,7 +359,7 @@ describe("wrapClient", () => {
       facades: [wrapClient(ClientV3)],
     };
     makeConnection(options, (conn, _ws) => {
-      const client = conn?.info.getFacade?.("client");
+      const client = conn?.info.getFacade?.("client") as ClientV3;
       client.addMachines(
         {
           arch: "amd64",
@@ -342,7 +368,7 @@ describe("wrapClient", () => {
           parentId: 2,
           series: "bionic",
         },
-        (err: CallbackError, result: Response) => {
+        (err, result) => {
           expect(err).toBe(null);
           expect(result).toStrictEqual({ machines: [{ machine: 42 }] });
           expect(gotArgs).toStrictEqual({
@@ -376,15 +402,12 @@ describe("wrapClient", () => {
       facades: [wrapClient(ClientV3)],
     };
     makeConnection(options, (conn, _ws) => {
-      const client = conn?.info.getFacade?.("client");
-      client.addMachines(
-        { series: "cosmic" },
-        (_err: CallbackError, _result: Response) => {
-          expect(gotArgs).toStrictEqual({
-            series: "cosmic",
-          });
-        }
-      );
+      const client = conn?.info.getFacade?.("client") as ClientV3;
+      client.addMachines({ series: "cosmic" }, (_err, _result) => {
+        expect(gotArgs).toStrictEqual({
+          series: "cosmic",
+        });
+      });
       done();
     });
   });
@@ -402,8 +425,8 @@ describe("wrapClient", () => {
       facades: [wrapClient(ClientV3)],
     };
     makeConnection(options, (conn, _ws) => {
-      const client = conn?.info.getFacade?.("client");
-      client.addMachines({ series: "bionic" }, (err: CallbackError) => {
+      const client = conn?.info.getFacade?.("client") as ClientV3;
+      client.addMachines({ series: "bionic" }, (err) => {
         expect(err).toBe("bad wolf");
       });
       done();
@@ -419,6 +442,9 @@ describe("wrapController", () => {
       watchAllModels(callback: Callback<Record<string, number>>) {
         callback(null, { watcherId: 47 });
       }
+      watch(callback: Callback<Record<string, number>>) {
+        callback(null, { watcherId: 47 });
+      }
     }
     class AllModelWatcherV1 extends BaseFacade {
       static NAME = "AllModelWatcher";
@@ -432,9 +458,9 @@ describe("wrapController", () => {
       ],
     };
     makeConnection(options, (conn, ws) => {
-      const controller = conn?.info.getFacade?.("controller");
+      const controller = conn?.info.getFacade?.("controller") as ControllerV4;
       let callCount = 0;
-      controller.watch((result: Response) => {
+      controller?.watch((result) => {
         callCount += 1;
         switch (callCount) {
           case 1:
@@ -474,14 +500,16 @@ describe("wrapController", () => {
     class ControllerV4 extends BaseFacade {
       static NAME = "Controller";
       static VERSION = 4;
+
+      watch(_callback: Callback<CallbackError>) {}
     }
     const options = {
       closeCallback: jest.fn(),
       facades: [wrapController(ControllerV4)],
     };
     makeConnection(options, (conn, ws) => {
-      const controller = conn?.info.getFacade?.("controller");
-      controller.watch((err: CallbackError) => {
+      const controller = conn?.info.getFacade?.("controller") as ControllerV4;
+      controller.watch((err) => {
         expect(err).toBe(
           "watch requires the allModelWatcher facade to be loaded"
         );
@@ -499,6 +527,9 @@ describe("wrapController", () => {
       watchAllModels(callback: Callback<Record<string, number>>) {
         callback("bad wolf", {});
       }
+      watch(callback: Callback<Record<string, number>>) {
+        callback("bad wolf", {});
+      }
     }
     class AllModelWatcherV1 extends BaseFacade {
       static NAME = "AllModelWatcher";
@@ -512,8 +543,8 @@ describe("wrapController", () => {
       ],
     };
     makeConnection(options, (conn, _ws) => {
-      const controller = conn?.info.getFacade?.("controller");
-      controller.watch((err: CallbackError) => {
+      const controller = conn?.info.getFacade?.("controller") as ControllerV4;
+      controller.watch((err) => {
         expect(err).toBe("bad wolf");
       });
       done();
@@ -525,6 +556,9 @@ describe("wrapController", () => {
       static NAME = "Controller";
       static VERSION = 5;
       watchAllModels(callback: Callback<Record<string, number>>) {
+        callback(null, { watcherId: 47 });
+      }
+      watch(callback: Callback<Record<string, number>>) {
         callback(null, { watcherId: 47 });
       }
     }
@@ -540,8 +574,8 @@ describe("wrapController", () => {
       ],
     };
     makeConnection(options, (conn, ws) => {
-      const controller = conn?.info.getFacade?.("controller");
-      controller.watch((err: CallbackError) => {
+      const controller = conn?.info.getFacade?.("controller") as ControllerV5;
+      controller.watch((err) => {
         expect(err).toBe("bad wolf");
       });
       // Reply to the next request.
