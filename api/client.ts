@@ -8,15 +8,17 @@
 */
 
 import { Bakery } from "@canonical/macaroon-bakery";
-
 import AdminV3, {
   FacadeVersions,
   LoginRequest,
   LoginResult,
-  Macaroon,
   RedirectInfoResult,
 } from "./facades/admin/AdminV3.js";
 
+import {
+  Error as MacaroonError,
+  MacaroonObject,
+} from "@canonical/macaroon-bakery/dist/macaroon";
 import type { Callback, JujuRequest } from "../generator/interfaces";
 import {
   ClassType,
@@ -294,7 +296,7 @@ class Client {
             );
             return;
           }
-          const onSuccess = (macaroons: Macaroon[]) => {
+          const onSuccess = (macaroons: MacaroonObject[]) => {
             // Store the macaroon in the bakery for the next connections.
             const serialized = btoa(JSON.stringify(macaroons));
             this._bakery?.storage.set(origin, serialized, () => {});
@@ -302,7 +304,7 @@ class Client {
             credentials.macaroons = [macaroons];
             return resolve(this.login(credentials));
           };
-          const onFailure = (err: string) => {
+          const onFailure = (err: string | MacaroonError) => {
             reject("macaroon discharge failed: " + err);
           };
           this._bakery.discharge(dischargeRequired, onSuccess, onFailure);
