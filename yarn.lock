@@ -407,11 +407,12 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@canonical/macaroon-bakery@1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@canonical/macaroon-bakery/-/macaroon-bakery-1.3.0.tgz#9ef021733b5564d64929d3f82f36351cd7b1dd1e"
-  integrity sha512-gDv+ScuBxMgQQREHj0s2JdNxni/FJtzvyTUEnJoboISWC3gh6tpou2AlsUaU4dQCNwlbJn2dbDecv2gu7GopMA==
+"@canonical/macaroon-bakery@1.3.2":
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/@canonical/macaroon-bakery/-/macaroon-bakery-1.3.2.tgz#14b81154c247eb9b59fb9d7b5d167d1c2dec4d4f"
+  integrity sha512-3VtI9L9m8EPxmddIF4ed+s5KL+QK0pXnHNYaRqiTwOSnwGuJz/TdVwubrtE//hbt9jj/UoYnAlZp5caNUaKjfA==
   dependencies:
+    "@types/sjcl" "1.0.30"
     macaroon "3.0.4"
 
 "@cspotcode/source-map-support@^0.8.0":
@@ -897,6 +898,11 @@
   version "7.3.13"
   resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.3.13.tgz#da4bfd73f49bd541d28920ab0e2bf0ee80f71c91"
   integrity sha512-21cFJr9z3g5dW8B0CVI9g2O9beqaThGQ6ZFBqHfwhzLDKUxaqTIy3vnfah/UPkfOiF2pLq+tGz+W8RyCskuslw==
+
+"@types/sjcl@1.0.30":
+  version "1.0.30"
+  resolved "https://registry.yarnpkg.com/@types/sjcl/-/sjcl-1.0.30.tgz#c1db866622ef4da56af081fa2e258d76fb255b89"
+  integrity sha512-4ebBtj1rx3Kh3To5RnPua+U4JzVwH2MxUmHQvAlxWpzmfmupBRyyXAIEQceon+e5tW9aBeOApTYA6EXfBysRyQ==
 
 "@types/stack-utils@^2.0.0":
   version "2.0.1"
