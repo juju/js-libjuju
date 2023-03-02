@@ -48,3 +48,26 @@ export function createAsyncHandler<T>(
     callback ? callback(null, value) : resolve(value!);
   };
 }
+
+export const parseVersion = (version: string): number[] =>
+  version.split(".").map((v) => parseInt(v));
+
+export const jujuVersions = (schemaList: { "juju-version": string }[]) =>
+  schemaList
+    .map((schema) => schema["juju-version"])
+    // sort by version
+    .sort((v1, v2) => {
+      const v1Parts = parseVersion(v1);
+      const v2Parts = parseVersion(v2);
+
+      for (let i = 0; i < v1Parts.length; i++) {
+        const v1Part = v1Parts[i];
+        const v2Part = v2Parts[i];
+        if (v1Part < v2Part) {
+          return -1;
+        } else if (v1Part > v2Part) {
+          return 1;
+        }
+      }
+      return 0;
+    });

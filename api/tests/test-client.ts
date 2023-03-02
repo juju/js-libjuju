@@ -3,6 +3,16 @@
 
 "use strict";
 
+import { CallbackError } from "../../generator/interfaces";
+import {
+  checkForJujuUpdate,
+  Client,
+  connect,
+  connectAndLogin,
+  Connection,
+  generateModelURL,
+  RedirectionError,
+} from "../client";
 import {
   BaseFacade,
   makeBakery,
@@ -11,16 +21,7 @@ import {
   MockWebSocket,
   requestEqual,
 } from "./helpers";
-import {
-  Client,
-  connect,
-  connectAndLogin,
-  Connection,
-  generateModelURL,
-  RedirectionError,
-} from "../client";
-import { CallbackError } from "../../generator/interfaces";
-
+import * as utils from "../utils";
 const fail = () => {
   throw new Error("Fail called");
 };
@@ -690,5 +691,33 @@ describe("generateModelURL", () => {
     expect(generateModelURL("1.2.3.4:123", "abc-123-4")).toBe(
       "wss://1.2.3.4:123/model/abc-123-4/api"
     );
+  });
+});
+
+describe("jujuVersions", () => {
+  it("returns a sorted list of versions", () => {
+    expect(
+      utils.jujuVersions([
+        { "juju-version": "2.8.0" },
+        { "juju-version": "3.1.2" },
+        { "juju-version": "2.9.9" },
+        { "juju-version": "2.9.1" },
+      ])
+    ).toEqual(["2.8.0", "2.9.1", "2.9.9", "3.1.2"]);
+  });
+});
+
+describe("checkForJujuUpdate", () => {
+  beforeAll(() => {
+    jest.spyOn(utils, "jujuVersions").mockImplementation(() => ["2.9.10"]);
+  });
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+  it("returns false if no update available", () => {
+    expect(checkForJujuUpdate("2.9.10")).toBe(false);
+  });
+  it("returns true if update available", () => {
+    expect(checkForJujuUpdate("2.8.0")).toBe(true);
   });
 });
