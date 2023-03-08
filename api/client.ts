@@ -8,7 +8,6 @@
 */
 
 import { Bakery } from "@canonical/macaroon-bakery";
-import schemaList from "../generator/schema/schema-history.json";
 import AdminV3, {
   FacadeVersions,
   LoginRequest,
@@ -28,8 +27,7 @@ import {
   FacadeClassList,
   GenericFacade,
 } from "./types.js";
-import { createAsyncHandler, jujuVersions, parseVersion } from "./utils.js";
-
+import { createAsyncHandler } from "./utils.js";
 export interface ConnectOptions {
   bakery?: Bakery | null;
   closeCallback: Callback<number>;
@@ -617,23 +615,3 @@ export {
   generateModelURL,
   RedirectionError,
 };
-
-/**
- * Check if the Juju Model or Controller has an update available
- * @param version The version of the Juju Model or Controller
- */
-export function checkForJujuUpdate(version: string): boolean {
-  const [majorVersion, minorVersion] = parseVersion(version);
-  // check again that latest release jujuVersions
-  const latestAvailableVersion = jujuVersions(schemaList).slice(-1)[0];
-  const [latestMajorVersion, latestMinorVersion] = parseVersion(
-    latestAvailableVersion
-  );
-  if (
-    majorVersion < latestMajorVersion ||
-    (majorVersion === latestMajorVersion && minorVersion < latestMinorVersion)
-  ) {
-    return true;
-  }
-  return false;
-}
