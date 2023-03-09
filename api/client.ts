@@ -28,7 +28,6 @@ import {
   GenericFacade,
 } from "./types.js";
 import { createAsyncHandler } from "./utils.js";
-
 export interface ConnectOptions {
   bakery?: Bakery | null;
   closeCallback: Callback<number>;

@@ -3,14 +3,7 @@
 
 "use strict";
 
-import {
-  BaseFacade,
-  makeBakery,
-  makeConnection,
-  makeWSClass,
-  MockWebSocket,
-  requestEqual,
-} from "./helpers";
+import { CallbackError } from "../../generator/interfaces";
 import {
   Client,
   connect,
@@ -19,8 +12,14 @@ import {
   generateModelURL,
   RedirectionError,
 } from "../client";
-import { CallbackError } from "../../generator/interfaces";
-
+import {
+  BaseFacade,
+  makeBakery,
+  makeConnection,
+  makeWSClass,
+  MockWebSocket,
+  requestEqual,
+} from "./helpers";
 const fail = () => {
   throw new Error("Fail called");
 };
