@@ -30,20 +30,31 @@ type APIPayload = {
   dashboard: string;
   juju: string[];
 };
+
 /**
  * Avoid making multiple requests to the API by caching the response.
  */
-let cachedAPIResponse: APIPayload | null = null;
+export let cachedAPIResponse: { data: APIPayload; fetchedAt: Date } | null =
+  null;
+const TTL = 1000 * 60 * 60; // 1 hours
 
 /**
  * Fetch the latest Juju versions from the API.
  */
 const fetchVersions = async () => {
-  if (cachedAPIResponse) return cachedAPIResponse;
+  if (
+    cachedAPIResponse &&
+    cachedAPIResponse.fetchedAt.getTime() + TTL > new Date().getTime()
+  )
+    return cachedAPIResponse.data;
+  cachedAPIResponse = null;
   const response = await fetch("https://juju.is/latest.json");
   const data = await response.json();
-  cachedAPIResponse = { ...data, juju: sortVersions(data.juju) };
-  return data;
+  cachedAPIResponse = {
+    data: { ...data, juju: sortVersions(data.juju) },
+    fetchedAt: new Date(),
+  };
+  return cachedAPIResponse.data;
 };
 
 /**
@@ -53,7 +64,7 @@ const fetchVersions = async () => {
  * @returns
  */
 export const jujuUpdateAvailable = async (jujuVersion: string) => {
-  const jujuVersions = (cachedAPIResponse || (await fetchVersions())).juju;
+  const jujuVersions = (await fetchVersions()).juju;
   const latestAvailableVersion = jujuVersions.slice(-1)[0];
   return versionGreaterThan(latestAvailableVersion, jujuVersion);
 };
@@ -65,7 +76,6 @@ export const jujuUpdateAvailable = async (jujuVersion: string) => {
  * @returns
  */
 export const dashboardUpdateAvailable = async (dashboardVersion: string) => {
-  const latestDashboardVersion = (cachedAPIResponse || (await fetchVersions()))
-    .dashboard;
+  const latestDashboardVersion = (await fetchVersions()).dashboard;
   return versionGreaterThan(latestDashboardVersion, dashboardVersion);
 };

@@ -1,4 +1,4 @@
-import { jujuUpdateAvailable } from "../versions";
+import { cachedAPIResponse, jujuUpdateAvailable } from "../versions";
 
 describe("versions", () => {
   // mock fetch: https://juju.is/latest.json
@@ -21,5 +21,14 @@ describe("versions", () => {
   });
   it("should return false if the Juju dashboard version is new", async () => {
     expect(await jujuUpdateAvailable("2.8.1")).toBe(false);
+  });
+  it("should use TTL to cache the response", async () => {
+    await jujuUpdateAvailable("2.7.8");
+    await jujuUpdateAvailable("2.7.8");
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+    // invalidate the cache
+    cachedAPIResponse?.fetchedAt.setTime(0);
+    await jujuUpdateAvailable("2.7.8");
+    expect(mockFetch).toHaveBeenCalledTimes(2);
   });
 });
