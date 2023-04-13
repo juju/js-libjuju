@@ -86,6 +86,17 @@ describe("connect", () => {
     expect(error).toBe("bad wolf");
   }
 
+  it("handles admin login failures", (done) => {
+    connect("wss://1.2.3.4", options).then((juju: Client) => {
+      ws.close("");
+      juju?.login({ username: "who", password: "secret" }).catch((error) => {
+        expect(error).toContain("cannot send request");
+        done();
+      });
+    });
+    ws.open();
+  });
+
   it("login failure via promise", (done) => {
     connect("wss://1.2.3.4", options).then((juju: Client) => {
       juju

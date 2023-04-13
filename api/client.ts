@@ -28,6 +28,7 @@ import {
   GenericFacade,
 } from "./types.js";
 import { createAsyncHandler } from "./utils.js";
+import { Macaroon } from "./facades/admin/AdminV3";
 export interface ConnectOptions {
   bakery?: Bakery | null;
   closeCallback: Callback<number>;
@@ -283,9 +284,15 @@ class Client {
 
     // eslint-disable-next-line no-async-promise-executor
     return await new Promise(async (resolve, reject) => {
-      const response: any = await this._admin.login(args);
+      let response: any;
       try {
-        const dischargeRequired: string | undefined =
+        response = await this._admin.login(args);
+      } catch (error) {
+        reject(error);
+        return;
+      }
+      try {
+        const dischargeRequired =
           response["discharge-required"] ||
           response["bakery-discharge-required"];
         if (dischargeRequired) {
