@@ -139,7 +139,7 @@ class MigrationTargetV2 implements Facade {
     });
   }
 
-/**
+  /**
     Activate sets the migration mode of the model to "none", meaning it
     is ready for use. It is an error to attempt to Abort a model that
     has a migration mode other than importing. It also adds any required
@@ -159,7 +159,7 @@ class MigrationTargetV2 implements Facade {
     });
   }
 
-/**
+  /**
     AdoptResources asks the cloud provider to update the controller
     tags for a model's resources. This prevents the resources from
     being destroyed if the source controller is destroyed after the
@@ -178,7 +178,7 @@ class MigrationTargetV2 implements Facade {
     });
   }
 
-/**
+  /**
     CACert returns the certificate used to validate the state connection.
   */
   cACert(params: any): Promise<BytesResult> {
@@ -194,7 +194,7 @@ class MigrationTargetV2 implements Facade {
     });
   }
 
-/**
+  /**
     CheckMachines compares the machines in state with the ones reported
     by the provider and reports any discrepancies.
   */
@@ -211,7 +211,7 @@ class MigrationTargetV2 implements Facade {
     });
   }
 
-/**
+  /**
     Import takes a serialized Juju model, deserializes it, and
     recreates it in the receiving controller.
   */
@@ -228,7 +228,7 @@ class MigrationTargetV2 implements Facade {
     });
   }
 
-/**
+  /**
     LatestLogTime returns the time of the most recent log record
     received by the logtransfer endpoint. This can be used as the start
     point for streaming logs from the source if the transfer was
@@ -259,7 +259,7 @@ class MigrationTargetV2 implements Facade {
     });
   }
 
-/**
+  /**
     Prechecks ensure that the target controller is ready to accept a
     model migration.
   */
@@ -275,7 +275,6 @@ class MigrationTargetV2 implements Facade {
       this._transport.write(req, resolve, reject);
     });
   }
-
 }
 
 export default MigrationTargetV2;

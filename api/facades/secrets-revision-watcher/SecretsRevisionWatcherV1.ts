@@ -75,7 +75,7 @@ class SecretsRevisionWatcherV1 implements Facade {
     });
   }
 
-/**
+  /**
     Stop stops the watcher.
   */
   stop(params: any): Promise<any> {
@@ -90,7 +90,6 @@ class SecretsRevisionWatcherV1 implements Facade {
       this._transport.write(req, resolve, reject);
     });
   }
-
 }
 
 export default SecretsRevisionWatcherV1;

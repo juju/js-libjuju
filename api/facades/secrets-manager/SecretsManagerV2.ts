@@ -292,7 +292,7 @@ class SecretsManagerV2 implements Facade {
     });
   }
 
-/**
+  /**
     CreateSecrets creates new secrets.
   */
   createSecrets(params: CreateSecretArgs): Promise<StringResults> {
@@ -308,11 +308,13 @@ class SecretsManagerV2 implements Facade {
     });
   }
 
-/**
+  /**
     GetConsumerSecretsRevisionInfo returns the latest secret revisions for the specified secrets.
     This facade method is used for remote watcher to get the latest secret revisions and labels for a secret changed hook.
   */
-  getConsumerSecretsRevisionInfo(params: GetSecretConsumerInfoArgs): Promise<SecretConsumerInfoResults> {
+  getConsumerSecretsRevisionInfo(
+    params: GetSecretConsumerInfoArgs
+  ): Promise<SecretConsumerInfoResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "SecretsManager",
@@ -325,10 +327,12 @@ class SecretsManagerV2 implements Facade {
     });
   }
 
-/**
+  /**
     GetSecretBackendConfigs gets the config needed to create a client to secret backends.
   */
-  getSecretBackendConfigs(params: SecretBackendArgs): Promise<SecretBackendConfigResults> {
+  getSecretBackendConfigs(
+    params: SecretBackendArgs
+  ): Promise<SecretBackendConfigResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "SecretsManager",
@@ -341,10 +345,12 @@ class SecretsManagerV2 implements Facade {
     });
   }
 
-/**
+  /**
     GetSecretContentInfo returns the secret values for the specified secrets.
   */
-  getSecretContentInfo(params: GetSecretContentArgs): Promise<SecretContentResults> {
+  getSecretContentInfo(
+    params: GetSecretContentArgs
+  ): Promise<SecretContentResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "SecretsManager",
@@ -357,7 +363,7 @@ class SecretsManagerV2 implements Facade {
     });
   }
 
-/**
+  /**
     GetSecretMetadata returns metadata for the caller's secrets.
   */
   getSecretMetadata(params: any): Promise<ListSecretResults> {
@@ -373,11 +379,13 @@ class SecretsManagerV2 implements Facade {
     });
   }
 
-/**
+  /**
     GetSecretRevisionContentInfo returns the secret values for the specified secret revisions.
     Used when deleting a secret; only returns external revision info.
   */
-  getSecretRevisionContentInfo(params: SecretRevisionArg): Promise<SecretContentResults> {
+  getSecretRevisionContentInfo(
+    params: SecretRevisionArg
+  ): Promise<SecretContentResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "SecretsManager",
@@ -390,7 +398,7 @@ class SecretsManagerV2 implements Facade {
     });
   }
 
-/**
+  /**
     RemoveSecrets removes the specified secrets.
   */
   removeSecrets(params: DeleteSecretArgs): Promise<ErrorResults> {
@@ -406,7 +414,7 @@ class SecretsManagerV2 implements Facade {
     });
   }
 
-/**
+  /**
     SecretsGrant grants access to a secret for the specified subjects.
   */
   secretsGrant(params: GrantRevokeSecretArgs): Promise<ErrorResults> {
@@ -422,7 +430,7 @@ class SecretsManagerV2 implements Facade {
     });
   }
 
-/**
+  /**
     SecretsRevoke revokes access to a secret for the specified subjects.
   */
   secretsRevoke(params: GrantRevokeSecretArgs): Promise<ErrorResults> {
@@ -438,7 +446,7 @@ class SecretsManagerV2 implements Facade {
     });
   }
 
-/**
+  /**
     SecretsRotated records when secrets were last rotated.
   */
   secretsRotated(params: SecretRotatedArgs): Promise<ErrorResults> {
@@ -454,7 +462,7 @@ class SecretsManagerV2 implements Facade {
     });
   }
 
-/**
+  /**
     UpdateSecrets updates the specified secrets.
   */
   updateSecrets(params: UpdateSecretArgs): Promise<ErrorResults> {
@@ -470,7 +478,7 @@ class SecretsManagerV2 implements Facade {
     });
   }
 
-/**
+  /**
     WatchConsumedSecretsChanges sets up a watcher to notify of changes to secret revisions for the specified consumers.
   */
   watchConsumedSecretsChanges(params: Entities): Promise<StringsWatchResults> {
@@ -486,7 +494,7 @@ class SecretsManagerV2 implements Facade {
     });
   }
 
-/**
+  /**
     WatchObsolete returns a watcher for notifying when:
       - a secret owned by the entity is deleted
       - a secret revision owed by the entity no longer
@@ -508,10 +516,12 @@ class SecretsManagerV2 implements Facade {
     });
   }
 
-/**
+  /**
     WatchSecretRevisionsExpiryChanges sets up a watcher to notify of changes to secret revision expiry config.
   */
-  watchSecretRevisionsExpiryChanges(params: Entities): Promise<SecretTriggerWatchResult> {
+  watchSecretRevisionsExpiryChanges(
+    params: Entities
+  ): Promise<SecretTriggerWatchResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "SecretsManager",
@@ -524,10 +534,12 @@ class SecretsManagerV2 implements Facade {
     });
   }
 
-/**
+  /**
     WatchSecretsRotationChanges sets up a watcher to notify of changes to secret rotation config.
   */
-  watchSecretsRotationChanges(params: Entities): Promise<SecretTriggerWatchResult> {
+  watchSecretsRotationChanges(
+    params: Entities
+  ): Promise<SecretTriggerWatchResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "SecretsManager",
@@ -539,7 +551,6 @@ class SecretsManagerV2 implements Facade {
       this._transport.write(req, resolve, reject);
     });
   }
-
 }
 
 export default SecretsManagerV2;

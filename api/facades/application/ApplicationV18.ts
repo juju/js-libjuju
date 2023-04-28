@@ -625,7 +625,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     AddUnits adds a given number of units to an application.
   */
   addUnits(params: AddApplicationUnits): Promise<AddApplicationUnitsResults> {
@@ -641,7 +641,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     ApplicationsInfo returns applications information.
   */
   applicationsInfo(params: Entities): Promise<ApplicationInfoResults> {
@@ -657,11 +657,13 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     CharmConfig returns charm config for the input list of applications and
     model generations.
   */
-  charmConfig(params: ApplicationGetArgs): Promise<ApplicationGetConfigResults> {
+  charmConfig(
+    params: ApplicationGetArgs
+  ): Promise<ApplicationGetConfigResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "Application",
@@ -674,10 +676,12 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     CharmRelations implements the server side of Application.CharmRelations.
   */
-  charmRelations(params: ApplicationCharmRelations): Promise<ApplicationCharmRelationsResults> {
+  charmRelations(
+    params: ApplicationCharmRelations
+  ): Promise<ApplicationCharmRelationsResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "Application",
@@ -690,7 +694,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     Consume adds remote applications to the model without creating any
     relations.
   */
@@ -707,7 +711,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     Deploy fetches the charms from the charm store and deploys them
     using the specified placement directives.
   */
@@ -724,14 +728,16 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     DeployFromRepository is a one-stop deployment method for repository
     charms. Only a charm name is required to deploy. If argument validation
     fails, a list of all errors found in validation will be returned. If a
     local resource is provided, details required for uploading the validated
     resource will be returned.
   */
-  deployFromRepository(params: DeployFromRepositoryArgs): Promise<DeployFromRepositoryResults> {
+  deployFromRepository(
+    params: DeployFromRepositoryArgs
+  ): Promise<DeployFromRepositoryResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "Application",
@@ -744,10 +750,12 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     DestroyApplication removes a given set of applications.
   */
-  destroyApplication(params: DestroyApplicationsParams): Promise<DestroyApplicationResults> {
+  destroyApplication(
+    params: DestroyApplicationsParams
+  ): Promise<DestroyApplicationResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "Application",
@@ -760,10 +768,12 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     DestroyConsumedApplications removes a given set of consumed (remote) applications.
   */
-  destroyConsumedApplications(params: DestroyConsumedApplicationsParams): Promise<ErrorResults> {
+  destroyConsumedApplications(
+    params: DestroyConsumedApplicationsParams
+  ): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "Application",
@@ -776,7 +786,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     DestroyRelation removes the relation between the
     specified endpoints or an id.
   */
@@ -793,7 +803,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     DestroyUnit removes a given set of application units.
   */
   destroyUnit(params: DestroyUnitsParams): Promise<DestroyUnitResults> {
@@ -809,7 +819,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     Expose changes the juju-managed firewall to expose any ports that
     were also explicitly marked by units as open.
   */
@@ -826,7 +836,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     Get returns the charm configuration for an application.
   */
   get(params: ApplicationGet): Promise<ApplicationGetResults> {
@@ -842,7 +852,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     GetCharmURLOrigin returns the charm URL and charm origin the given
     application is running at present.
   */
@@ -859,7 +869,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     GetConfig returns the charm config for each of the input applications.
   */
   getConfig(params: Entities): Promise<ApplicationGetConfigResults> {
@@ -875,7 +885,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     GetConstraints returns the constraints for a given application.
   */
   getConstraints(params: Entities): Promise<ApplicationGetConstraintsResults> {
@@ -891,7 +901,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     Leader returns the unit name of the leader for the given application.
   */
   leader(params: Entity): Promise<StringResult> {
@@ -907,7 +917,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     MergeBindings merges operator-defined bindings with the current bindings for
     one or more applications.
   */
@@ -924,7 +934,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     ResolveUnitErrors marks errors on the specified units as resolved.
   */
   resolveUnitErrors(params: UnitsResolved): Promise<ErrorResults> {
@@ -940,10 +950,12 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     ScaleApplications scales the specified application to the requested number of units.
   */
-  scaleApplications(params: ScaleApplicationsParams): Promise<ScaleApplicationResults> {
+  scaleApplications(
+    params: ScaleApplicationsParams
+  ): Promise<ScaleApplicationResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "Application",
@@ -956,7 +968,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     SetCharm sets the charm for a given for the application.
   */
   setCharm(params: ApplicationSetCharm): Promise<any> {
@@ -972,7 +984,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     SetConfigs implements the server side of Application.SetConfig.  Both
     application and charm config are set. It does not unset values in
     Config map that are set to an empty string. Unset should be used for that.
@@ -990,7 +1002,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     SetConstraints sets the constraints for a given application.
   */
   setConstraints(params: SetConstraints): Promise<any> {
@@ -1006,10 +1018,12 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     SetMetricCredentials sets credentials on the application.
   */
-  setMetricCredentials(params: ApplicationMetricCredentials): Promise<ErrorResults> {
+  setMetricCredentials(
+    params: ApplicationMetricCredentials
+  ): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "Application",
@@ -1022,7 +1036,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     SetRelationsSuspended sets the suspended status of the specified relations.
   */
   setRelationsSuspended(params: RelationSuspendedArgs): Promise<ErrorResults> {
@@ -1038,7 +1052,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     Unexpose changes the juju-managed firewall to unexpose any ports that
     were also explicitly marked by units as open.
   */
@@ -1055,7 +1069,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     UnitsInfo returns unit information for the given entities (units or
     applications).
   */
@@ -1072,10 +1086,12 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     UnsetApplicationsConfig implements the server side of Application.UnsetApplicationsConfig.
   */
-  unsetApplicationsConfig(params: ApplicationConfigUnsetArgs): Promise<ErrorResults> {
+  unsetApplicationsConfig(
+    params: ApplicationConfigUnsetArgs
+  ): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "Application",
@@ -1088,7 +1104,7 @@ class ApplicationV18 implements Facade {
     });
   }
 
-/**
+  /**
     UpdateApplicationBase updates the application base.
     Base for subordinates is updated too.
   */
@@ -1104,7 +1120,6 @@ class ApplicationV18 implements Facade {
       this._transport.write(req, resolve, reject);
     });
   }
-
 }
 
 export default ApplicationV18;

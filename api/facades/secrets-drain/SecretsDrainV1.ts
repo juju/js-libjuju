@@ -129,7 +129,7 @@ class SecretsDrainV1 implements Facade {
     });
   }
 
-/**
+  /**
     GetSecretsToDrain returns metadata for the secrets that need to be drained.
   */
   getSecretsToDrain(params: any): Promise<ListSecretResults> {
@@ -145,7 +145,7 @@ class SecretsDrainV1 implements Facade {
     });
   }
 
-/**
+  /**
     WatchSecretBackendChanged sets up a watcher to notify of changes to the secret backend.
   */
   watchSecretBackendChanged(params: any): Promise<NotifyWatchResult> {
@@ -160,7 +160,6 @@ class SecretsDrainV1 implements Facade {
       this._transport.write(req, resolve, reject);
     });
   }
-
 }
 
 export default SecretsDrainV1;

@@ -11,7 +11,12 @@ export * as MachineManagerV9 from "./MachineManagerV9.js";
 
 const MachineManager: GenericFacade = {
   name: "MachineManager",
-  versions: [MachineManagerV10, MachineManagerV6, MachineManagerV7, MachineManagerV9],
+  versions: [
+    MachineManagerV10,
+    MachineManagerV6,
+    MachineManagerV7,
+    MachineManagerV9,
+  ],
 };
 
 export default MachineManager;

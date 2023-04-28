@@ -127,10 +127,12 @@ class SecretBackendsV1 implements Facade {
     });
   }
 
-/**
+  /**
     ListSecretBackends lists available secret backends.
   */
-  listSecretBackends(params: ListSecretBackendsArgs): Promise<ListSecretBackendsResults> {
+  listSecretBackends(
+    params: ListSecretBackendsArgs
+  ): Promise<ListSecretBackendsResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "SecretBackends",
@@ -143,7 +145,7 @@ class SecretBackendsV1 implements Facade {
     });
   }
 
-/**
+  /**
     RemoveSecretBackends removes secret backends.
   */
   removeSecretBackends(params: RemoveSecretBackendArgs): Promise<ErrorResults> {
@@ -159,7 +161,7 @@ class SecretBackendsV1 implements Facade {
     });
   }
 
-/**
+  /**
     UpdateSecretBackends updates secret backends.
   */
   updateSecretBackends(params: UpdateSecretBackendArgs): Promise<ErrorResults> {
@@ -174,7 +176,6 @@ class SecretBackendsV1 implements Facade {
       this._transport.write(req, resolve, reject);
     });
   }
-
 }
 
 export default SecretBackendsV1;

@@ -342,7 +342,7 @@ class CharmsV6 implements Facade {
     });
   }
 
-/**
+  /**
     CharmInfo returns information about the requested charm.
   */
   charmInfo(params: CharmURL): Promise<Charm> {
@@ -358,11 +358,13 @@ class CharmsV6 implements Facade {
     });
   }
 
-/**
+  /**
     CheckCharmPlacement checks if a charm is allowed to be placed with in a
     given application.
   */
-  checkCharmPlacement(params: ApplicationCharmPlacements): Promise<ErrorResults> {
+  checkCharmPlacement(
+    params: ApplicationCharmPlacements
+  ): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "Charms",
@@ -375,7 +377,7 @@ class CharmsV6 implements Facade {
     });
   }
 
-/**
+  /**
     GetDownloadInfos attempts to get the bundle corresponding to the charm url
     and origin.
   */
@@ -392,7 +394,7 @@ class CharmsV6 implements Facade {
     });
   }
 
-/**
+  /**
     IsMetered returns whether or not the charm is metered.
   */
   isMetered(params: CharmURL): Promise<IsMeteredResult> {
@@ -408,7 +410,7 @@ class CharmsV6 implements Facade {
     });
   }
 
-/**
+  /**
     List returns a list of charm URLs currently in the state.
     If supplied parameter contains any names, the result will
     be filtered to return only the charms with supplied names.
@@ -426,10 +428,12 @@ class CharmsV6 implements Facade {
     });
   }
 
-/**
+  /**
     ListCharmResources returns a series of resources for a given charm.
   */
-  listCharmResources(params: CharmURLAndOrigins): Promise<CharmResourcesResults> {
+  listCharmResources(
+    params: CharmURLAndOrigins
+  ): Promise<CharmResourcesResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "Charms",
@@ -442,11 +446,13 @@ class CharmsV6 implements Facade {
     });
   }
 
-/**
+  /**
     ResolveCharms resolves the given charm URLs with an optionally specified
     preferred channel.  Channel provided via CharmOrigin.
   */
-  resolveCharms(params: ResolveCharmsWithChannel): Promise<ResolveCharmWithChannelResults> {
+  resolveCharms(
+    params: ResolveCharmsWithChannel
+  ): Promise<ResolveCharmWithChannelResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "Charms",
@@ -458,7 +464,6 @@ class CharmsV6 implements Facade {
       this._transport.write(req, resolve, reject);
     });
   }
-
 }
 
 export default CharmsV6;

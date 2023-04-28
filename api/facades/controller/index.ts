@@ -19,7 +19,16 @@ export * as ControllerV9 from "./ControllerV9.js";
 
 const Controller: GenericFacade = {
   name: "Controller",
-  versions: [ControllerV11, ControllerV3, ControllerV4, ControllerV5, ControllerV6, ControllerV7, ControllerV8, ControllerV9],
+  versions: [
+    ControllerV11,
+    ControllerV3,
+    ControllerV4,
+    ControllerV5,
+    ControllerV6,
+    ControllerV7,
+    ControllerV8,
+    ControllerV9,
+  ],
 };
 
 export default Controller;

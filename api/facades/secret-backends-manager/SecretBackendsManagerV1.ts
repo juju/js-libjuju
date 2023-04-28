@@ -83,10 +83,12 @@ class SecretBackendsManagerV1 implements Facade {
     });
   }
 
-/**
+  /**
     WatchSecretBackendsRotateChanges sets up a watcher to notify of changes to secret backend rotations.
   */
-  watchSecretBackendsRotateChanges(params: any): Promise<SecretBackendRotateWatchResult> {
+  watchSecretBackendsRotateChanges(
+    params: any
+  ): Promise<SecretBackendRotateWatchResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "SecretBackendsManager",
@@ -98,7 +100,6 @@ class SecretBackendsManagerV1 implements Facade {
       this._transport.write(req, resolve, reject);
     });
   }
-
 }
 
 export default SecretBackendsManagerV1;

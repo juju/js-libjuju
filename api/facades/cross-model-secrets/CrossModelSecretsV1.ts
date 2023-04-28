@@ -121,7 +121,9 @@ class CrossModelSecretsV1 implements Facade {
   /**
     GetSecretAccessScope returns the tokens for the access scope of the specified secrets and consumers.
   */
-  getSecretAccessScope(params: GetRemoteSecretAccessArgs): Promise<StringResults> {
+  getSecretAccessScope(
+    params: GetRemoteSecretAccessArgs
+  ): Promise<StringResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "CrossModelSecrets",
@@ -134,10 +136,12 @@ class CrossModelSecretsV1 implements Facade {
     });
   }
 
-/**
+  /**
     GetSecretContentInfo returns the secret values for the specified secrets.
   */
-  getSecretContentInfo(params: GetRemoteSecretContentArgs): Promise<SecretContentResults> {
+  getSecretContentInfo(
+    params: GetRemoteSecretContentArgs
+  ): Promise<SecretContentResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "CrossModelSecrets",
@@ -149,7 +153,6 @@ class CrossModelSecretsV1 implements Facade {
       this._transport.write(req, resolve, reject);
     });
   }
-
 }
 
 export default CrossModelSecretsV1;

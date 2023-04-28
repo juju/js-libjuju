@@ -13,7 +13,13 @@ export * as ApplicationV18 from "./ApplicationV18.js";
 
 const Application: GenericFacade = {
   name: "Application",
-  versions: [ApplicationV12, ApplicationV13, ApplicationV14, ApplicationV15, ApplicationV18],
+  versions: [
+    ApplicationV12,
+    ApplicationV13,
+    ApplicationV14,
+    ApplicationV15,
+    ApplicationV18,
+  ],
 };
 
 export default Application;
