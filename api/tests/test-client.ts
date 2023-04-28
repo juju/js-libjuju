@@ -11,6 +11,7 @@ import {
   Connection,
   generateModelURL,
   RedirectionError,
+  CLIENT_VERSION,
 } from "../client";
 import {
   BaseFacade,
@@ -76,6 +77,7 @@ describe("connect", () => {
       request: "Login",
       params: {
         "auth-tag": "user-who",
+        "client-version": CLIENT_VERSION,
         credentials: "secret",
         macaroons: [],
         nonce: "",
@@ -264,6 +266,7 @@ describe("connect", () => {
       request: "Login",
       params: {
         "auth-tag": "user-who",
+        "client-version": CLIENT_VERSION,
         credentials: "secret",
         macaroons: [],
         nonce: "",
@@ -327,6 +330,7 @@ describe("connect", () => {
       request: "Login",
       params: {
         "auth-tag": "",
+        "client-version": CLIENT_VERSION,
         credentials: "",
         macaroons: ["fake macaroon"],
         nonce: "",
@@ -390,6 +394,7 @@ describe("connect", () => {
       request: "Login",
       params: {
         "auth-tag": "",
+        "client-version": CLIENT_VERSION,
         credentials: "",
         macaroons: ["fake macaroon"],
         nonce: "",

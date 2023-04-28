@@ -29,7 +29,7 @@ import {
 } from "./types.js";
 import { createAsyncHandler } from "./utils.js";
 
-const CLIENT_VERSION = "3.2.0";
+export const CLIENT_VERSION = "3.2.0";
 
 export interface ConnectOptions {
   bakery?: Bakery | null;
@@ -268,11 +268,11 @@ class Client {
   ): Promise<Connection | undefined> {
     const args: LoginRequest = {
       "auth-tag": "",
+      "client-version": clientVersion,
       credentials: "",
       macaroons: [],
       nonce: "",
       "user-data": "",
-      "client-version": clientVersion,
     };
     const url = this._transport._ws.url;
     const origin = new URL(url).origin;
