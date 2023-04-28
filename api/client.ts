@@ -54,13 +54,6 @@ export interface Credentials {
   macaroons?: object;
 }
 
-export interface LoginArguments {
-  "auth-tag"?: string; // username prefixed with 'user-'
-  "client-version"?: string; // the client version in the format 3.0.0
-  credentials?: string; // password
-  macaroons?: object; // Macaroon object
-}
-
 /**
   Connect to the Juju controller or model at the given URL.
 
@@ -165,7 +158,8 @@ function connect(
 async function connectAndLogin(
   url: string,
   credentials: Credentials,
-  options: ConnectOptions
+  options: ConnectOptions,
+  clientVersion = CLIENT_VERSION
 ): Promise<{
   conn?: Connection;
   logout: typeof Client.prototype.logout;
@@ -173,7 +167,7 @@ async function connectAndLogin(
   // Connect to Juju.
   const juju: Client = await connect(url, options);
   try {
-    const conn = await juju.login(credentials);
+    const conn = await juju.login(credentials, clientVersion);
     return { conn, logout: juju.logout.bind(juju) };
   } catch (error: any) {
     if (!juju || !juju.isRedirectionError(error)) {
@@ -202,7 +196,8 @@ async function connectAndLogin(
         return await connectAndLogin(
           generateURL(url, srv),
           credentials,
-          options
+          options,
+          clientVersion
         );
       }
     }
@@ -315,7 +310,7 @@ class Client {
             this._bakery?.storage.set(origin, serialized, () => {});
             // Send the login request again including the discharge macaroons.
             credentials.macaroons = [macaroons];
-            return resolve(this.login(credentials));
+            return resolve(this.login(credentials, clientVersion));
           };
           const onFailure = (err: string | MacaroonError) => {
             reject("macaroon discharge failed: " + err);
