@@ -15,14 +15,7 @@ export * as ModelManagerV9 from "./ModelManagerV9.js";
 
 const ModelManager: GenericFacade = {
   name: "ModelManager",
-  versions: [
-    ModelManagerV2,
-    ModelManagerV3,
-    ModelManagerV4,
-    ModelManagerV5,
-    ModelManagerV8,
-    ModelManagerV9,
-  ],
+  versions: [ModelManagerV2, ModelManagerV3, ModelManagerV4, ModelManagerV5, ModelManagerV8, ModelManagerV9],
 };
 
 export default ModelManager;
