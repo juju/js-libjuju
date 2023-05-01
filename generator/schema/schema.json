@@ -806,6 +806,9 @@
             "nonce": {
               "type": "string"
             },
+            "token": {
+              "type": "string"
+            },
             "user-data": {
               "type": "string"
             }
@@ -1697,8 +1700,8 @@
   },
   {
     "Name": "Application",
-    "Description": "APIv15 provides the Application API facade for version 15.",
-    "Version": 15,
+    "Description": "APIv18 provides the Application API facade for version 18.",
+    "Version": 18,
     "AvailableTo": [
       "controller-machine-agent",
       "machine-agent",
@@ -1792,14 +1795,17 @@
           },
           "description": "Deploy fetches the charms from the charm store and deploys them\nusing the specified placement directives."
         },
-        "Destroy": {
+        "DeployFromRepository": {
           "type": "object",
           "properties": {
             "Params": {
-              "$ref": "#/definitions/ApplicationDestroy"
+              "$ref": "#/definitions/DeployFromRepositoryArgs"
+            },
+            "Result": {
+              "$ref": "#/definitions/DeployFromRepositoryResults"
             }
           },
-          "description": "Destroy destroys a given application, local or remote.\n\nNOTE(axw) this exists only for backwards compatibility,\nfor API facade versions 1-3; clients should prefer its\nsuccessor, DestroyApplication, below. Until all consumers\nhave been updated, or we bump a major version, we can't\ndrop this.\n\nTODO(axw) 2017-03-16 #1673323\nDrop this in Juju 3.0."
+          "description": "DeployFromRepository is a one-stop deployment method for repository\ncharms. Only a charm name is required to deploy. If argument validation\nfails, a list of all errors found in validation will be returned. If a\nlocal resource is provided, details required for uploading the validated\nresource will be returned."
         },
         "DestroyApplication": {
           "type": "object",
@@ -1845,15 +1851,6 @@
             }
           },
           "description": "DestroyUnit removes a given set of application units."
-        },
-        "DestroyUnits": {
-          "type": "object",
-          "properties": {
-            "Params": {
-              "$ref": "#/definitions/DestroyApplicationUnits"
-            }
-          },
-          "description": "DestroyUnits removes a given set of application units.\n\nNOTE(axw) this exists only for backwards compatibility,\nfor API facade versions 1-3; clients should prefer its\nsuccessor, DestroyUnit, below. Until all consumers have\nbeen updated, or we bump a major version, we can't drop\nthis.\n\nTODO(axw) 2017-03-16 #1673323\nDrop this in Juju 3.0."
         },
         "Expose": {
           "type": "object",
@@ -2278,16 +2275,6 @@
             "constraints",
             "Force"
           ]
-        },
-        "ApplicationDestroy": {
-          "type": "object",
-          "properties": {
-            "application": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": ["application"]
         },
         "ApplicationExpose": {
           "type": "object",
@@ -2913,6 +2900,9 @@
             "application-description": {
               "type": "string"
             },
+            "auth-token": {
+              "type": "string"
+            },
             "bindings": {
               "type": "object",
               "patternProperties": {
@@ -2980,6 +2970,174 @@
           },
           "additionalProperties": false
         },
+        "DeployFromRepositoryArg": {
+          "type": "object",
+          "properties": {
+            "ApplicationName": {
+              "type": "string"
+            },
+            "AttachStorage": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "CharmName": {
+              "type": "string"
+            },
+            "ConfigYAML": {
+              "type": "string"
+            },
+            "Cons": {
+              "$ref": "#/definitions/Value"
+            },
+            "Devices": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "$ref": "#/definitions/Constraints"
+                }
+              }
+            },
+            "DryRun": {
+              "type": "boolean"
+            },
+            "Placement": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Placement"
+              }
+            },
+            "Storage": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "$ref": "#/definitions/Constraints"
+                }
+              }
+            },
+            "Trust": {
+              "type": "boolean"
+            },
+            "base": {
+              "$ref": "#/definitions/Base"
+            },
+            "channel": {
+              "type": "string"
+            },
+            "endpoint-bindings": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "string"
+                }
+              }
+            },
+            "force": {
+              "type": "boolean"
+            },
+            "num-units": {
+              "type": "integer"
+            },
+            "resources": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "string"
+                }
+              }
+            },
+            "revision": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "CharmName",
+            "ApplicationName",
+            "AttachStorage",
+            "ConfigYAML",
+            "Cons",
+            "Devices",
+            "DryRun",
+            "Placement",
+            "Storage",
+            "Trust"
+          ]
+        },
+        "DeployFromRepositoryArgs": {
+          "type": "object",
+          "properties": {
+            "Args": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/DeployFromRepositoryArg"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["Args"]
+        },
+        "DeployFromRepositoryInfo": {
+          "type": "object",
+          "properties": {
+            "architecture": {
+              "type": "string"
+            },
+            "base": {
+              "$ref": "#/definitions/Base"
+            },
+            "channel": {
+              "type": "string"
+            },
+            "effective-channel": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "revision": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["architecture", "channel", "name", "revision"]
+        },
+        "DeployFromRepositoryResult": {
+          "type": "object",
+          "properties": {
+            "Errors": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Error"
+              }
+            },
+            "Info": {
+              "$ref": "#/definitions/DeployFromRepositoryInfo"
+            },
+            "PendingResourceUploads": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PendingResourceUpload"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["Errors", "Info", "PendingResourceUploads"]
+        },
+        "DeployFromRepositoryResults": {
+          "type": "object",
+          "properties": {
+            "Results": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/DeployFromRepositoryResult"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["Results"]
+        },
         "DestroyApplicationInfo": {
           "type": "object",
           "properties": {
@@ -3011,6 +3169,9 @@
               "type": "string"
             },
             "destroy-storage": {
+              "type": "boolean"
+            },
+            "dry-run": {
               "type": "boolean"
             },
             "force": {
@@ -3046,19 +3207,6 @@
             }
           },
           "additionalProperties": false
-        },
-        "DestroyApplicationUnits": {
-          "type": "object",
-          "properties": {
-            "unit-names": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          "additionalProperties": false,
-          "required": ["unit-names"]
         },
         "DestroyApplicationsParams": {
           "type": "object",
@@ -3148,6 +3296,9 @@
             "destroy-storage": {
               "type": "boolean"
             },
+            "dry-run": {
+              "type": "boolean"
+            },
             "force": {
               "type": "boolean"
             },
@@ -3159,7 +3310,7 @@
             }
           },
           "additionalProperties": false,
-          "required": ["unit-tag", "force"]
+          "required": ["unit-tag"]
         },
         "DestroyUnitResult": {
           "type": "object",
@@ -3367,6 +3518,25 @@
           },
           "additionalProperties": false,
           "required": ["user", "display-name", "access"]
+        },
+        "PendingResourceUpload": {
+          "type": "object",
+          "properties": {
+            "Filename": {
+              "type": "string"
+            },
+            "Name": {
+              "type": "string"
+            },
+            "Type": {
+              "type": "string"
+            },
+            "pending-id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["Name", "Filename", "pending-id", "Type"]
         },
         "Placement": {
           "type": "object",
@@ -3762,6 +3932,9 @@
             "cpu-power": {
               "type": "integer"
             },
+            "image-id": {
+              "type": "string"
+            },
             "instance-role": {
               "type": "string"
             },
@@ -4117,6 +4290,9 @@
         "ConsumeOfferDetails": {
           "type": "object",
           "properties": {
+            "auth-token": {
+              "type": "string"
+            },
             "external-controller": {
               "$ref": "#/definitions/ExternalControllerInfo"
             },
@@ -4147,6 +4323,9 @@
           "properties": {
             "ConsumeOfferDetails": {
               "$ref": "#/definitions/ConsumeOfferDetails"
+            },
+            "auth-token": {
+              "type": "string"
             },
             "error": {
               "$ref": "#/definitions/Error"
@@ -5995,6 +6174,18 @@
           },
           "description": "WatchApplications starts a StringsWatcher to watch applications\ndeployed to this model."
         },
+        "WatchProvisioningInfo": {
+          "type": "object",
+          "properties": {
+            "Params": {
+              "$ref": "#/definitions/Entities"
+            },
+            "Result": {
+              "$ref": "#/definitions/NotifyWatchResults"
+            }
+          },
+          "description": "WatchProvisioningInfo provides a watcher for changes that affect the\ninformation returned by ProvisioningInfo. This is useful for ensuring the\nlatest application stated is ensured."
+        },
         "WatchUnits": {
           "type": "object",
           "properties": {
@@ -7510,6 +7701,9 @@
             "cpu-power": {
               "type": "integer"
             },
+            "image-id": {
+              "type": "string"
+            },
             "instance-role": {
               "type": "string"
             },
@@ -8378,6 +8572,18 @@
           },
           "description": "CharmInfo returns information about the requested charm."
         },
+        "GetOpenedPorts": {
+          "type": "object",
+          "properties": {
+            "Params": {
+              "$ref": "#/definitions/Entity"
+            },
+            "Result": {
+              "$ref": "#/definitions/ApplicationOpenedPortsResults"
+            }
+          },
+          "description": "GetOpenedPorts returns all the opened ports for each given application tag."
+        },
         "IsExposed": {
           "type": "object",
           "properties": {
@@ -8449,6 +8655,51 @@
           },
           "additionalProperties": false,
           "required": ["Results"]
+        },
+        "ApplicationOpenedPorts": {
+          "type": "object",
+          "properties": {
+            "endpoint": {
+              "type": "string"
+            },
+            "port-ranges": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PortRange"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["endpoint", "port-ranges"]
+        },
+        "ApplicationOpenedPortsResult": {
+          "type": "object",
+          "properties": {
+            "application-port-ranges": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApplicationOpenedPorts"
+              }
+            },
+            "error": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["application-port-ranges"]
+        },
+        "ApplicationOpenedPortsResults": {
+          "type": "object",
+          "properties": {
+            "results": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApplicationOpenedPortsResult"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["results"]
         },
         "BoolResult": {
           "type": "object",
@@ -9105,6 +9356,22 @@
           },
           "additionalProperties": false,
           "required": ["results"]
+        },
+        "PortRange": {
+          "type": "object",
+          "properties": {
+            "from-port": {
+              "type": "integer"
+            },
+            "protocol": {
+              "type": "string"
+            },
+            "to-port": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["from-port", "to-port", "protocol"]
         },
         "StringsWatchResult": {
           "type": "object",
@@ -13028,6 +13295,9 @@
             "cpu-power": {
               "type": "integer"
             },
+            "image-id": {
+              "type": "string"
+            },
             "instance-role": {
               "type": "string"
             },
@@ -13250,8 +13520,8 @@
   },
   {
     "Name": "Charms",
-    "Description": "API implements the charms interface and is the concrete\nimplementation of the API end point.",
-    "Version": 5,
+    "Description": "APIv6 provides the Charms API facade for version 6.\nIt removes the AddCharmWithAuthorization function, as\nwe no longer support macaroons.",
+    "Version": 6,
     "AvailableTo": ["model-user"],
     "Schema": {
       "type": "object",
@@ -13267,18 +13537,6 @@
             }
           },
           "description": "AddCharm adds the given charm URL (which must include revision) to the\nenvironment, if it does not exist yet. Local charms are not supported,\nonly charm store and charm hub URLs. See also AddLocalCharm()."
-        },
-        "AddCharmWithAuthorization": {
-          "type": "object",
-          "properties": {
-            "Params": {
-              "$ref": "#/definitions/AddCharmWithAuth"
-            },
-            "Result": {
-              "$ref": "#/definitions/CharmOriginResult"
-            }
-          },
-          "description": "AddCharmWithAuthorization adds the given charm URL (which must include\nrevision) to the environment, if it does not exist yet. Local charms are\nnot supported, only charm store and charm hub URLs. See also AddLocalCharm().\n\nThe authorization macaroon, args.CharmStoreMacaroon, may be\nomitted, in which case this call is equivalent to AddCharm."
         },
         "CharmInfo": {
           "type": "object",
@@ -13366,25 +13624,6 @@
         }
       },
       "definitions": {
-        "AddCharmWithAuth": {
-          "type": "object",
-          "properties": {
-            "charm-origin": {
-              "$ref": "#/definitions/CharmOrigin"
-            },
-            "force": {
-              "type": "boolean"
-            },
-            "macaroon": {
-              "$ref": "#/definitions/Macaroon"
-            },
-            "url": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": ["url", "charm-origin", "macaroon", "force"]
-        },
         "AddCharmWithOrigin": {
           "type": "object",
           "properties": {
@@ -14411,7 +14650,7 @@
               "$ref": "#/definitions/FindToolsResult"
             }
           },
-          "description": "FindTools returns a List containing all tools matching the given parameters."
+          "description": "FindTools returns a List containing all tools matching the given parameters.\nTODO(juju 3.1) - remove, used by 2.9 client only"
         },
         "FullStatus": {
           "type": "object",
@@ -14806,9 +15045,6 @@
             "major": {
               "type": "integer"
             },
-            "minor": {
-              "type": "integer"
-            },
             "number": {
               "$ref": "#/definitions/Number"
             },
@@ -14817,14 +15053,7 @@
             }
           },
           "additionalProperties": false,
-          "required": [
-            "number",
-            "major",
-            "minor",
-            "arch",
-            "os-type",
-            "agentstream"
-          ]
+          "required": ["number", "major", "arch", "os-type", "agentstream"]
         },
         "FindToolsResult": {
           "type": "object",
@@ -16470,6 +16699,9 @@
             "cpu-power": {
               "type": "integer"
             },
+            "image-id": {
+              "type": "string"
+            },
             "instance-role": {
               "type": "string"
             },
@@ -16954,7 +17186,7 @@
               "$ref": "#/definitions/Error"
             },
             "proxy-connection": {
-              "$ref": "#/definitions/DashboardConnectionProxy"
+              "$ref": "#/definitions/Proxy"
             },
             "ssh-connection": {
               "$ref": "#/definitions/DashboardConnectionSSHTunnel"
@@ -16963,29 +17195,16 @@
           "additionalProperties": false,
           "required": ["proxy-connection", "ssh-connection"]
         },
-        "DashboardConnectionProxy": {
-          "type": "object",
-          "properties": {
-            "config": {
-              "type": "object",
-              "patternProperties": {
-                ".*": {
-                  "type": "object",
-                  "additionalProperties": true
-                }
-              }
-            },
-            "type": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": ["config", "type"]
-        },
         "DashboardConnectionSSHTunnel": {
           "type": "object",
           "properties": {
+            "entity": {
+              "type": "string"
+            },
             "host": {
+              "type": "string"
+            },
+            "model": {
               "type": "string"
             },
             "port": {
@@ -17193,6 +17412,9 @@
               "items": {
                 "type": "string"
               }
+            },
+            "virt-type": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -17259,6 +17481,16 @@
           },
           "additionalProperties": false,
           "required": ["name", "uuid", "type", "owner-tag"]
+        },
+        "ModelApplicationInfo": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["name"]
         },
         "ModelBlockInfo": {
           "type": "object",
@@ -17370,6 +17602,12 @@
           "properties": {
             "application-count": {
               "type": "integer"
+            },
+            "applications": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ModelApplicationInfo"
+              }
             },
             "error": {
               "$ref": "#/definitions/Error"
@@ -17515,6 +17753,25 @@
           },
           "additionalProperties": false,
           "required": ["results"]
+        },
+        "Proxy": {
+          "type": "object",
+          "properties": {
+            "config": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            },
+            "type": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["config", "type"]
         },
         "RemoveBlocksArgs": {
           "type": "object",
@@ -17988,6 +18245,18 @@
           },
           "description": "RegisterRemoteRelations sets up the model to participate\nin the specified relations. This operation is idempotent."
         },
+        "WatchConsumedSecretsChanges": {
+          "type": "object",
+          "properties": {
+            "Params": {
+              "$ref": "#/definitions/WatchRemoteSecretChangesArgs"
+            },
+            "Result": {
+              "$ref": "#/definitions/SecretRevisionWatchResults"
+            }
+          },
+          "description": "WatchConsumedSecretsChanges returns a watcher which notifies of changes to any secrets\nfor the specified remote consumers."
+        },
         "WatchEgressAddressesForRelations": {
           "type": "object",
           "properties": {
@@ -18240,6 +18509,9 @@
           "type": "object",
           "properties": {
             "application-token": {
+              "type": "string"
+            },
+            "auth-token": {
               "type": "string"
             },
             "bakery-version": {
@@ -18599,6 +18871,51 @@
             "subnets"
           ]
         },
+        "SecretRevisionChange": {
+          "type": "object",
+          "properties": {
+            "revision": {
+              "type": "integer"
+            },
+            "uri": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["uri", "revision"]
+        },
+        "SecretRevisionWatchResult": {
+          "type": "object",
+          "properties": {
+            "changes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SecretRevisionChange"
+              }
+            },
+            "error": {
+              "$ref": "#/definitions/Error"
+            },
+            "watcher-id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["watcher-id", "changes"]
+        },
+        "SecretRevisionWatchResults": {
+          "type": "object",
+          "properties": {
+            "results": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SecretRevisionWatchResult"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["results"]
+        },
         "StringsWatchResult": {
           "type": "object",
           "properties": {
@@ -18667,6 +18984,316 @@
           },
           "additionalProperties": false,
           "required": ["cidr", "vlan-tag", "life", "space-tag", "zones"]
+        },
+        "WatchRemoteSecretChangesArg": {
+          "type": "object",
+          "properties": {
+            "application-token": {
+              "type": "string"
+            },
+            "bakery-version": {
+              "type": "integer"
+            },
+            "macaroons": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Macaroon"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["application-token"]
+        },
+        "WatchRemoteSecretChangesArgs": {
+          "type": "object",
+          "properties": {
+            "relations": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/WatchRemoteSecretChangesArg"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["relations"]
+        }
+      }
+    }
+  },
+  {
+    "Name": "CrossModelSecrets",
+    "Description": "CrossModelSecretsAPI provides access to the CrossModelSecrets API facade.",
+    "Version": 1,
+    "AvailableTo": [
+      "controller-machine-agent",
+      "machine-agent",
+      "unit-agent",
+      "model-user"
+    ],
+    "Schema": {
+      "type": "object",
+      "properties": {
+        "GetSecretAccessScope": {
+          "type": "object",
+          "properties": {
+            "Params": {
+              "$ref": "#/definitions/GetRemoteSecretAccessArgs"
+            },
+            "Result": {
+              "$ref": "#/definitions/StringResults"
+            }
+          },
+          "description": "GetSecretAccessScope returns the tokens for the access scope of the specified secrets and consumers."
+        },
+        "GetSecretContentInfo": {
+          "type": "object",
+          "properties": {
+            "Params": {
+              "$ref": "#/definitions/GetRemoteSecretContentArgs"
+            },
+            "Result": {
+              "$ref": "#/definitions/SecretContentResults"
+            }
+          },
+          "description": "GetSecretContentInfo returns the secret values for the specified secrets."
+        }
+      },
+      "definitions": {
+        "Error": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "info": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            },
+            "message": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["message", "code"]
+        },
+        "GetRemoteSecretAccessArg": {
+          "type": "object",
+          "properties": {
+            "application-token": {
+              "type": "string"
+            },
+            "unit-id": {
+              "type": "integer"
+            },
+            "uri": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["application-token", "unit-id", "uri"]
+        },
+        "GetRemoteSecretAccessArgs": {
+          "type": "object",
+          "properties": {
+            "relations": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GetRemoteSecretAccessArg"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["relations"]
+        },
+        "GetRemoteSecretContentArg": {
+          "type": "object",
+          "properties": {
+            "application-token": {
+              "type": "string"
+            },
+            "bakery-version": {
+              "type": "integer"
+            },
+            "macaroons": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Macaroon"
+              }
+            },
+            "peek": {
+              "type": "boolean"
+            },
+            "refresh": {
+              "type": "boolean"
+            },
+            "revision": {
+              "type": "integer"
+            },
+            "unit-id": {
+              "type": "integer"
+            },
+            "uri": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["application-token", "unit-id", "uri"]
+        },
+        "GetRemoteSecretContentArgs": {
+          "type": "object",
+          "properties": {
+            "relations": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GetRemoteSecretContentArg"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["relations"]
+        },
+        "Macaroon": {
+          "type": "object",
+          "additionalProperties": false
+        },
+        "SecretBackendConfig": {
+          "type": "object",
+          "properties": {
+            "params": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            },
+            "type": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["type"]
+        },
+        "SecretBackendConfigResult": {
+          "type": "object",
+          "properties": {
+            "config": {
+              "$ref": "#/definitions/SecretBackendConfig"
+            },
+            "draining": {
+              "type": "boolean"
+            },
+            "model-controller": {
+              "type": "string"
+            },
+            "model-name": {
+              "type": "string"
+            },
+            "model-uuid": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "model-controller",
+            "model-uuid",
+            "model-name",
+            "draining"
+          ]
+        },
+        "SecretContentParams": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "string"
+                }
+              }
+            },
+            "value-ref": {
+              "$ref": "#/definitions/SecretValueRef"
+            }
+          },
+          "additionalProperties": false
+        },
+        "SecretContentResult": {
+          "type": "object",
+          "properties": {
+            "backend-config": {
+              "$ref": "#/definitions/SecretBackendConfigResult"
+            },
+            "content": {
+              "$ref": "#/definitions/SecretContentParams"
+            },
+            "error": {
+              "$ref": "#/definitions/Error"
+            },
+            "latest-revision": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["content"]
+        },
+        "SecretContentResults": {
+          "type": "object",
+          "properties": {
+            "results": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SecretContentResult"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["results"]
+        },
+        "SecretValueRef": {
+          "type": "object",
+          "properties": {
+            "backend-id": {
+              "type": "string"
+            },
+            "revision-id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["backend-id", "revision-id"]
+        },
+        "StringResult": {
+          "type": "object",
+          "properties": {
+            "error": {
+              "$ref": "#/definitions/Error"
+            },
+            "result": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["result"]
+        },
+        "StringResults": {
+          "type": "object",
+          "properties": {
+            "results": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StringResult"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["results"]
         }
       }
     }
@@ -19998,131 +20625,6 @@
     }
   },
   {
-    "Name": "FirewallRules",
-    "Description": "API provides the firewallrules facade APIs for v1.",
-    "Version": 1,
-    "AvailableTo": [
-      "controller-machine-agent",
-      "machine-agent",
-      "unit-agent",
-      "model-user"
-    ],
-    "Schema": {
-      "type": "object",
-      "properties": {
-        "ListFirewallRules": {
-          "type": "object",
-          "properties": {
-            "Result": {
-              "$ref": "#/definitions/ListFirewallRulesResults"
-            }
-          },
-          "description": "ListFirewallRules returns all the firewall rules."
-        },
-        "SetFirewallRules": {
-          "type": "object",
-          "properties": {
-            "Params": {
-              "$ref": "#/definitions/FirewallRuleArgs"
-            },
-            "Result": {
-              "$ref": "#/definitions/ErrorResults"
-            }
-          },
-          "description": "SetFirewallRules creates or updates the specified firewall rules."
-        }
-      },
-      "definitions": {
-        "Error": {
-          "type": "object",
-          "properties": {
-            "code": {
-              "type": "string"
-            },
-            "info": {
-              "type": "object",
-              "patternProperties": {
-                ".*": {
-                  "type": "object",
-                  "additionalProperties": true
-                }
-              }
-            },
-            "message": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": ["message", "code"]
-        },
-        "ErrorResult": {
-          "type": "object",
-          "properties": {
-            "error": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "additionalProperties": false
-        },
-        "ErrorResults": {
-          "type": "object",
-          "properties": {
-            "results": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/ErrorResult"
-              }
-            }
-          },
-          "additionalProperties": false,
-          "required": ["results"]
-        },
-        "FirewallRule": {
-          "type": "object",
-          "properties": {
-            "known-service": {
-              "type": "string"
-            },
-            "whitelist-cidrs": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          "additionalProperties": false,
-          "required": ["known-service"]
-        },
-        "FirewallRuleArgs": {
-          "type": "object",
-          "properties": {
-            "args": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/FirewallRule"
-              }
-            }
-          },
-          "additionalProperties": false,
-          "required": ["args"]
-        },
-        "ListFirewallRulesResults": {
-          "type": "object",
-          "properties": {
-            "Rules": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/FirewallRule"
-              }
-            }
-          },
-          "additionalProperties": false,
-          "required": ["Rules"]
-        }
-      }
-    }
-  },
-  {
     "Name": "Firewaller",
     "Description": "FirewallerAPI provides access to the Firewaller API facade.",
     "Version": 7,
@@ -20179,18 +20681,6 @@
             }
           },
           "description": "ControllerConfig returns the controller's configuration."
-        },
-        "FirewallRules": {
-          "type": "object",
-          "properties": {
-            "Params": {
-              "$ref": "#/definitions/KnownServiceArgs"
-            },
-            "Result": {
-              "$ref": "#/definitions/ListFirewallRulesResults"
-            }
-          },
-          "description": "FirewallRules returns the firewall rules for the specified well known service types."
         },
         "GetAssignedMachine": {
           "type": "object",
@@ -20272,6 +20762,15 @@
             }
           },
           "description": "ModelConfig returns the current model's configuration."
+        },
+        "ModelFirewallRules": {
+          "type": "object",
+          "properties": {
+            "Result": {
+              "$ref": "#/definitions/IngressRulesResult"
+            }
+          },
+          "description": "ModelFirewallRules returns the firewall rules that this model is\nconfigured to open"
         },
         "OpenedMachinePortRanges": {
           "type": "object",
@@ -20365,6 +20864,15 @@
             }
           },
           "description": "WatchIngressAddressesForRelations creates a watcher that returns the ingress networks\nthat have been recorded against the specified relations."
+        },
+        "WatchModelFirewallRules": {
+          "type": "object",
+          "properties": {
+            "Result": {
+              "$ref": "#/definitions/NotifyWatchResult"
+            }
+          },
+          "description": "WatchModelFirewallRules returns a NotifyWatcher that notifies of\npotential changes to a model's configured firewall rules"
         },
         "WatchModelMachineStartTimes": {
           "type": "object",
@@ -20740,13 +21248,13 @@
           "additionalProperties": false,
           "required": ["underlay", "overlay"]
         },
-        "FirewallRule": {
+        "IngressRule": {
           "type": "object",
           "properties": {
-            "known-service": {
-              "type": "string"
+            "port-range": {
+              "$ref": "#/definitions/PortRange"
             },
-            "whitelist-cidrs": {
+            "source-cidrs": {
               "type": "array",
               "items": {
                 "type": "string"
@@ -20754,20 +21262,23 @@
             }
           },
           "additionalProperties": false,
-          "required": ["known-service"]
+          "required": ["port-range", "source-cidrs"]
         },
-        "KnownServiceArgs": {
+        "IngressRulesResult": {
           "type": "object",
           "properties": {
-            "known-services": {
+            "error": {
+              "$ref": "#/definitions/Error"
+            },
+            "rules": {
               "type": "array",
               "items": {
-                "type": "string"
+                "$ref": "#/definitions/IngressRule"
               }
             }
           },
           "additionalProperties": false,
-          "required": ["known-services"]
+          "required": ["rules"]
         },
         "LifeResult": {
           "type": "object",
@@ -20794,19 +21305,6 @@
           },
           "additionalProperties": false,
           "required": ["results"]
-        },
-        "ListFirewallRulesResults": {
-          "type": "object",
-          "properties": {
-            "Rules": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/FirewallRule"
-              }
-            }
-          },
-          "additionalProperties": false,
-          "required": ["Rules"]
         },
         "Macaroon": {
           "type": "object",
@@ -21375,6 +21873,9 @@
             },
             "cpu-power": {
               "type": "integer"
+            },
+            "image-id": {
+              "type": "string"
             },
             "instance-role": {
               "type": "string"
@@ -22902,7 +23403,7 @@
   },
   {
     "Name": "KeyManager",
-    "Description": "KeyManagerAPI implements the KeyUpdater interface and is the concrete\nimplementation of the api end point.",
+    "Description": "KeyManagerAPI provides api endpoints for manipulating ssh keys",
     "Version": 1,
     "AvailableTo": ["model-user"],
     "Schema": {
@@ -24140,7 +24641,7 @@
   {
     "Name": "MachineManager",
     "Description": "MachineManagerAPI provides access to the MachineManager API facade.",
-    "Version": 9,
+    "Version": 10,
     "AvailableTo": [
       "controller-machine-agent",
       "machine-agent",
@@ -24490,6 +24991,9 @@
         "DestroyMachinesParams": {
           "type": "object",
           "properties": {
+            "dry-run": {
+              "type": "boolean"
+            },
             "force": {
               "type": "boolean"
             },
@@ -24605,6 +25109,9 @@
               "items": {
                 "type": "string"
               }
+            },
+            "virt-type": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -24920,6 +25427,9 @@
             },
             "cpu-power": {
               "type": "integer"
+            },
+            "image-id": {
+              "type": "string"
             },
             "instance-role": {
               "type": "string"
@@ -26774,6 +27284,15 @@
           },
           "description": "SetStatusMessage sets a human readable status message containing\ninformation about the migration's progress. This will be shown in\nstatus output shown to the end user."
         },
+        "SourceControllerInfo": {
+          "type": "object",
+          "properties": {
+            "Result": {
+              "$ref": "#/definitions/MigrationSourceInfo"
+            }
+          },
+          "description": "SourceControllerInfo returns the details required to connect to\nthe source controller for model migration."
+        },
         "Watch": {
           "type": "object",
           "properties": {
@@ -26862,6 +27381,39 @@
             "owner-tag",
             "agent-version",
             "controller-agent-version"
+          ]
+        },
+        "MigrationSourceInfo": {
+          "type": "object",
+          "properties": {
+            "addrs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "ca-cert": {
+              "type": "string"
+            },
+            "controller-alias": {
+              "type": "string"
+            },
+            "controller-tag": {
+              "type": "string"
+            },
+            "local-related-models": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "local-related-models",
+            "controller-tag",
+            "addrs",
+            "ca-cert"
           ]
         },
         "MigrationSpec": {
@@ -27321,7 +27873,7 @@
   {
     "Name": "MigrationTarget",
     "Description": "API implements the API required for the model migration\nmaster worker when communicating with the target controller.",
-    "Version": 1,
+    "Version": 2,
     "AvailableTo": ["controller-user"],
     "Schema": {
       "type": "object",
@@ -27339,10 +27891,10 @@
           "type": "object",
           "properties": {
             "Params": {
-              "$ref": "#/definitions/ModelArgs"
+              "$ref": "#/definitions/ActivateModelArgs"
             }
           },
-          "description": "Activate sets the migration mode of the model to \"none\", meaning it\nis ready for use. It is an error to attempt to Abort a model that\nhas a migration mode other than importing."
+          "description": "Activate sets the migration mode of the model to \"none\", meaning it\nis ready for use. It is an error to attempt to Abort a model that\nhas a migration mode other than importing. It also adds any required\nexternal controller records for those controllers hosting offers used\nby the model."
         },
         "AdoptResources": {
           "type": "object",
@@ -27407,6 +27959,43 @@
         }
       },
       "definitions": {
+        "ActivateModelArgs": {
+          "type": "object",
+          "properties": {
+            "controller-alias": {
+              "type": "string"
+            },
+            "controller-tag": {
+              "type": "string"
+            },
+            "cross-model-uuids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "model-tag": {
+              "type": "string"
+            },
+            "source-api-addrs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "source-ca-cert": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "model-tag",
+            "controller-tag",
+            "source-api-addrs",
+            "source-ca-cert",
+            "cross-model-uuids"
+          ]
+        },
         "AdoptResourcesArgs": {
           "type": "object",
           "properties": {
@@ -27932,6 +28521,9 @@
             },
             "cpu-power": {
               "type": "integer"
+            },
+            "image-id": {
+              "type": "string"
             },
             "instance-role": {
               "type": "string"
@@ -28682,6 +29274,9 @@
               "items": {
                 "type": "string"
               }
+            },
+            "virt-type": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -28736,6 +29331,16 @@
           },
           "additionalProperties": false,
           "required": ["name", "uuid", "type", "owner-tag"]
+        },
+        "ModelApplicationInfo": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["name"]
         },
         "ModelCreateArgs": {
           "type": "object",
@@ -28897,6 +29502,9 @@
             "controller-uuid": {
               "type": "string"
             },
+            "default-base": {
+              "type": "string"
+            },
             "default-series": {
               "type": "string"
             },
@@ -28923,6 +29531,12 @@
             },
             "provider-type": {
               "type": "string"
+            },
+            "secret-backends": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SecretBackendResult"
+              }
             },
             "sla": {
               "$ref": "#/definitions/ModelSLAInfo"
@@ -28961,6 +29575,7 @@
             "life",
             "users",
             "machines",
+            "secret-backends",
             "sla",
             "agent-version"
           ]
@@ -29060,6 +29675,12 @@
           "properties": {
             "application-count": {
               "type": "integer"
+            },
+            "applications": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ModelApplicationInfo"
+              }
             },
             "error": {
               "$ref": "#/definitions/Error"
@@ -29382,6 +30003,56 @@
           },
           "additionalProperties": false,
           "required": ["region-name", "value"]
+        },
+        "SecretBackend": {
+          "type": "object",
+          "properties": {
+            "backend-type": {
+              "type": "string"
+            },
+            "config": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            },
+            "name": {
+              "type": "string"
+            },
+            "token-rotate-interval": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["name", "backend-type", "config"]
+        },
+        "SecretBackendResult": {
+          "type": "object",
+          "properties": {
+            "error": {
+              "$ref": "#/definitions/Error"
+            },
+            "id": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            },
+            "num-secrets": {
+              "type": "integer"
+            },
+            "result": {
+              "$ref": "#/definitions/SecretBackend"
+            },
+            "status": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["result", "id", "num-secrets", "status"]
         },
         "SetModelDefaults": {
           "type": "object",
@@ -31374,9 +32045,6 @@
             "major": {
               "type": "integer"
             },
-            "minor": {
-              "type": "integer"
-            },
             "number": {
               "$ref": "#/definitions/Number"
             },
@@ -31385,14 +32053,7 @@
             }
           },
           "additionalProperties": false,
-          "required": [
-            "number",
-            "major",
-            "minor",
-            "arch",
-            "os-type",
-            "agentstream"
-          ]
+          "required": ["number", "major", "arch", "os-type", "agentstream"]
         },
         "FindToolsResult": {
           "type": "object",
@@ -31439,6 +32100,9 @@
               "items": {
                 "type": "string"
               }
+            },
+            "virt-type": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -32349,6 +33013,9 @@
             "cpu-power": {
               "type": "integer"
             },
+            "image-id": {
+              "type": "string"
+            },
             "instance-role": {
               "type": "string"
             },
@@ -32729,131 +33396,6 @@
           },
           "additionalProperties": false,
           "required": ["results"]
-        }
-      }
-    }
-  },
-  {
-    "Name": "RaftLease",
-    "Description": "",
-    "Version": 2,
-    "AvailableTo": [
-      "controller-machine-agent",
-      "machine-agent",
-      "unit-agent",
-      "model-user"
-    ],
-    "Schema": {
-      "type": "object",
-      "properties": {
-        "ApplyLease": {
-          "type": "object",
-          "properties": {
-            "Params": {
-              "$ref": "#/definitions/LeaseOperationsV2"
-            },
-            "Result": {
-              "$ref": "#/definitions/ErrorResults"
-            }
-          }
-        }
-      },
-      "definitions": {
-        "Error": {
-          "type": "object",
-          "properties": {
-            "code": {
-              "type": "string"
-            },
-            "info": {
-              "type": "object",
-              "patternProperties": {
-                ".*": {
-                  "type": "object",
-                  "additionalProperties": true
-                }
-              }
-            },
-            "message": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": ["message", "code"]
-        },
-        "ErrorResult": {
-          "type": "object",
-          "properties": {
-            "error": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "additionalProperties": false
-        },
-        "ErrorResults": {
-          "type": "object",
-          "properties": {
-            "results": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/ErrorResult"
-              }
-            }
-          },
-          "additionalProperties": false,
-          "required": ["results"]
-        },
-        "LeaseOperationCommand": {
-          "type": "object",
-          "properties": {
-            "duration": {
-              "type": "integer"
-            },
-            "holder": {
-              "type": "string"
-            },
-            "lease": {
-              "type": "string"
-            },
-            "model-uuid": {
-              "type": "string"
-            },
-            "namespace": {
-              "type": "string"
-            },
-            "new-time": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "old-time": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "operation": {
-              "type": "string"
-            },
-            "pin-entity": {
-              "type": "string"
-            },
-            "version": {
-              "type": "integer"
-            }
-          },
-          "additionalProperties": false,
-          "required": ["version", "operation"]
-        },
-        "LeaseOperationsV2": {
-          "type": "object",
-          "properties": {
-            "commands": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/LeaseOperationCommand"
-              }
-            }
-          },
-          "additionalProperties": false,
-          "required": ["commands"]
         }
       }
     }
@@ -33398,6 +33940,18 @@
           },
           "description": "ConsumeRemoteRelationChanges consumes changes to settings originating\nfrom the remote/offering side of relations."
         },
+        "ConsumeRemoteSecretChanges": {
+          "type": "object",
+          "properties": {
+            "Params": {
+              "$ref": "#/definitions/LatestSecretRevisionChanges"
+            },
+            "Result": {
+              "$ref": "#/definitions/ErrorResults"
+            }
+          },
+          "description": "ConsumeRemoteSecretChanges updates the local model with secret revision changes\noriginating from the remote/offering model."
+        },
         "ControllerAPIInfoForModels": {
           "type": "object",
           "properties": {
@@ -33770,6 +34324,19 @@
           "additionalProperties": false,
           "required": ["Args"]
         },
+        "LatestSecretRevisionChanges": {
+          "type": "object",
+          "properties": {
+            "changes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SecretRevisionChange"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["changes"]
+        },
         "Macaroon": {
           "type": "object",
           "additionalProperties": false
@@ -34070,6 +34637,19 @@
           },
           "additionalProperties": false
         },
+        "SecretRevisionChange": {
+          "type": "object",
+          "properties": {
+            "revision": {
+              "type": "integer"
+            },
+            "uri": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["uri", "revision"]
+        },
         "SetStatus": {
           "type": "object",
           "properties": {
@@ -34212,7 +34792,7 @@
               "$ref": "#/definitions/AddPendingResourcesResult"
             }
           },
-          "description": "AddPendingResources adds the provided resources (info) to the Juju\nmodel in a pending state, meaning they are not available until\nresolved. Handles CharmHub, CharmStore and Local charms."
+          "description": "AddPendingResources adds the provided resources (info) to the Juju\nmodel in a pending state, meaning they are not available until\nresolved. Handles CharmHub and Local charms."
         },
         "ListResources": {
           "type": "object",
@@ -35263,6 +35843,523 @@
     }
   },
   {
+    "Name": "SecretBackends",
+    "Description": "SecretBackendsAPI is the server implementation for the SecretBackends facade.",
+    "Version": 1,
+    "AvailableTo": ["controller-user"],
+    "Schema": {
+      "type": "object",
+      "properties": {
+        "AddSecretBackends": {
+          "type": "object",
+          "properties": {
+            "Params": {
+              "$ref": "#/definitions/AddSecretBackendArgs"
+            },
+            "Result": {
+              "$ref": "#/definitions/ErrorResults"
+            }
+          },
+          "description": "AddSecretBackends adds new secret backends."
+        },
+        "ListSecretBackends": {
+          "type": "object",
+          "properties": {
+            "Params": {
+              "$ref": "#/definitions/ListSecretBackendsArgs"
+            },
+            "Result": {
+              "$ref": "#/definitions/ListSecretBackendsResults"
+            }
+          },
+          "description": "ListSecretBackends lists available secret backends."
+        },
+        "RemoveSecretBackends": {
+          "type": "object",
+          "properties": {
+            "Params": {
+              "$ref": "#/definitions/RemoveSecretBackendArgs"
+            },
+            "Result": {
+              "$ref": "#/definitions/ErrorResults"
+            }
+          },
+          "description": "RemoveSecretBackends removes secret backends."
+        },
+        "UpdateSecretBackends": {
+          "type": "object",
+          "properties": {
+            "Params": {
+              "$ref": "#/definitions/UpdateSecretBackendArgs"
+            },
+            "Result": {
+              "$ref": "#/definitions/ErrorResults"
+            }
+          },
+          "description": "UpdateSecretBackends updates secret backends."
+        }
+      },
+      "definitions": {
+        "AddSecretBackendArg": {
+          "type": "object",
+          "properties": {
+            "SecretBackend": {
+              "$ref": "#/definitions/SecretBackend"
+            },
+            "backend-type": {
+              "type": "string"
+            },
+            "config": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            },
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "token-rotate-interval": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["name", "backend-type", "config", "SecretBackend"]
+        },
+        "AddSecretBackendArgs": {
+          "type": "object",
+          "properties": {
+            "args": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AddSecretBackendArg"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["args"]
+        },
+        "Error": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "info": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            },
+            "message": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["message", "code"]
+        },
+        "ErrorResult": {
+          "type": "object",
+          "properties": {
+            "error": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "additionalProperties": false
+        },
+        "ErrorResults": {
+          "type": "object",
+          "properties": {
+            "results": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ErrorResult"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["results"]
+        },
+        "ListSecretBackendsArgs": {
+          "type": "object",
+          "properties": {
+            "names": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reveal": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["names", "reveal"]
+        },
+        "ListSecretBackendsResults": {
+          "type": "object",
+          "properties": {
+            "results": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SecretBackendResult"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["results"]
+        },
+        "RemoveSecretBackendArg": {
+          "type": "object",
+          "properties": {
+            "force": {
+              "type": "boolean"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["name"]
+        },
+        "RemoveSecretBackendArgs": {
+          "type": "object",
+          "properties": {
+            "args": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RemoveSecretBackendArg"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["args"]
+        },
+        "SecretBackend": {
+          "type": "object",
+          "properties": {
+            "backend-type": {
+              "type": "string"
+            },
+            "config": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            },
+            "name": {
+              "type": "string"
+            },
+            "token-rotate-interval": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["name", "backend-type", "config"]
+        },
+        "SecretBackendResult": {
+          "type": "object",
+          "properties": {
+            "error": {
+              "$ref": "#/definitions/Error"
+            },
+            "id": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            },
+            "num-secrets": {
+              "type": "integer"
+            },
+            "result": {
+              "$ref": "#/definitions/SecretBackend"
+            },
+            "status": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["result", "id", "num-secrets", "status"]
+        },
+        "UpdateSecretBackendArg": {
+          "type": "object",
+          "properties": {
+            "config": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            },
+            "force": {
+              "type": "boolean"
+            },
+            "name": {
+              "type": "string"
+            },
+            "name-change": {
+              "type": "string"
+            },
+            "reset": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "token-rotate-interval": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["name", "token-rotate-interval", "config", "reset"]
+        },
+        "UpdateSecretBackendArgs": {
+          "type": "object",
+          "properties": {
+            "args": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UpdateSecretBackendArg"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["args"]
+        }
+      }
+    }
+  },
+  {
+    "Name": "SecretBackendsManager",
+    "Description": "SecretBackendsManagerAPI is the implementation for the SecretsManager facade.",
+    "Version": 1,
+    "AvailableTo": ["controller-machine-agent"],
+    "Schema": {
+      "type": "object",
+      "properties": {
+        "RotateBackendTokens": {
+          "type": "object",
+          "properties": {
+            "Params": {
+              "$ref": "#/definitions/RotateSecretBackendArgs"
+            },
+            "Result": {
+              "$ref": "#/definitions/ErrorResults"
+            }
+          },
+          "description": "RotateBackendTokens rotates the tokens for the specified backends."
+        },
+        "WatchSecretBackendsRotateChanges": {
+          "type": "object",
+          "properties": {
+            "Result": {
+              "$ref": "#/definitions/SecretBackendRotateWatchResult"
+            }
+          },
+          "description": "WatchSecretBackendsRotateChanges sets up a watcher to notify of changes to secret backend rotations."
+        }
+      },
+      "definitions": {
+        "Error": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "info": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            },
+            "message": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["message", "code"]
+        },
+        "ErrorResult": {
+          "type": "object",
+          "properties": {
+            "error": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "additionalProperties": false
+        },
+        "ErrorResults": {
+          "type": "object",
+          "properties": {
+            "results": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ErrorResult"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["results"]
+        },
+        "RotateSecretBackendArgs": {
+          "type": "object",
+          "properties": {
+            "backend-ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["backend-ids"]
+        },
+        "SecretBackendRotateChange": {
+          "type": "object",
+          "properties": {
+            "backend-name": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "next-trigger-time": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["id", "backend-name", "next-trigger-time"]
+        },
+        "SecretBackendRotateWatchResult": {
+          "type": "object",
+          "properties": {
+            "changes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SecretBackendRotateChange"
+              }
+            },
+            "error": {
+              "$ref": "#/definitions/Error"
+            },
+            "watcher-id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["watcher-id", "changes"]
+        }
+      }
+    }
+  },
+  {
+    "Name": "SecretBackendsRotateWatcher",
+    "Description": "srvSecretBackendsRotateWatcher defines the API wrapping a SecretBackendsRotateWatcher.",
+    "Version": 1,
+    "AvailableTo": [
+      "controller-machine-agent",
+      "machine-agent",
+      "unit-agent",
+      "model-user"
+    ],
+    "Schema": {
+      "type": "object",
+      "properties": {
+        "Next": {
+          "type": "object",
+          "properties": {
+            "Result": {
+              "$ref": "#/definitions/SecretBackendRotateWatchResult"
+            }
+          },
+          "description": "Next returns when a change has occurred to an entity of the\ncollection being watched since the most recent call to Next\nor the Watch call that created the srvSecretRotationWatcher."
+        },
+        "Stop": {
+          "type": "object",
+          "description": "Stop stops the watcher."
+        }
+      },
+      "definitions": {
+        "Error": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "info": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            },
+            "message": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["message", "code"]
+        },
+        "SecretBackendRotateChange": {
+          "type": "object",
+          "properties": {
+            "backend-name": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "next-trigger-time": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["id", "backend-name", "next-trigger-time"]
+        },
+        "SecretBackendRotateWatchResult": {
+          "type": "object",
+          "properties": {
+            "changes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SecretBackendRotateChange"
+              }
+            },
+            "error": {
+              "$ref": "#/definitions/Error"
+            },
+            "watcher-id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["watcher-id", "changes"]
+        }
+      }
+    }
+  },
+  {
     "Name": "Secrets",
     "Description": "SecretsAPI is the backend for the Secrets facade.",
     "Version": 1,
@@ -35396,6 +36493,9 @@
         "SecretRevision": {
           "type": "object",
           "properties": {
+            "backend-name": {
+              "type": "string"
+            },
             "create-time": {
               "type": "string",
               "format": "date-time"
@@ -35404,19 +36504,32 @@
               "type": "string",
               "format": "date-time"
             },
-            "provider-id": {
-              "type": "string"
-            },
             "revision": {
               "type": "integer"
             },
             "update-time": {
               "type": "string",
               "format": "date-time"
+            },
+            "value-ref": {
+              "$ref": "#/definitions/SecretValueRef"
             }
           },
           "additionalProperties": false,
           "required": ["revision"]
+        },
+        "SecretValueRef": {
+          "type": "object",
+          "properties": {
+            "backend-id": {
+              "type": "string"
+            },
+            "revision-id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["backend-id", "revision-id"]
         },
         "SecretValueResult": {
           "type": "object",
@@ -35454,9 +36567,292 @@
     }
   },
   {
+    "Name": "SecretsDrain",
+    "Description": "SecretsDrainAPI is the implementation for the SecretsDrain facade.",
+    "Version": 1,
+    "AvailableTo": [
+      "controller-machine-agent",
+      "machine-agent",
+      "unit-agent",
+      "model-user"
+    ],
+    "Schema": {
+      "type": "object",
+      "properties": {
+        "ChangeSecretBackend": {
+          "type": "object",
+          "properties": {
+            "Params": {
+              "$ref": "#/definitions/ChangeSecretBackendArgs"
+            },
+            "Result": {
+              "$ref": "#/definitions/ErrorResults"
+            }
+          },
+          "description": "ChangeSecretBackend updates the backend for the specified secret after migration done."
+        },
+        "GetSecretsToDrain": {
+          "type": "object",
+          "properties": {
+            "Result": {
+              "$ref": "#/definitions/ListSecretResults"
+            }
+          },
+          "description": "GetSecretsToDrain returns metadata for the secrets that need to be drained."
+        },
+        "WatchSecretBackendChanged": {
+          "type": "object",
+          "properties": {
+            "Result": {
+              "$ref": "#/definitions/NotifyWatchResult"
+            }
+          },
+          "description": "WatchSecretBackendChanged sets up a watcher to notify of changes to the secret backend."
+        }
+      },
+      "definitions": {
+        "ChangeSecretBackendArg": {
+          "type": "object",
+          "properties": {
+            "content": {
+              "$ref": "#/definitions/SecretContentParams"
+            },
+            "revision": {
+              "type": "integer"
+            },
+            "uri": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["uri", "revision"]
+        },
+        "ChangeSecretBackendArgs": {
+          "type": "object",
+          "properties": {
+            "args": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ChangeSecretBackendArg"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["args"]
+        },
+        "Error": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "info": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            },
+            "message": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["message", "code"]
+        },
+        "ErrorResult": {
+          "type": "object",
+          "properties": {
+            "error": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "additionalProperties": false
+        },
+        "ErrorResults": {
+          "type": "object",
+          "properties": {
+            "results": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ErrorResult"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["results"]
+        },
+        "ListSecretResult": {
+          "type": "object",
+          "properties": {
+            "create-time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "latest-expire-time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "latest-revision": {
+              "type": "integer"
+            },
+            "next-rotate-time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "owner-tag": {
+              "type": "string"
+            },
+            "revisions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SecretRevision"
+              }
+            },
+            "rotate-policy": {
+              "type": "string"
+            },
+            "update-time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "uri": {
+              "type": "string"
+            },
+            "value": {
+              "$ref": "#/definitions/SecretValueResult"
+            },
+            "version": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "uri",
+            "version",
+            "owner-tag",
+            "latest-revision",
+            "create-time",
+            "update-time",
+            "revisions"
+          ]
+        },
+        "ListSecretResults": {
+          "type": "object",
+          "properties": {
+            "results": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ListSecretResult"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["results"]
+        },
+        "NotifyWatchResult": {
+          "type": "object",
+          "properties": {
+            "NotifyWatcherId": {
+              "type": "string"
+            },
+            "error": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["NotifyWatcherId"]
+        },
+        "SecretContentParams": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "string"
+                }
+              }
+            },
+            "value-ref": {
+              "$ref": "#/definitions/SecretValueRef"
+            }
+          },
+          "additionalProperties": false
+        },
+        "SecretRevision": {
+          "type": "object",
+          "properties": {
+            "backend-name": {
+              "type": "string"
+            },
+            "create-time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "expire-time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "revision": {
+              "type": "integer"
+            },
+            "update-time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "value-ref": {
+              "$ref": "#/definitions/SecretValueRef"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["revision"]
+        },
+        "SecretValueRef": {
+          "type": "object",
+          "properties": {
+            "backend-id": {
+              "type": "string"
+            },
+            "revision-id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["backend-id", "revision-id"]
+        },
+        "SecretValueResult": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "string"
+                }
+              }
+            },
+            "error": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  {
     "Name": "SecretsManager",
     "Description": "SecretsManagerAPI is the implementation for the SecretsManager facade.",
-    "Version": 1,
+    "Version": 2,
     "AvailableTo": [
       "controller-machine-agent",
       "machine-agent",
@@ -35500,7 +36896,19 @@
               "$ref": "#/definitions/SecretConsumerInfoResults"
             }
           },
-          "description": "GetConsumerSecretsRevisionInfo returns the latest secret revisions for the specified secrets."
+          "description": "GetConsumerSecretsRevisionInfo returns the latest secret revisions for the specified secrets.\nThis facade method is used for remote watcher to get the latest secret revisions and labels for a secret changed hook."
+        },
+        "GetSecretBackendConfigs": {
+          "type": "object",
+          "properties": {
+            "Params": {
+              "$ref": "#/definitions/SecretBackendArgs"
+            },
+            "Result": {
+              "$ref": "#/definitions/SecretBackendConfigResults"
+            }
+          },
+          "description": "GetSecretBackendConfigs gets the config needed to create a client to secret backends."
         },
         "GetSecretContentInfo": {
           "type": "object",
@@ -35523,14 +36931,17 @@
           },
           "description": "GetSecretMetadata returns metadata for the caller's secrets."
         },
-        "GetSecretStoreConfig": {
+        "GetSecretRevisionContentInfo": {
           "type": "object",
           "properties": {
+            "Params": {
+              "$ref": "#/definitions/SecretRevisionArg"
+            },
             "Result": {
-              "$ref": "#/definitions/SecretStoreConfig"
+              "$ref": "#/definitions/SecretContentResults"
             }
           },
-          "description": "GetSecretStoreConfig gets the config needed to create a client to the model's secret store."
+          "description": "GetSecretRevisionContentInfo returns the secret values for the specified secret revisions.\nUsed when deleting a secret; only returns external revision info."
         },
         "RemoveSecrets": {
           "type": "object",
@@ -35827,7 +37238,7 @@
             "peek": {
               "type": "boolean"
             },
-            "update": {
+            "refresh": {
               "type": "boolean"
             },
             "uri": {
@@ -35959,6 +37370,83 @@
           "additionalProperties": false,
           "required": ["results"]
         },
+        "SecretBackendArgs": {
+          "type": "object",
+          "properties": {
+            "backend-ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["backend-ids"]
+        },
+        "SecretBackendConfig": {
+          "type": "object",
+          "properties": {
+            "params": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            },
+            "type": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["type"]
+        },
+        "SecretBackendConfigResult": {
+          "type": "object",
+          "properties": {
+            "config": {
+              "$ref": "#/definitions/SecretBackendConfig"
+            },
+            "draining": {
+              "type": "boolean"
+            },
+            "model-controller": {
+              "type": "string"
+            },
+            "model-name": {
+              "type": "string"
+            },
+            "model-uuid": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "model-controller",
+            "model-uuid",
+            "model-name",
+            "draining"
+          ]
+        },
+        "SecretBackendConfigResults": {
+          "type": "object",
+          "properties": {
+            "active-id": {
+              "type": "string"
+            },
+            "results": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "$ref": "#/definitions/SecretBackendConfigResult"
+                }
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["active-id"]
+        },
         "SecretConsumerInfoResult": {
           "type": "object",
           "properties": {
@@ -35999,8 +37487,8 @@
                 }
               }
             },
-            "provider-id": {
-              "type": "string"
+            "value-ref": {
+              "$ref": "#/definitions/SecretValueRef"
             }
           },
           "additionalProperties": false
@@ -36008,11 +37496,17 @@
         "SecretContentResult": {
           "type": "object",
           "properties": {
+            "backend-config": {
+              "$ref": "#/definitions/SecretBackendConfigResult"
+            },
             "content": {
               "$ref": "#/definitions/SecretContentParams"
             },
             "error": {
               "$ref": "#/definitions/Error"
+            },
+            "latest-revision": {
+              "type": "integer"
             }
           },
           "additionalProperties": false,
@@ -36034,6 +37528,9 @@
         "SecretRevision": {
           "type": "object",
           "properties": {
+            "backend-name": {
+              "type": "string"
+            },
             "create-time": {
               "type": "string",
               "format": "date-time"
@@ -36042,19 +37539,38 @@
               "type": "string",
               "format": "date-time"
             },
-            "provider-id": {
-              "type": "string"
-            },
             "revision": {
               "type": "integer"
             },
             "update-time": {
               "type": "string",
               "format": "date-time"
+            },
+            "value-ref": {
+              "$ref": "#/definitions/SecretValueRef"
             }
           },
           "additionalProperties": false,
           "required": ["revision"]
+        },
+        "SecretRevisionArg": {
+          "type": "object",
+          "properties": {
+            "pending-delete": {
+              "type": "boolean"
+            },
+            "revisions": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "uri": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["uri", "revisions", "pending-delete"]
         },
         "SecretRotatedArg": {
           "type": "object",
@@ -36084,25 +37600,6 @@
           },
           "additionalProperties": false,
           "required": ["args"]
-        },
-        "SecretStoreConfig": {
-          "type": "object",
-          "properties": {
-            "params": {
-              "type": "object",
-              "patternProperties": {
-                ".*": {
-                  "type": "object",
-                  "additionalProperties": true
-                }
-              }
-            },
-            "type": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": ["type"]
         },
         "SecretTriggerChange": {
           "type": "object",
@@ -36139,6 +37636,19 @@
           },
           "additionalProperties": false,
           "required": ["watcher-id", "changes"]
+        },
+        "SecretValueRef": {
+          "type": "object",
+          "properties": {
+            "backend-id": {
+              "type": "string"
+            },
+            "revision-id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["backend-id", "revision-id"]
         },
         "SecretValueResult": {
           "type": "object",
@@ -36296,6 +37806,91 @@
             }
           },
           "additionalProperties": false
+        }
+      }
+    }
+  },
+  {
+    "Name": "SecretsRevisionWatcher",
+    "Description": "srvSecretsRevisionWatcher defines the API wrapping a SecretsRevisionWatcher.",
+    "Version": 1,
+    "AvailableTo": [
+      "controller-machine-agent",
+      "machine-agent",
+      "unit-agent",
+      "model-user"
+    ],
+    "Schema": {
+      "type": "object",
+      "properties": {
+        "Next": {
+          "type": "object",
+          "properties": {
+            "Result": {
+              "$ref": "#/definitions/SecretRevisionWatchResult"
+            }
+          },
+          "description": "Next returns when a change has occurred to an entity of the\ncollection being watched since the most recent call to Next\nor the Watch call that created the srvSecretRotationWatcher."
+        },
+        "Stop": {
+          "type": "object",
+          "description": "Stop stops the watcher."
+        }
+      },
+      "definitions": {
+        "Error": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "info": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            },
+            "message": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["message", "code"]
+        },
+        "SecretRevisionChange": {
+          "type": "object",
+          "properties": {
+            "revision": {
+              "type": "integer"
+            },
+            "uri": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["uri", "revision"]
+        },
+        "SecretRevisionWatchResult": {
+          "type": "object",
+          "properties": {
+            "changes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SecretRevisionChange"
+              }
+            },
+            "error": {
+              "$ref": "#/definitions/Error"
+            },
+            "watcher-id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["watcher-id", "changes"]
         }
       }
     }
@@ -40681,7 +42276,7 @@
               "$ref": "#/definitions/SecretConsumerInfoResults"
             }
           },
-          "description": "GetConsumerSecretsRevisionInfo returns the latest secret revisions for the specified secrets."
+          "description": "GetConsumerSecretsRevisionInfo returns the latest secret revisions for the specified secrets.\nThis facade method is used for remote watcher to get the latest secret revisions and labels for a secret changed hook."
         },
         "GetMeterStatus": {
           "type": "object",
@@ -40730,6 +42325,18 @@
           },
           "description": "GetRawK8sSpec gets the raw k8s specs for a set of applications."
         },
+        "GetSecretBackendConfigs": {
+          "type": "object",
+          "properties": {
+            "Params": {
+              "$ref": "#/definitions/SecretBackendArgs"
+            },
+            "Result": {
+              "$ref": "#/definitions/SecretBackendConfigResults"
+            }
+          },
+          "description": "GetSecretBackendConfigs gets the config needed to create a client to secret backends."
+        },
         "GetSecretContentInfo": {
           "type": "object",
           "properties": {
@@ -40751,14 +42358,17 @@
           },
           "description": "GetSecretMetadata returns metadata for the caller's secrets."
         },
-        "GetSecretStoreConfig": {
+        "GetSecretRevisionContentInfo": {
           "type": "object",
           "properties": {
+            "Params": {
+              "$ref": "#/definitions/SecretRevisionArg"
+            },
             "Result": {
-              "$ref": "#/definitions/SecretStoreConfig"
+              "$ref": "#/definitions/SecretContentResults"
             }
           },
-          "description": "GetSecretStoreConfig gets the config needed to create a client to the model's secret store."
+          "description": "GetSecretRevisionContentInfo returns the secret values for the specified secret revisions.\nUsed when deleting a secret; only returns external revision info."
         },
         "GoalStates": {
           "type": "object",
@@ -40886,6 +42496,18 @@
           },
           "description": "NetworkInfo returns network interfaces/addresses for specified bindings."
         },
+        "OpenedApplicationPortRangesByEndpoint": {
+          "type": "object",
+          "properties": {
+            "Params": {
+              "$ref": "#/definitions/Entity"
+            },
+            "Result": {
+              "$ref": "#/definitions/ApplicationOpenedPortsResults"
+            }
+          },
+          "description": "OpenedApplicationPortRangesByEndpoint returns the port ranges opened by each application."
+        },
         "OpenedMachinePortRangesByEndpoint": {
           "type": "object",
           "properties": {
@@ -40893,10 +42515,19 @@
               "$ref": "#/definitions/Entities"
             },
             "Result": {
-              "$ref": "#/definitions/OpenMachinePortRangesByEndpointResults"
+              "$ref": "#/definitions/OpenPortRangesByEndpointResults"
             }
           },
           "description": "OpenedMachinePortRangesByEndpoint returns the port ranges opened by each\nunit on the provided machines grouped by application endpoint."
+        },
+        "OpenedPortRangesByEndpoint": {
+          "type": "object",
+          "properties": {
+            "Result": {
+              "$ref": "#/definitions/OpenPortRangesByEndpointResults"
+            }
+          },
+          "description": "OpenedPortRangesByEndpoint returns the port ranges opened by the unit."
         },
         "PrivateAddress": {
           "type": "object",
@@ -41758,6 +43389,51 @@
           "additionalProperties": false,
           "required": ["value", "type", "scope"]
         },
+        "ApplicationOpenedPorts": {
+          "type": "object",
+          "properties": {
+            "endpoint": {
+              "type": "string"
+            },
+            "port-ranges": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PortRange"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["endpoint", "port-ranges"]
+        },
+        "ApplicationOpenedPortsResult": {
+          "type": "object",
+          "properties": {
+            "application-port-ranges": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApplicationOpenedPorts"
+              }
+            },
+            "error": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["application-port-ranges"]
+        },
+        "ApplicationOpenedPortsResults": {
+          "type": "object",
+          "properties": {
+            "results": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApplicationOpenedPortsResult"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["results"]
+        },
         "ApplicationStatusResult": {
           "type": "object",
           "properties": {
@@ -42411,7 +44087,7 @@
             "peek": {
               "type": "boolean"
             },
-            "update": {
+            "refresh": {
               "type": "boolean"
             },
             "uri": {
@@ -42994,7 +44670,7 @@
           "additionalProperties": false,
           "required": ["results"]
         },
-        "OpenMachinePortRangesByEndpointResult": {
+        "OpenPortRangesByEndpointResult": {
           "type": "object",
           "properties": {
             "error": {
@@ -43015,13 +44691,13 @@
           "additionalProperties": false,
           "required": ["unit-port-ranges"]
         },
-        "OpenMachinePortRangesByEndpointResults": {
+        "OpenPortRangesByEndpointResults": {
           "type": "object",
           "properties": {
             "results": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/OpenMachinePortRangesByEndpointResult"
+                "$ref": "#/definitions/OpenPortRangesByEndpointResult"
               }
             }
           },
@@ -43372,6 +45048,83 @@
           "additionalProperties": false,
           "required": ["results"]
         },
+        "SecretBackendArgs": {
+          "type": "object",
+          "properties": {
+            "backend-ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["backend-ids"]
+        },
+        "SecretBackendConfig": {
+          "type": "object",
+          "properties": {
+            "params": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            },
+            "type": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["type"]
+        },
+        "SecretBackendConfigResult": {
+          "type": "object",
+          "properties": {
+            "config": {
+              "$ref": "#/definitions/SecretBackendConfig"
+            },
+            "draining": {
+              "type": "boolean"
+            },
+            "model-controller": {
+              "type": "string"
+            },
+            "model-name": {
+              "type": "string"
+            },
+            "model-uuid": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "model-controller",
+            "model-uuid",
+            "model-name",
+            "draining"
+          ]
+        },
+        "SecretBackendConfigResults": {
+          "type": "object",
+          "properties": {
+            "active-id": {
+              "type": "string"
+            },
+            "results": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "$ref": "#/definitions/SecretBackendConfigResult"
+                }
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": ["active-id"]
+        },
         "SecretConsumerInfoResult": {
           "type": "object",
           "properties": {
@@ -43412,8 +45165,8 @@
                 }
               }
             },
-            "provider-id": {
-              "type": "string"
+            "value-ref": {
+              "$ref": "#/definitions/SecretValueRef"
             }
           },
           "additionalProperties": false
@@ -43421,11 +45174,17 @@
         "SecretContentResult": {
           "type": "object",
           "properties": {
+            "backend-config": {
+              "$ref": "#/definitions/SecretBackendConfigResult"
+            },
             "content": {
               "$ref": "#/definitions/SecretContentParams"
             },
             "error": {
               "$ref": "#/definitions/Error"
+            },
+            "latest-revision": {
+              "type": "integer"
             }
           },
           "additionalProperties": false,
@@ -43447,6 +45206,9 @@
         "SecretRevision": {
           "type": "object",
           "properties": {
+            "backend-name": {
+              "type": "string"
+            },
             "create-time": {
               "type": "string",
               "format": "date-time"
@@ -43455,19 +45217,38 @@
               "type": "string",
               "format": "date-time"
             },
-            "provider-id": {
-              "type": "string"
-            },
             "revision": {
               "type": "integer"
             },
             "update-time": {
               "type": "string",
               "format": "date-time"
+            },
+            "value-ref": {
+              "$ref": "#/definitions/SecretValueRef"
             }
           },
           "additionalProperties": false,
           "required": ["revision"]
+        },
+        "SecretRevisionArg": {
+          "type": "object",
+          "properties": {
+            "pending-delete": {
+              "type": "boolean"
+            },
+            "revisions": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "uri": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["uri", "revisions", "pending-delete"]
         },
         "SecretRotatedArg": {
           "type": "object",
@@ -43497,25 +45278,6 @@
           },
           "additionalProperties": false,
           "required": ["args"]
-        },
-        "SecretStoreConfig": {
-          "type": "object",
-          "properties": {
-            "params": {
-              "type": "object",
-              "patternProperties": {
-                ".*": {
-                  "type": "object",
-                  "additionalProperties": true
-                }
-              }
-            },
-            "type": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": ["type"]
         },
         "SecretTriggerChange": {
           "type": "object",
@@ -43552,6 +45314,19 @@
           },
           "additionalProperties": false,
           "required": ["watcher-id", "changes"]
+        },
+        "SecretValueRef": {
+          "type": "object",
+          "properties": {
+            "backend-id": {
+              "type": "string"
+            },
+            "revision-id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["backend-id", "revision-id"]
         },
         "SecretValueResult": {
           "type": "object",
@@ -44549,6 +46324,9 @@
         "PinnedLeadershipResult": {
           "type": "object",
           "properties": {
+            "error": {
+              "$ref": "#/definitions/Error"
+            },
             "result": {
               "type": "object",
               "patternProperties": {

@@ -28,7 +28,9 @@ import {
   GenericFacade,
 } from "./types.js";
 import { createAsyncHandler } from "./utils.js";
-import { Macaroon } from "./facades/admin/AdminV3";
+
+export const CLIENT_VERSION = "3.2.0";
+
 export interface ConnectOptions {
   bakery?: Bakery | null;
   closeCallback: Callback<number>;
@@ -50,13 +52,6 @@ export interface Credentials {
   username?: string;
   password?: string;
   macaroons?: object;
-}
-
-export interface LoginArguments {
-  "auth-tag"?: string; // username prefixed with 'user-'
-  "client-version"?: string; // the client version in the format 3.0.0
-  credentials?: string; // password
-  macaroons?: object; // Macaroon object
 }
 
 /**
@@ -163,7 +158,8 @@ function connect(
 async function connectAndLogin(
   url: string,
   credentials: Credentials,
-  options: ConnectOptions
+  options: ConnectOptions,
+  clientVersion = CLIENT_VERSION
 ): Promise<{
   conn?: Connection;
   logout: typeof Client.prototype.logout;
@@ -171,7 +167,7 @@ async function connectAndLogin(
   // Connect to Juju.
   const juju: Client = await connect(url, options);
   try {
-    const conn = await juju.login(credentials);
+    const conn = await juju.login(credentials, clientVersion);
     return { conn, logout: juju.logout.bind(juju) };
   } catch (error: any) {
     if (!juju || !juju.isRedirectionError(error)) {
@@ -200,7 +196,8 @@ async function connectAndLogin(
         return await connectAndLogin(
           generateURL(url, srv),
           credentials,
-          options
+          options,
+          clientVersion
         );
       }
     }
@@ -251,17 +248,22 @@ class Client {
     Log in to Juju.
 
     @param credentials An object with the user and password fields for
-      userpass authentication or the macaroons field for bakery authentication.
-      If an empty object is provided a full bakery discharge will be attempted
-      for logging in with macaroons. Any necessary third party discharges are
-      performed using the bakery instance originally provided to connect().
-    @return {Promise} This promise will be rejected if there is an error
+    userpass authentication or the macaroons field for bakery authentication.
+    If an empty object is provided a full bakery discharge will be attempted
+    for logging in with macaroons. Any necessary third party discharges are
+    performed using the bakery instance originally provided to connect().
+    @param clientVersion The Juju controller version to target.
+    @return This promise will be rejected if there is an error
       connecting, or resolved with a new connection instance. Note that the
       promise will not be resolved or rejected if a callback is provided.
   */
-  async login(credentials: Credentials): Promise<Connection | undefined> {
+  async login(
+    credentials: Credentials,
+    clientVersion = CLIENT_VERSION
+  ): Promise<Connection | undefined> {
     const args: LoginRequest = {
       "auth-tag": "",
+      "client-version": clientVersion,
       credentials: "",
       macaroons: [],
       nonce: "",
@@ -308,7 +310,7 @@ class Client {
             this._bakery?.storage.set(origin, serialized, () => {});
             // Send the login request again including the discharge macaroons.
             credentials.macaroons = [macaroons];
-            return resolve(this.login(credentials));
+            return resolve(this.login(credentials, clientVersion));
           };
           const onFailure = (err: string | MacaroonError) => {
             reject("macaroon discharge failed: " + err);
