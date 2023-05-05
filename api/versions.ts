@@ -17,7 +17,7 @@ const versionGreaterThan = (v1: string, v2: string): boolean => {
 };
 
 const sortVersions = (versions: string[]): string[] =>
-  versions.sort((v1, v2) => {
+  versions?.sort((v1, v2) => {
     if (versionGreaterThan(v1, v2)) {
       return -1;
     } else if (versionGreaterThan(v2, v1)) {
@@ -49,7 +49,10 @@ const fetchVersions = async () => {
     return cachedAPIResponse.data;
   cachedAPIResponse = null;
   const response = await fetch("https://juju.is/latest.json");
-  const data = await response.json();
+  const data: APIPayload | undefined = await response?.json();
+  if (!data) {
+    return null;
+  }
   cachedAPIResponse = {
     data: { ...data, juju: sortVersions(data.juju) },
     fetchedAt: new Date(),
@@ -64,7 +67,10 @@ const fetchVersions = async () => {
  * @returns
  */
 export const jujuUpdateAvailable = async (jujuVersion: string) => {
-  const jujuVersions = (await fetchVersions()).juju;
+  const jujuVersions = (await fetchVersions())?.juju;
+  if (!jujuVersions) {
+    return null;
+  }
   const latestAvailableVersion = jujuVersions.slice(-1)[0];
   return versionGreaterThan(latestAvailableVersion, jujuVersion);
 };
@@ -76,6 +82,9 @@ export const jujuUpdateAvailable = async (jujuVersion: string) => {
  * @returns
  */
 export const dashboardUpdateAvailable = async (dashboardVersion: string) => {
-  const latestDashboardVersion = (await fetchVersions()).dashboard;
+  const latestDashboardVersion = (await fetchVersions())?.dashboard;
+  if (!latestDashboardVersion) {
+    return null;
+  }
   return versionGreaterThan(latestDashboardVersion, dashboardVersion);
 };
