@@ -7,7 +7,7 @@
     Controllers
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.0 at the git SHA deb94d4.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -79,6 +79,7 @@ export interface MachineHardware {
   mem: number;
   "root-disk": number;
   tags: string[];
+  "virt-type": string;
 }
 
 export interface MapResult {
@@ -95,6 +96,10 @@ export interface Model {
   "owner-tag": string;
   type: string;
   uuid: string;
+}
+
+export interface ModelApplicationInfo {
+  name: string;
 }
 
 export interface ModelCreateArgs {
@@ -119,7 +124,7 @@ export interface ModelDefaults {
 }
 
 export interface ModelDefaultsResult {
-  config: AdditionalProperties;
+  config: Record<string, ModelDefaults>;
   error?: Error;
 }
 
@@ -141,12 +146,13 @@ export interface ModelFilesystemInfo {
 }
 
 export interface ModelInfo {
-  "agent-version": Number;
+  "agent-version": string;
   "cloud-credential-tag"?: string;
   "cloud-credential-validity"?: boolean;
   "cloud-region"?: string;
   "cloud-tag": string;
   "controller-uuid": string;
+  "default-base"?: string;
   "default-series"?: string;
   "is-controller": boolean;
   life: string;
@@ -155,6 +161,7 @@ export interface ModelInfo {
   name: string;
   "owner-tag": string;
   "provider-type"?: string;
+  "secret-backends": SecretBackendResult[];
   sla: ModelSLAInfo;
   status?: EntityStatus;
   "supported-features"?: SupportedFeature[];
@@ -197,6 +204,7 @@ export interface ModelSLAInfo {
 
 export interface ModelStatus {
   "application-count": number;
+  applications?: ModelApplicationInfo[];
   error?: Error;
   filesystems?: ModelFilesystemInfo[];
   "hosted-machine-count": number;
@@ -219,7 +227,7 @@ export interface ModelSummariesRequest {
 }
 
 export interface ModelSummary {
-  "agent-version": Number;
+  "agent-version": string;
   "cloud-credential-tag"?: string;
   "cloud-region"?: string;
   "cloud-tag": string;
@@ -293,6 +301,22 @@ export interface Number {
 export interface RegionDefaults {
   "region-name": string;
   value: AdditionalProperties;
+}
+
+export interface SecretBackend {
+  "backend-type": string;
+  config: AdditionalProperties;
+  name: string;
+  "token-rotate-interval"?: number;
+}
+
+export interface SecretBackendResult {
+  error?: Error;
+  id: string;
+  message?: string;
+  "num-secrets": number;
+  result: SecretBackend;
+  status: string;
 }
 
 export interface SetModelDefaults {

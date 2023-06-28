@@ -7,7 +7,7 @@
     Controllers
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.0 at the git SHA deb94d4.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -21,7 +21,7 @@ export interface AllWatcherId {
 }
 
 export interface CloudCredential {
-  attrs?: AdditionalProperties;
+  attrs?: Record<string, string>;
   "auth-type": string;
   redacted?: string[];
 }
@@ -78,17 +78,14 @@ export interface ControllerVersionResults {
 
 export interface DashboardConnectionInfo {
   error?: Error;
-  "proxy-connection": DashboardConnectionProxy;
+  "proxy-connection": Proxy;
   "ssh-connection": DashboardConnectionSSHTunnel;
 }
 
-export interface DashboardConnectionProxy {
-  config: AdditionalProperties;
-  type: string;
-}
-
 export interface DashboardConnectionSSHTunnel {
+  entity?: string;
   host: string;
+  model?: string;
   port: string;
 }
 
@@ -156,6 +153,7 @@ export interface MachineHardware {
   mem: number;
   "root-disk": number;
   tags: string[];
+  "virt-type": string;
 }
 
 export interface MigrationSpec {
@@ -180,6 +178,10 @@ export interface Model {
   uuid: string;
 }
 
+export interface ModelApplicationInfo {
+  name: string;
+}
+
 export interface ModelBlockInfo {
   blocks: string[];
   "model-uuid": string;
@@ -192,7 +194,7 @@ export interface ModelBlockInfoList {
 }
 
 export interface ModelConfigResults {
-  config: AdditionalProperties;
+  config: Record<string, ConfigValue>;
 }
 
 export interface ModelFilesystemInfo {
@@ -217,6 +219,7 @@ export interface ModelMachineInfo {
 
 export interface ModelStatus {
   "application-count": number;
+  applications?: ModelApplicationInfo[];
   error?: Error;
   filesystems?: ModelFilesystemInfo[];
   "hosted-machine-count": number;
@@ -262,6 +265,11 @@ export interface NotifyWatchResult {
 
 export interface NotifyWatchResults {
   results: NotifyWatchResult[];
+}
+
+export interface Proxy {
+  config: AdditionalProperties;
+  type: string;
 }
 
 export interface RemoveBlocksArgs {

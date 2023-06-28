@@ -5,7 +5,7 @@
     Machine-agent
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.0 at the git SHA deb94d4.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -59,9 +59,9 @@ export interface BytesResult {
 }
 
 export interface CharmLXDProfile {
-  config: AdditionalProperties;
+  config: Record<string, string>;
   description: string;
-  devices: AdditionalProperties;
+  devices: Record<string, Record<string, string>>;
 }
 
 export interface CloudImageMetadata {
@@ -109,7 +109,7 @@ export interface ContainerLXDProfile {
 }
 
 export interface ContainerManagerConfig {
-  config: AdditionalProperties;
+  config: Record<string, string>;
 }
 
 export interface ContainerManagerConfigParams {
@@ -196,7 +196,6 @@ export interface FindToolsParams {
   agentstream: string;
   arch: string;
   major: number;
-  minor: number;
   number: Number;
   "os-type": string;
 }
@@ -215,6 +214,7 @@ export interface HardwareCharacteristics {
   "root-disk": number;
   "root-disk-source": string;
   tags: string[];
+  "virt-type": string;
 }
 
 export interface HostNetworkChange {
@@ -248,7 +248,7 @@ export interface InstanceInfo {
   "network-config": NetworkConfig[];
   nonce: string;
   tag: string;
-  "volume-attachments": AdditionalProperties;
+  "volume-attachments": Record<string, VolumeAttachmentInfo>;
   volumes: Volume[];
 }
 
@@ -353,14 +353,14 @@ export interface ProvisioningInfo {
   "cloudinit-userdata"?: AdditionalProperties;
   constraints: Value;
   "controller-config"?: AdditionalProperties;
-  "endpoint-bindings"?: AdditionalProperties;
+  "endpoint-bindings"?: Record<string, string>;
   "image-metadata"?: CloudImageMetadata[];
   jobs: string[];
   placement: string;
   "root-disk"?: VolumeParams;
-  "space-subnets": AdditionalProperties;
-  "subnet-zones": AdditionalProperties;
-  tags?: AdditionalProperties;
+  "space-subnets": Record<string, string[]>;
+  "subnet-zones": Record<string, string[]>;
+  tags?: Record<string, string>;
   "volume-attachments"?: VolumeAttachmentParams[];
   volumes?: VolumeParams[];
 }
@@ -375,8 +375,8 @@ export interface ProvisioningInfoResults {
 }
 
 export interface ProvisioningNetworkTopology {
-  "space-subnets": AdditionalProperties;
-  "subnet-zones": AdditionalProperties;
+  "space-subnets": Record<string, string[]>;
+  "subnet-zones": Record<string, string[]>;
 }
 
 export interface SetMachineNetworkConfig {
@@ -474,6 +474,7 @@ export interface Value {
   container: string;
   cores: number;
   "cpu-power": number;
+  "image-id": string;
   "instance-role": string;
   "instance-type": string;
   mem: number;
@@ -508,7 +509,7 @@ export interface VolumeAttachmentParams {
 }
 
 export interface VolumeAttachmentPlanInfo {
-  "device-attributes": AdditionalProperties;
+  "device-attributes": Record<string, string>;
   "device-type": string;
 }
 
@@ -526,7 +527,7 @@ export interface VolumeParams {
   attributes?: AdditionalProperties;
   provider: string;
   size: number;
-  tags?: AdditionalProperties;
+  tags?: Record<string, string>;
   "volume-tag": string;
 }
 

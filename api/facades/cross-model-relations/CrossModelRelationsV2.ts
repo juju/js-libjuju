@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.0 at the git SHA deb94d4.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -38,7 +38,6 @@ export interface ErrorResults {
 }
 
 export interface IngressNetworksChangeEvent {
-  "application-token": string;
   "bakery-version"?: number;
   "ingress-required": boolean;
   macaroons?: Macaroon[];
@@ -81,6 +80,7 @@ export interface OfferStatusWatchResults {
 
 export interface RegisterRemoteRelationArg {
   "application-token": string;
+  "auth-token"?: string;
   "bakery-version"?: number;
   "consume-version"?: number;
   "local-endpoint-name": string;
@@ -187,6 +187,21 @@ export interface RemoteSpace {
   subnets: Subnet[];
 }
 
+export interface SecretRevisionChange {
+  revision: number;
+  uri: string;
+}
+
+export interface SecretRevisionWatchResult {
+  changes: SecretRevisionChange[];
+  error?: Error;
+  "watcher-id": string;
+}
+
+export interface SecretRevisionWatchResults {
+  results: SecretRevisionWatchResult[];
+}
+
 export interface StringsWatchResult {
   changes?: string[];
   error?: Error;
@@ -207,6 +222,17 @@ export interface Subnet {
   status?: string;
   "vlan-tag": number;
   zones: string[];
+}
+
+export interface WatchRemoteSecretChangesArg {
+  "application-token": string;
+  "bakery-version"?: number;
+  macaroons?: Macaroon[];
+  "relation-token": string;
+}
+
+export interface WatchRemoteSecretChangesArgs {
+  relations: WatchRemoteSecretChangesArg[];
 }
 
 export interface AdditionalProperties {
@@ -282,6 +308,25 @@ class CrossModelRelationsV2 implements Facade {
       const req: JujuRequest = {
         type: "CrossModelRelations",
         request: "RegisterRemoteRelations",
+        version: 2,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+
+  /**
+    WatchConsumedSecretsChanges returns a watcher which notifies of changes to any secrets
+    for the specified remote consumers.
+  */
+  watchConsumedSecretsChanges(
+    params: WatchRemoteSecretChangesArgs
+  ): Promise<SecretRevisionWatchResults> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "CrossModelRelations",
+        request: "WatchConsumedSecretsChanges",
         version: 2,
         params: params,
       };

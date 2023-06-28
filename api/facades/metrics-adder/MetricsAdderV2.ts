@@ -6,7 +6,7 @@
     Unit-agent
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.0 at the git SHA deb94d4.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -31,7 +31,7 @@ export interface ErrorResults {
 
 export interface Metric {
   key: string;
-  labels?: AdditionalProperties;
+  labels?: Record<string, string>;
   time: string;
   value: string;
 }

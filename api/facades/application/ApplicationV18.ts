@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2-rc1 at the git SHA 3a098707a1.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -34,7 +34,7 @@ export interface AddRelation {
 }
 
 export interface AddRelationResults {
-  endpoints: AdditionalProperties;
+  endpoints: Record<string, CharmRelation>;
 }
 
 export interface ApplicationCharmRelations {
@@ -61,21 +61,21 @@ export interface ApplicationDeploy {
   channel: string;
   "charm-origin"?: CharmOrigin;
   "charm-url": string;
-  config?: AdditionalProperties;
+  config?: Record<string, string>;
   "config-yaml": string;
   constraints: Value;
-  devices?: AdditionalProperties;
-  "endpoint-bindings"?: AdditionalProperties;
+  devices?: Record<string, Constraints>;
+  "endpoint-bindings"?: Record<string, string>;
   "num-units": number;
   placement?: Placement[];
   policy?: string;
-  resources?: AdditionalProperties;
-  storage?: AdditionalProperties;
+  resources?: Record<string, string>;
+  storage?: Record<string, Constraints>;
 }
 
 export interface ApplicationExpose {
   application: string;
-  "exposed-endpoints"?: AdditionalProperties;
+  "exposed-endpoints"?: Record<string, ExposedEndpoint>;
 }
 
 export interface ApplicationGet {
@@ -103,7 +103,7 @@ export interface ApplicationGetResults {
   charm: string;
   config: AdditionalProperties;
   constraints: Value;
-  "endpoint-bindings"?: AdditionalProperties;
+  "endpoint-bindings"?: Record<string, string>;
 }
 
 export interface ApplicationInfoResult {
@@ -117,7 +117,7 @@ export interface ApplicationInfoResults {
 
 export interface ApplicationMergeBindings {
   "application-tag": string;
-  bindings: AdditionalProperties;
+  bindings: Record<string, string>;
   force: boolean;
 }
 
@@ -136,7 +136,7 @@ export interface ApplicationMetricCredentials {
 
 export interface ApplicationOfferDetails {
   "application-description": string;
-  bindings?: AdditionalProperties;
+  bindings?: Record<string, string>;
   endpoints?: RemoteEndpoint[];
   "offer-name": string;
   "offer-url": string;
@@ -151,9 +151,9 @@ export interface ApplicationResult {
   channel?: string;
   charm?: string;
   constraints?: Value;
-  "endpoint-bindings"?: AdditionalProperties;
+  "endpoint-bindings"?: Record<string, string>;
   exposed: boolean;
-  "exposed-endpoints"?: AdditionalProperties;
+  "exposed-endpoints"?: Record<string, ExposedEndpoint>;
   life: string;
   principal: boolean;
   remote: boolean;
@@ -165,15 +165,15 @@ export interface ApplicationSetCharm {
   channel: string;
   "charm-origin"?: CharmOrigin;
   "charm-url": string;
-  "config-settings"?: AdditionalProperties;
+  "config-settings"?: Record<string, string>;
   "config-settings-yaml"?: string;
-  "endpoint-bindings"?: AdditionalProperties;
+  "endpoint-bindings"?: Record<string, string>;
   force: boolean;
   "force-base": boolean;
   "force-units": boolean;
   generation: string;
-  "resource-ids"?: AdditionalProperties;
-  "storage-constraints"?: AdditionalProperties;
+  "resource-ids"?: Record<string, string>;
+  "storage-constraints"?: Record<string, StorageConstraints>;
 }
 
 export interface ApplicationUnexpose {
@@ -232,7 +232,7 @@ export interface ConfigResult {
 
 export interface ConfigSet {
   application: string;
-  config: AdditionalProperties;
+  config: Record<string, string>;
   "config-yaml": string;
   generation: string;
 }
@@ -252,7 +252,7 @@ export interface ConsumeApplicationArg {
   "application-alias"?: string;
   "application-description": string;
   "auth-token"?: string;
-  bindings?: AdditionalProperties;
+  bindings?: Record<string, string>;
   endpoints?: RemoteEndpoint[];
   "external-controller"?: ExternalControllerInfo;
   macaroon?: Macaroon;
@@ -274,17 +274,17 @@ export interface DeployFromRepositoryArg {
   CharmName: string;
   ConfigYAML: string;
   Cons: Value;
-  Devices: AdditionalProperties;
+  Devices: Record<string, Constraints>;
   DryRun: boolean;
   Placement: Placement[];
-  Storage: AdditionalProperties;
+  Storage: Record<string, Constraints>;
   Trust: boolean;
   base?: Base;
   channel?: string;
-  "endpoint-bindings"?: AdditionalProperties;
+  "endpoint-bindings"?: Record<string, string>;
   force?: boolean;
   "num-units"?: number;
-  resources?: AdditionalProperties;
+  resources?: Record<string, string>;
   revision?: number;
 }
 
@@ -387,7 +387,7 @@ export interface EndpointRelationData {
   endpoint: string;
   "related-endpoint": string;
   "relation-id": number;
-  "unit-relation-data": AdditionalProperties;
+  "unit-relation-data": Record<string, RelationData>;
 }
 
 export interface Entities {

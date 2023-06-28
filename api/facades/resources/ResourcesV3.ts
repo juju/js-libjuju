@@ -4,7 +4,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.0 at the git SHA deb94d4.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -111,7 +111,7 @@ export interface ResourcesResults {
 
 export interface UnitResources {
   Entity: Entity;
-  "download-progress": AdditionalProperties;
+  "download-progress": Record<string, number>;
   resources: Resource[];
   tag: string;
 }
@@ -143,7 +143,7 @@ class ResourcesV3 implements Facade {
   /**
     AddPendingResources adds the provided resources (info) to the Juju
     model in a pending state, meaning they are not available until
-    resolved. Handles CharmHub, CharmStore and Local charms.
+    resolved. Handles CharmHub and Local charms.
   */
   addPendingResources(
     params: AddPendingResourcesArgsV2

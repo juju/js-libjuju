@@ -4,7 +4,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.0 at the git SHA deb94d4.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -59,8 +59,7 @@ export interface AdditionalProperties {
 }
 
 /**
-  KeyManagerAPI implements the KeyUpdater interface and is the concrete
-  implementation of the api end point.
+  KeyManagerAPI provides api endpoints for manipulating ssh keys
 */
 class KeyManagerV1 implements Facade {
   static NAME = "KeyManager";

@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.0 at the git SHA deb94d4.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -38,18 +38,6 @@ export interface Base {
   name: string;
 }
 
-export interface CAASApplicationGarbageCollectArg {
-  "active-pod-names": string[];
-  application: Entity;
-  "desired-replicas": number;
-  force: boolean;
-  "observed-units": Entities;
-}
-
-export interface CAASApplicationGarbageCollectArgs {
-  args: CAASApplicationGarbageCollectArg[];
-}
-
 export interface CAASApplicationOCIResourceResult {
   error: Error;
   result: CAASApplicationOCIResources;
@@ -60,7 +48,16 @@ export interface CAASApplicationOCIResourceResults {
 }
 
 export interface CAASApplicationOCIResources {
-  images: AdditionalProperties;
+  images: Record<string, DockerImageInfo>;
+}
+
+export interface CAASApplicationProvisionerConfig {
+  "unmanaged-applications": Entities;
+}
+
+export interface CAASApplicationProvisionerConfigResult {
+  error: Error;
+  "provisioner-config": CAASApplicationProvisionerConfig;
 }
 
 export interface CAASApplicationProvisioningInfo {
@@ -75,7 +72,7 @@ export interface CAASApplicationProvisioningInfo {
   filesystems?: KubernetesFilesystemParams[];
   "image-repo"?: DockerImageInfo;
   scale?: number;
-  tags?: AdditionalProperties;
+  tags?: Record<string, string>;
   trust?: boolean;
   version: Number;
   volumes?: KubernetesVolumeParams[];
@@ -83,6 +80,21 @@ export interface CAASApplicationProvisioningInfo {
 
 export interface CAASApplicationProvisioningInfoResults {
   results: CAASApplicationProvisioningInfo[];
+}
+
+export interface CAASApplicationProvisioningState {
+  "scale-target": number;
+  scaling: boolean;
+}
+
+export interface CAASApplicationProvisioningStateArg {
+  application: Entity;
+  "provisioning-state": CAASApplicationProvisioningState;
+}
+
+export interface CAASApplicationProvisioningStateResult {
+  error: Error;
+  "provisioning-state": CAASApplicationProvisioningState;
 }
 
 export interface CAASUnitInfo {
@@ -101,7 +113,7 @@ export interface CAASUnitsResults {
 
 export interface Charm {
   actions?: CharmActions;
-  config: AdditionalProperties;
+  config: Record<string, CharmOption>;
   "lxd-profile"?: CharmLXDProfile;
   manifest?: CharmManifest;
   meta?: CharmMeta;
@@ -116,7 +128,7 @@ export interface CharmActionSpec {
 }
 
 export interface CharmActions {
-  specs: AdditionalProperties;
+  specs: Record<string, CharmActionSpec>;
 }
 
 export interface CharmBase {
@@ -146,9 +158,9 @@ export interface CharmDevice {
 }
 
 export interface CharmLXDProfile {
-  config: AdditionalProperties;
+  config: Record<string, string>;
   description: string;
-  devices: AdditionalProperties;
+  devices: Record<string, Record<string, string>>;
 }
 
 export interface CharmManifest {
@@ -158,20 +170,20 @@ export interface CharmManifest {
 export interface CharmMeta {
   "assumes-expr"?: ExpressionTree;
   categories?: string[];
-  containers?: AdditionalProperties;
+  containers?: Record<string, CharmContainer>;
   deployment?: CharmDeployment;
   description: string;
-  devices?: AdditionalProperties;
-  "extra-bindings"?: AdditionalProperties;
+  devices?: Record<string, CharmDevice>;
+  "extra-bindings"?: Record<string, string>;
   "min-juju-version"?: string;
   name: string;
-  "payload-classes"?: AdditionalProperties;
-  peers?: AdditionalProperties;
-  provides?: AdditionalProperties;
-  requires?: AdditionalProperties;
-  resources?: AdditionalProperties;
+  "payload-classes"?: Record<string, CharmPayloadClass>;
+  peers?: Record<string, CharmRelation>;
+  provides?: Record<string, CharmRelation>;
+  requires?: Record<string, CharmRelation>;
+  resources?: Record<string, CharmResourceMeta>;
   series?: string[];
-  storage?: AdditionalProperties;
+  storage?: Record<string, CharmStorage>;
   subordinate: boolean;
   summary: string;
   tags?: string[];
@@ -184,7 +196,7 @@ export interface CharmMetric {
 }
 
 export interface CharmMetrics {
-  metrics: AdditionalProperties;
+  metrics: Record<string, CharmMetric>;
   plan: CharmPlan;
 }
 
@@ -239,6 +251,32 @@ export interface CharmStorage {
 
 export interface CharmURL {
   url: string;
+}
+
+export interface DestroyUnitInfo {
+  "destroyed-storage": Entity[];
+  "detached-storage": Entity[];
+}
+
+export interface DestroyUnitParams {
+  "destroy-storage"?: boolean;
+  "dry-run"?: boolean;
+  force?: boolean;
+  "max-wait"?: number;
+  "unit-tag": string;
+}
+
+export interface DestroyUnitResult {
+  error: Error;
+  info: DestroyUnitInfo;
+}
+
+export interface DestroyUnitResults {
+  results: DestroyUnitResult[];
+}
+
+export interface DestroyUnitsParams {
+  units: DestroyUnitParams[];
 }
 
 export interface DetailedStatus {
@@ -314,7 +352,7 @@ export interface ExpressionTree {
 }
 
 export interface KubernetesDeviceParams {
-  Attributes: AdditionalProperties;
+  Attributes: Record<string, string>;
   Count: number;
   Type: string;
 }
@@ -344,7 +382,7 @@ export interface KubernetesFilesystemParams {
   provider: string;
   size: number;
   storagename: string;
-  tags?: AdditionalProperties;
+  tags?: Record<string, string>;
 }
 
 export interface KubernetesVolumeAttachmentParams {
@@ -368,7 +406,7 @@ export interface KubernetesVolumeParams {
   provider: string;
   size: number;
   storagename: string;
-  tags?: AdditionalProperties;
+  tags?: Record<string, string>;
 }
 
 export interface LifeResult {
@@ -420,7 +458,7 @@ export interface UnitStatus {
   "opened-ports": string[];
   "provider-id"?: string;
   "public-address": string;
-  subordinates: AdditionalProperties;
+  subordinates: Record<string, UnitStatus>;
   "workload-status": DetailedStatus;
   "workload-version": string;
 }
@@ -456,6 +494,7 @@ export interface Value {
   container: string;
   cores: number;
   "cpu-power": number;
+  "image-id": string;
   "instance-role": string;
   "instance-type": string;
   mem: number;
@@ -526,26 +565,6 @@ class CAASApplicationProvisionerV1 implements Facade {
   }
 
   /**
-    CAASApplicationGarbageCollect cleans up units that have gone away permanently.
-    Only observed units will be deleted as new units could have surfaced between
-    the capturing of kuberentes pod state/application state and this call.
-  */
-  cAASApplicationGarbageCollect(
-    params: CAASApplicationGarbageCollectArgs
-  ): Promise<ErrorResults> {
-    return new Promise((resolve, reject) => {
-      const req: JujuRequest = {
-        type: "CAASApplicationProvisioner",
-        request: "CAASApplicationGarbageCollect",
-        version: 1,
-        params: params,
-      };
-
-      this._transport.write(req, resolve, reject);
-    });
-  }
-
-  /**
     CharmInfo returns information about the requested charm.
   */
   charmInfo(params: CharmURL): Promise<Charm> {
@@ -579,6 +598,23 @@ class CAASApplicationProvisionerV1 implements Facade {
   }
 
   /**
+    DestroyUnits is responsible for scaling down a set of units on the this
+    Application.
+  */
+  destroyUnits(params: DestroyUnitsParams): Promise<DestroyUnitResults> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "CAASApplicationProvisioner",
+        request: "DestroyUnits",
+        version: 1,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+
+  /**
     Life returns the life status of every supplied entity, where available.
   */
   life(params: Entities): Promise<LifeResults> {
@@ -586,6 +622,24 @@ class CAASApplicationProvisionerV1 implements Facade {
       const req: JujuRequest = {
         type: "CAASApplicationProvisioner",
         request: "Life",
+        version: 1,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+
+  /**
+    ProvisionerConfig returns the provisioner's configuration.
+  */
+  provisionerConfig(
+    params: any
+  ): Promise<CAASApplicationProvisionerConfigResult> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "CAASApplicationProvisioner",
+        request: "ProvisionerConfig",
         version: 1,
         params: params,
       };
@@ -604,6 +658,24 @@ class CAASApplicationProvisionerV1 implements Facade {
       const req: JujuRequest = {
         type: "CAASApplicationProvisioner",
         request: "ProvisioningInfo",
+        version: 1,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+
+  /**
+    ProvisioningState returns the provisioning state for the application.
+  */
+  provisioningState(
+    params: Entity
+  ): Promise<CAASApplicationProvisioningStateResult> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "CAASApplicationProvisioner",
+        request: "ProvisioningState",
         version: 1,
         params: params,
       };
@@ -653,6 +725,24 @@ class CAASApplicationProvisionerV1 implements Facade {
       const req: JujuRequest = {
         type: "CAASApplicationProvisioner",
         request: "SetPasswords",
+        version: 1,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+
+  /**
+    SetProvisioningState sets the provisioning state for the application.
+  */
+  setProvisioningState(
+    params: CAASApplicationProvisioningStateArg
+  ): Promise<ErrorResult> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "CAASApplicationProvisioner",
+        request: "SetProvisioningState",
         version: 1,
         params: params,
       };
@@ -721,6 +811,24 @@ class CAASApplicationProvisionerV1 implements Facade {
       const req: JujuRequest = {
         type: "CAASApplicationProvisioner",
         request: "WatchApplications",
+        version: 1,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+
+  /**
+    WatchProvisioningInfo provides a watcher for changes that affect the
+    information returned by ProvisioningInfo. This is useful for ensuring the
+    latest application stated is ensured.
+  */
+  watchProvisioningInfo(params: Entities): Promise<NotifyWatchResults> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "CAASApplicationProvisioner",
+        request: "WatchProvisioningInfo",
         version: 1,
         params: params,
       };

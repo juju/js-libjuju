@@ -8,7 +8,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.0 at the git SHA deb94d4.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -33,7 +33,7 @@ export interface GetConstraintsResults {
 }
 
 export interface ModelConfigResults {
-  config: AdditionalProperties;
+  config: Record<string, ConfigValue>;
 }
 
 export interface ModelSLA {
@@ -49,7 +49,7 @@ export interface ModelSLAInfo {
 }
 
 export interface ModelSequencesResult {
-  sequences: AdditionalProperties;
+  sequences: Record<string, number>;
 }
 
 export interface ModelSet {
@@ -76,6 +76,7 @@ export interface Value {
   container: string;
   cores: number;
   "cpu-power": number;
+  "image-id": string;
   "instance-role": string;
   "instance-type": string;
   mem: number;

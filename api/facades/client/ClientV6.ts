@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.0 at the git SHA deb94d4.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -24,7 +24,7 @@ export interface ApplicationOfferStatus {
   "active-connected-count": number;
   "application-name": string;
   charm: string;
-  endpoints: AdditionalProperties;
+  endpoints: Record<string, RemoteEndpoint>;
   err?: Error;
   "offer-name": string;
   "total-connected-count": number;
@@ -37,19 +37,19 @@ export interface ApplicationStatus {
   "charm-channel"?: string;
   "charm-profile": string;
   "charm-version": string;
-  "endpoint-bindings": AdditionalProperties;
+  "endpoint-bindings": Record<string, string>;
   err?: Error;
   exposed: boolean;
-  "exposed-endpoints"?: AdditionalProperties;
+  "exposed-endpoints"?: Record<string, ExposedEndpoint>;
   int?: number;
   life: string;
-  "meter-statuses": AdditionalProperties;
+  "meter-statuses": Record<string, MeterStatus>;
   "provider-id"?: string;
   "public-address": string;
-  relations: AdditionalProperties;
+  relations: Record<string, string[]>;
   status: DetailedStatus;
   "subordinate-to": string[];
-  units: AdditionalProperties;
+  units: Record<string, UnitStatus>;
   "workload-version": string;
 }
 
@@ -70,7 +70,7 @@ export interface Binary {
 }
 
 export interface BranchStatus {
-  "assigned-units": AdditionalProperties;
+  "assigned-units": Record<string, string[]>;
   created: number;
   "created-by": string;
 }
@@ -108,7 +108,6 @@ export interface FindToolsParams {
   agentstream: string;
   arch: string;
   major: number;
-  minor: number;
   number: Number;
   "os-type": string;
 }
@@ -119,14 +118,14 @@ export interface FindToolsResult {
 }
 
 export interface FullStatus {
-  applications: AdditionalProperties;
-  branches: AdditionalProperties;
+  applications: Record<string, ApplicationStatus>;
+  branches: Record<string, BranchStatus>;
   "controller-timestamp": string;
-  machines: AdditionalProperties;
+  machines: Record<string, MachineStatus>;
   model: ModelStatusInfo;
-  offers: AdditionalProperties;
+  offers: Record<string, ApplicationOfferStatus>;
   relations: RelationStatus[];
-  "remote-applications": AdditionalProperties;
+  "remote-applications": Record<string, RemoteApplicationStatus>;
 }
 
 export interface History {
@@ -135,16 +134,16 @@ export interface History {
 }
 
 export interface LXDProfile {
-  config: AdditionalProperties;
+  config: Record<string, string>;
   description: string;
-  devices: AdditionalProperties;
+  devices: Record<string, Record<string, string>>;
 }
 
 export interface MachineStatus {
   "agent-status": DetailedStatus;
   base: Base;
   constraints: string;
-  containers: AdditionalProperties;
+  containers: Record<string, MachineStatus>;
   "display-name": string;
   "dns-name": string;
   hardware: string;
@@ -155,9 +154,9 @@ export interface MachineStatus {
   "instance-status": DetailedStatus;
   "ip-addresses"?: string[];
   jobs: string[];
-  "lxd-profiles"?: AdditionalProperties;
+  "lxd-profiles"?: Record<string, LXDProfile>;
   "modification-status": DetailedStatus;
-  "network-interfaces"?: AdditionalProperties;
+  "network-interfaces"?: Record<string, NetworkInterface>;
   "primary-controller-machine"?: boolean;
   "wants-vote": boolean;
 }
@@ -211,7 +210,7 @@ export interface RemoteApplicationStatus {
   life: string;
   "offer-name": string;
   "offer-url": string;
-  relations: AdditionalProperties;
+  relations: Record<string, string[]>;
   status: DetailedStatus;
 }
 
@@ -269,7 +268,7 @@ export interface UnitStatus {
   "opened-ports": string[];
   "provider-id"?: string;
   "public-address": string;
-  subordinates: AdditionalProperties;
+  subordinates: Record<string, UnitStatus>;
   "workload-status": DetailedStatus;
   "workload-version": string;
 }
@@ -300,6 +299,7 @@ class ClientV6 implements Facade {
   }
   /**
     FindTools returns a List containing all tools matching the given parameters.
+    TODO(juju 3.1) - remove, used by 2.9 client only
   */
   findTools(params: FindToolsParams): Promise<FindToolsResult> {
     return new Promise((resolve, reject) => {

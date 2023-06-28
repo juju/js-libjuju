@@ -7,7 +7,7 @@
     Controllers
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.0 at the git SHA deb94d4.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -19,7 +19,7 @@ import { autoBind } from "../../utils.js";
 export interface AddApplicationOffer {
   "application-description": string;
   "application-name": string;
-  endpoints: AdditionalProperties;
+  endpoints: Record<string, string>;
   "model-tag": string;
   "offer-name": string;
   "owner-tag"?: string;
@@ -33,7 +33,7 @@ export interface ApplicationOfferAdminDetails {
   ApplicationOfferDetails: ApplicationOfferDetails;
   "application-description": string;
   "application-name": string;
-  bindings?: AdditionalProperties;
+  bindings?: Record<string, string>;
   "charm-url": string;
   connections?: OfferConnection[];
   endpoints?: RemoteEndpoint[];
@@ -47,7 +47,7 @@ export interface ApplicationOfferAdminDetails {
 
 export interface ApplicationOfferDetails {
   "application-description": string;
-  bindings?: AdditionalProperties;
+  bindings?: Record<string, string>;
   endpoints?: RemoteEndpoint[];
   "offer-name": string;
   "offer-url": string;
@@ -67,6 +67,7 @@ export interface ApplicationOffersResults {
 }
 
 export interface ConsumeOfferDetails {
+  "auth-token": string;
   "external-controller": ExternalControllerInfo;
   macaroon: Macaroon;
   offer: ApplicationOfferDetails;
@@ -79,6 +80,7 @@ export interface ConsumeOfferDetailsArg {
 
 export interface ConsumeOfferDetailsResult {
   ConsumeOfferDetails: ConsumeOfferDetails;
+  "auth-token"?: string;
   error?: Error;
   "external-controller"?: ExternalControllerInfo;
   macaroon?: Macaroon;

@@ -6,7 +6,10 @@ export default {
   },
   preset: "ts-jest",
   testEnvironment: "node",
-  testMatch: ["<rootDir>/api/tests/**/test-*.[jt]s"],
+  testMatch: [
+    "<rootDir>/api/tests/**/test-*.[jt]s",
+    "<rootDir>/generator/**/test-*.[jt]s",
+  ],
   transform: {
     "^.+\\.[jt]s$": ["ts-jest", { useESM: true }],
   },

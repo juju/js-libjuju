@@ -22,8 +22,8 @@ export interface SchemaDefinitions {
 
 export interface SchemaMethod {
   type: string;
-  properties: SchemaProperties;
-  description: string;
+  properties?: SchemaProperties;
+  description?: string;
 }
 
 export interface SchemaDefinition {
@@ -38,15 +38,15 @@ export interface DefinitionProperties {
 }
 
 export interface JSONSchemaType {
-  type: string;
+  type?: string;
   items?: JSONSchemaType;
   additionalProperties?: boolean;
-  patternProperties?: any;
+  patternProperties?: Record<string, JSONSchemaType>;
   $ref?: string;
 }
 
 export interface SchemaProperties {
-  Params: SchemaPropertyValue;
+  Params?: SchemaPropertyValue;
   Result: SchemaPropertyValue;
 }
 export interface SchemaPropertyValue {

@@ -4,7 +4,7 @@
     Controllers
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2-rc1 at the git SHA 3a098707a1.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -46,7 +46,7 @@ export interface ErrorResults {
 }
 
 export interface MigrationModelInfo {
-  "agent-version": Number;
+  "agent-version": string;
   "controller-agent-version": Number;
   name: string;
   "owner-tag": string;
@@ -77,7 +77,7 @@ export interface SerializedModelResource {
   "application-revision": SerializedModelResourceRevision;
   "charmstore-revision": SerializedModelResourceRevision;
   name: string;
-  "unit-revisions": AdditionalProperties;
+  "unit-revisions": Record<string, SerializedModelResourceRevision>;
 }
 
 export interface SerializedModelResourceRevision {

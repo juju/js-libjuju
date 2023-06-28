@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.0 at the git SHA deb94d4.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -26,7 +26,7 @@ export interface BoolResults {
 }
 
 export interface CloudCredential {
-  attrs?: AdditionalProperties;
+  attrs?: Record<string, string>;
   "auth-type": string;
   redacted?: string[];
 }
@@ -99,7 +99,7 @@ export interface ErrorResults {
 export interface ExposeInfoResult {
   error: Error;
   exposed: boolean;
-  "exposed-endpoints": AdditionalProperties;
+  "exposed-endpoints": Record<string, ExposedEndpoint>;
 }
 
 export interface ExposeInfoResults {
@@ -116,13 +116,14 @@ export interface FanConfigEntry {
   underlay: string;
 }
 
-export interface FirewallRule {
-  "known-service": string;
-  "whitelist-cidrs"?: string[];
+export interface IngressRule {
+  "port-range": PortRange;
+  "source-cidrs": string[];
 }
 
-export interface KnownServiceArgs {
-  "known-services": string[];
+export interface IngressRulesResult {
+  error?: Error;
+  rules: IngressRule[];
 }
 
 export interface LifeResult {
@@ -132,10 +133,6 @@ export interface LifeResult {
 
 export interface LifeResults {
   results: LifeResult[];
-}
-
-export interface ListFirewallRulesResults {
-  Rules: FirewallRule[];
 }
 
 export interface Macaroon {
@@ -170,7 +167,7 @@ export interface NotifyWatchResults {
 
 export interface OpenMachinePortRangesResult {
   error?: Error;
-  "unit-port-ranges": AdditionalProperties;
+  "unit-port-ranges": Record<string, OpenUnitPortRanges[]>;
 }
 
 export interface OpenMachinePortRangesResults {
@@ -363,22 +360,6 @@ class FirewallerV7 implements Facade {
   }
 
   /**
-    FirewallRules returns the firewall rules for the specified well known service types.
-  */
-  firewallRules(params: KnownServiceArgs): Promise<ListFirewallRulesResults> {
-    return new Promise((resolve, reject) => {
-      const req: JujuRequest = {
-        type: "Firewaller",
-        request: "FirewallRules",
-        version: 7,
-        params: params,
-      };
-
-      this._transport.write(req, resolve, reject);
-    });
-  }
-
-  /**
     GetAssignedMachine returns the assigned machine tag (if any) for
     each given unit.
   */
@@ -485,6 +466,23 @@ class FirewallerV7 implements Facade {
       const req: JujuRequest = {
         type: "Firewaller",
         request: "ModelConfig",
+        version: 7,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+
+  /**
+    ModelFirewallRules returns the firewall rules that this model is
+    configured to open
+  */
+  modelFirewallRules(params: any): Promise<IngressRulesResult> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "Firewaller",
+        request: "ModelFirewallRules",
         version: 7,
         params: params,
       };
@@ -630,6 +628,23 @@ class FirewallerV7 implements Facade {
       const req: JujuRequest = {
         type: "Firewaller",
         request: "WatchIngressAddressesForRelations",
+        version: 7,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+
+  /**
+    WatchModelFirewallRules returns a NotifyWatcher that notifies of
+    potential changes to a model's configured firewall rules
+  */
+  watchModelFirewallRules(params: any): Promise<NotifyWatchResult> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "Firewaller",
+        request: "WatchModelFirewallRules",
         version: 7,
         params: params,
       };

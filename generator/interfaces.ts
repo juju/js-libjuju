@@ -12,11 +12,21 @@ export interface InterfaceData {
   name: string;
   types: InterfaceType[];
 }
-export interface InterfaceType {
+
+export type InterfaceValueType =
+  | string
+  | {
+      type: string;
+      valueType: InterfaceValueType;
+    };
+
+export type InterfaceType = {
   name: string;
   type: string;
   required: boolean;
-}
+  valueType?: InterfaceValueType;
+};
+
 export interface ReadmeTemplate {
   clientAPIInfo: string;
   exampleList: FileInfo[];
@@ -30,9 +40,10 @@ export interface FileInfo {
 
 export interface FacadeMethod {
   name: string;
-  params: string;
-  result: string;
-  docBlock: string;
+  params: string | Record<string, string>;
+  paramsAtTop?: boolean;
+  result: string | Record<string, string>;
+  docBlock?: string;
 }
 
 export interface JujuRequest {
@@ -41,6 +52,7 @@ export interface JujuRequest {
   "request-id"?: number;
   version: number;
   params?: any; // Typed by the call signature of the facade method.
+  [key: string]: any; // Some calls pass additional params e.g. AllWatcher.next passes `id`.
 }
 
 export type CallbackError = string | number | null;

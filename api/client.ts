@@ -9,6 +9,7 @@
 
 import { Bakery } from "@canonical/macaroon-bakery";
 import AdminV3, {
+  AuthUserInfo,
   FacadeVersions,
   LoginRequest,
   LoginResult,
@@ -29,7 +30,7 @@ import {
 } from "./types.js";
 import { createAsyncHandler } from "./utils.js";
 
-export const CLIENT_VERSION = "3.2.0";
+export const CLIENT_VERSION = "3.2.1";
 
 export interface ConnectOptions {
   bakery?: Bakery | null;
@@ -44,14 +45,14 @@ export interface ConnectionInfo {
   controllerTag?: string;
   serverVersion?: string;
   servers?: object[];
-  user?: object;
+  user?: AuthUserInfo;
   getFacade?: (name: string) => Facade;
 }
 
 export interface Credentials {
   username?: string;
   password?: string;
-  macaroons?: object;
+  macaroons?: MacaroonObject[][];
 }
 
 /**
