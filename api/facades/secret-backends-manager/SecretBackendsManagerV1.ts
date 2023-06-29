@@ -4,7 +4,7 @@
     Controller-machine-agent
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2-rc1 at the git SHA 3a098707a1.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 

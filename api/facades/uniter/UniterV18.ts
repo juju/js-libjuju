@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.0 at the git SHA deb94d4.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -76,10 +76,24 @@ export interface Address {
   value: string;
 }
 
+export interface ApplicationOpenedPorts {
+  endpoint: string;
+  "port-ranges": PortRange[];
+}
+
+export interface ApplicationOpenedPortsResult {
+  "application-port-ranges": ApplicationOpenedPorts[];
+  error?: Error;
+}
+
+export interface ApplicationOpenedPortsResults {
+  results: ApplicationOpenedPortsResult[];
+}
+
 export interface ApplicationStatusResult {
   application: StatusResult;
   error?: Error;
-  units: AdditionalProperties;
+  units: Record<string, StatusResult>;
 }
 
 export interface ApplicationStatusResults {
@@ -113,7 +127,7 @@ export interface CharmURLs {
 }
 
 export interface CloudCredential {
-  attrs?: AdditionalProperties;
+  attrs?: Record<string, string>;
   "auth-type": string;
   redacted?: string[];
 }
@@ -266,7 +280,7 @@ export interface GetLeadershipSettingsBulkResults {
 
 export interface GetLeadershipSettingsResult {
   error?: Error;
-  settings: AdditionalProperties;
+  settings: Record<string, string>;
 }
 
 export interface GetSecretConsumerInfoArgs {
@@ -277,7 +291,7 @@ export interface GetSecretConsumerInfoArgs {
 export interface GetSecretContentArg {
   label?: string;
   peek?: boolean;
-  update?: boolean;
+  refresh?: boolean;
   uri: string;
 }
 
@@ -286,8 +300,8 @@ export interface GetSecretContentArgs {
 }
 
 export interface GoalState {
-  relations: AdditionalProperties;
-  units: AdditionalProperties;
+  relations: Record<string, Record<string, GoalStateStatus>>;
+  units: Record<string, GoalStateStatus>;
 }
 
 export interface GoalStateResult {
@@ -378,7 +392,7 @@ export interface MergeLeadershipSettingsBulkParams {
 
 export interface MergeLeadershipSettingsParam {
   "application-tag"?: string;
-  settings: AdditionalProperties;
+  settings: Record<string, string>;
   "unit-tag"?: string;
 }
 
@@ -394,7 +408,7 @@ export interface MeterStatusResults {
 
 export interface Metric {
   key: string;
-  labels?: AdditionalProperties;
+  labels?: Record<string, string>;
   time: string;
   value: string;
 }
@@ -446,7 +460,7 @@ export interface NetworkInfoResult {
 }
 
 export interface NetworkInfoResults {
-  results: AdditionalProperties;
+  results: Record<string, NetworkInfoResult>;
 }
 
 export interface NotifyWatchResult {
@@ -458,13 +472,13 @@ export interface NotifyWatchResults {
   results: NotifyWatchResult[];
 }
 
-export interface OpenMachinePortRangesByEndpointResult {
+export interface OpenPortRangesByEndpointResult {
   error?: Error;
-  "unit-port-ranges": AdditionalProperties;
+  "unit-port-ranges": Record<string, OpenUnitPortRangesByEndpoint[]>;
 }
 
-export interface OpenMachinePortRangesByEndpointResults {
-  results: OpenMachinePortRangesByEndpointResult[];
+export interface OpenPortRangesByEndpointResults {
+  results: OpenPortRangesByEndpointResult[];
 }
 
 export interface OpenUnitPortRangesByEndpoint {
@@ -528,9 +542,9 @@ export interface RelationUnitPairs {
 }
 
 export interface RelationUnitSettings {
-  "application-settings": AdditionalProperties;
+  "application-settings": Record<string, string>;
   relation: string;
-  settings: AdditionalProperties;
+  settings: Record<string, string>;
   unit: string;
 }
 
@@ -554,8 +568,8 @@ export interface RelationUnits {
 }
 
 export interface RelationUnitsChange {
-  "app-changed"?: AdditionalProperties;
-  changed: AdditionalProperties;
+  "app-changed"?: Record<string, number>;
+  changed: Record<string, UnitSettings>;
   departed?: string[];
 }
 
@@ -578,6 +592,28 @@ export interface ResolvedModeResults {
   results: ResolvedModeResult[];
 }
 
+export interface SecretBackendArgs {
+  "backend-ids": string[];
+}
+
+export interface SecretBackendConfig {
+  params?: AdditionalProperties;
+  type: string;
+}
+
+export interface SecretBackendConfigResult {
+  config?: SecretBackendConfig;
+  draining: boolean;
+  "model-controller": string;
+  "model-name": string;
+  "model-uuid": string;
+}
+
+export interface SecretBackendConfigResults {
+  "active-id": string;
+  results?: Record<string, SecretBackendConfigResult>;
+}
+
 export interface SecretConsumerInfoResult {
   error?: Error;
   label: string;
@@ -589,13 +625,15 @@ export interface SecretConsumerInfoResults {
 }
 
 export interface SecretContentParams {
-  data: AdditionalProperties;
-  "provider-id": string;
+  data: Record<string, string>;
+  "value-ref": SecretValueRef;
 }
 
 export interface SecretContentResult {
+  "backend-config"?: SecretBackendConfigResult;
   content: SecretContentParams;
   error?: Error;
+  "latest-revision"?: number;
 }
 
 export interface SecretContentResults {
@@ -603,11 +641,18 @@ export interface SecretContentResults {
 }
 
 export interface SecretRevision {
+  "backend-name"?: string;
   "create-time"?: string;
   "expire-time"?: string;
-  "provider-id"?: string;
   revision: number;
   "update-time"?: string;
+  "value-ref"?: SecretValueRef;
+}
+
+export interface SecretRevisionArg {
+  "pending-delete": boolean;
+  revisions: number[];
+  uri: string;
 }
 
 export interface SecretRotatedArg {
@@ -618,11 +663,6 @@ export interface SecretRotatedArg {
 
 export interface SecretRotatedArgs {
   args: SecretRotatedArg[];
-}
-
-export interface SecretStoreConfig {
-  params?: AdditionalProperties;
-  type: string;
 }
 
 export interface SecretTriggerChange {
@@ -637,8 +677,13 @@ export interface SecretTriggerWatchResult {
   "watcher-id": string;
 }
 
+export interface SecretValueRef {
+  "backend-id": string;
+  "revision-id": string;
+}
+
 export interface SecretValueResult {
-  data: AdditionalProperties;
+  data: Record<string, string>;
   error: Error;
 }
 
@@ -647,9 +692,9 @@ export interface SetStatus {
 }
 
 export interface SetUnitStateArg {
-  "charm-state"?: AdditionalProperties;
+  "charm-state"?: Record<string, string>;
   "meter-status-state"?: string;
-  "relation-state"?: AdditionalProperties;
+  "relation-state"?: Record<string, string>;
   "secret-state"?: string;
   "storage-state"?: string;
   tag: string;
@@ -662,7 +707,7 @@ export interface SetUnitStateArgs {
 
 export interface SettingsResult {
   error?: Error;
-  settings: AdditionalProperties;
+  settings: Record<string, string>;
 }
 
 export interface SettingsResults {
@@ -781,10 +826,10 @@ export interface UnitSettings {
 }
 
 export interface UnitStateResult {
-  "charm-state": AdditionalProperties;
+  "charm-state": Record<string, string>;
   error: Error;
   "meter-status-state": string;
-  "relation-state": AdditionalProperties;
+  "relation-state": Record<string, string>;
   "secret-state": string;
   "storage-state": string;
   "uniter-state": string;
@@ -1314,6 +1359,7 @@ class UniterV18 implements Facade {
 
   /**
     GetConsumerSecretsRevisionInfo returns the latest secret revisions for the specified secrets.
+    This facade method is used for remote watcher to get the latest secret revisions and labels for a secret changed hook.
   */
   getConsumerSecretsRevisionInfo(
     params: GetSecretConsumerInfoArgs
@@ -1396,6 +1442,24 @@ class UniterV18 implements Facade {
   }
 
   /**
+    GetSecretBackendConfigs gets the config needed to create a client to secret backends.
+  */
+  getSecretBackendConfigs(
+    params: SecretBackendArgs
+  ): Promise<SecretBackendConfigResults> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "Uniter",
+        request: "GetSecretBackendConfigs",
+        version: 18,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+
+  /**
     GetSecretContentInfo returns the secret values for the specified secrets.
   */
   getSecretContentInfo(
@@ -1430,13 +1494,15 @@ class UniterV18 implements Facade {
   }
 
   /**
-    GetSecretStoreConfig gets the config needed to create a client to the model's secret store.
+    GetSecretRevisionContentInfo returns the secret values for the specified secret revisions.
   */
-  getSecretStoreConfig(params: any): Promise<SecretStoreConfig> {
+  getSecretRevisionContentInfo(
+    params: SecretRevisionArg
+  ): Promise<SecretContentResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "Uniter",
-        request: "GetSecretStoreConfig",
+        request: "GetSecretRevisionContentInfo",
         version: 18,
         params: params,
       };
@@ -1628,16 +1694,52 @@ class UniterV18 implements Facade {
   }
 
   /**
+    OpenedApplicationPortRangesByEndpoint returns the port ranges opened by each application.
+  */
+  openedApplicationPortRangesByEndpoint(
+    params: Entity
+  ): Promise<ApplicationOpenedPortsResults> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "Uniter",
+        request: "OpenedApplicationPortRangesByEndpoint",
+        version: 18,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+
+  /**
     OpenedMachinePortRangesByEndpoint returns the port ranges opened by each
     unit on the provided machines grouped by application endpoint.
   */
   openedMachinePortRangesByEndpoint(
     params: Entities
-  ): Promise<OpenMachinePortRangesByEndpointResults> {
+  ): Promise<OpenPortRangesByEndpointResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "Uniter",
         request: "OpenedMachinePortRangesByEndpoint",
+        version: 18,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+
+  /**
+    OpenedPortRangesByEndpoint returns the port ranges opened by the unit.
+  */
+  openedPortRangesByEndpoint(
+    params: any
+  ): Promise<OpenPortRangesByEndpointResults> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "Uniter",
+        request: "OpenedPortRangesByEndpoint",
         version: 18,
         params: params,
       };

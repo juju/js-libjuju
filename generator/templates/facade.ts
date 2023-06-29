@@ -1,36 +1,35 @@
-import type { FacadeTemplate, InterfaceData } from "../interfaces.js";
+import type {
+  FacadeTemplate,
+  InterfaceData,
+  InterfaceType,
+  InterfaceValueType,
+} from "../interfaces.js";
 
-export default function generateFacadeTemplate(
-  facadeTemplate: FacadeTemplate
-): string {
-  const lowerCaseFirstChar = (name: string): string =>
-    name.charAt(0).toLowerCase() + name.slice(1);
-
-  const upperCaseFirstChar = (name: string): string =>
-    name.charAt(0).toUpperCase() + name.slice(1);
-
-  const padString = (doc: string, indent: number): string => {
-    if (!doc) {
-      return "";
-    }
-    const segments = doc
-      .split("\n")
-      .map((segment) =>
-        segment ? segment.padStart(segment.length + indent) : ""
-      );
-    return segments.join("\n");
-  };
-
-  const generateAvailableList = (availableTo: string[]) =>
-    padString(
-      availableTo
-        .map((env) => upperCaseFirstChar(env.replace("-user", "s")))
-        .join("\n"),
-      4
+const padString = (doc: string, indent: number): string => {
+  if (!doc) {
+    return "";
+  }
+  const segments = doc
+    .split("\n")
+    .map((segment) =>
+      segment ? segment.padStart(segment.length + indent) : ""
     );
+  return segments.join("\n");
+};
 
-  const generateInterface = (i: InterfaceData) => {
-    return `
+const generateType = (
+  interfaceType: InterfaceType | InterfaceValueType
+): string => {
+  if (typeof interfaceType === "string") {
+    return interfaceType;
+  }
+  return interfaceType.type === "object" && interfaceType.valueType
+    ? `Record<string, ${generateType(interfaceType.valueType)}>`
+    : interfaceType.type;
+};
+
+export const generateInterface = (i: InterfaceData) => {
+  return `
 export interface ${i.name} {
 ${i.types
   .map((t) => {
@@ -39,12 +38,70 @@ ${i.types
       name = `"${name}"`;
     }
     const optional = !t.required ? "?" : "";
-    return padString(`${name}${optional}: ${t.type};`, 2);
+    return padString(`${name}${optional}: ${generateType(t)};`, 2);
   })
   .join("\n")}
 }`;
-  };
+};
 
+const lowerCaseFirstChar = (name: string): string =>
+  name.charAt(0).toLowerCase() + name.slice(1);
+
+const upperCaseFirstChar = (name: string): string =>
+  name.charAt(0).toUpperCase() + name.slice(1);
+
+const generateAvailableList = (availableTo: string[]) =>
+  padString(
+    availableTo
+      .map((env) => upperCaseFirstChar(env.replace("-user", "s")))
+      .join("\n"),
+    4
+  );
+
+export function generateMethods(facadeTemplate: FacadeTemplate): string {
+  return facadeTemplate.methods
+    .map((m) => {
+      const paramsType =
+        m.params && typeof m.params === "object"
+          ? `{ ${Object.entries(m.params)
+              .map(([key, value]) => `${key}: ${value};`)
+              .join(" ")} }`
+          : m.params;
+
+      const paramsBlock = m.params
+        ? `${
+            typeof m.params === "object"
+              ? Object.keys(m.params)
+                  .map((key) => `        ${key}: params.${key},`)
+                  .join("\n")
+              : "        params: params,"
+          }
+      };`
+        : null;
+      return `/**
+${padString(m.docBlock || "", 4)}
+  */
+  ${lowerCaseFirstChar(m.name)}(${
+        m.params ? `params: ${paramsType}` : ""
+      }): Promise<${m.result}> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "${facadeTemplate.name}",
+        request: "${m.name}",
+        version: ${facadeTemplate.version},
+${paramsBlock ?? "    };"}
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+`;
+    })
+    .join("\n");
+}
+
+export default function generateFacadeTemplate(
+  facadeTemplate: FacadeTemplate
+): string {
   return `/**
   Juju ${facadeTemplate.name} version ${facadeTemplate.version}.
   This facade is available on:
@@ -83,32 +140,7 @@ class ${facadeTemplate.name}V${facadeTemplate.version} implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  ${facadeTemplate.methods
-    .map(
-      (m) => `/**
-${padString(m.docBlock, 4)}
-  */
-  ${lowerCaseFirstChar(m.name)}(${
-        m.params ? `params: ${m.params}` : ""
-      }): Promise<${m.result}> {
-    return new Promise((resolve, reject) => {
-      const req: JujuRequest = {
-        type: "${facadeTemplate.name}",
-        request: "${m.name}",
-        version: ${facadeTemplate.version},
-      ${
-        m.params
-          ? `  params: params,
-      };`
-          : "};"
-      }
-
-      this._transport.write(req, resolve, reject);
-    });
-  }
-`
-    )
-    .join("\n")}
+  ${generateMethods(facadeTemplate)}
 }
 
 export default ${facadeTemplate.name}V${facadeTemplate.version};

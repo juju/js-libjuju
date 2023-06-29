@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.0 at the git SHA deb94d4.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -30,11 +30,19 @@ export interface MasterMigrationStatus {
 }
 
 export interface MigrationModelInfo {
-  "agent-version": Number;
+  "agent-version": string;
   "controller-agent-version": Number;
   name: string;
   "owner-tag": string;
   uuid: string;
+}
+
+export interface MigrationSourceInfo {
+  addrs: string[];
+  "ca-cert": string;
+  "controller-alias"?: string;
+  "controller-tag": string;
+  "local-related-models": string[];
 }
 
 export interface MigrationSpec {
@@ -94,7 +102,7 @@ export interface SerializedModelResource {
   "application-revision": SerializedModelResourceRevision;
   "charmstore-revision": SerializedModelResourceRevision;
   name: string;
-  "unit-revisions": AdditionalProperties;
+  "unit-revisions": Record<string, SerializedModelResourceRevision>;
 }
 
 export interface SerializedModelResourceRevision {
@@ -316,6 +324,23 @@ class MigrationMasterV3 implements Facade {
       const req: JujuRequest = {
         type: "MigrationMaster",
         request: "SetStatusMessage",
+        version: 3,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+
+  /**
+    SourceControllerInfo returns the details required to connect to
+    the source controller for model migration.
+  */
+  sourceControllerInfo(params: any): Promise<MigrationSourceInfo> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "MigrationMaster",
+        request: "SourceControllerInfo",
         version: 3,
         params: params,
       };

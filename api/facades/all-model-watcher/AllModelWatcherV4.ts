@@ -4,7 +4,7 @@
     Controllers
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.0 at the git SHA deb94d4.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -14,7 +14,7 @@ import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AllWatcherNextResults {
-  deltas: Delta[];
+  deltas: [string, string, unknown][];
 }
 
 export interface Delta {
@@ -53,13 +53,13 @@ class AllModelWatcherV4 implements Facade {
     Next will return the current state of everything on the first call
     and subsequent calls will
   */
-  next(params: any): Promise<AllWatcherNextResults> {
+  next(params: { id: string }): Promise<AllWatcherNextResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "AllModelWatcher",
         request: "Next",
         version: 4,
-        params: params,
+        id: params.id,
       };
 
       this._transport.write(req, resolve, reject);
@@ -69,13 +69,13 @@ class AllModelWatcherV4 implements Facade {
   /**
     Stop stops the watcher.
   */
-  stop(params: any): Promise<any> {
+  stop(params: { id: string }): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "AllModelWatcher",
         request: "Stop",
         version: 4,
-        params: params,
+        id: params.id,
       };
 
       this._transport.write(req, resolve, reject);

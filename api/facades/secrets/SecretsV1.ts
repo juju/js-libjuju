@@ -4,7 +4,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.0 at the git SHA deb94d4.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -45,15 +45,21 @@ export interface ListSecretsArgs {
 }
 
 export interface SecretRevision {
+  "backend-name"?: string;
   "create-time"?: string;
   "expire-time"?: string;
-  "provider-id"?: string;
   revision: number;
   "update-time"?: string;
+  "value-ref"?: SecretValueRef;
+}
+
+export interface SecretValueRef {
+  "backend-id": string;
+  "revision-id": string;
 }
 
 export interface SecretValueResult {
-  data: AdditionalProperties;
+  data: Record<string, string>;
   error: Error;
 }
 

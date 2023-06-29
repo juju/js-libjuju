@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.0 at the git SHA deb94d4.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -81,6 +81,10 @@ export interface GetTokenArg {
 
 export interface GetTokenArgs {
   Args: GetTokenArg[];
+}
+
+export interface LatestSecretRevisionChanges {
+  changes: SecretRevisionChange[];
 }
 
 export interface Macaroon {
@@ -179,6 +183,11 @@ export interface RemoteRelationsChanges {
   changes: RemoteRelationChangeEvent[];
 }
 
+export interface SecretRevisionChange {
+  revision: number;
+  uri: string;
+}
+
 export interface SetStatus {
   entities: EntityStatusArgs[];
 }
@@ -255,6 +264,25 @@ class RemoteRelationsV2 implements Facade {
       const req: JujuRequest = {
         type: "RemoteRelations",
         request: "ConsumeRemoteRelationChanges",
+        version: 2,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+
+  /**
+    ConsumeRemoteSecretChanges updates the local model with secret revision changes
+    originating from the remote/offering model.
+  */
+  consumeRemoteSecretChanges(
+    params: LatestSecretRevisionChanges
+  ): Promise<ErrorResults> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "RemoteRelations",
+        request: "ConsumeRemoteSecretChanges",
         version: 2,
         params: params,
       };

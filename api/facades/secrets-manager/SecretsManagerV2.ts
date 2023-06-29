@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2-rc1 at the git SHA 3a098707a1.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -133,7 +133,7 @@ export interface SecretBackendConfigResult {
 
 export interface SecretBackendConfigResults {
   "active-id": string;
-  results?: AdditionalProperties;
+  results?: Record<string, SecretBackendConfigResult>;
 }
 
 export interface SecretConsumerInfoResult {
@@ -147,7 +147,7 @@ export interface SecretConsumerInfoResults {
 }
 
 export interface SecretContentParams {
-  data: AdditionalProperties;
+  data: Record<string, string>;
   "value-ref": SecretValueRef;
 }
 
@@ -205,7 +205,7 @@ export interface SecretValueRef {
 }
 
 export interface SecretValueResult {
-  data: AdditionalProperties;
+  data: Record<string, string>;
   error: Error;
 }
 
@@ -381,7 +381,6 @@ class SecretsManagerV2 implements Facade {
 
   /**
     GetSecretRevisionContentInfo returns the secret values for the specified secret revisions.
-    Used when deleting a secret; only returns external revision info.
   */
   getSecretRevisionContentInfo(
     params: SecretRevisionArg

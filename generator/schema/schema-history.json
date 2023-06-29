@@ -23,5 +23,10 @@
     "juju-git-sha": "deb94d4",
     "juju-version": "3.0",
     "schema": "https://raw.githubusercontent.com/juju/js-libjuju/63c31f0991cdbd43ba2de0048cd98ee7ba36945c/schema/schema.json"
+  },
+  {
+    "juju-git-sha": "3a098707a1",
+    "juju-version": "3.2",
+    "schema": "https://raw.githubusercontent.com/juju/js-libjuju/278c06f91a9c0b3a0cd69dd61c941280d6c81f3d/generator/schema/schema.json"
   }
 ]

@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.0 at the git SHA deb94d4.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -78,10 +78,10 @@ export interface FilesystemDetails {
   "filesystem-tag": string;
   info: FilesystemInfo;
   life?: string;
-  "machine-attachments"?: AdditionalProperties;
+  "machine-attachments"?: Record<string, FilesystemAttachmentDetails>;
   status: EntityStatus;
   storage?: StorageDetails;
-  "unit-attachments"?: AdditionalProperties;
+  "unit-attachments"?: Record<string, FilesystemAttachmentDetails>;
   "volume-tag"?: string;
 }
 
@@ -176,7 +176,7 @@ export interface StorageDetachmentParams {
 }
 
 export interface StorageDetails {
-  attachments?: AdditionalProperties;
+  attachments?: Record<string, StorageAttachmentDetails>;
   kind: number;
   life?: string;
   "owner-tag": string;
@@ -270,17 +270,17 @@ export interface VolumeAttachmentInfo {
 }
 
 export interface VolumeAttachmentPlanInfo {
-  "device-attributes": AdditionalProperties;
+  "device-attributes": Record<string, string>;
   "device-type": string;
 }
 
 export interface VolumeDetails {
   info: VolumeInfo;
   life?: string;
-  "machine-attachments"?: AdditionalProperties;
+  "machine-attachments"?: Record<string, VolumeAttachmentDetails>;
   status: EntityStatus;
   storage?: StorageDetails;
-  "unit-attachments"?: AdditionalProperties;
+  "unit-attachments"?: Record<string, VolumeAttachmentDetails>;
   "volume-tag": string;
 }
 

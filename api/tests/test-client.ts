@@ -353,7 +353,7 @@ describe("connect", () => {
       expect(err).toBe(null);
       expect(juju).not.toBe(null);
       juju
-        ?.login({ macaroons: ["m"] })
+        ?.login({ macaroons: [["m"]] })
         .then(() => fail)
         .catch((err) => {
           validateLoginDischargeRequiredFailure(err);
@@ -376,7 +376,7 @@ describe("connect", () => {
     };
     connect("wss://1.2.3.4", options).then((juju: Client) => {
       juju
-        .login({ macaroons: ["m"] })
+        .login({ macaroons: [["m"]] })
         .then(() => fail)
         .catch((error) => {
           validateLoginDischargeRequiredFailure(error);
@@ -408,7 +408,7 @@ describe("connect", () => {
     connect("wss://1.2.3.4", options, (err?: CallbackError, juju?: Client) => {
       expect(err).toBe(null);
       expect(juju).not.toBe(null);
-      juju?.login({ macaroons: ["m"] }).then(() => {
+      juju?.login({ macaroons: [["m"]] }).then(() => {
         validateLoginDischargeRequiredSuccess();
         done();
       });
@@ -435,7 +435,7 @@ describe("connect", () => {
     };
     connect("wss://1.2.3.4", options).then((juju: Client) => {
       juju
-        ?.login({ macaroons: ["m"] })
+        ?.login({ macaroons: [["m"]] })
         .then((_conn) => {
           validateLoginDischargeRequiredSuccess();
           done();

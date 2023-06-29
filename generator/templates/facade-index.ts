@@ -1,6 +1,6 @@
 import { mkdirSync, writeFileSync } from "fs";
 import { join } from "path";
-import { facadeFolderName } from "../index.js";
+import { facadeFolderName } from "../generator.js";
 import { FacadeList } from "./types.js";
 
 function facadeIndexTS(facadeName: string, versions: number[]): string {

@@ -4,7 +4,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2-rc1 at the git SHA 3a098707a1.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -35,7 +35,7 @@ export interface Base {
 
 export interface Charm {
   actions?: CharmActions;
-  config: AdditionalProperties;
+  config: Record<string, CharmOption>;
   "lxd-profile"?: CharmLXDProfile;
   manifest?: CharmManifest;
   meta?: CharmMeta;
@@ -50,7 +50,7 @@ export interface CharmActionSpec {
 }
 
 export interface CharmActions {
-  specs: AdditionalProperties;
+  specs: Record<string, CharmActionSpec>;
 }
 
 export interface CharmBase {
@@ -80,9 +80,9 @@ export interface CharmDevice {
 }
 
 export interface CharmLXDProfile {
-  config: AdditionalProperties;
+  config: Record<string, string>;
   description: string;
-  devices: AdditionalProperties;
+  devices: Record<string, Record<string, string>>;
 }
 
 export interface CharmManifest {
@@ -92,20 +92,20 @@ export interface CharmManifest {
 export interface CharmMeta {
   "assumes-expr"?: ExpressionTree;
   categories?: string[];
-  containers?: AdditionalProperties;
+  containers?: Record<string, CharmContainer>;
   deployment?: CharmDeployment;
   description: string;
-  devices?: AdditionalProperties;
-  "extra-bindings"?: AdditionalProperties;
+  devices?: Record<string, CharmDevice>;
+  "extra-bindings"?: Record<string, string>;
   "min-juju-version"?: string;
   name: string;
-  "payload-classes"?: AdditionalProperties;
-  peers?: AdditionalProperties;
-  provides?: AdditionalProperties;
-  requires?: AdditionalProperties;
-  resources?: AdditionalProperties;
+  "payload-classes"?: Record<string, CharmPayloadClass>;
+  peers?: Record<string, CharmRelation>;
+  provides?: Record<string, CharmRelation>;
+  requires?: Record<string, CharmRelation>;
+  resources?: Record<string, CharmResourceMeta>;
   series?: string[];
-  storage?: AdditionalProperties;
+  storage?: Record<string, CharmStorage>;
   subordinate: boolean;
   summary: string;
   tags?: string[];
@@ -118,7 +118,7 @@ export interface CharmMetric {
 }
 
 export interface CharmMetrics {
-  metrics: AdditionalProperties;
+  metrics: Record<string, CharmMetric>;
   plan: CharmPlan;
 }
 

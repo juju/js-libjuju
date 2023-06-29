@@ -4,7 +4,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.0 at the git SHA deb94d4.
+  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
   Do not manually edit this file.
 */
 
@@ -14,7 +14,7 @@ import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface AnnotationsGetResult {
-  annotations: AdditionalProperties;
+  annotations: Record<string, string>;
   entity: string;
   error?: ErrorResult;
 }
@@ -36,7 +36,7 @@ export interface Entity {
 }
 
 export interface EntityAnnotations {
-  annotations: AdditionalProperties;
+  annotations: Record<string, string>;
   entity: string;
 }
 
