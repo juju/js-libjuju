@@ -8,3 +8,4 @@ api/!(test)**/*.js
 dist/
 .nyc_output/
 docs
+.nfs.*
