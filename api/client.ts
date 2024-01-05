@@ -30,7 +30,7 @@ import {
 } from "./types.js";
 import { createAsyncHandler } from "./utils.js";
 
-export const CLIENT_VERSION = "3.2.1";
+export const CLIENT_VERSION = "3.5.0";
 
 export interface ConnectOptions {
   bakery?: Bakery | null;
