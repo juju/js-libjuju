@@ -1,6 +1,6 @@
 {
   "name": "@canonical/jujulib",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Juju API client",
   "main": "dist/api/client.js",
   "types": "dist/api/client.d.ts",
@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf node_modules dist",
-    "generate-facades": "SCHEMA=generator/schema/schema.json JUJU_VERSION=$(cat generator/schema/juju-version.txt) JUJU_GIT_SHA=$(cat generator/schema/juju-git-sha.txt) ts-node generator/index.ts",
+    "generate-facades": "SCHEMA=generator/schema/schema.json JUJU_VERSION=$(cat generator/schema/juju-version.txt) JUJU_GIT_SHA=$(cat generator/schema/juju-git-sha.txt) node --no-warnings=ExperimentalWarning --loader ts-node/esm generator/index.ts",
     "regenerate-all-facades": "node generator/schema/regenerate-all.js",
     "store-schema": "./generator/scripts/store-schema.sh",
     "generate-docs": "README_FOR_DOCS=true yarn generate-facades && typedoc api/* --out docs --entryPointStrategy expand --includeVersion --gitRemote upstream",

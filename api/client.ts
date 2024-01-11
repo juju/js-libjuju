@@ -30,7 +30,7 @@ import {
 } from "./types.js";
 import { createAsyncHandler } from "./utils.js";
 
-export const CLIENT_VERSION = "3.2.1";
+export const CLIENT_VERSION = "3.3.2";
 
 export interface ConnectOptions {
   bakery?: Bakery | null;
@@ -271,7 +271,7 @@ class Client {
       "user-data": "",
     };
     const url = this._transport._ws.url;
-    const origin = new URL(url).origin;
+    const origin = url;
 
     if (credentials.username && credentials.password) {
       args.credentials = credentials.password;
@@ -540,7 +540,7 @@ class Connection {
     const clientRequestedFacades = facades.reduce(
       (facadeVersions: { [k: string]: FacadeClassList }, current) => {
         if ("versions" in current) {
-          // generic facade, where we won't the best version
+          // generic facade, where we want the best version
           if (!facadeVersions[current.name]) facadeVersions[current.name] = [];
           facadeVersions[current.name].push(...current.versions);
         } else {
