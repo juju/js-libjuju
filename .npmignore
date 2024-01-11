@@ -1,14 +1,18 @@
 *~
 .vscode
 .eslint*
-.prettierignore
+.prettier*
 .gitignore
+.yarn*
+.github
 
 tsconfig.json
 */**/tsconfig.json
+jest.config.*
 
-generator/
 node_modules/
-schema/
+**/api/tests
+**/generator/*
+!dist/generator/interfaces.*
 scripts/
-templates/
+**/examples/
