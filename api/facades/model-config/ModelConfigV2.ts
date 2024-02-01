@@ -29,7 +29,7 @@ export interface Error {
 }
 
 export interface ModelConfigResults {
-  config: AdditionalProperties;
+  config: Record<string, ConfigValue>;
 }
 
 export interface ModelSLA {
@@ -45,7 +45,7 @@ export interface ModelSLAInfo {
 }
 
 export interface ModelSequencesResult {
-  sequences: AdditionalProperties;
+  sequences: Record<string, number>;
 }
 
 export interface ModelSet {

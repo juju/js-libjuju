@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -45,12 +45,12 @@ export interface CloudSpec {
 }
 
 export interface CloudSpecResult {
-  error: Error;
-  result: CloudSpec;
+  error?: Error;
+  result?: CloudSpec;
 }
 
 export interface CloudSpecResults {
-  results: CloudSpecResult[];
+  results?: CloudSpecResult[];
 }
 
 export interface ControllerAPIInfoResult {
@@ -89,7 +89,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -97,9 +97,9 @@ export interface ErrorResults {
 }
 
 export interface ExposeInfoResult {
-  error: Error;
-  exposed: boolean;
-  "exposed-endpoints": Record<string, ExposedEndpoint>;
+  error?: Error;
+  exposed?: boolean;
+  "exposed-endpoints"?: Record<string, ExposedEndpoint>;
 }
 
 export interface ExposeInfoResults {
@@ -107,8 +107,8 @@ export interface ExposeInfoResults {
 }
 
 export interface ExposedEndpoint {
-  "expose-to-cidrs": string[];
-  "expose-to-spaces": string[];
+  "expose-to-cidrs"?: string[];
+  "expose-to-spaces"?: string[];
 }
 
 export interface FanConfigEntry {
@@ -140,8 +140,8 @@ export interface Macaroon {
 }
 
 export interface MacaroonResult {
-  error: Error;
-  result: Macaroon;
+  error?: Error;
+  result?: Macaroon;
 }
 
 export interface MacaroonResults {
@@ -198,11 +198,11 @@ export interface SpaceInfo {
 }
 
 export interface SpaceInfos {
-  "space-infos": SpaceInfo[];
+  "space-infos"?: SpaceInfo[];
 }
 
 export interface SpaceInfosParams {
-  "space-ids": string[];
+  "space-ids"?: string[];
 }
 
 export interface StringResult {

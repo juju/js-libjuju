@@ -5,7 +5,7 @@
     Machine-agent
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -31,7 +31,7 @@ export interface ActionExecutionResult {
 }
 
 export interface ActionExecutionResults {
-  results: ActionExecutionResult[];
+  results?: ActionExecutionResult[];
 }
 
 export interface ActionMessage {
@@ -40,29 +40,29 @@ export interface ActionMessage {
 }
 
 export interface ActionResult {
-  action: Action;
-  completed: string;
-  enqueued: string;
-  error: Error;
-  log: ActionMessage[];
-  message: string;
-  output: AdditionalProperties;
-  started: string;
-  status: string;
+  action?: Action;
+  completed?: string;
+  enqueued?: string;
+  error?: Error;
+  log?: ActionMessage[];
+  message?: string;
+  output?: AdditionalProperties;
+  started?: string;
+  status?: string;
 }
 
 export interface ActionResults {
-  results: ActionResult[];
+  results?: ActionResult[];
 }
 
 export interface ActionsByReceiver {
-  actions: ActionResult[];
-  error: Error;
-  receiver: string;
+  actions?: ActionResult[];
+  error?: Error;
+  receiver?: string;
 }
 
 export interface ActionsByReceivers {
-  actions: ActionsByReceiver[];
+  actions?: ActionsByReceiver[];
 }
 
 export interface Entities {
@@ -80,7 +80,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {

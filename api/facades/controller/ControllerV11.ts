@@ -7,7 +7,7 @@
     Controllers
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -40,12 +40,12 @@ export interface CloudSpec {
 }
 
 export interface CloudSpecResult {
-  error: Error;
-  result: CloudSpec;
+  error?: Error;
+  result?: CloudSpec;
 }
 
 export interface CloudSpecResults {
-  results: CloudSpecResult[];
+  results?: CloudSpecResult[];
 }
 
 export interface ConfigValue {
@@ -112,7 +112,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -146,14 +146,14 @@ export interface InitiateMigrationResults {
 }
 
 export interface MachineHardware {
-  arch: string;
-  "availability-zone": string;
-  cores: number;
-  "cpu-power": number;
-  mem: number;
-  "root-disk": number;
-  tags: string[];
-  "virt-type": string;
+  arch?: string;
+  "availability-zone"?: string;
+  cores?: number;
+  "cpu-power"?: number;
+  mem?: number;
+  "root-disk"?: number;
+  tags?: string[];
+  "virt-type"?: string;
 }
 
 export interface MigrationSpec {
@@ -190,7 +190,7 @@ export interface ModelBlockInfo {
 }
 
 export interface ModelBlockInfoList {
-  models: ModelBlockInfo[];
+  models?: ModelBlockInfo[];
 }
 
 export interface ModelConfigResults {
@@ -291,12 +291,12 @@ export interface UserAccess {
 }
 
 export interface UserAccessResult {
-  error: Error;
-  result: UserAccess;
+  error?: Error;
+  result?: UserAccess;
 }
 
 export interface UserAccessResults {
-  results: UserAccessResult[];
+  results?: UserAccessResult[];
 }
 
 export interface UserModel {

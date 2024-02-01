@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -47,7 +47,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -73,8 +73,8 @@ export interface PinApplicationsResults {
 }
 
 export interface PinnedLeadershipResult {
-  error: Error;
-  result: Record<string, string[]>;
+  error?: Error;
+  result?: Record<string, string[]>;
 }
 
 export interface SetStatus {
@@ -116,13 +116,13 @@ export interface UpgradeSeriesStatusParams {
 }
 
 export interface UpgradeSeriesStatusResult {
-  error: Error;
-  status: string;
-  target: string;
+  error?: Error;
+  status?: string;
+  target?: string;
 }
 
 export interface UpgradeSeriesStatusResults {
-  results: UpgradeSeriesStatusResult[];
+  results?: UpgradeSeriesStatusResult[];
 }
 
 export interface AdditionalProperties {

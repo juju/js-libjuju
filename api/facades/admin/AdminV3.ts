@@ -8,7 +8,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -68,16 +68,16 @@ export interface LoginRequest {
 }
 
 export interface LoginResult {
-  "bakery-discharge-required": Macaroon;
-  "controller-tag": string;
-  "discharge-required": Macaroon;
-  "discharge-required-error": string;
-  facades: FacadeVersions[];
-  "model-tag": string;
-  "public-dns-name": string;
-  "server-version": string;
-  servers: HostPort[][];
-  "user-info": AuthUserInfo;
+  "bakery-discharge-required"?: Macaroon;
+  "controller-tag"?: string;
+  "discharge-required"?: Macaroon;
+  "discharge-required-error"?: string;
+  facades?: FacadeVersions[];
+  "model-tag"?: string;
+  "public-dns-name"?: string;
+  "server-version"?: string;
+  servers?: HostPort[][];
+  "user-info"?: AuthUserInfo;
 }
 
 export interface Macaroon {

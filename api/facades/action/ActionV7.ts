@@ -4,7 +4,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -28,19 +28,19 @@ export interface ActionMessage {
 }
 
 export interface ActionResult {
-  action: Action;
-  completed: string;
-  enqueued: string;
-  error: Error;
-  log: ActionMessage[];
-  message: string;
-  output: AdditionalProperties;
-  started: string;
-  status: string;
+  action?: Action;
+  completed?: string;
+  enqueued?: string;
+  error?: Error;
+  log?: ActionMessage[];
+  message?: string;
+  output?: AdditionalProperties;
+  started?: string;
+  status?: string;
 }
 
 export interface ActionResults {
-  results: ActionResult[];
+  results?: ActionResult[];
 }
 
 export interface ActionSpec {
@@ -49,17 +49,17 @@ export interface ActionSpec {
 }
 
 export interface Actions {
-  actions: Action[];
+  actions?: Action[];
 }
 
 export interface ApplicationCharmActionsResult {
-  actions: Record<string, ActionSpec>;
-  "application-tag": string;
-  error: Error;
+  actions?: Record<string, ActionSpec>;
+  "application-tag"?: string;
+  error?: Error;
 }
 
 export interface ApplicationsCharmActionsResults {
-  results: ApplicationCharmActionsResult[];
+  results?: ApplicationCharmActionsResult[];
 }
 
 export interface EnqueuedActions {
@@ -82,13 +82,13 @@ export interface Error {
 }
 
 export interface OperationQueryArgs {
-  actions: string[];
-  applications: string[];
-  limit: number;
-  machines: string[];
-  offset: number;
-  status: string[];
-  units: string[];
+  actions?: string[];
+  applications?: string[];
+  limit?: number;
+  machines?: string[];
+  offset?: number;
+  status?: string[];
+  units?: string[];
 }
 
 export interface OperationResult {
@@ -104,8 +104,8 @@ export interface OperationResult {
 }
 
 export interface OperationResults {
-  results: OperationResult[];
-  truncated: boolean;
+  results?: OperationResult[];
+  truncated?: boolean;
 }
 
 export interface RunParams {

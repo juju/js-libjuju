@@ -65,7 +65,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ListResourcesArgs {
@@ -107,7 +107,7 @@ export interface ResourcesResults {
 
 export interface UnitResources {
   Entity: Entity;
-  "download-progress": AdditionalProperties;
+  "download-progress": Record<string, number>;
   resources: Resource[];
   tag: string;
 }

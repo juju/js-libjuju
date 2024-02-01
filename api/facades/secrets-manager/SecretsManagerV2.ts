@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -15,6 +15,12 @@ import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
 import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
+
+export interface AccessInfo {
+  role: string;
+  "scope-tag": string;
+  "target-tag": string;
+}
 
 export interface CreateSecretArg {
   UpsertSecretArg: UpsertSecretArg;
@@ -37,6 +43,7 @@ export interface CreateSecretURIsArg {
 }
 
 export interface DeleteSecretArg {
+  label: string;
   revisions?: number[];
   uri: string;
 }
@@ -60,7 +67,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -95,6 +102,7 @@ export interface GrantRevokeSecretArgs {
 }
 
 export interface ListSecretResult {
+  access?: AccessInfo[];
   "create-time": string;
   description?: string;
   label?: string;
@@ -116,6 +124,7 @@ export interface ListSecretResults {
 
 export interface SecretBackendArgs {
   "backend-ids": string[];
+  "for-drain": boolean;
 }
 
 export interface SecretBackendConfig {
@@ -147,8 +156,8 @@ export interface SecretConsumerInfoResults {
 }
 
 export interface SecretContentParams {
-  data: Record<string, string>;
-  "value-ref": SecretValueRef;
+  data?: Record<string, string>;
+  "value-ref"?: SecretValueRef;
 }
 
 export interface SecretContentResult {
@@ -205,8 +214,8 @@ export interface SecretValueRef {
 }
 
 export interface SecretValueResult {
-  data: Record<string, string>;
-  error: Error;
+  data?: Record<string, string>;
+  error?: Error;
 }
 
 export interface StringResult {
@@ -244,12 +253,12 @@ export interface UpdateSecretArgs {
 }
 
 export interface UpsertSecretArg {
-  content: SecretContentParams;
-  description: string;
-  "expire-time": string;
-  label: string;
-  params: AdditionalProperties;
-  "rotate-policy": string;
+  content?: SecretContentParams;
+  description?: string;
+  "expire-time"?: string;
+  label?: string;
+  params?: AdditionalProperties;
+  "rotate-policy"?: string;
 }
 
 export interface AdditionalProperties {

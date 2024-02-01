@@ -29,8 +29,8 @@ export interface BundleChangesMapArgs {
 }
 
 export interface BundleChangesMapArgsResults {
-  changes: BundleChangesMapArgs[];
-  errors: string[];
+  changes?: BundleChangesMapArgs[];
+  errors?: string[];
 }
 
 export interface BundleChangesParams {
@@ -39,8 +39,8 @@ export interface BundleChangesParams {
 }
 
 export interface BundleChangesResults {
-  changes: BundleChange[];
-  errors: string[];
+  changes?: BundleChange[];
+  errors?: string[];
 }
 
 export interface AdditionalProperties {

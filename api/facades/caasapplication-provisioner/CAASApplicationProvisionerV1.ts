@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -39,8 +39,8 @@ export interface Base {
 }
 
 export interface CAASApplicationOCIResourceResult {
-  error: Error;
-  result: CAASApplicationOCIResources;
+  error?: Error;
+  result?: CAASApplicationOCIResources;
 }
 
 export interface CAASApplicationOCIResourceResults {
@@ -52,12 +52,12 @@ export interface CAASApplicationOCIResources {
 }
 
 export interface CAASApplicationProvisionerConfig {
-  "unmanaged-applications": Entities;
+  "unmanaged-applications"?: Entities;
 }
 
 export interface CAASApplicationProvisionerConfigResult {
-  error: Error;
-  "provisioner-config": CAASApplicationProvisionerConfig;
+  error?: Error;
+  "provisioner-config"?: CAASApplicationProvisionerConfig;
 }
 
 export interface CAASApplicationProvisioningInfo {
@@ -93,8 +93,8 @@ export interface CAASApplicationProvisioningStateArg {
 }
 
 export interface CAASApplicationProvisioningStateResult {
-  error: Error;
-  "provisioning-state": CAASApplicationProvisioningState;
+  error?: Error;
+  "provisioning-state"?: CAASApplicationProvisioningState;
 }
 
 export interface CAASUnitInfo {
@@ -103,8 +103,8 @@ export interface CAASUnitInfo {
 }
 
 export interface CAASUnitsResult {
-  error: Error;
-  units: CAASUnitInfo[];
+  error?: Error;
+  units?: CAASUnitInfo[];
 }
 
 export interface CAASUnitsResults {
@@ -128,18 +128,18 @@ export interface CharmActionSpec {
 }
 
 export interface CharmActions {
-  specs: Record<string, CharmActionSpec>;
+  specs?: Record<string, CharmActionSpec>;
 }
 
 export interface CharmBase {
-  architectures: string[];
-  channel: string;
-  name: string;
+  architectures?: string[];
+  channel?: string;
+  name?: string;
 }
 
 export interface CharmContainer {
-  mounts: CharmMount[];
-  resource: string;
+  mounts?: CharmMount[];
+  resource?: string;
 }
 
 export interface CharmDeployment {
@@ -164,7 +164,7 @@ export interface CharmLXDProfile {
 }
 
 export interface CharmManifest {
-  bases: CharmBase[];
+  bases?: CharmBase[];
 }
 
 export interface CharmMeta {
@@ -201,8 +201,8 @@ export interface CharmMetrics {
 }
 
 export interface CharmMount {
-  location: string;
-  storage: string;
+  location?: string;
+  storage?: string;
 }
 
 export interface CharmOption {
@@ -254,8 +254,8 @@ export interface CharmURL {
 }
 
 export interface DestroyUnitInfo {
-  "destroyed-storage": Entity[];
-  "detached-storage": Entity[];
+  "destroyed-storage"?: Entity[];
+  "detached-storage"?: Entity[];
 }
 
 export interface DestroyUnitParams {
@@ -267,12 +267,12 @@ export interface DestroyUnitParams {
 }
 
 export interface DestroyUnitResult {
-  error: Error;
-  info: DestroyUnitInfo;
+  error?: Error;
+  info?: DestroyUnitInfo;
 }
 
 export interface DestroyUnitResults {
-  results: DestroyUnitResult[];
+  results?: DestroyUnitResult[];
 }
 
 export interface DestroyUnitsParams {
@@ -340,7 +340,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -468,8 +468,8 @@ export interface UpdateApplicationUnitArgs {
 }
 
 export interface UpdateApplicationUnitResult {
-  error: Error;
-  info: UpdateApplicationUnitsInfo;
+  error?: Error;
+  info?: UpdateApplicationUnitsInfo;
 }
 
 export interface UpdateApplicationUnitResults {
@@ -489,21 +489,21 @@ export interface UpdateApplicationUnitsInfo {
 }
 
 export interface Value {
-  "allocate-public-ip": boolean;
-  arch: string;
-  container: string;
-  cores: number;
-  "cpu-power": number;
-  "image-id": string;
-  "instance-role": string;
-  "instance-type": string;
-  mem: number;
-  "root-disk": number;
-  "root-disk-source": string;
-  spaces: string[];
-  tags: string[];
-  "virt-type": string;
-  zones: string[];
+  "allocate-public-ip"?: boolean;
+  arch?: string;
+  container?: string;
+  cores?: number;
+  "cpu-power"?: number;
+  "image-id"?: string;
+  "instance-role"?: string;
+  "instance-type"?: string;
+  mem?: number;
+  "root-disk"?: number;
+  "root-disk-source"?: string;
+  spaces?: string[];
+  tags?: string[];
+  "virt-type"?: string;
+  zones?: string[];
 }
 
 export interface AdditionalProperties {

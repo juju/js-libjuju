@@ -113,20 +113,20 @@ describe("generateInterfaces", () => {
       {
         name: "UserInfoRequest",
         types: [
-          { name: "entities", required: true, type: "array" },
-          { name: "include-disabled", required: true, type: "boolean" },
+          { name: "entities", required: false, type: "array" },
+          { name: "include-disabled", required: false, type: "boolean" },
         ],
       },
       {
         name: "UserInfoResult",
         types: [
-          { name: "error", required: true, type: "Error" },
-          { name: "result", required: true, type: "UserInfo" },
+          { name: "error", required: false, type: "Error" },
+          { name: "result", required: false, type: "UserInfo" },
         ],
       },
       {
         name: "AdditionalProperties",
-        types: [{ name: "[key: string]", required: true, type: "any" }],
+        types: [{ name: "[key: string]", required: false, type: "any" }],
       },
     ]);
   });
@@ -158,7 +158,7 @@ describe("generateInterfaces", () => {
       },
       {
         name: "AdditionalProperties",
-        types: [{ name: "[key: string]", required: true, type: "any" }],
+        types: [{ name: "[key: string]", required: false, type: "any" }],
       },
     ]);
   });
@@ -189,7 +189,7 @@ describe("generateInterfaces", () => {
       },
       {
         name: "AdditionalProperties",
-        types: [{ name: "[key: string]", required: true, type: "any" }],
+        types: [{ name: "[key: string]", required: false, type: "any" }],
       },
     ]);
   });
@@ -246,7 +246,7 @@ describe("generateInterfaces", () => {
       },
       {
         name: "AdditionalProperties",
-        types: [{ name: "[key: string]", required: true, type: "any" }],
+        types: [{ name: "[key: string]", required: false, type: "any" }],
       },
     ]);
   });
@@ -266,11 +266,11 @@ describe("generateTypes", () => {
         []
       )
     ).toStrictEqual([
-      { name: "applications", required: true, type: "string[]" },
-      { name: "commands", required: true, type: "string" },
-      { name: "execution-group", required: true, type: "string" },
-      { name: "parallel", required: true, type: "boolean" },
-      { name: "timeout", required: true, type: "number" },
+      { name: "applications", required: false, type: "string[]" },
+      { name: "commands", required: false, type: "string" },
+      { name: "execution-group", required: false, type: "string" },
+      { name: "parallel", required: false, type: "boolean" },
+      { name: "timeout", required: false, type: "number" },
     ]);
   });
 
@@ -301,7 +301,7 @@ describe("generateTypes", () => {
         []
       )
     ).toStrictEqual([
-      { name: "actions", required: true, type: "AdditionalProperties" },
+      { name: "actions", required: false, type: "AdditionalProperties" },
     ]);
   });
 
@@ -326,7 +326,7 @@ describe("generateTypes", () => {
         },
         []
       )
-    ).toStrictEqual([{ name: "actions", required: true, type: "unknown" }]);
+    ).toStrictEqual([{ name: "actions", required: false, type: "unknown" }]);
   });
 
   it("handles patternProperties with additionalProperties", () => {
@@ -346,7 +346,7 @@ describe("generateTypes", () => {
         []
       )
     ).toStrictEqual([
-      { name: "actions", required: true, type: "AdditionalProperties" },
+      { name: "actions", required: false, type: "AdditionalProperties" },
     ]);
   });
 
@@ -369,7 +369,7 @@ describe("generateTypes", () => {
     ).toStrictEqual([
       {
         name: "actions",
-        required: true,
+        required: false,
         type: "object",
         valueType: "ActionParams",
       },
@@ -394,7 +394,7 @@ describe("generateTypes", () => {
     ).toStrictEqual([
       {
         name: "actions",
-        required: true,
+        required: false,
         type: "object",
         valueType: "string",
       },
@@ -422,7 +422,7 @@ describe("generateTypes", () => {
     ).toStrictEqual([
       {
         name: "actions",
-        required: true,
+        required: false,
         type: "object",
         valueType: "string[]",
       },
@@ -452,7 +452,7 @@ describe("generateTypes", () => {
     ).toStrictEqual([
       {
         name: "actions",
-        required: true,
+        required: false,
         type: "object",
         valueType: {
           type: "object",
@@ -471,7 +471,7 @@ describe("generateTypes", () => {
         []
       )
     ).toStrictEqual([
-      { name: "agent-version", required: true, type: "string" },
+      { name: "agent-version", required: false, type: "string" },
     ]);
   });
 });

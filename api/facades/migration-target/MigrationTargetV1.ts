@@ -29,7 +29,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -37,7 +37,7 @@ export interface ErrorResults {
 }
 
 export interface MigrationModelInfo {
-  "agent-version": Number;
+  "agent-version": string;
   "controller-agent-version": Number;
   name: string;
   "owner-tag": string;
@@ -68,7 +68,7 @@ export interface SerializedModelResource {
   "application-revision": SerializedModelResourceRevision;
   "charmstore-revision": SerializedModelResourceRevision;
   name: string;
-  "unit-revisions": AdditionalProperties;
+  "unit-revisions": Record<string, SerializedModelResourceRevision>;
 }
 
 export interface SerializedModelResourceRevision {

@@ -26,7 +26,7 @@ export interface BoolResults {
 }
 
 export interface CloudCredential {
-  attrs?: AdditionalProperties;
+  attrs?: Record<string, string>;
   "auth-type": string;
   redacted?: string[];
 }
@@ -43,12 +43,12 @@ export interface CloudSpec {
 }
 
 export interface CloudSpecResult {
-  error: Error;
-  result: CloudSpec;
+  error?: Error;
+  result?: CloudSpec;
 }
 
 export interface CloudSpecResults {
-  results: CloudSpecResult[];
+  results?: CloudSpecResult[];
 }
 
 export interface ControllerAPIInfoResult {
@@ -87,7 +87,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -121,8 +121,8 @@ export interface Macaroon {
 }
 
 export interface MacaroonResult {
-  error: Error;
-  result: Macaroon;
+  error?: Error;
+  result?: Macaroon;
 }
 
 export interface MacaroonResults {
@@ -190,8 +190,8 @@ export interface StringResults {
 }
 
 export interface StringsResult {
-  error: Error;
-  result: string[];
+  error?: Error;
+  result?: string[];
 }
 
 export interface StringsResults {

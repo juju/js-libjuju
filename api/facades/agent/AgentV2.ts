@@ -27,7 +27,7 @@ export interface AgentGetEntitiesResults {
 }
 
 export interface CloudCredential {
-  attrs?: AdditionalProperties;
+  attrs?: Record<string, string>;
   "auth-type": string;
   redacted?: string[];
 }
@@ -44,12 +44,12 @@ export interface CloudSpec {
 }
 
 export interface CloudSpecResult {
-  error: Error;
-  result: CloudSpec;
+  error?: Error;
+  result?: CloudSpec;
 }
 
 export interface CloudSpecResults {
-  results: CloudSpecResult[];
+  results?: CloudSpecResult[];
 }
 
 export interface ControllerAPIInfoResult {
@@ -90,7 +90,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {

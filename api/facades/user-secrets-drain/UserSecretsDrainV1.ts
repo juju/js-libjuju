@@ -4,7 +4,7 @@
     Controller-machine-agent
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3.2 at the git SHA 65fa4c1ee5.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -36,7 +36,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -104,8 +104,8 @@ export interface SecretBackendConfigResults {
 }
 
 export interface SecretContentParams {
-  data: Record<string, string>;
-  "value-ref": SecretValueRef;
+  data?: Record<string, string>;
+  "value-ref"?: SecretValueRef;
 }
 
 export interface SecretContentResult {
@@ -140,8 +140,8 @@ export interface SecretValueRef {
 }
 
 export interface SecretValueResult {
-  data: Record<string, string>;
-  error: Error;
+  data?: Record<string, string>;
+  error?: Error;
 }
 
 export interface AdditionalProperties {

@@ -26,19 +26,19 @@ export interface ActionMessage {
 }
 
 export interface ActionResult {
-  action: Action;
-  completed: string;
-  enqueued: string;
-  error: Error;
-  log: ActionMessage[];
-  message: string;
-  output: AdditionalProperties;
-  started: string;
-  status: string;
+  action?: Action;
+  completed?: string;
+  enqueued?: string;
+  error?: Error;
+  log?: ActionMessage[];
+  message?: string;
+  output?: AdditionalProperties;
+  started?: string;
+  status?: string;
 }
 
 export interface ActionResults {
-  results: ActionResult[];
+  results?: ActionResult[];
 }
 
 export interface ActionSpec {
@@ -47,37 +47,37 @@ export interface ActionSpec {
 }
 
 export interface Actions {
-  actions: Action[];
+  actions?: Action[];
 }
 
 export interface ActionsByName {
-  actions: ActionResult[];
-  error: Error;
-  name: string;
+  actions?: ActionResult[];
+  error?: Error;
+  name?: string;
 }
 
 export interface ActionsByNames {
-  actions: ActionsByName[];
+  actions?: ActionsByName[];
 }
 
 export interface ActionsByReceiver {
-  actions: ActionResult[];
-  error: Error;
-  receiver: string;
+  actions?: ActionResult[];
+  error?: Error;
+  receiver?: string;
 }
 
 export interface ActionsByReceivers {
-  actions: ActionsByReceiver[];
+  actions?: ActionsByReceiver[];
 }
 
 export interface ApplicationCharmActionsResult {
-  actions: AdditionalProperties;
-  "application-tag": string;
-  error: Error;
+  actions?: Record<string, ActionSpec>;
+  "application-tag"?: string;
+  error?: Error;
 }
 
 export interface ApplicationsCharmActionsResults {
-  results: ApplicationCharmActionsResult[];
+  results?: ApplicationCharmActionsResult[];
 }
 
 export interface EnqueuedActions {
@@ -100,7 +100,7 @@ export interface Error {
 }
 
 export interface FindActionsByNames {
-  names: string[];
+  names?: string[];
 }
 
 export interface FindTags {
@@ -108,17 +108,17 @@ export interface FindTags {
 }
 
 export interface FindTagsResults {
-  matches: AdditionalProperties;
+  matches: Record<string, Entity[]>;
 }
 
 export interface OperationQueryArgs {
-  actions: string[];
-  applications: string[];
-  limit: number;
-  machines: string[];
-  offset: number;
-  status: string[];
-  units: string[];
+  actions?: string[];
+  applications?: string[];
+  limit?: number;
+  machines?: string[];
+  offset?: number;
+  status?: string[];
+  units?: string[];
 }
 
 export interface OperationResult {
@@ -133,8 +133,8 @@ export interface OperationResult {
 }
 
 export interface OperationResults {
-  results: OperationResult[];
-  truncated: boolean;
+  results?: OperationResult[];
+  truncated?: boolean;
 }
 
 export interface RunParams {

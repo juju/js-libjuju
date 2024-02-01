@@ -4,7 +4,7 @@
     Controllers
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -20,9 +20,9 @@ export interface AddUser {
 }
 
 export interface AddUserResult {
-  error: Error;
-  "secret-key": number[];
-  tag: string;
+  error?: Error;
+  "secret-key"?: number[];
+  tag?: string;
 }
 
 export interface AddUserResults {
@@ -57,7 +57,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -73,8 +73,8 @@ export interface ModelUserInfo {
 }
 
 export interface ModelUserInfoResult {
-  error: Error;
-  result: ModelUserInfo;
+  error?: Error;
+  result?: ModelUserInfo;
 }
 
 export interface ModelUserInfoResults {
@@ -97,8 +97,8 @@ export interface UserInfoRequest {
 }
 
 export interface UserInfoResult {
-  error: Error;
-  result: UserInfo;
+  error?: Error;
+  result?: UserInfo;
 }
 
 export interface UserInfoResults {

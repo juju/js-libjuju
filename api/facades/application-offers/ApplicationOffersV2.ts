@@ -19,7 +19,7 @@ import { autoBind } from "../../utils.js";
 export interface AddApplicationOffer {
   "application-description": string;
   "application-name": string;
-  endpoints: AdditionalProperties;
+  endpoints: Record<string, string>;
   "model-tag": string;
   "offer-name": string;
 }
@@ -32,7 +32,7 @@ export interface ApplicationOfferAdminDetails {
   ApplicationOfferDetails: ApplicationOfferDetails;
   "application-description": string;
   "application-name": string;
-  bindings?: AdditionalProperties;
+  bindings?: Record<string, string>;
   "charm-url": string;
   connections?: OfferConnection[];
   endpoints?: RemoteEndpoint[];
@@ -46,7 +46,7 @@ export interface ApplicationOfferAdminDetails {
 
 export interface ApplicationOfferDetails {
   "application-description": string;
-  bindings?: AdditionalProperties;
+  bindings?: Record<string, string>;
   endpoints?: RemoteEndpoint[];
   "offer-name": string;
   "offer-url": string;
@@ -57,18 +57,18 @@ export interface ApplicationOfferDetails {
 }
 
 export interface ApplicationOfferResult {
-  error: Error;
-  result: ApplicationOfferAdminDetails;
+  error?: Error;
+  result?: ApplicationOfferAdminDetails;
 }
 
 export interface ApplicationOffersResults {
-  results: ApplicationOfferResult[];
+  results?: ApplicationOfferResult[];
 }
 
 export interface ConsumeOfferDetails {
-  "external-controller": ExternalControllerInfo;
-  macaroon: Macaroon;
-  offer: ApplicationOfferDetails;
+  "external-controller"?: ExternalControllerInfo;
+  macaroon?: Macaroon;
+  offer?: ApplicationOfferDetails;
 }
 
 export interface ConsumeOfferDetailsResult {
@@ -80,7 +80,7 @@ export interface ConsumeOfferDetailsResult {
 }
 
 export interface ConsumeOfferDetailsResults {
-  results: ConsumeOfferDetailsResult[];
+  results?: ConsumeOfferDetailsResult[];
 }
 
 export interface DestroyApplicationOffers {
@@ -108,7 +108,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -163,8 +163,8 @@ export interface OfferFilters {
 }
 
 export interface OfferURLs {
-  "bakery-version": number;
-  "offer-urls": string[];
+  "bakery-version"?: number;
+  "offer-urls"?: string[];
 }
 
 export interface OfferUserDetails {
@@ -188,8 +188,8 @@ export interface RemoteApplicationInfo {
 }
 
 export interface RemoteApplicationInfoResult {
-  error: Error;
-  result: RemoteApplicationInfo;
+  error?: Error;
+  result?: RemoteApplicationInfo;
 }
 
 export interface RemoteApplicationInfoResults {

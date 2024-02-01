@@ -1,6 +1,6 @@
 {
   "name": "@canonical/jujulib",
-  "version": "4.1.0",
+  "version": "5.0.0",
   "description": "Juju API client",
   "main": "dist/api/client.js",
   "types": "dist/api/client.d.ts",

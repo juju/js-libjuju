@@ -63,7 +63,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -71,13 +71,13 @@ export interface ErrorResults {
 }
 
 export interface MachineHardware {
-  arch: string;
-  "availability-zone": string;
-  cores: number;
-  "cpu-power": number;
-  mem: number;
-  "root-disk": number;
-  tags: string[];
+  arch?: string;
+  "availability-zone"?: string;
+  cores?: number;
+  "cpu-power"?: number;
+  mem?: number;
+  "root-disk"?: number;
+  tags?: string[];
 }
 
 export interface MapResult {
@@ -112,13 +112,13 @@ export interface ModelDefaultValues {
 }
 
 export interface ModelDefaults {
-  controller: AdditionalProperties;
-  default: AdditionalProperties;
-  regions: RegionDefaults[];
+  controller?: AdditionalProperties;
+  default?: AdditionalProperties;
+  regions?: RegionDefaults[];
 }
 
 export interface ModelDefaultsResult {
-  config: AdditionalProperties;
+  config: Record<string, ModelDefaults>;
   error?: Error;
 }
 
@@ -136,7 +136,7 @@ export interface ModelFilesystemInfo {
 }
 
 export interface ModelInfo {
-  "agent-version": Number;
+  "agent-version": string;
   "cloud-credential-tag"?: string;
   "cloud-credential-validity"?: boolean;
   "cloud-region"?: string;
@@ -158,8 +158,8 @@ export interface ModelInfo {
 }
 
 export interface ModelInfoResult {
-  error: Error;
-  result: ModelInfo;
+  error?: Error;
+  result?: ModelInfo;
 }
 
 export interface ModelInfoResults {
@@ -213,7 +213,7 @@ export interface ModelSummariesRequest {
 }
 
 export interface ModelSummary {
-  "agent-version": Number;
+  "agent-version": string;
   "cloud-credential-tag"?: string;
   "cloud-region"?: string;
   "cloud-tag": string;
@@ -235,8 +235,8 @@ export interface ModelSummary {
 }
 
 export interface ModelSummaryResult {
-  error: Error;
-  result: ModelSummary;
+  error?: Error;
+  result?: ModelSummary;
 }
 
 export interface ModelSummaryResults {

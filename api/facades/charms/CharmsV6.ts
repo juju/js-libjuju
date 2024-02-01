@@ -4,7 +4,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.2 at the git SHA 3a098707a1.
   Do not manually edit this file.
 */
 
@@ -50,18 +50,18 @@ export interface CharmActionSpec {
 }
 
 export interface CharmActions {
-  specs: Record<string, CharmActionSpec>;
+  specs?: Record<string, CharmActionSpec>;
 }
 
 export interface CharmBase {
-  architectures: string[];
-  channel: string;
-  name: string;
+  architectures?: string[];
+  channel?: string;
+  name?: string;
 }
 
 export interface CharmContainer {
-  mounts: CharmMount[];
-  resource: string;
+  mounts?: CharmMount[];
+  resource?: string;
 }
 
 export interface CharmDeployment {
@@ -86,7 +86,7 @@ export interface CharmLXDProfile {
 }
 
 export interface CharmManifest {
-  bases: CharmBase[];
+  bases?: CharmBase[];
 }
 
 export interface CharmMeta {
@@ -123,8 +123,8 @@ export interface CharmMetrics {
 }
 
 export interface CharmMount {
-  location: string;
-  storage: string;
+  location?: string;
+  storage?: string;
 }
 
 export interface CharmOption {
@@ -257,7 +257,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {

@@ -213,9 +213,7 @@ function generateInterface([name, definition]: [
       {
         name: "[key: string]",
         type: "AdditionalProperties",
-        // This isn't actually required but we don't want to add the ? for
-        // optional with this key type.
-        required: true,
+        required: false,
       },
     ];
   }
@@ -299,9 +297,8 @@ export function generateTypes(
 
   function isRequired(requiredArgs: string[], propertyName: string): boolean {
     if (!requiredArgs.length) {
-      // If requiredArgs doesn't exist then it's likely that this is a
-      // response interface.
-      return true;
+      // If requiredArgs doesn't exist then all properties will be not required.
+      return false;
     }
     return requiredArgs.includes(propertyName);
   }
@@ -336,9 +333,10 @@ function generateFile(facadeTemplateData: FacadeTemplate): void {
   const outputFolder = `api/facades/${facadeFoldername}/`;
   mkdirSync(outputFolder, { recursive: true });
   const newFacadeFilePath = join(outputFolder, `${filename}.ts`);
-  // Avoid overriding existing files, in case you need to regenerate
-  // given files, delete the files first
-  if (!existsSync(newFacadeFilePath))
+  if (
+    process.env.OVERWRITE_SCHEMAS === "true" ||
+    !existsSync(newFacadeFilePath)
+  )
     writeFileSync(join(outputFolder, `${filename}.ts`), output);
 }
 

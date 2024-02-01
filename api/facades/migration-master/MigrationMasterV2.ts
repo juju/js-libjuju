@@ -30,7 +30,7 @@ export interface MasterMigrationStatus {
 }
 
 export interface MigrationModelInfo {
-  "agent-version": Number;
+  "agent-version": string;
   "controller-agent-version": Number;
   name: string;
   "owner-tag": string;
@@ -90,7 +90,7 @@ export interface SerializedModelResource {
   "application-revision": SerializedModelResourceRevision;
   "charmstore-revision": SerializedModelResourceRevision;
   name: string;
-  "unit-revisions": AdditionalProperties;
+  "unit-revisions": Record<string, SerializedModelResourceRevision>;
 }
 
 export interface SerializedModelResourceRevision {

@@ -31,8 +31,8 @@ export interface Error {
 }
 
 export interface SSHAddressResult {
-  address: string;
-  error: Error;
+  address?: string;
+  error?: Error;
 }
 
 export interface SSHAddressResults {
@@ -53,8 +53,8 @@ export interface SSHProxyResult {
 }
 
 export interface SSHPublicKeysResult {
-  error: Error;
-  "public-keys": string[];
+  error?: Error;
+  "public-keys"?: string[];
 }
 
 export interface SSHPublicKeysResults {

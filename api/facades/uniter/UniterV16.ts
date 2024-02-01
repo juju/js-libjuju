@@ -35,7 +35,7 @@ export interface ActionExecutionResult {
 }
 
 export interface ActionExecutionResults {
-  results: ActionExecutionResult[];
+  results?: ActionExecutionResult[];
 }
 
 export interface ActionMessage {
@@ -48,19 +48,19 @@ export interface ActionMessageParams {
 }
 
 export interface ActionResult {
-  action: Action;
-  completed: string;
-  enqueued: string;
-  error: Error;
-  log: ActionMessage[];
-  message: string;
-  output: AdditionalProperties;
-  started: string;
-  status: string;
+  action?: Action;
+  completed?: string;
+  enqueued?: string;
+  error?: Error;
+  log?: ActionMessage[];
+  message?: string;
+  output?: AdditionalProperties;
+  started?: string;
+  status?: string;
 }
 
 export interface ActionResults {
-  results: ActionResult[];
+  results?: ActionResult[];
 }
 
 export interface Address {
@@ -74,7 +74,7 @@ export interface Address {
 export interface ApplicationStatusResult {
   application: StatusResult;
   error?: Error;
-  units: AdditionalProperties;
+  units: Record<string, StatusResult>;
 }
 
 export interface ApplicationStatusResults {
@@ -108,7 +108,7 @@ export interface CharmURLs {
 }
 
 export interface CloudCredential {
-  attrs?: AdditionalProperties;
+  attrs?: Record<string, string>;
   "auth-type": string;
   redacted?: string[];
 }
@@ -125,8 +125,8 @@ export interface CloudSpec {
 }
 
 export interface CloudSpecResult {
-  error: Error;
-  result: CloudSpec;
+  error?: Error;
+  result?: CloudSpec;
 }
 
 export interface CommitHookChangesArg {
@@ -215,7 +215,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -228,12 +228,12 @@ export interface GetLeadershipSettingsBulkResults {
 
 export interface GetLeadershipSettingsResult {
   error?: Error;
-  settings: AdditionalProperties;
+  settings: Record<string, string>;
 }
 
 export interface GoalState {
-  relations: AdditionalProperties;
-  units: AdditionalProperties;
+  relations: Record<string, Record<string, GoalStateStatus>>;
+  units: Record<string, GoalStateStatus>;
 }
 
 export interface GoalStateResult {
@@ -305,7 +305,7 @@ export interface MergeLeadershipSettingsBulkParams {
 
 export interface MergeLeadershipSettingsParam {
   "application-tag"?: string;
-  settings: AdditionalProperties;
+  settings: Record<string, string>;
   "unit-tag"?: string;
 }
 
@@ -321,7 +321,7 @@ export interface MeterStatusResults {
 
 export interface Metric {
   key: string;
-  labels?: AdditionalProperties;
+  labels?: Record<string, string>;
   time: string;
   value: string;
 }
@@ -366,14 +366,14 @@ export interface NetworkInfoParams {
 }
 
 export interface NetworkInfoResult {
-  "bind-addresses": NetworkInfo[];
-  "egress-subnets": string[];
-  error: Error;
-  "ingress-addresses": string[];
+  "bind-addresses"?: NetworkInfo[];
+  "egress-subnets"?: string[];
+  error?: Error;
+  "ingress-addresses"?: string[];
 }
 
 export interface NetworkInfoResults {
-  results: AdditionalProperties;
+  results: Record<string, NetworkInfoResult>;
 }
 
 export interface NotifyWatchResult {
@@ -441,9 +441,9 @@ export interface RelationUnitPairs {
 }
 
 export interface RelationUnitSettings {
-  "application-settings": AdditionalProperties;
+  "application-settings": Record<string, string>;
   relation: string;
-  settings: AdditionalProperties;
+  settings: Record<string, string>;
   unit: string;
 }
 
@@ -467,8 +467,8 @@ export interface RelationUnits {
 }
 
 export interface RelationUnitsChange {
-  "app-changed"?: AdditionalProperties;
-  changed: AdditionalProperties;
+  "app-changed"?: Record<string, number>;
+  changed: Record<string, UnitSettings>;
   departed?: string[];
 }
 
@@ -500,9 +500,9 @@ export interface SetStatus {
 }
 
 export interface SetUnitStateArg {
-  "charm-state"?: AdditionalProperties;
+  "charm-state"?: Record<string, string>;
   "meter-status-state"?: string;
-  "relation-state"?: AdditionalProperties;
+  "relation-state"?: Record<string, string>;
   "storage-state"?: string;
   tag: string;
   "uniter-state"?: string;
@@ -514,7 +514,7 @@ export interface SetUnitStateArgs {
 
 export interface SettingsResult {
   error?: Error;
-  settings: AdditionalProperties;
+  settings: Record<string, string>;
 }
 
 export interface SettingsResults {
@@ -565,7 +565,7 @@ export interface StorageAttachmentIdsResult {
 }
 
 export interface StorageAttachmentIdsResults {
-  results: StorageAttachmentIdsResult[];
+  results?: StorageAttachmentIdsResult[];
 }
 
 export interface StorageAttachmentResult {
@@ -574,13 +574,13 @@ export interface StorageAttachmentResult {
 }
 
 export interface StorageAttachmentResults {
-  results: StorageAttachmentResult[];
+  results?: StorageAttachmentResult[];
 }
 
 export interface StorageConstraints {
-  count: number;
-  pool: string;
-  size: number;
+  count?: number;
+  pool?: string;
+  size?: number;
 }
 
 export interface StoragesAddParams {
@@ -607,8 +607,8 @@ export interface StringResults {
 }
 
 export interface StringsResult {
-  error: Error;
-  result: string[];
+  error?: Error;
+  result?: string[];
 }
 
 export interface StringsWatchResult {
@@ -637,12 +637,12 @@ export interface UnitSettings {
 }
 
 export interface UnitStateResult {
-  "charm-state": AdditionalProperties;
-  error: Error;
-  "meter-status-state": string;
-  "relation-state": AdditionalProperties;
-  "storage-state": string;
-  "uniter-state": string;
+  "charm-state"?: Record<string, string>;
+  error?: Error;
+  "meter-status-state"?: string;
+  "relation-state"?: Record<string, string>;
+  "storage-state"?: string;
+  "uniter-state"?: string;
 }
 
 export interface UnitStateResults {
@@ -660,12 +660,12 @@ export interface UpgradeSeriesStatusParams {
 }
 
 export interface UpgradeSeriesStatusResult {
-  error: Error;
-  status: string;
+  error?: Error;
+  status?: string;
 }
 
 export interface UpgradeSeriesStatusResults {
-  results: UpgradeSeriesStatusResult[];
+  results?: UpgradeSeriesStatusResult[];
 }
 
 export interface AdditionalProperties {

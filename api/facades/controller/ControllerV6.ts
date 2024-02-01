@@ -21,7 +21,7 @@ export interface AllWatcherId {
 }
 
 export interface CloudCredential {
-  attrs?: AdditionalProperties;
+  attrs?: Record<string, string>;
   "auth-type": string;
   redacted?: string[];
 }
@@ -38,12 +38,12 @@ export interface CloudSpec {
 }
 
 export interface CloudSpecResult {
-  error: Error;
-  result: CloudSpec;
+  error?: Error;
+  result?: CloudSpec;
 }
 
 export interface CloudSpecResults {
-  results: CloudSpecResult[];
+  results?: CloudSpecResult[];
 }
 
 export interface ConfigValue {
@@ -89,7 +89,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -123,13 +123,13 @@ export interface InitiateMigrationResults {
 }
 
 export interface MachineHardware {
-  arch: string;
-  "availability-zone": string;
-  cores: number;
-  "cpu-power": number;
-  mem: number;
-  "root-disk": number;
-  tags: string[];
+  arch?: string;
+  "availability-zone"?: string;
+  cores?: number;
+  "cpu-power"?: number;
+  mem?: number;
+  "root-disk"?: number;
+  tags?: string[];
 }
 
 export interface MigrationSpec {
@@ -162,11 +162,11 @@ export interface ModelBlockInfo {
 }
 
 export interface ModelBlockInfoList {
-  models: ModelBlockInfo[];
+  models?: ModelBlockInfo[];
 }
 
 export interface ModelConfigResults {
-  config: AdditionalProperties;
+  config: Record<string, ConfigValue>;
 }
 
 export interface ModelFilesystemInfo {
@@ -253,12 +253,12 @@ export interface UserAccess {
 }
 
 export interface UserAccessResult {
-  error: Error;
-  result: UserAccess;
+  error?: Error;
+  result?: UserAccess;
 }
 
 export interface UserAccessResults {
-  results: UserAccessResult[];
+  results?: UserAccessResult[];
 }
 
 export interface UserModel {

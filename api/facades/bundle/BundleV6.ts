@@ -5,7 +5,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -29,8 +29,8 @@ export interface BundleChangesMapArgs {
 }
 
 export interface BundleChangesMapArgsResults {
-  changes: BundleChangesMapArgs[];
-  errors: string[];
+  changes?: BundleChangesMapArgs[];
+  errors?: string[];
 }
 
 export interface BundleChangesParams {
@@ -39,8 +39,8 @@ export interface BundleChangesParams {
 }
 
 export interface BundleChangesResults {
-  changes: BundleChange[];
-  errors: string[];
+  changes?: BundleChange[];
+  errors?: string[];
 }
 
 export interface Error {
@@ -50,7 +50,8 @@ export interface Error {
 }
 
 export interface ExportBundleParams {
-  "include-charm-defaults": boolean;
+  "include-charm-defaults"?: boolean;
+  "include-series"?: boolean;
 }
 
 export interface StringResult {

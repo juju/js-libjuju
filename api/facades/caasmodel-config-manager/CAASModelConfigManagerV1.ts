@@ -4,7 +4,7 @@
     Controller-machine-agent
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -15,6 +15,17 @@ import { autoBind } from "../../utils.js";
 
 export interface ControllerConfigResult {
   config: AdditionalProperties;
+}
+
+export interface Error {
+  code: string;
+  info?: AdditionalProperties;
+  message: string;
+}
+
+export interface NotifyWatchResult {
+  NotifyWatcherId: string;
+  error?: Error;
 }
 
 export interface AdditionalProperties {
@@ -49,6 +60,22 @@ class CAASModelConfigManagerV1 implements Facade {
       const req: JujuRequest = {
         type: "CAASModelConfigManager",
         request: "ControllerConfig",
+        version: 1,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+
+  /**
+
+  */
+  watchControllerConfig(params: any): Promise<NotifyWatchResult> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "CAASModelConfigManager",
+        request: "WatchControllerConfig",
         version: 1,
         params: params,
       };

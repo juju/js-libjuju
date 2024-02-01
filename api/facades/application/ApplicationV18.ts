@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.2 at the git SHA 3a098707a1.
   Do not manually edit this file.
 */
 
@@ -107,8 +107,8 @@ export interface ApplicationGetResults {
 }
 
 export interface ApplicationInfoResult {
-  error: Error;
-  result: ApplicationResult;
+  error?: Error;
+  result?: ApplicationResult;
 }
 
 export interface ApplicationInfoResults {
@@ -265,7 +265,7 @@ export interface ConsumeApplicationArg {
 }
 
 export interface ConsumeApplicationArgs {
-  args: ConsumeApplicationArg[];
+  args?: ConsumeApplicationArg[];
 }
 
 export interface DeployFromRepositoryArg {
@@ -312,9 +312,9 @@ export interface DeployFromRepositoryResults {
 }
 
 export interface DestroyApplicationInfo {
-  "destroyed-storage": Entity[];
-  "destroyed-units": Entity[];
-  "detached-storage": Entity[];
+  "destroyed-storage"?: Entity[];
+  "destroyed-units"?: Entity[];
+  "detached-storage"?: Entity[];
 }
 
 export interface DestroyApplicationParams {
@@ -326,12 +326,12 @@ export interface DestroyApplicationParams {
 }
 
 export interface DestroyApplicationResult {
-  error: Error;
-  info: DestroyApplicationInfo;
+  error?: Error;
+  info?: DestroyApplicationInfo;
 }
 
 export interface DestroyApplicationResults {
-  results: DestroyApplicationResult[];
+  results?: DestroyApplicationResult[];
 }
 
 export interface DestroyApplicationsParams {
@@ -356,8 +356,8 @@ export interface DestroyRelation {
 }
 
 export interface DestroyUnitInfo {
-  "destroyed-storage": Entity[];
-  "detached-storage": Entity[];
+  "destroyed-storage"?: Entity[];
+  "detached-storage"?: Entity[];
 }
 
 export interface DestroyUnitParams {
@@ -369,12 +369,12 @@ export interface DestroyUnitParams {
 }
 
 export interface DestroyUnitResult {
-  error: Error;
-  info: DestroyUnitInfo;
+  error?: Error;
+  info?: DestroyUnitInfo;
 }
 
 export interface DestroyUnitResults {
-  results: DestroyUnitResult[];
+  results?: DestroyUnitResult[];
 }
 
 export interface DestroyUnitsParams {
@@ -405,7 +405,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -413,8 +413,8 @@ export interface ErrorResults {
 }
 
 export interface ExposedEndpoint {
-  "expose-to-cidrs": string[];
-  "expose-to-spaces": string[];
+  "expose-to-cidrs"?: string[];
+  "expose-to-spaces"?: string[];
 }
 
 export interface ExternalControllerInfo {
@@ -488,12 +488,12 @@ export interface ScaleApplicationParams {
 }
 
 export interface ScaleApplicationResult {
-  error: Error;
-  info: ScaleApplicationInfo;
+  error?: Error;
+  info?: ScaleApplicationInfo;
 }
 
 export interface ScaleApplicationResults {
-  results: ScaleApplicationResult[];
+  results?: ScaleApplicationResult[];
 }
 
 export interface ScaleApplicationsParams {
@@ -506,9 +506,9 @@ export interface SetConstraints {
 }
 
 export interface StorageConstraints {
-  count: number;
-  pool: string;
-  size: number;
+  count?: number;
+  pool?: string;
+  size?: number;
 }
 
 export interface StringResult {
@@ -529,8 +529,8 @@ export interface Subnet {
 }
 
 export interface UnitInfoResult {
-  error: Error;
-  result: UnitResult;
+  error?: Error;
+  result?: UnitResult;
 }
 
 export interface UnitInfoResults {
@@ -552,9 +552,9 @@ export interface UnitResult {
 }
 
 export interface UnitsResolved {
-  all: boolean;
-  retry: boolean;
-  tags: Entities;
+  all?: boolean;
+  retry?: boolean;
+  tags?: Entities;
 }
 
 export interface UpdateChannelArg {
@@ -568,21 +568,21 @@ export interface UpdateChannelArgs {
 }
 
 export interface Value {
-  "allocate-public-ip": boolean;
-  arch: string;
-  container: string;
-  cores: number;
-  "cpu-power": number;
-  "image-id": string;
-  "instance-role": string;
-  "instance-type": string;
-  mem: number;
-  "root-disk": number;
-  "root-disk-source": string;
-  spaces: string[];
-  tags: string[];
-  "virt-type": string;
-  zones: string[];
+  "allocate-public-ip"?: boolean;
+  arch?: string;
+  container?: string;
+  cores?: number;
+  "cpu-power"?: number;
+  "image-id"?: string;
+  "instance-role"?: string;
+  "instance-type"?: string;
+  mem?: number;
+  "root-disk"?: number;
+  "root-disk-source"?: string;
+  spaces?: string[];
+  tags?: string[];
+  "virt-type"?: string;
+  zones?: string[];
 }
 
 export interface AdditionalProperties {
