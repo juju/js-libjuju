@@ -37,7 +37,8 @@ ${i.types
     if (name.indexOf("-") !== -1) {
       name = `"${name}"`;
     }
-    const optional = !t.required ? "?" : "";
+    // Don't make index signatures optional (this is a syntax error).
+    const optional = !t.required && !name.endsWith("]") ? "?" : "";
     return padString(`${name}${optional}: ${generateType(t)};`, 2);
   })
   .join("\n")}

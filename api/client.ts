@@ -536,7 +536,7 @@ class Connection {
     };
 
     // Handle facades.
-    const loginSupportedFacades: FacadeVersions[] = loginResult.facades;
+    const loginSupportedFacades: FacadeVersions[] = loginResult.facades ?? [];
     const clientRequestedFacades = facades.reduce(
       (facadeVersions: { [k: string]: FacadeClassList }, current) => {
         if ("versions" in current) {
