@@ -297,8 +297,7 @@ export function generateTypes(
 
   function isRequired(requiredArgs: string[], propertyName: string): boolean {
     if (!requiredArgs.length) {
-      // If requiredArgs doesn't exist then it's likely that this is a
-      // response interface.
+      // If requiredArgs doesn't exist then all properties will be not required.
       return false;
     }
     return requiredArgs.includes(propertyName);
