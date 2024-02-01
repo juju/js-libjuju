@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.2 at the git SHA 3a098707a1.
   Do not manually edit this file.
 */
 
@@ -100,8 +100,8 @@ export interface Error {
 }
 
 export interface ExposedEndpoint {
-  "expose-to-cidrs": string[];
-  "expose-to-spaces": string[];
+  "expose-to-cidrs"?: string[];
+  "expose-to-spaces"?: string[];
 }
 
 export interface FindToolsParams {

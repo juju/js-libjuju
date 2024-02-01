@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -21,8 +21,8 @@ export interface AddStorageDetails {
 }
 
 export interface AddStorageResult {
-  error: Error;
-  result: AddStorageDetails;
+  error?: Error;
+  result?: AddStorageDetails;
 }
 
 export interface AddStorageResults {
@@ -55,7 +55,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -70,8 +70,8 @@ export interface FilesystemAttachmentDetails {
 }
 
 export interface FilesystemAttachmentInfo {
-  "mount-point": string;
-  "read-only": boolean;
+  "mount-point"?: string;
+  "read-only"?: boolean;
 }
 
 export interface FilesystemDetails {
@@ -86,20 +86,20 @@ export interface FilesystemDetails {
 }
 
 export interface FilesystemDetailsListResult {
-  error: Error;
-  result: FilesystemDetails[];
+  error?: Error;
+  result?: FilesystemDetails[];
 }
 
 export interface FilesystemDetailsListResults {
-  results: FilesystemDetailsListResult[];
+  results?: FilesystemDetailsListResult[];
 }
 
 export interface FilesystemFilter {
-  machines: string[];
+  machines?: string[];
 }
 
 export interface FilesystemFilters {
-  filters: FilesystemFilter[];
+  filters?: FilesystemFilter[];
 }
 
 export interface FilesystemInfo {
@@ -120,8 +120,8 @@ export interface ImportStorageParams {
 }
 
 export interface ImportStorageResult {
-  error: Error;
-  result: ImportStorageDetails;
+  error?: Error;
+  result?: ImportStorageDetails;
 }
 
 export interface ImportStorageResults {
@@ -164,9 +164,9 @@ export interface StorageAttachmentIds {
 }
 
 export interface StorageConstraints {
-  count: number;
-  pool: string;
-  size: number;
+  count?: number;
+  pool?: string;
+  size?: number;
 }
 
 export interface StorageDetachmentParams {
@@ -186,21 +186,21 @@ export interface StorageDetails {
 }
 
 export interface StorageDetailsListResult {
-  error: Error;
-  result: StorageDetails[];
+  error?: Error;
+  result?: StorageDetails[];
 }
 
 export interface StorageDetailsListResults {
-  results: StorageDetailsListResult[];
+  results?: StorageDetailsListResult[];
 }
 
 export interface StorageDetailsResult {
-  error: Error;
-  result: StorageDetails;
+  error?: Error;
+  result?: StorageDetails;
 }
 
 export interface StorageDetailsResults {
-  results: StorageDetailsResult[];
+  results?: StorageDetailsResult[];
 }
 
 export interface StorageFilter {
@@ -208,7 +208,7 @@ export interface StorageFilter {
 }
 
 export interface StorageFilters {
-  filters: StorageFilter[];
+  filters?: StorageFilter[];
 }
 
 export interface StoragePool {
@@ -230,21 +230,21 @@ export interface StoragePoolDeleteArgs {
 }
 
 export interface StoragePoolFilter {
-  names: string[];
-  providers: string[];
+  names?: string[];
+  providers?: string[];
 }
 
 export interface StoragePoolFilters {
-  filters: StoragePoolFilter[];
+  filters?: StoragePoolFilter[];
 }
 
 export interface StoragePoolsResult {
-  error: Error;
-  "storage-pools": StoragePool[];
+  error?: Error;
+  "storage-pools"?: StoragePool[];
 }
 
 export interface StoragePoolsResults {
-  results: StoragePoolsResult[];
+  results?: StoragePoolsResult[];
 }
 
 export interface StoragesAddParams {
@@ -262,16 +262,16 @@ export interface VolumeAttachmentDetails {
 }
 
 export interface VolumeAttachmentInfo {
-  "bus-address": string;
-  "device-link": string;
-  "device-name": string;
-  "plan-info": VolumeAttachmentPlanInfo;
-  "read-only": boolean;
+  "bus-address"?: string;
+  "device-link"?: string;
+  "device-name"?: string;
+  "plan-info"?: VolumeAttachmentPlanInfo;
+  "read-only"?: boolean;
 }
 
 export interface VolumeAttachmentPlanInfo {
-  "device-attributes": Record<string, string>;
-  "device-type": string;
+  "device-attributes"?: Record<string, string>;
+  "device-type"?: string;
 }
 
 export interface VolumeDetails {
@@ -285,20 +285,20 @@ export interface VolumeDetails {
 }
 
 export interface VolumeDetailsListResult {
-  error: Error;
-  result: VolumeDetails[];
+  error?: Error;
+  result?: VolumeDetails[];
 }
 
 export interface VolumeDetailsListResults {
-  results: VolumeDetailsListResult[];
+  results?: VolumeDetailsListResult[];
 }
 
 export interface VolumeFilter {
-  machines: string[];
+  machines?: string[];
 }
 
 export interface VolumeFilters {
-  filters: VolumeFilter[];
+  filters?: VolumeFilter[];
 }
 
 export interface VolumeInfo {

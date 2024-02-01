@@ -36,8 +36,8 @@ export interface CharmHubBundle {
 }
 
 export interface CharmHubCharm {
-  config: AdditionalProperties;
-  relations: AdditionalProperties;
+  config: Record<string, CharmOption>;
+  relations: Record<string, Record<string, string>>;
   subordinate: boolean;
   "used-by": string[];
 }
@@ -87,7 +87,7 @@ export interface Info {
 
 export interface InfoResponse {
   bundle?: CharmHubBundle;
-  "channel-map": AdditionalProperties;
+  "channel-map": Record<string, Channel>;
   charm?: CharmHubCharm;
   description: string;
   id: string;

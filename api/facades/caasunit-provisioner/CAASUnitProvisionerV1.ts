@@ -79,7 +79,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -101,7 +101,7 @@ export interface KubernetesDeploymentInfo {
 }
 
 export interface KubernetesDeviceParams {
-  Attributes: AdditionalProperties;
+  Attributes: Record<string, string>;
   Count: number;
   Type: string;
 }
@@ -131,7 +131,7 @@ export interface KubernetesFilesystemParams {
   provider: string;
   size: number;
   storagename: string;
-  tags?: AdditionalProperties;
+  tags?: Record<string, string>;
 }
 
 export interface KubernetesProvisioningInfo {
@@ -143,7 +143,7 @@ export interface KubernetesProvisioningInfo {
   "operator-image-path"?: string;
   "pod-spec": string;
   "raw-k8s-spec"?: string;
-  tags?: AdditionalProperties;
+  tags?: Record<string, string>;
   volumes?: KubernetesVolumeParams[];
 }
 
@@ -177,7 +177,7 @@ export interface KubernetesVolumeParams {
   provider: string;
   size: number;
   storagename: string;
-  tags?: AdditionalProperties;
+  tags?: Record<string, string>;
 }
 
 export interface LifeResult {
@@ -234,8 +234,8 @@ export interface UpdateApplicationUnitArgs {
 }
 
 export interface UpdateApplicationUnitResult {
-  error: Error;
-  info: UpdateApplicationUnitsInfo;
+  error?: Error;
+  info?: UpdateApplicationUnitsInfo;
 }
 
 export interface UpdateApplicationUnitResults {
@@ -255,18 +255,18 @@ export interface UpdateApplicationUnitsInfo {
 }
 
 export interface Value {
-  arch: string;
-  container: string;
-  cores: number;
-  "cpu-power": number;
-  "instance-type": string;
-  mem: number;
-  "root-disk": number;
-  "root-disk-source": string;
-  spaces: string[];
-  tags: string[];
-  "virt-type": string;
-  zones: string[];
+  arch?: string;
+  container?: string;
+  cores?: number;
+  "cpu-power"?: number;
+  "instance-type"?: string;
+  mem?: number;
+  "root-disk"?: number;
+  "root-disk-source"?: string;
+  spaces?: string[];
+  tags?: string[];
+  "virt-type"?: string;
+  zones?: string[];
 }
 
 export interface AdditionalProperties {

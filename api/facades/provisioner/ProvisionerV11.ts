@@ -5,7 +5,7 @@
     Machine-agent
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -117,8 +117,8 @@ export interface ContainerManagerConfigParams {
 }
 
 export interface ContainerProfileResult {
-  error: Error;
-  "lxd-profiles": ContainerLXDProfile[];
+  error?: Error;
+  "lxd-profiles"?: ContainerLXDProfile[];
 }
 
 export interface ContainerProfileResults {
@@ -185,7 +185,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -206,15 +206,15 @@ export interface FindToolsResult {
 }
 
 export interface HardwareCharacteristics {
-  arch: string;
-  "availability-zone": string;
-  "cpu-cores": number;
-  "cpu-power": number;
-  mem: number;
-  "root-disk": number;
-  "root-disk-source": string;
-  tags: string[];
-  "virt-type": string;
+  arch?: string;
+  "availability-zone"?: string;
+  "cpu-cores"?: number;
+  "cpu-power"?: number;
+  mem?: number;
+  "root-disk"?: number;
+  "root-disk-source"?: string;
+  tags?: string[];
+  "virt-type"?: string;
 }
 
 export interface HostNetworkChange {
@@ -429,8 +429,8 @@ export interface StringResults {
 }
 
 export interface StringsResult {
-  error: Error;
-  result: string[];
+  error?: Error;
+  result?: string[];
 }
 
 export interface StringsResults {
@@ -469,21 +469,21 @@ export interface UpdateBehavior {
 }
 
 export interface Value {
-  "allocate-public-ip": boolean;
-  arch: string;
-  container: string;
-  cores: number;
-  "cpu-power": number;
-  "image-id": string;
-  "instance-role": string;
-  "instance-type": string;
-  mem: number;
-  "root-disk": number;
-  "root-disk-source": string;
-  spaces: string[];
-  tags: string[];
-  "virt-type": string;
-  zones: string[];
+  "allocate-public-ip"?: boolean;
+  arch?: string;
+  container?: string;
+  cores?: number;
+  "cpu-power"?: number;
+  "image-id"?: string;
+  "instance-role"?: string;
+  "instance-type"?: string;
+  mem?: number;
+  "root-disk"?: number;
+  "root-disk-source"?: string;
+  spaces?: string[];
+  tags?: string[];
+  "virt-type"?: string;
+  zones?: string[];
 }
 
 export interface Volume {
@@ -492,11 +492,11 @@ export interface Volume {
 }
 
 export interface VolumeAttachmentInfo {
-  "bus-address": string;
-  "device-link": string;
-  "device-name": string;
-  "plan-info": VolumeAttachmentPlanInfo;
-  "read-only": boolean;
+  "bus-address"?: string;
+  "device-link"?: string;
+  "device-name"?: string;
+  "plan-info"?: VolumeAttachmentPlanInfo;
+  "read-only"?: boolean;
 }
 
 export interface VolumeAttachmentParams {
@@ -509,8 +509,8 @@ export interface VolumeAttachmentParams {
 }
 
 export interface VolumeAttachmentPlanInfo {
-  "device-attributes": Record<string, string>;
-  "device-type": string;
+  "device-attributes"?: Record<string, string>;
+  "device-type"?: string;
 }
 
 export interface VolumeInfo {

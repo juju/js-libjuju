@@ -4,7 +4,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3.2 at the git SHA 65fa4c1ee5.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -52,7 +52,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -92,8 +92,8 @@ export interface ListSecretsArgs {
 }
 
 export interface SecretContentParams {
-  data: Record<string, string>;
-  "value-ref": SecretValueRef;
+  data?: Record<string, string>;
+  "value-ref"?: SecretValueRef;
 }
 
 export interface SecretRevision {
@@ -111,15 +111,15 @@ export interface SecretValueRef {
 }
 
 export interface SecretValueResult {
-  data: Record<string, string>;
-  error: Error;
+  data?: Record<string, string>;
+  error?: Error;
 }
 
 export interface SecretsFilter {
-  label: string;
-  "owner-tag": string;
-  revision: number;
-  uri: string;
+  label?: string;
+  "owner-tag"?: string;
+  revision?: number;
+  uri?: string;
 }
 
 export interface StringResult {
@@ -149,12 +149,12 @@ export interface UpdateUserSecretArgs {
 }
 
 export interface UpsertSecretArg {
-  content: SecretContentParams;
-  description: string;
-  "expire-time": string;
-  label: string;
-  params: AdditionalProperties;
-  "rotate-policy": string;
+  content?: SecretContentParams;
+  description?: string;
+  "expire-time"?: string;
+  label?: string;
+  params?: AdditionalProperties;
+  "rotate-policy"?: string;
 }
 
 export interface AdditionalProperties {

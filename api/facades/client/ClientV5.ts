@@ -24,7 +24,7 @@ export interface ApplicationOfferStatus {
   "active-connected-count": number;
   "application-name": string;
   charm: string;
-  endpoints: AdditionalProperties;
+  endpoints: Record<string, RemoteEndpoint>;
   err?: Error;
   "offer-name": string;
   "total-connected-count": number;
@@ -36,20 +36,20 @@ export interface ApplicationStatus {
   "charm-channel"?: string;
   "charm-profile": string;
   "charm-version": string;
-  "endpoint-bindings": AdditionalProperties;
+  "endpoint-bindings": Record<string, string>;
   err?: Error;
   exposed: boolean;
-  "exposed-endpoints"?: AdditionalProperties;
+  "exposed-endpoints"?: Record<string, ExposedEndpoint>;
   int?: number;
   life: string;
-  "meter-statuses": AdditionalProperties;
+  "meter-statuses": Record<string, MeterStatus>;
   "provider-id"?: string;
   "public-address": string;
-  relations: AdditionalProperties;
+  relations: Record<string, string[]>;
   series: string;
   status: DetailedStatus;
   "subordinate-to": string[];
-  units: AdditionalProperties;
+  units: Record<string, UnitStatus>;
   "workload-version": string;
 }
 
@@ -65,7 +65,7 @@ export interface Binary {
 }
 
 export interface BranchStatus {
-  "assigned-units": AdditionalProperties;
+  "assigned-units": Record<string, string[]>;
   created: number;
   "created-by": string;
 }
@@ -95,8 +95,8 @@ export interface Error {
 }
 
 export interface ExposedEndpoint {
-  "expose-to-cidrs": string[];
-  "expose-to-spaces": string[];
+  "expose-to-cidrs"?: string[];
+  "expose-to-spaces"?: string[];
 }
 
 export interface FindToolsParams {
@@ -114,14 +114,14 @@ export interface FindToolsResult {
 }
 
 export interface FullStatus {
-  applications: AdditionalProperties;
-  branches: AdditionalProperties;
+  applications: Record<string, ApplicationStatus>;
+  branches: Record<string, BranchStatus>;
   "controller-timestamp": string;
-  machines: AdditionalProperties;
+  machines: Record<string, MachineStatus>;
   model: ModelStatusInfo;
-  offers: AdditionalProperties;
+  offers: Record<string, ApplicationOfferStatus>;
   relations: RelationStatus[];
-  "remote-applications": AdditionalProperties;
+  "remote-applications": Record<string, RemoteApplicationStatus>;
 }
 
 export interface History {
@@ -130,15 +130,15 @@ export interface History {
 }
 
 export interface LXDProfile {
-  config: AdditionalProperties;
+  config: Record<string, string>;
   description: string;
-  devices: AdditionalProperties;
+  devices: Record<string, Record<string, string>>;
 }
 
 export interface MachineStatus {
   "agent-status": DetailedStatus;
   constraints: string;
-  containers: AdditionalProperties;
+  containers: Record<string, MachineStatus>;
   "display-name": string;
   "dns-name": string;
   hardware: string;
@@ -149,9 +149,9 @@ export interface MachineStatus {
   "instance-status": DetailedStatus;
   "ip-addresses"?: string[];
   jobs: string[];
-  "lxd-profiles"?: AdditionalProperties;
+  "lxd-profiles"?: Record<string, LXDProfile>;
   "modification-status": DetailedStatus;
-  "network-interfaces"?: AdditionalProperties;
+  "network-interfaces"?: Record<string, NetworkInterface>;
   "primary-controller-machine"?: boolean;
   series: string;
   "wants-vote": boolean;
@@ -206,7 +206,7 @@ export interface RemoteApplicationStatus {
   life: string;
   "offer-name": string;
   "offer-url": string;
-  relations: AdditionalProperties;
+  relations: Record<string, string[]>;
   status: DetailedStatus;
 }
 
@@ -264,7 +264,7 @@ export interface UnitStatus {
   "opened-ports": string[];
   "provider-id"?: string;
   "public-address": string;
-  subordinates: AdditionalProperties;
+  subordinates: Record<string, UnitStatus>;
   "workload-status": DetailedStatus;
   "workload-version": string;
 }

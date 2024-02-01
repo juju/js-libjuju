@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -31,7 +31,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -72,13 +72,13 @@ export interface SetUnitStateArgs {
 }
 
 export interface UnitStateResult {
-  "charm-state": Record<string, string>;
-  error: Error;
-  "meter-status-state": string;
-  "relation-state": Record<string, string>;
-  "secret-state": string;
-  "storage-state": string;
-  "uniter-state": string;
+  "charm-state"?: Record<string, string>;
+  error?: Error;
+  "meter-status-state"?: string;
+  "relation-state"?: Record<string, string>;
+  "secret-state"?: string;
+  "storage-state"?: string;
+  "uniter-state"?: string;
 }
 
 export interface UnitStateResults {

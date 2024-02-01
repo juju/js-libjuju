@@ -20,9 +20,9 @@ export interface AddUser {
 }
 
 export interface AddUserResult {
-  error: Error;
-  "secret-key": number[];
-  tag: string;
+  error?: Error;
+  "secret-key"?: number[];
+  tag?: string;
 }
 
 export interface AddUserResults {
@@ -57,7 +57,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -80,8 +80,8 @@ export interface UserInfoRequest {
 }
 
 export interface UserInfoResult {
-  error: Error;
-  result: UserInfo;
+  error?: Error;
+  result?: UserInfo;
 }
 
 export interface UserInfoResults {

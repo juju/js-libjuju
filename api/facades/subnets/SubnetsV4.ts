@@ -40,7 +40,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -78,13 +78,13 @@ export interface SubnetV2 {
 }
 
 export interface SubnetsFilters {
-  "space-tag": string;
-  zone: string;
+  "space-tag"?: string;
+  zone?: string;
 }
 
 export interface SubnetsResult {
-  error: Error;
-  subnets: SubnetV2[];
+  error?: Error;
+  subnets?: SubnetV2[];
 }
 
 export interface SubnetsResults {

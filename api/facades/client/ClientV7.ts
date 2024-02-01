@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3.2 at the git SHA 65fa4c1ee5.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -107,8 +107,8 @@ export interface Error {
 }
 
 export interface ExposedEndpoint {
-  "expose-to-cidrs": string[];
-  "expose-to-spaces": string[];
+  "expose-to-cidrs"?: string[];
+  "expose-to-spaces"?: string[];
 }
 
 export interface FilesystemAttachmentDetails {
@@ -119,8 +119,8 @@ export interface FilesystemAttachmentDetails {
 }
 
 export interface FilesystemAttachmentInfo {
-  "mount-point": string;
-  "read-only": boolean;
+  "mount-point"?: string;
+  "read-only"?: boolean;
 }
 
 export interface FilesystemDetails {
@@ -342,16 +342,16 @@ export interface VolumeAttachmentDetails {
 }
 
 export interface VolumeAttachmentInfo {
-  "bus-address": string;
-  "device-link": string;
-  "device-name": string;
-  "plan-info": VolumeAttachmentPlanInfo;
-  "read-only": boolean;
+  "bus-address"?: string;
+  "device-link"?: string;
+  "device-name"?: string;
+  "plan-info"?: VolumeAttachmentPlanInfo;
+  "read-only"?: boolean;
 }
 
 export interface VolumeAttachmentPlanInfo {
-  "device-attributes": Record<string, string>;
-  "device-type": string;
+  "device-attributes"?: Record<string, string>;
+  "device-type"?: string;
 }
 
 export interface VolumeDetails {

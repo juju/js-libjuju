@@ -34,7 +34,7 @@ export interface AddRelation {
 }
 
 export interface AddRelationResults {
-  endpoints: AdditionalProperties;
+  endpoints: Record<string, CharmRelation>;
 }
 
 export interface ApplicationCharmRelations {
@@ -61,16 +61,16 @@ export interface ApplicationDeploy {
   channel: string;
   "charm-origin"?: CharmOrigin;
   "charm-url": string;
-  config?: AdditionalProperties;
+  config?: Record<string, string>;
   "config-yaml": string;
   constraints: Value;
-  devices?: AdditionalProperties;
-  "endpoint-bindings"?: AdditionalProperties;
+  devices?: Record<string, Constraints>;
+  "endpoint-bindings"?: Record<string, string>;
   "num-units": number;
   placement?: Placement[];
   policy?: string;
-  resources?: AdditionalProperties;
-  storage?: AdditionalProperties;
+  resources?: Record<string, string>;
+  storage?: Record<string, Constraints>;
 }
 
 export interface ApplicationDestroy {
@@ -79,7 +79,7 @@ export interface ApplicationDestroy {
 
 export interface ApplicationExpose {
   application: string;
-  "exposed-endpoints"?: AdditionalProperties;
+  "exposed-endpoints"?: Record<string, ExposedEndpoint>;
 }
 
 export interface ApplicationGet {
@@ -107,12 +107,12 @@ export interface ApplicationGetResults {
   charm: string;
   config: AdditionalProperties;
   constraints: Value;
-  "endpoint-bindings"?: AdditionalProperties;
+  "endpoint-bindings"?: Record<string, string>;
 }
 
 export interface ApplicationInfoResult {
-  error: Error;
-  result: ApplicationResult;
+  error?: Error;
+  result?: ApplicationResult;
 }
 
 export interface ApplicationInfoResults {
@@ -121,7 +121,7 @@ export interface ApplicationInfoResults {
 
 export interface ApplicationMergeBindings {
   "application-tag": string;
-  bindings: AdditionalProperties;
+  bindings: Record<string, string>;
   force: boolean;
 }
 
@@ -140,7 +140,7 @@ export interface ApplicationMetricCredentials {
 
 export interface ApplicationOfferDetails {
   "application-description": string;
-  bindings?: AdditionalProperties;
+  bindings?: Record<string, string>;
   endpoints?: RemoteEndpoint[];
   "offer-name": string;
   "offer-url": string;
@@ -155,9 +155,9 @@ export interface ApplicationResult {
   channel?: string;
   charm?: string;
   constraints?: Value;
-  "endpoint-bindings"?: AdditionalProperties;
+  "endpoint-bindings"?: Record<string, string>;
   exposed: boolean;
-  "exposed-endpoints"?: AdditionalProperties;
+  "exposed-endpoints"?: Record<string, ExposedEndpoint>;
   life: string;
   principal: boolean;
   remote: boolean;
@@ -169,15 +169,15 @@ export interface ApplicationSetCharm {
   channel: string;
   "charm-origin"?: CharmOrigin;
   "charm-url": string;
-  "config-settings"?: AdditionalProperties;
+  "config-settings"?: Record<string, string>;
   "config-settings-yaml"?: string;
-  "endpoint-bindings"?: AdditionalProperties;
+  "endpoint-bindings"?: Record<string, string>;
   force: boolean;
   "force-base": boolean;
   "force-units": boolean;
   generation: string;
-  "resource-ids"?: AdditionalProperties;
-  "storage-constraints"?: AdditionalProperties;
+  "resource-ids"?: Record<string, string>;
+  "storage-constraints"?: Record<string, StorageConstraints>;
 }
 
 export interface ApplicationUnexpose {
@@ -236,7 +236,7 @@ export interface ConfigResult {
 
 export interface ConfigSet {
   application: string;
-  config: AdditionalProperties;
+  config: Record<string, string>;
   "config-yaml": string;
   generation: string;
 }
@@ -255,7 +255,7 @@ export interface ConsumeApplicationArg {
   ApplicationOfferDetails: ApplicationOfferDetails;
   "application-alias"?: string;
   "application-description": string;
-  bindings?: AdditionalProperties;
+  bindings?: Record<string, string>;
   endpoints?: RemoteEndpoint[];
   "external-controller"?: ExternalControllerInfo;
   macaroon?: Macaroon;
@@ -268,13 +268,13 @@ export interface ConsumeApplicationArg {
 }
 
 export interface ConsumeApplicationArgs {
-  args: ConsumeApplicationArg[];
+  args?: ConsumeApplicationArg[];
 }
 
 export interface DestroyApplicationInfo {
-  "destroyed-storage": Entity[];
-  "destroyed-units": Entity[];
-  "detached-storage": Entity[];
+  "destroyed-storage"?: Entity[];
+  "destroyed-units"?: Entity[];
+  "detached-storage"?: Entity[];
 }
 
 export interface DestroyApplicationParams {
@@ -285,12 +285,12 @@ export interface DestroyApplicationParams {
 }
 
 export interface DestroyApplicationResult {
-  error: Error;
-  info: DestroyApplicationInfo;
+  error?: Error;
+  info?: DestroyApplicationInfo;
 }
 
 export interface DestroyApplicationResults {
-  results: DestroyApplicationResult[];
+  results?: DestroyApplicationResult[];
 }
 
 export interface DestroyApplicationUnits {
@@ -319,8 +319,8 @@ export interface DestroyRelation {
 }
 
 export interface DestroyUnitInfo {
-  "destroyed-storage": Entity[];
-  "detached-storage": Entity[];
+  "destroyed-storage"?: Entity[];
+  "detached-storage"?: Entity[];
 }
 
 export interface DestroyUnitParams {
@@ -331,12 +331,12 @@ export interface DestroyUnitParams {
 }
 
 export interface DestroyUnitResult {
-  error: Error;
-  info: DestroyUnitInfo;
+  error?: Error;
+  info?: DestroyUnitInfo;
 }
 
 export interface DestroyUnitResults {
-  results: DestroyUnitResult[];
+  results?: DestroyUnitResult[];
 }
 
 export interface DestroyUnitsParams {
@@ -349,7 +349,7 @@ export interface EndpointRelationData {
   endpoint: string;
   "related-endpoint": string;
   "relation-id": number;
-  "unit-relation-data": AdditionalProperties;
+  "unit-relation-data": Record<string, RelationData>;
 }
 
 export interface Entities {
@@ -367,7 +367,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -375,8 +375,8 @@ export interface ErrorResults {
 }
 
 export interface ExposedEndpoint {
-  "expose-to-cidrs": string[];
-  "expose-to-spaces": string[];
+  "expose-to-cidrs"?: string[];
+  "expose-to-spaces"?: string[];
 }
 
 export interface ExternalControllerInfo {
@@ -443,12 +443,12 @@ export interface ScaleApplicationParams {
 }
 
 export interface ScaleApplicationResult {
-  error: Error;
-  info: ScaleApplicationInfo;
+  error?: Error;
+  info?: ScaleApplicationInfo;
 }
 
 export interface ScaleApplicationResults {
-  results: ScaleApplicationResult[];
+  results?: ScaleApplicationResult[];
 }
 
 export interface ScaleApplicationsParams {
@@ -461,9 +461,9 @@ export interface SetConstraints {
 }
 
 export interface StorageConstraints {
-  count: number;
-  pool: string;
-  size: number;
+  count?: number;
+  pool?: string;
+  size?: number;
 }
 
 export interface StringResult {
@@ -484,8 +484,8 @@ export interface Subnet {
 }
 
 export interface UnitInfoResult {
-  error: Error;
-  result: UnitResult;
+  error?: Error;
+  result?: UnitResult;
 }
 
 export interface UnitInfoResults {
@@ -507,9 +507,9 @@ export interface UnitResult {
 }
 
 export interface UnitsResolved {
-  all: boolean;
-  retry: boolean;
-  tags: Entities;
+  all?: boolean;
+  retry?: boolean;
+  tags?: Entities;
 }
 
 export interface UpdateChannelArg {
@@ -523,20 +523,20 @@ export interface UpdateChannelArgs {
 }
 
 export interface Value {
-  "allocate-public-ip": boolean;
-  arch: string;
-  container: string;
-  cores: number;
-  "cpu-power": number;
-  "instance-role": string;
-  "instance-type": string;
-  mem: number;
-  "root-disk": number;
-  "root-disk-source": string;
-  spaces: string[];
-  tags: string[];
-  "virt-type": string;
-  zones: string[];
+  "allocate-public-ip"?: boolean;
+  arch?: string;
+  container?: string;
+  cores?: number;
+  "cpu-power"?: number;
+  "instance-role"?: string;
+  "instance-type"?: string;
+  mem?: number;
+  "root-disk"?: number;
+  "root-disk-source"?: string;
+  spaces?: string[];
+  tags?: string[];
+  "virt-type"?: string;
+  zones?: string[];
 }
 
 export interface AdditionalProperties {

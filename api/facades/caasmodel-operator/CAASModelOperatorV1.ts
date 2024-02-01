@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -59,7 +59,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -104,8 +104,8 @@ export interface StringResult {
 }
 
 export interface StringsResult {
-  error: Error;
-  result: string[];
+  error?: Error;
+  result?: string[];
 }
 
 export interface AdditionalProperties {
@@ -224,6 +224,23 @@ class CAASModelOperatorV1 implements Facade {
       const req: JujuRequest = {
         type: "CAASModelOperator",
         request: "WatchAPIHostPorts",
+        version: 1,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+
+  /**
+    WatchModelOperatorProvisioningInfo provides a watcher for changes that affect the
+    information returned by ModelOperatorProvisioningInfo.
+  */
+  watchModelOperatorProvisioningInfo(params: any): Promise<NotifyWatchResult> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "CAASModelOperator",
+        request: "WatchModelOperatorProvisioningInfo",
         version: 1,
         params: params,
       };

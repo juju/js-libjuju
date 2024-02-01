@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -61,7 +61,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -103,12 +103,12 @@ export interface RemoteApplication {
 }
 
 export interface RemoteApplicationResult {
-  error: Error;
-  result: RemoteApplication;
+  error?: Error;
+  result?: RemoteApplication;
 }
 
 export interface RemoteApplicationResults {
-  results: RemoteApplicationResult[];
+  results?: RemoteApplicationResult[];
 }
 
 export interface RemoteEndpoint {
@@ -156,8 +156,8 @@ export interface RemoteRelationChangeEvent {
 }
 
 export interface RemoteRelationResult {
-  error: Error;
-  result: RemoteRelation;
+  error?: Error;
+  result?: RemoteRelation;
 }
 
 export interface RemoteRelationResults {
@@ -180,7 +180,7 @@ export interface RemoteRelationWatchResults {
 }
 
 export interface RemoteRelationsChanges {
-  changes: RemoteRelationChangeEvent[];
+  changes?: RemoteRelationChangeEvent[];
 }
 
 export interface SecretRevisionChange {
@@ -212,12 +212,12 @@ export interface StringsWatchResults {
 }
 
 export interface TokenResult {
-  error: Error;
-  token: string;
+  error?: Error;
+  token?: string;
 }
 
 export interface TokenResults {
-  results: TokenResult[];
+  results?: TokenResult[];
 }
 
 export interface UpdateControllerForModel {

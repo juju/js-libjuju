@@ -7,7 +7,7 @@
     Controllers
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -58,19 +58,18 @@ export interface ApplicationOfferDetails {
 }
 
 export interface ApplicationOfferResult {
-  error: Error;
-  result: ApplicationOfferAdminDetails;
+  error?: Error;
+  result?: ApplicationOfferAdminDetails;
 }
 
 export interface ApplicationOffersResults {
-  results: ApplicationOfferResult[];
+  results?: ApplicationOfferResult[];
 }
 
 export interface ConsumeOfferDetails {
-  "auth-token": string;
-  "external-controller": ExternalControllerInfo;
-  macaroon: Macaroon;
-  offer: ApplicationOfferDetails;
+  "external-controller"?: ExternalControllerInfo;
+  macaroon?: Macaroon;
+  offer?: ApplicationOfferDetails;
 }
 
 export interface ConsumeOfferDetailsArg {
@@ -80,7 +79,6 @@ export interface ConsumeOfferDetailsArg {
 
 export interface ConsumeOfferDetailsResult {
   ConsumeOfferDetails: ConsumeOfferDetails;
-  "auth-token"?: string;
   error?: Error;
   "external-controller"?: ExternalControllerInfo;
   macaroon?: Macaroon;
@@ -88,7 +86,7 @@ export interface ConsumeOfferDetailsResult {
 }
 
 export interface ConsumeOfferDetailsResults {
-  results: ConsumeOfferDetailsResult[];
+  results?: ConsumeOfferDetailsResult[];
 }
 
 export interface DestroyApplicationOffers {
@@ -116,7 +114,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -171,8 +169,8 @@ export interface OfferFilters {
 }
 
 export interface OfferURLs {
-  "bakery-version": number;
-  "offer-urls": string[];
+  "bakery-version"?: number;
+  "offer-urls"?: string[];
 }
 
 export interface OfferUserDetails {
@@ -196,8 +194,8 @@ export interface RemoteApplicationInfo {
 }
 
 export interface RemoteApplicationInfoResult {
-  error: Error;
-  result: RemoteApplicationInfo;
+  error?: Error;
+  result?: RemoteApplicationInfo;
 }
 
 export interface RemoteApplicationInfoResults {

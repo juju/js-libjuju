@@ -83,7 +83,7 @@ export interface ApplicationOfferStatus {
   "active-connected-count": number;
   "application-name": string;
   charm: string;
-  endpoints: AdditionalProperties;
+  endpoints: Record<string, RemoteEndpoint>;
   err?: Error;
   "offer-name": string;
   "total-connected-count": number;
@@ -95,20 +95,20 @@ export interface ApplicationStatus {
   "charm-channel"?: string;
   "charm-profile": string;
   "charm-version": string;
-  "endpoint-bindings": AdditionalProperties;
+  "endpoint-bindings": Record<string, string>;
   err?: Error;
   exposed: boolean;
-  "exposed-endpoints"?: AdditionalProperties;
+  "exposed-endpoints"?: Record<string, ExposedEndpoint>;
   int?: number;
   life: string;
-  "meter-statuses": AdditionalProperties;
+  "meter-statuses": Record<string, MeterStatus>;
   "provider-id"?: string;
   "public-address": string;
-  relations: AdditionalProperties;
+  relations: Record<string, string[]>;
   series: string;
   status: DetailedStatus;
   "subordinate-to": string[];
-  units: AdditionalProperties;
+  units: Record<string, UnitStatus>;
   "workload-version": string;
 }
 
@@ -124,7 +124,7 @@ export interface Binary {
 }
 
 export interface BranchStatus {
-  "assigned-units": AdditionalProperties;
+  "assigned-units": Record<string, string[]>;
   created: number;
   "created-by": string;
 }
@@ -142,8 +142,8 @@ export interface BundleChangesParams {
 }
 
 export interface BundleChangesResults {
-  changes: BundleChange[];
-  errors: string[];
+  changes?: BundleChange[];
+  errors?: string[];
 }
 
 export interface BytesResult {
@@ -206,7 +206,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -214,8 +214,8 @@ export interface ErrorResults {
 }
 
 export interface ExposedEndpoint {
-  "expose-to-cidrs": string[];
-  "expose-to-spaces": string[];
+  "expose-to-cidrs"?: string[];
+  "expose-to-spaces"?: string[];
 }
 
 export interface FindToolsParams {
@@ -234,14 +234,14 @@ export interface FindToolsResult {
 }
 
 export interface FullStatus {
-  applications: AdditionalProperties;
-  branches: AdditionalProperties;
+  applications: Record<string, ApplicationStatus>;
+  branches: Record<string, BranchStatus>;
   "controller-timestamp": string;
-  machines: AdditionalProperties;
+  machines: Record<string, MachineStatus>;
   model: ModelStatusInfo;
-  offers: AdditionalProperties;
+  offers: Record<string, ApplicationOfferStatus>;
   relations: RelationStatus[];
-  "remote-applications": AdditionalProperties;
+  "remote-applications": Record<string, RemoteApplicationStatus>;
 }
 
 export interface GetConstraintsResults {
@@ -249,14 +249,14 @@ export interface GetConstraintsResults {
 }
 
 export interface HardwareCharacteristics {
-  arch: string;
-  "availability-zone": string;
-  "cpu-cores": number;
-  "cpu-power": number;
-  mem: number;
-  "root-disk": number;
-  "root-disk-source": string;
-  tags: string[];
+  arch?: string;
+  "availability-zone"?: string;
+  "cpu-cores"?: number;
+  "cpu-power"?: number;
+  mem?: number;
+  "root-disk"?: number;
+  "root-disk-source"?: string;
+  tags?: string[];
 }
 
 export interface History {
@@ -278,9 +278,9 @@ export interface HostPort {
 }
 
 export interface LXDProfile {
-  config: AdditionalProperties;
+  config: Record<string, string>;
   description: string;
-  devices: AdditionalProperties;
+  devices: Record<string, Record<string, string>>;
 }
 
 export interface Macaroon {
@@ -288,19 +288,19 @@ export interface Macaroon {
 }
 
 export interface MachineHardware {
-  arch: string;
-  "availability-zone": string;
-  cores: number;
-  "cpu-power": number;
-  mem: number;
-  "root-disk": number;
-  tags: string[];
+  arch?: string;
+  "availability-zone"?: string;
+  cores?: number;
+  "cpu-power"?: number;
+  mem?: number;
+  "root-disk"?: number;
+  tags?: string[];
 }
 
 export interface MachineStatus {
   "agent-status": DetailedStatus;
   constraints: string;
-  containers: AdditionalProperties;
+  containers: Record<string, MachineStatus>;
   "display-name": string;
   "dns-name": string;
   hardware: string;
@@ -311,9 +311,9 @@ export interface MachineStatus {
   "instance-status": DetailedStatus;
   "ip-addresses"?: string[];
   jobs: string[];
-  "lxd-profiles"?: AdditionalProperties;
+  "lxd-profiles"?: Record<string, LXDProfile>;
   "modification-status": DetailedStatus;
-  "network-interfaces"?: AdditionalProperties;
+  "network-interfaces"?: Record<string, NetworkInterface>;
   "primary-controller-machine"?: boolean;
   series: string;
   "wants-vote": boolean;
@@ -325,11 +325,11 @@ export interface MeterStatus {
 }
 
 export interface ModelConfigResults {
-  config: AdditionalProperties;
+  config: Record<string, ConfigValue>;
 }
 
 export interface ModelInfo {
-  "agent-version": Number;
+  "agent-version": string;
   "cloud-credential-tag"?: string;
   "cloud-credential-validity"?: boolean;
   "cloud-region"?: string;
@@ -381,7 +381,7 @@ export interface ModelSLAInfo {
 }
 
 export interface ModelSequencesResult {
-  sequences: AdditionalProperties;
+  sequences: Record<string, number>;
 }
 
 export interface ModelSet {
@@ -412,8 +412,8 @@ export interface ModelUserInfo {
 }
 
 export interface ModelUserInfoResult {
-  error: Error;
-  result: ModelUserInfo;
+  error?: Error;
+  result?: ModelUserInfo;
 }
 
 export interface ModelUserInfoResults {
@@ -484,7 +484,7 @@ export interface RemoteApplicationStatus {
   life: string;
   "offer-name": string;
   "offer-url": string;
-  relations: AdditionalProperties;
+  relations: Record<string, string[]>;
   status: DetailedStatus;
 }
 
@@ -496,8 +496,8 @@ export interface RemoteEndpoint {
 }
 
 export interface ResolveCharmResult {
-  error: string;
-  url: string;
+  error?: string;
+  url?: string;
 }
 
 export interface ResolveCharmResults {
@@ -575,26 +575,26 @@ export interface UnitStatus {
   "opened-ports": string[];
   "provider-id"?: string;
   "public-address": string;
-  subordinates: AdditionalProperties;
+  subordinates: Record<string, UnitStatus>;
   "workload-status": DetailedStatus;
   "workload-version": string;
 }
 
 export interface Value {
-  "allocate-public-ip": boolean;
-  arch: string;
-  container: string;
-  cores: number;
-  "cpu-power": number;
-  "instance-role": string;
-  "instance-type": string;
-  mem: number;
-  "root-disk": number;
-  "root-disk-source": string;
-  spaces: string[];
-  tags: string[];
-  "virt-type": string;
-  zones: string[];
+  "allocate-public-ip"?: boolean;
+  arch?: string;
+  container?: string;
+  cores?: number;
+  "cpu-power"?: number;
+  "instance-role"?: string;
+  "instance-type"?: string;
+  mem?: number;
+  "root-disk"?: number;
+  "root-disk-source"?: string;
+  spaces?: string[];
+  tags?: string[];
+  "virt-type"?: string;
+  zones?: string[];
 }
 
 export interface AdditionalProperties {

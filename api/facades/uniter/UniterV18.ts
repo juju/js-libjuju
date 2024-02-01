@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.2 at the git SHA 3a098707a1.
   Do not manually edit this file.
 */
 
@@ -37,7 +37,7 @@ export interface ActionExecutionResult {
 }
 
 export interface ActionExecutionResults {
-  results: ActionExecutionResult[];
+  results?: ActionExecutionResult[];
 }
 
 export interface ActionMessage {
@@ -50,19 +50,19 @@ export interface ActionMessageParams {
 }
 
 export interface ActionResult {
-  action: Action;
-  completed: string;
-  enqueued: string;
-  error: Error;
-  log: ActionMessage[];
-  message: string;
-  output: AdditionalProperties;
-  started: string;
-  status: string;
+  action?: Action;
+  completed?: string;
+  enqueued?: string;
+  error?: Error;
+  log?: ActionMessage[];
+  message?: string;
+  output?: AdditionalProperties;
+  started?: string;
+  status?: string;
 }
 
 export interface ActionResults {
-  results: ActionResult[];
+  results?: ActionResult[];
 }
 
 export interface Address {
@@ -146,8 +146,8 @@ export interface CloudSpec {
 }
 
 export interface CloudSpecResult {
-  error: Error;
-  result: CloudSpec;
+  error?: Error;
+  result?: CloudSpec;
 }
 
 export interface CommitHookChangesArg {
@@ -267,7 +267,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -453,10 +453,10 @@ export interface NetworkInfoParams {
 }
 
 export interface NetworkInfoResult {
-  "bind-addresses": NetworkInfo[];
-  "egress-subnets": string[];
-  error: Error;
-  "ingress-addresses": string[];
+  "bind-addresses"?: NetworkInfo[];
+  "egress-subnets"?: string[];
+  error?: Error;
+  "ingress-addresses"?: string[];
 }
 
 export interface NetworkInfoResults {
@@ -625,8 +625,8 @@ export interface SecretConsumerInfoResults {
 }
 
 export interface SecretContentParams {
-  data: Record<string, string>;
-  "value-ref": SecretValueRef;
+  data?: Record<string, string>;
+  "value-ref"?: SecretValueRef;
 }
 
 export interface SecretContentResult {
@@ -683,8 +683,8 @@ export interface SecretValueRef {
 }
 
 export interface SecretValueResult {
-  data: Record<string, string>;
-  error: Error;
+  data?: Record<string, string>;
+  error?: Error;
 }
 
 export interface SetStatus {
@@ -758,7 +758,7 @@ export interface StorageAttachmentIdsResult {
 }
 
 export interface StorageAttachmentIdsResults {
-  results: StorageAttachmentIdsResult[];
+  results?: StorageAttachmentIdsResult[];
 }
 
 export interface StorageAttachmentResult {
@@ -767,13 +767,13 @@ export interface StorageAttachmentResult {
 }
 
 export interface StorageAttachmentResults {
-  results: StorageAttachmentResult[];
+  results?: StorageAttachmentResult[];
 }
 
 export interface StorageConstraints {
-  count: number;
-  pool: string;
-  size: number;
+  count?: number;
+  pool?: string;
+  size?: number;
 }
 
 export interface StringBoolResult {
@@ -796,8 +796,8 @@ export interface StringResults {
 }
 
 export interface StringsResult {
-  error: Error;
-  result: string[];
+  error?: Error;
+  result?: string[];
 }
 
 export interface StringsWatchResult {
@@ -826,13 +826,13 @@ export interface UnitSettings {
 }
 
 export interface UnitStateResult {
-  "charm-state": Record<string, string>;
-  error: Error;
-  "meter-status-state": string;
-  "relation-state": Record<string, string>;
-  "secret-state": string;
-  "storage-state": string;
-  "uniter-state": string;
+  "charm-state"?: Record<string, string>;
+  error?: Error;
+  "meter-status-state"?: string;
+  "relation-state"?: Record<string, string>;
+  "secret-state"?: string;
+  "storage-state"?: string;
+  "uniter-state"?: string;
 }
 
 export interface UnitStateResults {
@@ -865,22 +865,22 @@ export interface UpgradeSeriesStatusParams {
 }
 
 export interface UpgradeSeriesStatusResult {
-  error: Error;
-  status: string;
-  target: string;
+  error?: Error;
+  status?: string;
+  target?: string;
 }
 
 export interface UpgradeSeriesStatusResults {
-  results: UpgradeSeriesStatusResult[];
+  results?: UpgradeSeriesStatusResult[];
 }
 
 export interface UpsertSecretArg {
-  content: SecretContentParams;
-  description: string;
-  "expire-time": string;
-  label: string;
-  params: AdditionalProperties;
-  "rotate-policy": string;
+  content?: SecretContentParams;
+  description?: string;
+  "expire-time"?: string;
+  label?: string;
+  params?: AdditionalProperties;
+  "rotate-policy"?: string;
 }
 
 export interface AdditionalProperties {
@@ -1495,6 +1495,7 @@ class UniterV18 implements Facade {
 
   /**
     GetSecretRevisionContentInfo returns the secret values for the specified secret revisions.
+    Used when deleting a secret; only returns external revision info.
   */
   getSecretRevisionContentInfo(
     params: SecretRevisionArg

@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -15,6 +15,42 @@ import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
 import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
+
+export interface CloudCredential {
+  attrs?: Record<string, string>;
+  "auth-type": string;
+  redacted?: string[];
+}
+
+export interface CloudSpec {
+  cacertificates?: string[];
+  credential?: CloudCredential;
+  endpoint?: string;
+  "identity-endpoint"?: string;
+  "is-controller-cloud"?: boolean;
+  name: string;
+  region?: string;
+  "skip-tls-verify"?: boolean;
+  "storage-endpoint"?: string;
+  type: string;
+}
+
+export interface CloudSpecResult {
+  error?: Error;
+  result?: CloudSpec;
+}
+
+export interface CloudSpecResults {
+  results?: CloudSpecResult[];
+}
+
+export interface Entities {
+  entities: Entity[];
+}
+
+export interface Entity {
+  tag: string;
+}
 
 export interface EntityStatusArgs {
   data: AdditionalProperties;
@@ -30,7 +66,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -39,6 +75,10 @@ export interface ErrorResults {
 
 export interface ModelConfigResult {
   config: AdditionalProperties;
+}
+
+export interface ModelTag {
+  [key: string]: AdditionalProperties;
 }
 
 export interface NotifyWatchResult {
@@ -94,7 +134,39 @@ class UndertakerV1 implements Facade {
     autoBind(this);
   }
   /**
-    ModelConfig returns the model's configuration.
+    CloudSpec returns the model's cloud spec.
+  */
+  cloudSpec(params: Entities): Promise<CloudSpecResults> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "Undertaker",
+        request: "CloudSpec",
+        version: 1,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+
+  /**
+    GetCloudSpec constructs the CloudSpec for a validated and authorized model.
+  */
+  getCloudSpec(params: ModelTag): Promise<CloudSpecResult> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "Undertaker",
+        request: "GetCloudSpec",
+        version: 1,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+
+  /**
+    ModelConfig returns the current model's configuration.
   */
   modelConfig(params: any): Promise<ModelConfigResult> {
     return new Promise((resolve, reject) => {
@@ -166,6 +238,58 @@ class UndertakerV1 implements Facade {
       const req: JujuRequest = {
         type: "Undertaker",
         request: "SetStatus",
+        version: 1,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+
+  /**
+    WatchCloudSpecsChanges returns a watcher for cloud spec changes.
+  */
+  watchCloudSpecsChanges(params: Entities): Promise<NotifyWatchResults> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "Undertaker",
+        request: "WatchCloudSpecsChanges",
+        version: 1,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+
+  /**
+    WatchForModelConfigChanges returns a NotifyWatcher that observes
+    changes to the model configuration.
+    Note that although the NotifyWatchResult contains an Error field,
+    it's not used because we are only returning a single watcher,
+    so we use the regular error return.
+  */
+  watchForModelConfigChanges(params: any): Promise<NotifyWatchResult> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "Undertaker",
+        request: "WatchForModelConfigChanges",
+        version: 1,
+        params: params,
+      };
+
+      this._transport.write(req, resolve, reject);
+    });
+  }
+
+  /**
+    WatchModel creates a watcher for the current model.
+  */
+  watchModel(params: any): Promise<NotifyWatchResults> {
+    return new Promise((resolve, reject) => {
+      const req: JujuRequest = {
+        type: "Undertaker",
+        request: "WatchModel",
         version: 1,
         params: params,
       };

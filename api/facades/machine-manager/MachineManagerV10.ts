@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -74,12 +74,12 @@ export interface DestroyMachineInfo {
 }
 
 export interface DestroyMachineResult {
-  error: Error;
-  info: DestroyMachineInfo;
+  error?: Error;
+  info?: DestroyMachineInfo;
 }
 
 export interface DestroyMachineResults {
-  results: DestroyMachineResult[];
+  results?: DestroyMachineResult[];
 }
 
 export interface DestroyMachinesParams {
@@ -105,7 +105,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -113,22 +113,21 @@ export interface ErrorResults {
 }
 
 export interface HardwareCharacteristics {
-  arch: string;
-  "availability-zone": string;
-  "cpu-cores": number;
-  "cpu-power": number;
-  mem: number;
-  "root-disk": number;
-  "root-disk-source": string;
-  tags: string[];
-  "virt-type": string;
+  arch?: string;
+  "availability-zone"?: string;
+  "cpu-cores"?: number;
+  "cpu-power"?: number;
+  mem?: number;
+  "root-disk"?: number;
+  "root-disk-source"?: string;
+  tags?: string[];
+  "virt-type"?: string;
 }
 
 export interface InstanceType {
   arches: string[];
   cost?: number;
   "cpu-cores": number;
-  deprecated?: boolean;
   memory: number;
   name?: string;
   "root-disk"?: number;
@@ -136,11 +135,11 @@ export interface InstanceType {
 }
 
 export interface InstanceTypesResult {
-  "cost-currency": string;
-  "cost-divisor": number;
-  "cost-unit": string;
-  error: Error;
-  "instance-types": InstanceType[];
+  "cost-currency"?: string;
+  "cost-divisor"?: number;
+  "cost-unit"?: string;
+  error?: Error;
+  "instance-types"?: InstanceType[];
 }
 
 export interface InstanceTypesResults {
@@ -148,7 +147,7 @@ export interface InstanceTypesResults {
 }
 
 export interface ModelInstanceTypesConstraint {
-  value: Value;
+  value?: Value;
 }
 
 export interface ModelInstanceTypesConstraints {
@@ -186,8 +185,8 @@ export interface RetryProvisioningArgs {
 }
 
 export interface StringsResult {
-  error: Error;
-  result: string[];
+  error?: Error;
+  result?: string[];
 }
 
 export interface StringsResults {
@@ -223,21 +222,21 @@ export interface UpgradeSeriesUnitsResults {
 }
 
 export interface Value {
-  "allocate-public-ip": boolean;
-  arch: string;
-  container: string;
-  cores: number;
-  "cpu-power": number;
-  "image-id": string;
-  "instance-role": string;
-  "instance-type": string;
-  mem: number;
-  "root-disk": number;
-  "root-disk-source": string;
-  spaces: string[];
-  tags: string[];
-  "virt-type": string;
-  zones: string[];
+  "allocate-public-ip"?: boolean;
+  arch?: string;
+  container?: string;
+  cores?: number;
+  "cpu-power"?: number;
+  "image-id"?: string;
+  "instance-role"?: string;
+  "instance-type"?: string;
+  mem?: number;
+  "root-disk"?: number;
+  "root-disk-source"?: string;
+  spaces?: string[];
+  tags?: string[];
+  "virt-type"?: string;
+  zones?: string[];
 }
 
 export interface AdditionalProperties {

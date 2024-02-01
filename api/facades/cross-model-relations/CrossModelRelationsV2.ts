@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -30,7 +30,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -46,7 +46,7 @@ export interface IngressNetworksChangeEvent {
 }
 
 export interface IngressNetworksChanges {
-  changes: IngressNetworksChangeEvent[];
+  changes?: IngressNetworksChangeEvent[];
 }
 
 export interface Macaroon {
@@ -80,7 +80,6 @@ export interface OfferStatusWatchResults {
 
 export interface RegisterRemoteRelationArg {
   "application-token": string;
-  "auth-token"?: string;
   "bakery-version"?: number;
   "consume-version"?: number;
   "local-endpoint-name": string;
@@ -97,12 +96,12 @@ export interface RegisterRemoteRelationArgs {
 }
 
 export interface RegisterRemoteRelationResult {
-  error: Error;
-  result: RemoteRelationDetails;
+  error?: Error;
+  result?: RemoteRelationDetails;
 }
 
 export interface RegisterRemoteRelationResults {
-  results: RegisterRemoteRelationResult[];
+  results?: RegisterRemoteRelationResult[];
 }
 
 export interface RelationLifeSuspendedStatusChange {
@@ -176,7 +175,7 @@ export interface RemoteRelationWatchResults {
 }
 
 export interface RemoteRelationsChanges {
-  changes: RemoteRelationChangeEvent[];
+  changes?: RemoteRelationChangeEvent[];
 }
 
 export interface RemoteSpace {

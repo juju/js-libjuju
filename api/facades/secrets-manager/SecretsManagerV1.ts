@@ -60,7 +60,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -125,8 +125,8 @@ export interface SecretConsumerInfoResults {
 }
 
 export interface SecretContentParams {
-  data: AdditionalProperties;
-  "provider-id": string;
+  data?: Record<string, string>;
+  "provider-id"?: string;
 }
 
 export interface SecretContentResult {
@@ -174,8 +174,8 @@ export interface SecretTriggerWatchResult {
 }
 
 export interface SecretValueResult {
-  data: AdditionalProperties;
-  error: Error;
+  data?: Record<string, string>;
+  error?: Error;
 }
 
 export interface StringResult {
@@ -213,12 +213,12 @@ export interface UpdateSecretArgs {
 }
 
 export interface UpsertSecretArg {
-  content: SecretContentParams;
-  description: string;
-  "expire-time": string;
-  label: string;
-  params: AdditionalProperties;
-  "rotate-policy": string;
+  content?: SecretContentParams;
+  description?: string;
+  "expire-time"?: string;
+  label?: string;
+  params?: AdditionalProperties;
+  "rotate-policy"?: string;
 }
 
 export interface AdditionalProperties {

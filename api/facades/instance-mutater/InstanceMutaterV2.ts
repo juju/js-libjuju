@@ -17,9 +17,9 @@ import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
 export interface CharmLXDProfile {
-  config: AdditionalProperties;
+  config: Record<string, string>;
   description: string;
-  devices: AdditionalProperties;
+  devices: Record<string, Record<string, string>>;
 }
 
 export interface CharmProfilingInfoResult {
@@ -57,7 +57,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -83,10 +83,10 @@ export interface NotifyWatchResults {
 }
 
 export interface ProfileInfoResult {
-  "application-name": string;
-  error: Error;
-  profile: CharmLXDProfile;
-  revision: number;
+  "application-name"?: string;
+  error?: Error;
+  profile?: CharmLXDProfile;
+  revision?: number;
 }
 
 export interface SetProfileArg {

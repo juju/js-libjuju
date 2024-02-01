@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -30,7 +30,7 @@ export interface CloudImageMetadata {
 }
 
 export interface CloudImageMetadataList {
-  metadata: CloudImageMetadata[];
+  metadata?: CloudImageMetadata[];
 }
 
 export interface Error {
@@ -40,7 +40,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -48,12 +48,12 @@ export interface ErrorResults {
 }
 
 export interface ImageMetadataFilter {
-  arches: string[];
-  region: string;
-  "root-storage-type": string;
-  stream: string;
-  versions: string[];
-  "virt-type": string;
+  arches?: string[];
+  region?: string;
+  "root-storage-type"?: string;
+  stream?: string;
+  versions?: string[];
+  "virt-type"?: string;
 }
 
 export interface ListCloudImageMetadataResult {
@@ -65,7 +65,7 @@ export interface MetadataImageIds {
 }
 
 export interface MetadataSaveParams {
-  metadata: CloudImageMetadataList[];
+  metadata?: CloudImageMetadataList[];
 }
 
 export interface AdditionalProperties {

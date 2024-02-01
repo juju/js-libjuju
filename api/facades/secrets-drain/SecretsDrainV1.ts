@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -15,6 +15,12 @@ import type { JujuRequest } from "../../../generator/interfaces.js";
 import { ConnectionInfo, Transport } from "../../client.js";
 import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
+
+export interface AccessInfo {
+  role: string;
+  "scope-tag": string;
+  "target-tag": string;
+}
 
 export interface ChangeSecretBackendArg {
   content?: SecretContentParams;
@@ -33,7 +39,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -41,6 +47,7 @@ export interface ErrorResults {
 }
 
 export interface ListSecretResult {
+  access?: AccessInfo[];
   "create-time": string;
   description?: string;
   label?: string;
@@ -66,8 +73,8 @@ export interface NotifyWatchResult {
 }
 
 export interface SecretContentParams {
-  data: Record<string, string>;
-  "value-ref": SecretValueRef;
+  data?: Record<string, string>;
+  "value-ref"?: SecretValueRef;
 }
 
 export interface SecretRevision {
@@ -85,8 +92,8 @@ export interface SecretValueRef {
 }
 
 export interface SecretValueResult {
-  data: Record<string, string>;
-  error: Error;
+  data?: Record<string, string>;
+  error?: Error;
 }
 
 export interface AdditionalProperties {

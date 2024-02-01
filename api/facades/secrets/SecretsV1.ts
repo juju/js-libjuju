@@ -4,7 +4,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.2 at the git SHA 3a098707a1.
   Do not manually edit this file.
 */
 
@@ -59,14 +59,14 @@ export interface SecretValueRef {
 }
 
 export interface SecretValueResult {
-  data: Record<string, string>;
-  error: Error;
+  data?: Record<string, string>;
+  error?: Error;
 }
 
 export interface SecretsFilter {
-  "owner-tag": string;
-  revision: number;
-  uri: string;
+  "owner-tag"?: string;
+  revision?: number;
+  uri?: string;
 }
 
 export interface AdditionalProperties {

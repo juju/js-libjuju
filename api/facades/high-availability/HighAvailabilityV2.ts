@@ -5,7 +5,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -24,10 +24,10 @@ export interface ControllersChangeResults {
 }
 
 export interface ControllersChanges {
-  added: string[];
-  converted: string[];
-  maintained: string[];
-  removed: string[];
+  added?: string[];
+  converted?: string[];
+  maintained?: string[];
+  removed?: string[];
 }
 
 export interface ControllersSpec {
@@ -47,21 +47,21 @@ export interface Error {
 }
 
 export interface Value {
-  "allocate-public-ip": boolean;
-  arch: string;
-  container: string;
-  cores: number;
-  "cpu-power": number;
-  "image-id": string;
-  "instance-role": string;
-  "instance-type": string;
-  mem: number;
-  "root-disk": number;
-  "root-disk-source": string;
-  spaces: string[];
-  tags: string[];
-  "virt-type": string;
-  zones: string[];
+  "allocate-public-ip"?: boolean;
+  arch?: string;
+  container?: string;
+  cores?: number;
+  "cpu-power"?: number;
+  "image-id"?: string;
+  "instance-role"?: string;
+  "instance-type"?: string;
+  mem?: number;
+  "root-disk"?: number;
+  "root-disk-source"?: string;
+  spaces?: string[];
+  tags?: string[];
+  "virt-type"?: string;
+  zones?: string[];
 }
 
 export interface AdditionalProperties {

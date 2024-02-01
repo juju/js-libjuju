@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.2.1 at the git SHA 06eb3f6c7c.
+  from Juju 3.3 at the git SHA 65fa4c1ee5.
   Do not manually edit this file.
 */
 
@@ -37,7 +37,7 @@ export interface BlockDeviceResult {
 }
 
 export interface BlockDeviceResults {
-  results: BlockDeviceResult[];
+  results?: BlockDeviceResult[];
 }
 
 export interface Entities {
@@ -62,7 +62,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -82,8 +82,8 @@ export interface FilesystemAttachment {
 }
 
 export interface FilesystemAttachmentInfo {
-  "mount-point": string;
-  "read-only": boolean;
+  "mount-point"?: string;
+  "read-only"?: boolean;
 }
 
 export interface FilesystemAttachmentParams {
@@ -102,7 +102,7 @@ export interface FilesystemAttachmentParamsResult {
 }
 
 export interface FilesystemAttachmentParamsResults {
-  results: FilesystemAttachmentParamsResult[];
+  results?: FilesystemAttachmentParamsResult[];
 }
 
 export interface FilesystemAttachmentResult {
@@ -111,7 +111,7 @@ export interface FilesystemAttachmentResult {
 }
 
 export interface FilesystemAttachmentResults {
-  results: FilesystemAttachmentResult[];
+  results?: FilesystemAttachmentResult[];
 }
 
 export interface FilesystemAttachments {
@@ -140,7 +140,7 @@ export interface FilesystemParamsResult {
 }
 
 export interface FilesystemParamsResults {
-  results: FilesystemParamsResult[];
+  results?: FilesystemParamsResult[];
 }
 
 export interface FilesystemResult {
@@ -149,7 +149,7 @@ export interface FilesystemResult {
 }
 
 export interface FilesystemResults {
-  results: FilesystemResult[];
+  results?: FilesystemResult[];
 }
 
 export interface Filesystems {
@@ -205,7 +205,7 @@ export interface RemoveFilesystemParamsResult {
 }
 
 export interface RemoveFilesystemParamsResults {
-  results: RemoveFilesystemParamsResult[];
+  results?: RemoveFilesystemParamsResult[];
 }
 
 export interface RemoveVolumeParams {
@@ -220,7 +220,7 @@ export interface RemoveVolumeParamsResult {
 }
 
 export interface RemoveVolumeParamsResults {
-  results: RemoveVolumeParamsResult[];
+  results?: RemoveVolumeParamsResult[];
 }
 
 export interface SetStatus {
@@ -258,11 +258,11 @@ export interface VolumeAttachment {
 }
 
 export interface VolumeAttachmentInfo {
-  "bus-address": string;
-  "device-link": string;
-  "device-name": string;
-  "plan-info": VolumeAttachmentPlanInfo;
-  "read-only": boolean;
+  "bus-address"?: string;
+  "device-link"?: string;
+  "device-name"?: string;
+  "plan-info"?: VolumeAttachmentPlanInfo;
+  "read-only"?: boolean;
 }
 
 export interface VolumeAttachmentParams {
@@ -280,7 +280,7 @@ export interface VolumeAttachmentParamsResult {
 }
 
 export interface VolumeAttachmentParamsResults {
-  results: VolumeAttachmentParamsResult[];
+  results?: VolumeAttachmentParamsResult[];
 }
 
 export interface VolumeAttachmentPlan {
@@ -292,8 +292,8 @@ export interface VolumeAttachmentPlan {
 }
 
 export interface VolumeAttachmentPlanInfo {
-  "device-attributes": Record<string, string>;
-  "device-type": string;
+  "device-attributes"?: Record<string, string>;
+  "device-type"?: string;
 }
 
 export interface VolumeAttachmentPlanResult {
@@ -302,7 +302,7 @@ export interface VolumeAttachmentPlanResult {
 }
 
 export interface VolumeAttachmentPlanResults {
-  results: VolumeAttachmentPlanResult[];
+  results?: VolumeAttachmentPlanResult[];
 }
 
 export interface VolumeAttachmentPlans {
@@ -315,7 +315,7 @@ export interface VolumeAttachmentResult {
 }
 
 export interface VolumeAttachmentResults {
-  results: VolumeAttachmentResult[];
+  results?: VolumeAttachmentResult[];
 }
 
 export interface VolumeAttachments {
@@ -346,7 +346,7 @@ export interface VolumeParamsResult {
 }
 
 export interface VolumeParamsResults {
-  results: VolumeParamsResult[];
+  results?: VolumeParamsResult[];
 }
 
 export interface VolumeResult {
@@ -355,7 +355,7 @@ export interface VolumeResult {
 }
 
 export interface VolumeResults {
-  results: VolumeResult[];
+  results?: VolumeResult[];
 }
 
 export interface Volumes {

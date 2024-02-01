@@ -33,7 +33,7 @@ export interface Cloud {
 }
 
 export interface CloudCredential {
-  attrs?: AdditionalProperties;
+  attrs?: Record<string, string>;
   "auth-type": string;
   redacted?: string[];
 }
@@ -49,12 +49,12 @@ export interface CloudCredentialArgs {
 }
 
 export interface CloudCredentialResult {
-  error: Error;
-  result: CloudCredential;
+  error?: Error;
+  result?: CloudCredential;
 }
 
 export interface CloudCredentialResults {
-  results: CloudCredentialResult[];
+  results?: CloudCredentialResult[];
 }
 
 export interface CloudDetails {
@@ -72,8 +72,8 @@ export interface CloudInfo {
 }
 
 export interface CloudInfoResult {
-  error: Error;
-  result: CloudInfo;
+  error?: Error;
+  result?: CloudInfo;
 }
 
 export interface CloudInfoResults {
@@ -98,12 +98,12 @@ export interface CloudRegion {
 }
 
 export interface CloudResult {
-  cloud: Cloud;
-  error: Error;
+  cloud?: Cloud;
+  error?: Error;
 }
 
 export interface CloudResults {
-  results: CloudResult[];
+  results?: CloudResult[];
 }
 
 export interface CloudUserInfo {
@@ -113,16 +113,16 @@ export interface CloudUserInfo {
 }
 
 export interface CloudsResult {
-  clouds: AdditionalProperties;
+  clouds?: Record<string, Cloud>;
 }
 
 export interface ControllerCredentialInfo {
-  content: CredentialContent;
-  models: ModelAccess[];
+  content?: CredentialContent;
+  models?: ModelAccess[];
 }
 
 export interface CredentialContent {
-  attrs?: AdditionalProperties;
+  attrs?: Record<string, string>;
   "auth-type": string;
   cloud: string;
   name: string;
@@ -130,12 +130,12 @@ export interface CredentialContent {
 }
 
 export interface CredentialContentResult {
-  error: Error;
-  result: ControllerCredentialInfo;
+  error?: Error;
+  result?: ControllerCredentialInfo;
 }
 
 export interface CredentialContentResults {
-  results: CredentialContentResult[];
+  results?: CredentialContentResult[];
 }
 
 export interface Entities {
@@ -153,7 +153,7 @@ export interface Error {
 }
 
 export interface ErrorResult {
-  error: Error;
+  error?: Error;
 }
 
 export interface ErrorResults {
@@ -172,11 +172,11 @@ export interface InstanceType {
 }
 
 export interface InstanceTypesResult {
-  "cost-currency": string;
-  "cost-divisor": number;
-  "cost-unit": string;
-  error: Error;
-  "instance-types": InstanceType[];
+  "cost-currency"?: string;
+  "cost-divisor"?: number;
+  "cost-unit"?: string;
+  error?: Error;
+  "instance-types"?: InstanceType[];
 }
 
 export interface InstanceTypesResults {
@@ -189,8 +189,8 @@ export interface ListCloudInfo {
 }
 
 export interface ListCloudInfoResult {
-  error: Error;
-  result: ListCloudInfo;
+  error?: Error;
+  result?: ListCloudInfo;
 }
 
 export interface ListCloudInfoResults {
@@ -203,8 +203,8 @@ export interface ListCloudsRequest {
 }
 
 export interface ModelAccess {
-  access: string;
-  model: string;
+  access?: string;
+  model?: string;
 }
 
 export interface ModifyCloudAccess {
@@ -233,8 +233,8 @@ export interface StringResult {
 }
 
 export interface StringsResult {
-  error: Error;
-  result: string[];
+  error?: Error;
+  result?: string[];
 }
 
 export interface StringsResults {
@@ -247,7 +247,7 @@ export interface TaggedCredential {
 }
 
 export interface TaggedCredentials {
-  credentials: TaggedCredential[];
+  credentials?: TaggedCredential[];
 }
 
 export interface UpdateCredentialArgs {
@@ -268,7 +268,7 @@ export interface UpdateCredentialResult {
 }
 
 export interface UpdateCredentialResults {
-  results: UpdateCredentialResult[];
+  results?: UpdateCredentialResult[];
 }
 
 export interface UserCloud {
@@ -277,23 +277,23 @@ export interface UserCloud {
 }
 
 export interface UserClouds {
-  "user-clouds": UserCloud[];
+  "user-clouds"?: UserCloud[];
 }
 
 export interface Value {
-  "allocate-public-ip": boolean;
-  arch: string;
-  container: string;
-  cores: number;
-  "cpu-power": number;
-  "instance-type": string;
-  mem: number;
-  "root-disk": number;
-  "root-disk-source": string;
-  spaces: string[];
-  tags: string[];
-  "virt-type": string;
-  zones: string[];
+  "allocate-public-ip"?: boolean;
+  arch?: string;
+  container?: string;
+  cores?: number;
+  "cpu-power"?: number;
+  "instance-type"?: string;
+  mem?: number;
+  "root-disk"?: number;
+  "root-disk-source"?: string;
+  spaces?: string[];
+  tags?: string[];
+  "virt-type"?: string;
+  zones?: string[];
 }
 
 export interface AdditionalProperties {
