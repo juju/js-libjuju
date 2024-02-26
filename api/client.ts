@@ -402,7 +402,7 @@ class RedirectionError {
 export class Transport {
   _ws: WebSocket;
   _counter: number;
-  _callbacks: { [k: number]: Function };
+  _callbacks: { [k: number]: { resolve: Function; reject: Function } };
   _closeCallback: Callback<number>;
   _debug: boolean;
 
@@ -447,7 +447,7 @@ export class Transport {
     this._counter += 1;
     // Include the current request id in the request.
     req["request-id"] = this._counter;
-    this._callbacks[this._counter] = resolve;
+    this._callbacks[this._counter] = { resolve, reject };
     const msg = JSON.stringify(req);
     if (this._debug) {
       console.debug("-->", msg);
@@ -482,12 +482,46 @@ export class Transport {
       string.
   */
   _handle(data: string) {
-    const resp = JSON.parse(data);
+    let resp: unknown;
+    try {
+      resp = JSON.parse(data);
+    } catch (error) {
+      console.error("Unable to parse the raw response from Juju:", data, error);
+      return;
+    }
+    if (
+      !(
+        resp &&
+        typeof resp === "object" &&
+        "request-id" in resp &&
+        typeof resp["request-id"] === "number" &&
+        ("error" in resp || "response" in resp)
+      )
+    ) {
+      console.error(
+        "Parsed raw response from Juju is in incorrect format:",
+        resp
+      );
+      return;
+    }
     const id = resp["request-id"];
     const callback = this._callbacks[id];
     delete this._callbacks[id];
-    if (callback) {
-      callback(resp.error || resp.response);
+    if (!callback) {
+      console.error(
+        "Parsed raw response from Juju can't be handled. No callback available."
+      );
+      return;
+    }
+    if ("error" in resp && resp.error) {
+      callback.reject(resp.error);
+    } else if ("response" in resp) {
+      callback.resolve(resp.response);
+    } else {
+      console.error(
+        "Parsed raw response from Juju doesn't contain response or error:",
+        resp
+      );
     }
   }
 }

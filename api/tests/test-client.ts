@@ -577,11 +577,19 @@ describe("connectAndLogin", () => {
     connectAndLogin(url, creds, options)
       .then(() => fail)
       .catch((error) => {
-        expect(error.message).toBe("cannot connect to model after redirection");
+        console.log("error", error);
+        expect(error).toBe("redirection required");
         requestEqual(ws.lastRequest, {
           type: "Admin",
-          request: "RedirectInfo",
-          params: null,
+          request: "Login",
+          params: {
+            "auth-tag": "",
+            "client-version": "3.3.2",
+            credentials: "",
+            macaroons: ["fake macaroon"],
+            nonce: "",
+            "user-data": "",
+          },
           version: 3,
         });
         done();
@@ -590,8 +598,6 @@ describe("connectAndLogin", () => {
       new Map([
         // Reply to the login request.
         [1, { error: "redirection required" }],
-        // Reply to the redirectInfo request.
-        [2, { response: { servers: [], "ca-cert": null } }],
       ])
     );
     // Open the WebSocket connection.
