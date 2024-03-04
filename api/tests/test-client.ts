@@ -74,7 +74,7 @@ describe("connect", () => {
     ws.close("bad wolf");
   });
 
-  function validateLoginFailure(error: string) {
+  function validateLoginFailure(error: Error, message: string) {
     requestEqual(ws.lastRequest, {
       type: "Admin",
       request: "Login",
@@ -88,7 +88,7 @@ describe("connect", () => {
       },
       version: 3,
     });
-    expect(error).toStrictEqual(new Error("bad wolf"));
+    expect(error).toStrictEqual(new Error(message));
   }
 
   it("handles admin login failures", (done) => {
@@ -108,10 +108,44 @@ describe("connect", () => {
         ?.login({ username: "who", password: "secret" })
         .then(() => fail)
         .catch((error) => {
-          validateLoginFailure(error);
+          validateLoginFailure(error, "bad wolf");
           done();
         });
       ws.reply({ error: "bad wolf" });
+    });
+    ws.open();
+  });
+
+  it("invalid credentials login failure via promise", (done) => {
+    connect("wss://1.2.3.4", options).then((juju: Client) => {
+      juju
+        ?.login({ username: "who", password: "secret" })
+        .then(() => fail)
+        .catch((error) => {
+          validateLoginFailure(
+            error,
+            "Have you been granted permission to a model on this controller?"
+          );
+          done();
+        });
+      ws.reply({ error: "invalid entity name or password" });
+    });
+    ws.open();
+  });
+
+  it("permission denied login failure via promise", (done) => {
+    connect("wss://1.2.3.4", options).then((juju: Client) => {
+      juju
+        ?.login({ username: "who", password: "secret" })
+        .then(() => fail)
+        .catch((error) => {
+          validateLoginFailure(
+            error,
+            "Ensure that you've been given 'login' permission on this controller."
+          );
+          done();
+        });
+      ws.reply({ error: "permission denied" });
     });
     ws.open();
   });

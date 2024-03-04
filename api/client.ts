@@ -292,11 +292,17 @@ class Client {
         try {
           response = await this._admin.login(args);
         } catch (error) {
-          if (error === INVALIDCREDENTIALS_ERROR) {
+          if (
+            error instanceof Error &&
+            error.message === INVALIDCREDENTIALS_ERROR
+          ) {
             throw new Error(
               "Have you been granted permission to a model on this controller?"
             );
-          } else if (response === PERMISSIONDENIED_ERROR) {
+          } else if (
+            error instanceof Error &&
+            error.message === PERMISSIONDENIED_ERROR
+          ) {
             throw new Error(
               "Ensure that you've been given 'login' permission on this controller."
             );
