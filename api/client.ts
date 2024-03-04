@@ -339,8 +339,7 @@ class Client {
         }
         resolve(new Connection(this._transport, this._facades, response));
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : error;
-        if (errorMessage !== REDIRECTION_ERROR) {
+        if (error instanceof Error && error.message !== REDIRECTION_ERROR) {
           reject(toError(error));
           return;
         }
@@ -348,10 +347,8 @@ class Client {
         try {
           const info = await this._admin.redirectInfo(null);
           reject(new RedirectionError(info));
-          return;
         } catch (error) {
           reject(toError(error));
-          return;
         }
       }
     });

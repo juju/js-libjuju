@@ -49,10 +49,7 @@ export function createAsyncHandler<T>(
       callback ? callback(null, value) : resolve(value!);
     },
     reject: (error: CallbackError) => {
-      if (error) {
-        callback ? callback(error) : reject(error);
-        return;
-      }
+      callback ? callback(error) : reject(error);
     },
   };
 }
