@@ -3,7 +3,7 @@
 
 "use strict";
 
-import { autoBind, createAsyncHandler } from "../utils";
+import { autoBind, createAsyncHandler, toError, Label } from "../utils";
 
 describe("autoBind", () => {
   interface Question {
@@ -109,5 +109,19 @@ describe("createAsyncHandler", () => {
     );
     fn.resolve(10);
     expect(cb.mock.calls[0][1]).toBe(20);
+  });
+});
+
+describe("toError", () => {
+  it("handles error objects", () => {
+    expect(toError(new Error("Uh oh!"))).toStrictEqual(new Error("Uh oh!"));
+  });
+
+  it("handles error strings", () => {
+    expect(toError("Uh oh!")).toStrictEqual(new Error("Uh oh!"));
+  });
+
+  it("handles unknown errors", () => {
+    expect(toError(false)).toStrictEqual(new Error(Label.UNKNOWN_ERROR));
   });
 });
