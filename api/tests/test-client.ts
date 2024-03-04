@@ -170,6 +170,28 @@ describe("connect", () => {
     ws.open();
   });
 
+  it("login generic redirection error failure via promise", (done) => {
+    connect("wss://1.2.3.4", options).then((juju: Client) => {
+      // juju._admin.redirectInfo = jest.fn().mockImplementation(() => null);
+      juju
+        ?.login({})
+        .then(() => fail)
+        .catch((error) => {
+          expect(error).toStrictEqual(new Error("bad wolf"));
+          done();
+        });
+      ws.queueResponses(
+        new Map([
+          // Reply to the redirectInfo request.
+          [2, { error: "bad wolf" }],
+        ])
+      );
+      // Reply to the login request.
+      ws.reply({ error: "redirection required" });
+    });
+    ws.open();
+  });
+
   function validateRedirectionLoginSuccess(
     juju: Client,
     error: RedirectionError
