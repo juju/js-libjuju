@@ -57,4 +57,3 @@ export interface JujuRequest {
 
 export type CallbackError = Error | null;
 export type Callback<T> = (error: CallbackError, value?: T) => void;
-// check that we need to put null in front if there is value
