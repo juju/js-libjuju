@@ -299,8 +299,8 @@ describe("connect", () => {
       },
       version: 3,
     });
-    expect(error).toBe(
-      "macaroon discharge required but no bakery instance provided"
+    expect(error).toStrictEqual(
+      new Error("macaroon discharge required but no bakery instance provided")
     );
   }
 
@@ -363,7 +363,9 @@ describe("connect", () => {
       },
       version: 3,
     });
-    expect(error).toBe("macaroon discharge failed: bad wolf");
+    expect(error).toStrictEqual(
+      new Error("macaroon discharge failed: bad wolf")
+    );
   }
 
   it("login discharge required failure", (done) => {

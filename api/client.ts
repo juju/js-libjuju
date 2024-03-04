@@ -293,13 +293,15 @@ class Client {
           response = await this._admin.login(args);
         } catch (error) {
           if (error === INVALIDCREDENTIALS_ERROR) {
-            throw `response
-                Have you been granted permission to a model on this controller?`;
+            throw new Error(
+              "Have you been granted permission to a model on this controller?"
+            );
           } else if (response === PERMISSIONDENIED_ERROR) {
-            throw `response
-                Ensure that you've been given 'login' permission on this controller.`;
+            throw new Error(
+              "Ensure that you've been given 'login' permission on this controller."
+            );
           } else {
-            throw error;
+            throw toError(error);
           }
         }
         const dischargeRequired =
@@ -308,7 +310,9 @@ class Client {
         if (dischargeRequired) {
           if (!this._bakery) {
             reject(
-              "macaroon discharge required but no bakery instance provided"
+              new Error(
+                "macaroon discharge required but no bakery instance provided"
+              )
             );
             return;
           }
@@ -321,7 +325,14 @@ class Client {
             return resolve(this.login(credentials, clientVersion));
           };
           const onFailure = (err: string | MacaroonError) => {
-            reject("macaroon discharge failed: " + err);
+            reject(
+              new Error(
+                "macaroon discharge failed: " +
+                  (err instanceof Object && "Message" in err
+                    ? err.Message
+                    : err)
+              )
+            );
           };
           this._bakery.discharge(dischargeRequired, onSuccess, onFailure);
           return;
@@ -330,7 +341,7 @@ class Client {
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : error;
         if (errorMessage !== REDIRECTION_ERROR) {
-          reject(error);
+          reject(toError(error));
           return;
         }
         // This is a model redirection error, fetch the redirection information.
@@ -339,7 +350,6 @@ class Client {
           reject(new RedirectionError(info));
           return;
         } catch (error) {
-          // add util to transform to Error.
           reject(toError(error));
           return;
         }
@@ -374,13 +384,15 @@ class Client {
 const REDIRECTION_ERROR = "redirection required";
 const INVALIDCREDENTIALS_ERROR = "invalid entity name or password";
 const PERMISSIONDENIED_ERROR = "permission denied";
-class RedirectionError {
+class RedirectionError extends Error {
   servers: RedirectInfoResult["servers"];
   caCert: string;
 
   constructor(info: RedirectInfoResult) {
+    super(REDIRECTION_ERROR);
     this.servers = info.servers;
     this.caCert = info["ca-cert"];
+    Object.setPrototypeOf(this, RedirectionError.prototype);
   }
 }
 
