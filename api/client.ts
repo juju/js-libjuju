@@ -339,7 +339,7 @@ class Client {
         }
         resolve(new Connection(this._transport, this._facades, response));
       } catch (error) {
-        if (error instanceof Error && error.message !== REDIRECTION_ERROR) {
+        if (!(error instanceof Error) || error.message !== REDIRECTION_ERROR) {
           reject(toError(error));
           return;
         }
