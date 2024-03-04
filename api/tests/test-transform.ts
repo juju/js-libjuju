@@ -54,31 +54,37 @@ describe("autoBind", () => {
 });
 
 describe("createAsyncHandler", () => {
-  it("returns a function and all arguments are optional", () => {
+  it("returns an object with reject and resolve function", () => {
     expect(typeof createAsyncHandler(jest.fn(), jest.fn(), jest.fn())).toBe(
-      "function"
+      "object"
     );
+    expect(
+      typeof createAsyncHandler(jest.fn(), jest.fn(), jest.fn()).reject
+    ).toBe("function");
+    expect(
+      typeof createAsyncHandler(jest.fn(), jest.fn(), jest.fn()).resolve
+    ).toBe("function");
   });
 
   it("calls callback with successful value", () => {
     const cb = jest.fn();
     const fn = createAsyncHandler(cb, jest.fn(), jest.fn());
-    fn(null, "party");
+    fn.resolve("party");
     expect(cb.mock.calls[0]).toEqual([null, "party"]);
   });
 
   it("calls callback with error value", () => {
     const cb = jest.fn();
     const fn = createAsyncHandler(cb, jest.fn(), jest.fn());
-    fn("boo", {});
-    expect(cb.mock.calls[0][0]).toEqual("boo");
+    fn.reject(new Error("boo"));
+    expect(cb.mock.calls[0][0]).toStrictEqual(new Error("boo"));
   });
 
   it("resolves promise with successful value", () => {
     expect(
       new Promise((resolve, reject) => {
         const fn = createAsyncHandler(undefined, resolve, reject);
-        fn(null, "party");
+        fn.resolve("party");
       })
     ).resolves.toBe("party");
   });
@@ -87,9 +93,9 @@ describe("createAsyncHandler", () => {
     expect(
       new Promise((resolve, reject) => {
         const fn = createAsyncHandler(undefined, resolve, reject);
-        fn("boo", "party");
+        fn.reject(new Error("boo"));
       })
-    ).rejects.toBe("boo");
+    ).rejects.toStrictEqual(new Error("boo"));
   });
 
   it("transforms value if function provided", () => {
@@ -101,7 +107,7 @@ describe("createAsyncHandler", () => {
       () => null,
       transform
     );
-    fn(null, 10);
+    fn.resolve(10);
     expect(cb.mock.calls[0][1]).toBe(20);
   });
 });

@@ -13,6 +13,7 @@ import {
   RedirectionError,
   CLIENT_VERSION,
 } from "../client";
+import { toError } from "../helpers";
 import {
   BaseFacade,
   makeBakery,
@@ -55,7 +56,7 @@ describe("connect", () => {
 
   it("handles failure to connect via promise", (done) => {
     connect("wss://1.2.3.4", options, (err) => {
-      expect(err).toBe("cannot connect WebSocket: nope");
+      expect(err).toStrictEqual(new Error("cannot connect WebSocket: nope"));
       done();
     });
     ws.close("nope");
@@ -63,7 +64,9 @@ describe("connect", () => {
 
   it("connect failure", (done) => {
     connect("wss://1.2.3.4", options, (err?: CallbackError, juju?: Client) => {
-      expect(err).toBe("cannot connect WebSocket: bad wolf");
+      expect(err).toStrictEqual(
+        new Error("cannot connect WebSocket: bad wolf")
+      );
       expect(juju).toBeFalsy();
       done();
     });
@@ -85,14 +88,14 @@ describe("connect", () => {
       },
       version: 3,
     });
-    expect(error).toBe("bad wolf");
+    expect(error).toStrictEqual(new Error("bad wolf"));
   }
 
   it("handles admin login failures", (done) => {
     connect("wss://1.2.3.4", options).then((juju: Client) => {
       ws.close("");
       juju?.login({ username: "who", password: "secret" }).catch((error) => {
-        expect(error).toContain("cannot send request");
+        expect(toError(error).message).toContain("cannot send request");
         done();
       });
     });
@@ -136,7 +139,29 @@ describe("connect", () => {
       ws.queueResponses(
         new Map([
           // Reply to the redirectInfo request.
-          [2, { error: "bad wolf" }],
+          [
+            2,
+            {
+              response: {
+                "ca-cert": "exampleCert",
+                servers: [
+                  [
+                    {
+                      Address: {
+                        scope: "exampleScope",
+                        type: "exampleType",
+                        value: "exampleValue",
+                      },
+                      port: 8080,
+                      scope: "exampleScope",
+                      type: "exampleType",
+                      value: "exampleValue",
+                    },
+                  ],
+                ],
+              },
+            },
+          ],
         ])
       );
       // Reply to the login request.
@@ -486,11 +511,11 @@ describe("connect", () => {
             params: {},
             version: 1,
           },
+          jest.fn(),
           (err: CallbackError) => {
-            expect(err).toBe("bad wolf");
+            expect(err).toStrictEqual(new Error("bad wolf"));
             done();
-          },
-          jest.fn()
+          }
         );
         // Reply to the transport test request.
         ws.reply({ error: "bad wolf" });
@@ -565,7 +590,9 @@ describe("connectAndLogin", () => {
   it("connect failure", (done) => {
     const creds = {};
     connectAndLogin(url, creds, options).catch((error) => {
-      expect(error).toBe("cannot connect WebSocket: bad wolf");
+      expect(error).toStrictEqual(
+        new Error("cannot connect WebSocket: bad wolf")
+      );
       done();
     });
     // Close the WebSocket connection.
@@ -577,19 +604,11 @@ describe("connectAndLogin", () => {
     connectAndLogin(url, creds, options)
       .then(() => fail)
       .catch((error) => {
-        console.log("error", error);
-        expect(error).toBe("redirection required");
+        expect(error.message).toBe("cannot connect to model after redirection");
         requestEqual(ws.lastRequest, {
           type: "Admin",
-          request: "Login",
-          params: {
-            "auth-tag": "",
-            "client-version": "3.3.2",
-            credentials: "",
-            macaroons: ["fake macaroon"],
-            nonce: "",
-            "user-data": "",
-          },
+          request: "RedirectInfo",
+          params: null,
           version: 3,
         });
         done();
@@ -598,6 +617,8 @@ describe("connectAndLogin", () => {
       new Map([
         // Reply to the login request.
         [1, { error: "redirection required" }],
+        // Reply to the redirectInfo request.
+        [2, { response: { servers: [], "ca-cert": null } }],
       ])
     );
     // Open the WebSocket connection.

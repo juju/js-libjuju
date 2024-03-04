@@ -6,9 +6,13 @@
   convenience purposes.
 */
 
-import type { Callback } from "../generator/interfaces";
+import type { Callback, CallbackError } from "../generator/interfaces";
 import type PingerV1 from "./facades/pinger/PingerV1.js";
 import { createAsyncHandler } from "./utils.js";
+
+export enum Label {
+  UNKNOWN_ERROR = "Unknown error",
+}
 
 /**
   Decorate the Admin facade class.
@@ -75,7 +79,7 @@ function wrapAdmin(cls: any): object {
 
       const handler = createAsyncHandler(undefined, resolve, reject, transform);
       // Send the request to the server.
-      this._transport.write(req, handler);
+      this._transport.write(req, handler.resolve, handler.reject);
     });
   };
 
@@ -126,7 +130,7 @@ function wrapAllModelWatcher(cls: any) {
       };
       const handler = createAsyncHandler(callback, resolve, reject, transform);
       // Send the request to the server.
-      this._transport.write(req, handler);
+      this._transport.write(req, handler.resolve, handler.reject);
     });
   };
 
@@ -158,7 +162,7 @@ function wrapAllModelWatcher(cls: any) {
       };
       const handler = createAsyncHandler(callback, resolve, reject);
       // Send the request to the server.
-      this._transport.write(req, handler);
+      this._transport.write(req, handler.resolve, handler.reject);
     });
   };
 
@@ -209,7 +213,7 @@ function wrapAllWatcher(cls: any) {
       };
       const handler = createAsyncHandler(callback, resolve, reject, transform);
       // Send the request to the server.
-      this._transport.write(req, handler);
+      this._transport.write(req, handler.resolve, handler.reject);
     });
   };
 
@@ -241,7 +245,7 @@ function wrapAllWatcher(cls: any) {
       };
       const handler = createAsyncHandler(callback, resolve, reject);
       // Send the request to the server.
-      this._transport.write(req, handler);
+      this._transport.write(req, handler.resolve, handler.reject);
     });
   };
 
@@ -271,31 +275,31 @@ function wrapClient(cls: any) {
     @returns A handle that can be used to stop watching, via its stop
       method which can be provided a callback receiving an error.
   */
-  cls.prototype.watch = function (callback: Function): object | undefined {
+  cls.prototype.watch = function (callback: Callback<any>): object | undefined {
     if (!callback) {
-      callback = () => {};
+      callback = (_error: CallbackError, _result: any) => {};
     }
     // Check that the AllWatcher facade is loaded, as we will use it.
     const allWatcher = this._info.getFacade("allWatcher");
     if (!allWatcher) {
-      callback("watch requires the allWatcher facade to be loaded", {});
+      callback(new Error("watch requires the allWatcher facade to be loaded"));
       return;
     }
     let watcherId: any;
     // Define a function to repeatedly ask for next changes.
-    const next = (callback: any) => {
+    const next = (callback: Callback<any>) => {
       if (!watcherId) {
         return;
       }
-      allWatcher.next(watcherId, (err: any, result: any) => {
+      allWatcher.next(watcherId, (err: CallbackError, result: any) => {
         callback(err, result);
         next(callback);
       });
     };
     // Start watching.
-    this.watchAll((err: any, result: any) => {
-      if (err) {
-        callback(err, {});
+    this.watchAll((error: CallbackError, result: any) => {
+      if (error) {
+        callback(error);
         return;
       }
       watcherId = result.watcherId;
@@ -303,9 +307,9 @@ function wrapClient(cls: any) {
     });
     // Return the handle allowing for stopping the watcher.
     return {
-      stop: (callback: any) => {
+      stop: (callback: Callback<any>) => {
         if (watcherId === undefined) {
-          callback("watcher is not running", {});
+          callback(new Error("watcher is not running"));
           return;
         }
         allWatcher.stop(watcherId, callback);
@@ -340,31 +344,33 @@ function wrapController(cls: any) {
     @returns A handle that can be used to stop watching, via its stop
       method which can be provided a callback receiving an error.
   */
-  cls.prototype.watch = function (callback: Function): object | undefined {
+  cls.prototype.watch = function (callback: Callback<any>): object | undefined {
     if (!callback) {
-      callback = () => {};
+      callback = (_error: CallbackError, _result: any) => {};
     }
     // Check that the AllModelWatcher facade is loaded, as we will use it.
     const allModelWatcher: any = this._info.getFacade("allModelWatcher");
     if (!allModelWatcher) {
-      callback("watch requires the allModelWatcher facade to be loaded", {});
+      callback(
+        new Error("watch requires the allModelWatcher facade to be loaded")
+      );
       return;
     }
     let watcherId: any;
     // Define a function to repeatedly ask for next changes.
-    const next = (callback: any) => {
+    const next = (callback: Callback<any>) => {
       if (!watcherId) {
         return;
       }
-      allModelWatcher.next(watcherId, (err: any, result: any) => {
-        callback(err, result);
+      allModelWatcher.next(watcherId, (error: CallbackError, result: any) => {
+        callback(error, result);
         next(callback);
       });
     };
     // Start watching.
-    this.watchAllModels((err: any, result: any) => {
-      if (err) {
-        callback(err, {});
+    this.watchAllModels((error: CallbackError, result: any) => {
+      if (error) {
+        callback(error);
         return;
       }
       watcherId = result.watcherId;
@@ -372,9 +378,9 @@ function wrapController(cls: any) {
     });
     // Return the handle allowing for stopping the watcher.
     return {
-      stop: (callback: (arg0: string, arg1: {}) => void) => {
+      stop: (callback: Callback<any>) => {
         if (watcherId === undefined) {
-          callback("watcher is not running", {});
+          callback(new Error("watcher is not running"));
           return;
         }
         allModelWatcher.stop(watcherId, callback);
@@ -389,6 +395,7 @@ function wrapController(cls: any) {
 type StopFunction = () => void;
 /**
   Ping repeatedly using the Pinger facade.
+
   @param PingerFacade - An instance of the Pinger facade.
   @param interval - How often would you like to ping? (ms).
   @param callback - The callback that gets called after each ping.
@@ -408,6 +415,22 @@ export function pingForever(
   return () => {
     clearInterval(timer);
   };
+}
+
+/**
+  Convert given input to an Error object.
+
+  @param error - The input to be converted to an Error object.
+  @returns An Error object.
+*/
+export function toError(error: any): Error {
+  if (error instanceof Error) {
+    return error;
+  }
+  if (typeof error === "string") {
+    return new Error(error);
+  }
+  return new Error(Label.UNKNOWN_ERROR);
 }
 
 export {

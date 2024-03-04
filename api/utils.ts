@@ -36,15 +36,19 @@ export function createAsyncHandler<T>(
   resolve: (value: T) => void,
   reject: (value: CallbackError) => void,
   transform?: (value: T) => T
-): Callback<T> {
-  return (err, value) => {
-    if (err) {
-      callback ? callback(err) : reject(err);
-      return;
-    }
-    if (transform) {
-      value = transform(value!);
-    }
-    callback ? callback(null, value) : resolve(value!);
+): { resolve: Function; reject: Function } {
+  return {
+    resolve: (value: T) => {
+      if (transform) {
+        value = transform(value!);
+      }
+      callback ? callback(null, value) : resolve(value!);
+    },
+    reject: (error: CallbackError) => {
+      if (error) {
+        callback ? callback(error) : reject(error);
+        return;
+      }
+    },
   };
 }

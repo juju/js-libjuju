@@ -55,5 +55,6 @@ export interface JujuRequest {
   [key: string]: any; // Some calls pass additional params e.g. AllWatcher.next passes `id`.
 }
 
-export type CallbackError = string | number | null;
-export type Callback<T> = (error?: CallbackError, value?: T) => void;
+export type CallbackError = Error | null;
+export type Callback<T> = (error: CallbackError, value?: T) => void;
+// check that we need to put null in front if there is value
