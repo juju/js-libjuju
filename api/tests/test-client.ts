@@ -13,7 +13,6 @@ import {
   RedirectionError,
   CLIENT_VERSION,
 } from "../client";
-import { toError } from "../helpers";
 import {
   BaseFacade,
   makeBakery,
@@ -22,6 +21,7 @@ import {
   MockWebSocket,
   requestEqual,
 } from "./helpers";
+import { toError } from "../utils";
 const fail = () => {
   throw new Error("Fail called");
 };

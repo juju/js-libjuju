@@ -10,10 +10,6 @@ import type { Callback, CallbackError } from "../generator/interfaces";
 import type PingerV1 from "./facades/pinger/PingerV1.js";
 import { createAsyncHandler } from "./utils.js";
 
-export enum Label {
-  UNKNOWN_ERROR = "Unknown error",
-}
-
 /**
   Decorate the Admin facade class.
 
@@ -110,7 +106,7 @@ function wrapAllModelWatcher(cls: any) {
   */
   cls.prototype.next = function (
     watcherId: string,
-    callback: any
+    callback: Callback<any>
   ): Promise<any> {
     // This method is overridden as the auto-generated one does not include the
     // watcherId parameter, as a result of the peculiarity of the call, which
@@ -147,7 +143,7 @@ function wrapAllModelWatcher(cls: any) {
   */
   cls.prototype.stop = function (
     watcherId: string,
-    callback: any
+    callback: Callback<any>
   ): Promise<any> {
     // This method is overridden as the auto-generated one does not include the
     // watcherId parameter, as a result of the peculiarity of the call, which
@@ -193,7 +189,7 @@ function wrapAllWatcher(cls: any) {
   */
   cls.prototype.next = function (
     watcherId: string,
-    callback: any
+    callback: Callback<any>
   ): Promise<any> {
     // This method is overridden as the auto-generated one does not include the
     // watcherId parameter, as a result of the peculiarity of the call, which
@@ -230,7 +226,7 @@ function wrapAllWatcher(cls: any) {
   */
   cls.prototype.stop = function (
     watcherId: string,
-    callback: any
+    callback: Callback<any>
   ): Promise<any> {
     // This method is overridden as the auto-generated one does not include the
     // watcherId parameter, as a result of the peculiarity of the call, which
@@ -277,7 +273,7 @@ function wrapClient(cls: any) {
   */
   cls.prototype.watch = function (callback: Callback<any>): object | undefined {
     if (!callback) {
-      callback = (_error: CallbackError, _result: any) => {};
+      callback = (_error: CallbackError, _result?: any) => {};
     }
     // Check that the AllWatcher facade is loaded, as we will use it.
     const allWatcher = this._info.getFacade("allWatcher");
@@ -291,8 +287,8 @@ function wrapClient(cls: any) {
       if (!watcherId) {
         return;
       }
-      allWatcher.next(watcherId, (err: CallbackError, result: any) => {
-        callback(err, result);
+      allWatcher.next(watcherId, (error: CallbackError, result: any) => {
+        callback(error, result);
         next(callback);
       });
     };
@@ -346,7 +342,7 @@ function wrapController(cls: any) {
   */
   cls.prototype.watch = function (callback: Callback<any>): object | undefined {
     if (!callback) {
-      callback = (_error: CallbackError, _result: any) => {};
+      callback = (_error: CallbackError, _result?: any) => {};
     }
     // Check that the AllModelWatcher facade is loaded, as we will use it.
     const allModelWatcher: any = this._info.getFacade("allModelWatcher");
@@ -415,22 +411,6 @@ export function pingForever(
   return () => {
     clearInterval(timer);
   };
-}
-
-/**
-  Convert given input to an Error object.
-
-  @param error - The input to be converted to an Error object.
-  @returns An Error object.
-*/
-export function toError(error: any): Error {
-  if (error instanceof Error) {
-    return error;
-  }
-  if (typeof error === "string") {
-    return new Error(error);
-  }
-  return new Error(Label.UNKNOWN_ERROR);
 }
 
 export {

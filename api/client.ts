@@ -21,7 +21,6 @@ import {
   MacaroonObject,
 } from "@canonical/macaroon-bakery/dist/macaroon";
 import type { Callback, JujuRequest } from "../generator/interfaces";
-import { toError } from "./helpers.js";
 import {
   ClassType,
   Facade,
@@ -29,7 +28,7 @@ import {
   FacadeClassList,
   GenericFacade,
 } from "./types.js";
-import { createAsyncHandler } from "./utils.js";
+import { createAsyncHandler, toError } from "./utils.js";
 
 export const CLIENT_VERSION = "3.3.2";
 
