@@ -38,9 +38,9 @@ export function autoBind(obj: { [k: string]: any }): void {
 export function createAsyncHandler<T>(
   callback: Callback<T> | undefined,
   resolve: (value: T) => void,
-  reject: (value: CallbackError) => void,
+  reject: (error: CallbackError) => void,
   transform?: (value: T) => T
-): { resolve: Function; reject: Function } {
+): { resolve: (value: T) => void; reject: (error: CallbackError) => void } {
   return {
     resolve: (value: T) => {
       if (transform) {
@@ -48,9 +48,7 @@ export function createAsyncHandler<T>(
       }
       callback ? callback(null, value) : resolve(value!);
     },
-    reject: (error: CallbackError) => {
-      callback ? callback(error) : reject(error);
-    },
+    reject: callback ? callback : reject,
   };
 }
 

@@ -57,3 +57,4 @@ export interface JujuRequest {
 
 export type CallbackError = Error | null;
 export type Callback<T> = (error: CallbackError, value?: T) => void;
+export type CloseCallback = (code: number) => void;

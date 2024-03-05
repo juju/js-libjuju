@@ -20,7 +20,11 @@ import {
   Error as MacaroonError,
   MacaroonObject,
 } from "@canonical/macaroon-bakery/dist/macaroon";
-import type { Callback, JujuRequest } from "../generator/interfaces";
+import type {
+  Callback,
+  CloseCallback,
+  JujuRequest,
+} from "../generator/interfaces";
 import {
   ClassType,
   Facade,
@@ -34,7 +38,7 @@ export const CLIENT_VERSION = "3.3.2";
 
 export interface ConnectOptions {
   bakery?: Bakery | null;
-  closeCallback: Callback<number>;
+  closeCallback: CloseCallback;
   debug?: boolean;
   facades?: (ClassType<Facade> | GenericFacade)[];
   onWSCreated?: (ws: WebSocket) => void;
@@ -368,7 +372,7 @@ class Client {
       another callback. It is responsibility of the callback to call the
       provided callback if present.
   */
-  logout(callback?: Callback<Client>) {
+  logout(callback?: (code: number, callback: CloseCallback) => void) {
     this._transport.close(callback);
   }
 
@@ -414,10 +418,10 @@ export class Transport {
   _ws: WebSocket;
   _counter: number;
   _callbacks: { [k: number]: Callback<any> };
-  _closeCallback: Callback<number>;
+  _closeCallback: CloseCallback;
   _debug: boolean;
 
-  constructor(ws: WebSocket, closeCallback: Callback<number>, debug: boolean) {
+  constructor(ws: WebSocket, closeCallback: CloseCallback, debug: boolean) {
     this._ws = ws;
     this._counter = 0;
     this._callbacks = {};
@@ -433,7 +437,7 @@ export class Transport {
       if (this._debug) {
         console.debug("close:", evt.code, evt.reason);
       }
-      this._closeCallback(toError(evt.code.toString()));
+      this._closeCallback(evt.code);
     };
   }
 
@@ -447,7 +451,11 @@ export class Transport {
     @param resolve Function called when the request is successful.
     @param reject Function called when the request is not successful.
   */
-  write(req: JujuRequest, resolve: Function, reject: (error: any) => void) {
+  write(
+    req: JujuRequest,
+    resolve: (value: any) => void,
+    reject: (error: Error) => void
+  ) {
     // Check that the connection is ready and sane.
     const state = this._ws.readyState;
     if (state !== 1) {
@@ -477,7 +485,7 @@ export class Transport {
       callback receives the close code and optionally another callback. It is
       responsibility of the callback to call the provided callback if present.
   */
-  close(callback?: Callback<any>) {
+  close(callback?: (code: number, callback: CloseCallback) => void) {
     const closeCallback = this._closeCallback;
     this._closeCallback = (code) => {
       if (callback) {

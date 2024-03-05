@@ -272,9 +272,6 @@ function wrapClient(cls: any) {
       method which can be provided a callback receiving an error.
   */
   cls.prototype.watch = function (callback: Callback<any>): object | undefined {
-    if (!callback) {
-      callback = (_error: CallbackError, _result?: any) => {};
-    }
     // Check that the AllWatcher facade is loaded, as we will use it.
     const allWatcher = this._info.getFacade("allWatcher");
     if (!allWatcher) {
@@ -341,9 +338,6 @@ function wrapController(cls: any) {
       method which can be provided a callback receiving an error.
   */
   cls.prototype.watch = function (callback: Callback<any>): object | undefined {
-    if (!callback) {
-      callback = (_error: CallbackError, _result?: any) => {};
-    }
     // Check that the AllModelWatcher facade is loaded, as we will use it.
     const allModelWatcher: any = this._info.getFacade("allModelWatcher");
     if (!allModelWatcher) {
