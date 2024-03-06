@@ -21,6 +21,7 @@ import {
   MockWebSocket,
   requestEqual,
 } from "./helpers";
+import { toError } from "../utils";
 const fail = () => {
   throw new Error("Fail called");
 };
@@ -55,7 +56,7 @@ describe("connect", () => {
 
   it("handles failure to connect via promise", (done) => {
     connect("wss://1.2.3.4", options, (err) => {
-      expect(err).toBe("cannot connect WebSocket: nope");
+      expect(err).toStrictEqual(new Error("cannot connect WebSocket: nope"));
       done();
     });
     ws.close("nope");
@@ -63,7 +64,9 @@ describe("connect", () => {
 
   it("connect failure", (done) => {
     connect("wss://1.2.3.4", options, (err?: CallbackError, juju?: Client) => {
-      expect(err).toBe("cannot connect WebSocket: bad wolf");
+      expect(err).toStrictEqual(
+        new Error("cannot connect WebSocket: bad wolf")
+      );
       expect(juju).toBeFalsy();
       done();
     });
@@ -71,7 +74,7 @@ describe("connect", () => {
     ws.close("bad wolf");
   });
 
-  function validateLoginFailure(error: string) {
+  function validateLoginFailure(error: Error, message: string) {
     requestEqual(ws.lastRequest, {
       type: "Admin",
       request: "Login",
@@ -85,14 +88,14 @@ describe("connect", () => {
       },
       version: 3,
     });
-    expect(error).toBe("bad wolf");
+    expect(error).toStrictEqual(new Error(message));
   }
 
   it("handles admin login failures", (done) => {
     connect("wss://1.2.3.4", options).then((juju: Client) => {
       ws.close("");
       juju?.login({ username: "who", password: "secret" }).catch((error) => {
-        expect(error).toContain("cannot send request");
+        expect(toError(error).message).toContain("cannot send request");
         done();
       });
     });
@@ -105,10 +108,44 @@ describe("connect", () => {
         ?.login({ username: "who", password: "secret" })
         .then(() => fail)
         .catch((error) => {
-          validateLoginFailure(error);
+          validateLoginFailure(error, "bad wolf");
           done();
         });
       ws.reply({ error: "bad wolf" });
+    });
+    ws.open();
+  });
+
+  it("invalid credentials login failure via promise", (done) => {
+    connect("wss://1.2.3.4", options).then((juju: Client) => {
+      juju
+        ?.login({ username: "who", password: "secret" })
+        .then(() => fail)
+        .catch((error) => {
+          validateLoginFailure(
+            error,
+            "Have you been granted permission to a model on this controller?"
+          );
+          done();
+        });
+      ws.reply({ error: "invalid entity name or password" });
+    });
+    ws.open();
+  });
+
+  it("permission denied login failure via promise", (done) => {
+    connect("wss://1.2.3.4", options).then((juju: Client) => {
+      juju
+        ?.login({ username: "who", password: "secret" })
+        .then(() => fail)
+        .catch((error) => {
+          validateLoginFailure(
+            error,
+            "Ensure that you've been given 'login' permission on this controller."
+          );
+          done();
+        });
+      ws.reply({ error: "permission denied" });
     });
     ws.open();
   });
@@ -125,12 +162,54 @@ describe("connect", () => {
 
   it("login redirection error failure via promise", (done) => {
     connect("wss://1.2.3.4", options).then((juju: Client) => {
-      // juju._admin.redirectInfo = jest.fn().mockImplementation(() => null);
       juju
         ?.login({})
         .then(() => fail)
         .catch((error) => {
           validateRedirectionLoginFailure(error);
+          done();
+        });
+      ws.queueResponses(
+        new Map([
+          // Reply to the redirectInfo request.
+          [
+            2,
+            {
+              response: {
+                "ca-cert": "exampleCert",
+                servers: [
+                  [
+                    {
+                      Address: {
+                        scope: "exampleScope",
+                        type: "exampleType",
+                        value: "exampleValue",
+                      },
+                      port: 8080,
+                      scope: "exampleScope",
+                      type: "exampleType",
+                      value: "exampleValue",
+                    },
+                  ],
+                ],
+              },
+            },
+          ],
+        ])
+      );
+      // Reply to the login request.
+      ws.reply({ error: "redirection required" });
+    });
+    ws.open();
+  });
+
+  it("login generic redirection error failure via promise", (done) => {
+    connect("wss://1.2.3.4", options).then((juju: Client) => {
+      juju
+        ?.login({})
+        .then(() => fail)
+        .catch((error) => {
+          expect(error).toStrictEqual(new Error("bad wolf"));
           done();
         });
       ws.queueResponses(
@@ -274,8 +353,8 @@ describe("connect", () => {
       },
       version: 3,
     });
-    expect(error).toBe(
-      "macaroon discharge required but no bakery instance provided"
+    expect(error).toStrictEqual(
+      new Error("macaroon discharge required but no bakery instance provided")
     );
   }
 
@@ -338,7 +417,9 @@ describe("connect", () => {
       },
       version: 3,
     });
-    expect(error).toBe("macaroon discharge failed: bad wolf");
+    expect(error).toStrictEqual(
+      new Error("macaroon discharge failed: bad wolf")
+    );
   }
 
   it("login discharge required failure", (done) => {
@@ -486,11 +567,11 @@ describe("connect", () => {
             params: {},
             version: 1,
           },
+          jest.fn(),
           (err: CallbackError) => {
-            expect(err).toBe("bad wolf");
+            expect(err).toStrictEqual(new Error("bad wolf"));
             done();
-          },
-          jest.fn()
+          }
         );
         // Reply to the transport test request.
         ws.reply({ error: "bad wolf" });
@@ -565,7 +646,9 @@ describe("connectAndLogin", () => {
   it("connect failure", (done) => {
     const creds = {};
     connectAndLogin(url, creds, options).catch((error) => {
-      expect(error).toBe("cannot connect WebSocket: bad wolf");
+      expect(error).toStrictEqual(
+        new Error("cannot connect WebSocket: bad wolf")
+      );
       done();
     });
     // Close the WebSocket connection.

@@ -188,7 +188,7 @@ export class MockWebSocket {
   }
 
   onopen() {}
-  onclose(_params: { reason: string }) {}
+  onclose(_params: { reason: string; code: number; wasClean: boolean }) {}
   onmessage(_params: { data: string }) {}
 
   open() {
@@ -196,9 +196,9 @@ export class MockWebSocket {
     this.onopen();
   }
 
-  close(reason: string) {
+  close(reason: string, code = 1000, wasClean = true) {
     this.readyState = 3;
-    this.onclose({ reason: reason });
+    this.onclose({ reason, code, wasClean });
   }
 
   message(msg: string) {

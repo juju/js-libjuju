@@ -3,6 +3,10 @@
 
 import { Callback, CallbackError } from "../generator/interfaces";
 
+export enum Label {
+  UNKNOWN_ERROR = "Unknown error",
+}
+
 /**
   Automatically bind all methods of the given object to the object itself.
   @param obj The object whose method must be bound.
@@ -34,17 +38,32 @@ export function autoBind(obj: { [k: string]: any }): void {
 export function createAsyncHandler<T>(
   callback: Callback<T> | undefined,
   resolve: (value: T) => void,
-  reject: (value: CallbackError) => void,
+  reject: (error: CallbackError) => void,
   transform?: (value: T) => T
-): Callback<T> {
-  return (err, value) => {
-    if (err) {
-      callback ? callback(err) : reject(err);
-      return;
-    }
-    if (transform) {
-      value = transform(value!);
-    }
-    callback ? callback(null, value) : resolve(value!);
+): { resolve: (value: T) => void; reject: (error: CallbackError) => void } {
+  return {
+    resolve: (value: T) => {
+      if (transform) {
+        value = transform(value!);
+      }
+      callback ? callback(null, value) : resolve(value!);
+    },
+    reject: callback ? callback : reject,
   };
+}
+
+/**
+  Convert given input to an Error object.
+
+  @param error - The input to be converted to an Error object.
+  @returns An Error object.
+*/
+export function toError(error: any): Error {
+  if (error instanceof Error) {
+    return error;
+  }
+  if (typeof error === "string") {
+    return new Error(error);
+  }
+  return new Error(Label.UNKNOWN_ERROR);
 }

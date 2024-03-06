@@ -17,8 +17,14 @@ describe("wrapAllModelWatcher", () => {
     static NAME = "AllModelWatcher";
     static VERSION = 1;
 
-    next(_id: number, _callback: (result: Response | CallbackError) => void) {}
-    stop(_id: number, _callback: (result: Response | CallbackError) => void) {}
+    next(
+      _id: number,
+      _callback: (error: CallbackError, result?: Response) => void
+    ) {}
+    stop(
+      _id: number,
+      _callback: (error: CallbackError, result?: Response) => void
+    ) {}
   }
   const options = {
     closeCallback: jest.fn(),
@@ -31,7 +37,7 @@ describe("wrapAllModelWatcher", () => {
         "allModelWatcher"
       ) as AllModelWatcherV1;
       const watcherId = 42;
-      allModelWatcher?.next(watcherId, (result) => {
+      allModelWatcher?.next(watcherId, (_error, result) => {
         requestEqual(ws.lastRequest, {
           type: "AllModelWatcher",
           request: "Next",
@@ -65,7 +71,7 @@ describe("wrapAllModelWatcher", () => {
       ) as AllModelWatcherV1;
       const watcherId = 42;
       allModelWatcher?.next(watcherId, (err) => {
-        expect(err).toBe("bad wolf");
+        expect(err).toStrictEqual(new Error("bad wolf"));
       });
       // Reply to the next request.
       ws.reply({ error: "bad wolf" });
@@ -79,7 +85,7 @@ describe("wrapAllModelWatcher", () => {
         "allModelWatcher"
       ) as AllModelWatcherV1;
       const watcherId = 42;
-      allModelWatcher?.stop(watcherId, (result) => {
+      allModelWatcher?.stop(watcherId, (_error, result) => {
         requestEqual(ws.lastRequest, {
           type: "AllModelWatcher",
           request: "Stop",
@@ -101,7 +107,7 @@ describe("wrapAllModelWatcher", () => {
       ) as AllModelWatcherV1;
       const watcherId = 42;
       allModelWatcher?.stop(watcherId, (err) => {
-        expect(err).toBe("bad wolf");
+        expect(err).toStrictEqual(new Error("bad wolf"));
       });
       // Reply to the next request.
       ws.reply({ error: "bad wolf" });
@@ -115,8 +121,14 @@ describe("wrapAllWatcher", () => {
     static NAME = "AllWatcher";
     static VERSION = 0;
 
-    next(_id: number, _callback: (result: Response | CallbackError) => void) {}
-    stop(_id: number, _callback: (result: Response | CallbackError) => void) {}
+    next(
+      _id: number,
+      _callback: (error: CallbackError, result?: Response) => void
+    ) {}
+    stop(
+      _id: number,
+      _callback: (error: CallbackError, result?: Response) => void
+    ) {}
   }
   const options = {
     closeCallback: jest.fn(),
@@ -127,7 +139,7 @@ describe("wrapAllWatcher", () => {
     makeConnection(options, (conn, ws) => {
       const allWatcher = conn?.info.getFacade?.("allWatcher") as AllWatcherV0;
       const watcherId = 42;
-      allWatcher?.next(watcherId, (result) => {
+      allWatcher?.next(watcherId, (_error, result) => {
         requestEqual(ws.lastRequest, {
           type: "AllWatcher",
           request: "Next",
@@ -159,7 +171,7 @@ describe("wrapAllWatcher", () => {
       const allWatcher = conn?.info.getFacade?.("allWatcher") as AllWatcherV0;
       const watcherId = 42;
       allWatcher?.next(watcherId, (err) => {
-        expect(err).toBe("bad wolf");
+        expect(err).toStrictEqual(new Error("bad wolf"));
       });
       // Reply to the next request.
       ws.reply({ error: "bad wolf" });
@@ -171,7 +183,7 @@ describe("wrapAllWatcher", () => {
     makeConnection(options, (conn, ws) => {
       const allWatcher = conn?.info.getFacade?.("allWatcher") as AllWatcherV0;
       const watcherId = 42;
-      allWatcher.stop(watcherId, (result) => {
+      allWatcher.stop(watcherId, (_error, result) => {
         requestEqual(ws.lastRequest, {
           type: "AllWatcher",
           request: "Stop",
@@ -191,7 +203,7 @@ describe("wrapAllWatcher", () => {
       const allWatcher = conn?.info.getFacade?.("allWatcher") as AllWatcherV0;
       const watcherId = 42;
       allWatcher.stop(watcherId, (err) => {
-        expect(err).toBe("bad wolf");
+        expect(err).toStrictEqual(new Error("bad wolf"));
       });
       // Reply to the next request.
       ws.reply({ error: "bad wolf" });
@@ -225,7 +237,7 @@ describe("wrapClient", () => {
     makeConnection(options, (conn, ws) => {
       const client = conn?.info.getFacade?.("client") as ClientV3;
       let callCount = 0;
-      client?.watch((result) => {
+      client?.watch((_error, result) => {
         callCount += 1;
         switch (callCount) {
           case 1:
@@ -275,7 +287,9 @@ describe("wrapClient", () => {
     makeConnection(options, (conn, ws) => {
       const client = conn?.info.getFacade?.("client") as ClientV3;
       client.watch((err) => {
-        expect(err).toBe("watch requires the allWatcher facade to be loaded");
+        expect(err).toStrictEqual(
+          new Error("watch requires the allWatcher facade to be loaded")
+        );
         // Only the login request has been made, no other requests.
         expect(ws.requests.length).toBe(1);
       });
@@ -288,10 +302,10 @@ describe("wrapClient", () => {
       static NAME = "Client";
       static VERSION = 3;
       watchAll(callback: Callback<Record<string, number>>) {
-        callback("bad wolf", {});
+        callback(new Error("bad wolf"), {});
       }
       watch(callback: Callback<Record<string, number>>) {
-        callback("bad wolf", {});
+        callback(new Error("bad wolf"), {});
       }
     }
     class AllWatcherV0 extends BaseFacade {
@@ -305,7 +319,7 @@ describe("wrapClient", () => {
     makeConnection(options, (conn, _ws) => {
       const client = conn?.info.getFacade?.("client") as ClientV3;
       client.watch((err) => {
-        expect(err).toBe("bad wolf");
+        expect(err).toStrictEqual(new Error("bad wolf"));
       });
       done();
     });
@@ -333,7 +347,7 @@ describe("wrapClient", () => {
     makeConnection(options, (conn, ws) => {
       const client = conn?.info.getFacade?.("client") as ClientV3;
       client.watch((err) => {
-        expect(err).toBe("bad wolf");
+        expect(err).toStrictEqual(new Error("bad wolf"));
       });
       // Reply to the next request.
       ws.reply({ error: "bad wolf" });
@@ -417,7 +431,7 @@ describe("wrapClient", () => {
       static NAME = "Client";
       static VERSION = 3;
       addMachines(args: unknown, callback: Callback<Record<string, void>>) {
-        callback("bad wolf", {});
+        callback(new Error("bad wolf"), {});
       }
     }
     const options = {
@@ -427,7 +441,7 @@ describe("wrapClient", () => {
     makeConnection(options, (conn, _ws) => {
       const client = conn?.info.getFacade?.("client") as ClientV3;
       client.addMachines({ series: "bionic" }, (err) => {
-        expect(err).toBe("bad wolf");
+        expect(err).toStrictEqual(new Error("bad wolf"));
       });
       done();
     });
@@ -460,7 +474,7 @@ describe("wrapController", () => {
     makeConnection(options, (conn, ws) => {
       const controller = conn?.info.getFacade?.("controller") as ControllerV4;
       let callCount = 0;
-      controller?.watch((result) => {
+      controller?.watch((_error, result) => {
         callCount += 1;
         switch (callCount) {
           case 1:
@@ -510,8 +524,8 @@ describe("wrapController", () => {
     makeConnection(options, (conn, ws) => {
       const controller = conn?.info.getFacade?.("controller") as ControllerV4;
       controller.watch((err) => {
-        expect(err).toBe(
-          "watch requires the allModelWatcher facade to be loaded"
+        expect(err).toStrictEqual(
+          new Error("watch requires the allModelWatcher facade to be loaded")
         );
         // Only the login request has been made, no other requests.
         expect(ws.requests.length).toBe(1);
@@ -525,10 +539,10 @@ describe("wrapController", () => {
       static NAME = "Controller";
       static VERSION = 4;
       watchAllModels(callback: Callback<Record<string, number>>) {
-        callback("bad wolf", {});
+        callback(new Error("bad wolf"), {});
       }
       watch(callback: Callback<Record<string, number>>) {
-        callback("bad wolf", {});
+        callback(new Error("bad wolf"), {});
       }
     }
     class AllModelWatcherV1 extends BaseFacade {
@@ -545,7 +559,7 @@ describe("wrapController", () => {
     makeConnection(options, (conn, _ws) => {
       const controller = conn?.info.getFacade?.("controller") as ControllerV4;
       controller.watch((err) => {
-        expect(err).toBe("bad wolf");
+        expect(err).toStrictEqual(new Error("bad wolf"));
       });
       done();
     });
@@ -576,7 +590,7 @@ describe("wrapController", () => {
     makeConnection(options, (conn, ws) => {
       const controller = conn?.info.getFacade?.("controller") as ControllerV5;
       controller.watch((err) => {
-        expect(err).toBe("bad wolf");
+        expect(err).toStrictEqual(new Error("bad wolf"));
       });
       // Reply to the next request.
       ws.reply({ error: "bad wolf" });

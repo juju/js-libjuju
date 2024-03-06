@@ -20,7 +20,11 @@ import {
   Error as MacaroonError,
   MacaroonObject,
 } from "@canonical/macaroon-bakery/dist/macaroon";
-import type { Callback, JujuRequest } from "../generator/interfaces";
+import type {
+  Callback,
+  CloseCallback,
+  JujuRequest,
+} from "../generator/interfaces";
 import {
   ClassType,
   Facade,
@@ -28,13 +32,13 @@ import {
   FacadeClassList,
   GenericFacade,
 } from "./types.js";
-import { createAsyncHandler } from "./utils.js";
+import { createAsyncHandler, toError } from "./utils.js";
 
 export const CLIENT_VERSION = "3.3.2";
 
 export interface ConnectOptions {
   bakery?: Bakery | null;
-  closeCallback: Callback<number>;
+  closeCallback: CloseCallback;
   debug?: boolean;
   facades?: (ClassType<Facade> | GenericFacade)[];
   onWSCreated?: (ws: WebSocket) => void;
@@ -113,10 +117,10 @@ function connect(
     const ws = new options!.wsclass!(url);
     const handler = createAsyncHandler(callback, resolve, reject);
     ws.onopen = (_evt) => {
-      handler(null, new Client(ws, options!));
+      handler.resolve(new Client(ws, options!));
     };
     ws.onclose = (evt) => {
-      handler("cannot connect WebSocket: " + evt.reason);
+      handler.reject(toError("cannot connect WebSocket: " + evt.reason));
     };
     ws.onerror = (evt) => {
       console.log("--", evt);
@@ -289,19 +293,36 @@ class Client {
     return await new Promise(async (resolve, reject) => {
       let response: any;
       try {
-        response = await this._admin.login(args);
-      } catch (error) {
-        reject(error);
-        return;
-      }
-      try {
+        try {
+          response = await this._admin.login(args);
+        } catch (error) {
+          if (
+            error instanceof Error &&
+            error.message === INVALIDCREDENTIALS_ERROR
+          ) {
+            throw new Error(
+              "Have you been granted permission to a model on this controller?"
+            );
+          } else if (
+            error instanceof Error &&
+            error.message === PERMISSIONDENIED_ERROR
+          ) {
+            throw new Error(
+              "Ensure that you've been given 'login' permission on this controller."
+            );
+          } else {
+            throw toError(error);
+          }
+        }
         const dischargeRequired =
           response["discharge-required"] ||
           response["bakery-discharge-required"];
         if (dischargeRequired) {
           if (!this._bakery) {
             reject(
-              "macaroon discharge required but no bakery instance provided"
+              new Error(
+                "macaroon discharge required but no bakery instance provided"
+              )
             );
             return;
           }
@@ -314,38 +335,30 @@ class Client {
             return resolve(this.login(credentials, clientVersion));
           };
           const onFailure = (err: string | MacaroonError) => {
-            reject("macaroon discharge failed: " + err);
+            reject(
+              new Error(
+                "macaroon discharge failed: " +
+                  (err instanceof Object && "Message" in err
+                    ? err.Message
+                    : err)
+              )
+            );
           };
           this._bakery.discharge(dischargeRequired, onSuccess, onFailure);
           return;
-        } else if (response === REDIRECTION_ERROR) {
-          // This is should be handled by any user of this login method.
-          throw response;
-        } else if (response === INVALIDCREDENTIALS_ERROR) {
-          throw `response
-Have you been granted permission to a model on this controller?`;
-        } else if (response === PERMISSIONDENIED_ERROR) {
-          throw `response
-Ensure that you've been given 'login' permission on this controller.`;
-        } else if (typeof response === "string") {
-          // If the response is a string and not an object it's an error
-          // message and surface that back to the user.
-          throw response;
         }
         resolve(new Connection(this._transport, this._facades, response));
       } catch (error) {
-        if (error !== REDIRECTION_ERROR) {
-          reject(error);
+        if (!(error instanceof Error) || error.message !== REDIRECTION_ERROR) {
+          reject(toError(error));
           return;
         }
         // This is a model redirection error, fetch the redirection information.
         try {
           const info = await this._admin.redirectInfo(null);
           reject(new RedirectionError(info));
-          return;
         } catch (error) {
-          reject(error);
-          return;
+          reject(toError(error));
         }
       }
     });
@@ -359,7 +372,7 @@ Ensure that you've been given 'login' permission on this controller.`;
       another callback. It is responsibility of the callback to call the
       provided callback if present.
   */
-  logout(callback?: Callback<Client>) {
+  logout(callback?: (code: number, callback: CloseCallback) => void) {
     this._transport.close(callback);
   }
 
@@ -378,13 +391,15 @@ Ensure that you've been given 'login' permission on this controller.`;
 const REDIRECTION_ERROR = "redirection required";
 const INVALIDCREDENTIALS_ERROR = "invalid entity name or password";
 const PERMISSIONDENIED_ERROR = "permission denied";
-class RedirectionError {
+class RedirectionError extends Error {
   servers: RedirectInfoResult["servers"];
   caCert: string;
 
   constructor(info: RedirectInfoResult) {
+    super(REDIRECTION_ERROR);
     this.servers = info.servers;
     this.caCert = info["ca-cert"];
+    Object.setPrototypeOf(this, RedirectionError.prototype);
   }
 }
 
@@ -402,11 +417,11 @@ class RedirectionError {
 export class Transport {
   _ws: WebSocket;
   _counter: number;
-  _callbacks: { [k: number]: Function };
-  _closeCallback: Callback<number>;
+  _callbacks: { [k: number]: Callback<any> };
+  _closeCallback: CloseCallback;
   _debug: boolean;
 
-  constructor(ws: WebSocket, closeCallback: Callback<number>, debug: boolean) {
+  constructor(ws: WebSocket, closeCallback: CloseCallback, debug: boolean) {
     this._ws = ws;
     this._counter = 0;
     this._callbacks = {};
@@ -436,18 +451,25 @@ export class Transport {
     @param resolve Function called when the request is successful.
     @param reject Function called when the request is not successful.
   */
-  write(req: JujuRequest, resolve: Function, reject: Function) {
+  write(
+    req: JujuRequest,
+    resolve: (value: any) => void,
+    reject: (error: Error) => void
+  ) {
     // Check that the connection is ready and sane.
     const state = this._ws.readyState;
     if (state !== 1) {
       const reqStr = JSON.stringify(req);
-      const error = `cannot send request ${reqStr}: connection state ${state} is not open`;
+      const error = new Error(
+        `cannot send request ${reqStr}: connection state ${state} is not open`
+      );
       reject(error);
     }
     this._counter += 1;
     // Include the current request id in the request.
     req["request-id"] = this._counter;
-    this._callbacks[this._counter] = resolve;
+    this._callbacks[this._counter] = (error, result) =>
+      error ? reject(error) : resolve(result);
     const msg = JSON.stringify(req);
     if (this._debug) {
       console.debug("-->", msg);
@@ -463,7 +485,7 @@ export class Transport {
       callback receives the close code and optionally another callback. It is
       responsibility of the callback to call the provided callback if present.
   */
-  close(callback?: Callback<any>) {
+  close(callback?: (code: number, callback: CloseCallback) => void) {
     const closeCallback = this._closeCallback;
     this._closeCallback = (code) => {
       if (callback) {
@@ -482,13 +504,40 @@ export class Transport {
       string.
   */
   _handle(data: string) {
-    const resp = JSON.parse(data);
+    let resp: unknown;
+    try {
+      resp = JSON.parse(data);
+    } catch (error) {
+      console.error("Unable to parse the raw response from Juju:", data, error);
+      return;
+    }
+    if (
+      !(
+        resp &&
+        typeof resp === "object" &&
+        "request-id" in resp &&
+        typeof resp["request-id"] === "number" &&
+        ("error" in resp || "response" in resp)
+      )
+    ) {
+      console.error(
+        "Parsed raw response from Juju is in incorrect format:",
+        resp
+      );
+      return;
+    }
     const id = resp["request-id"];
     const callback = this._callbacks[id];
     delete this._callbacks[id];
-    if (callback) {
-      callback(resp.error || resp.response);
+    if (!callback) {
+      console.error(
+        "Parsed raw response from Juju can't be handled. No callback available."
+      );
+      return;
     }
+    "error" in resp
+      ? callback(toError(resp.error))
+      : callback(null, resp.response);
   }
 }
 
