@@ -259,7 +259,7 @@ export class MockWebSocket {
   @returns The mock bakery instance.
 */
 function makeBakery(succeeding: boolean) {
-  const fakeMacaroon = btoa(JSON.stringify("fake macaroon"));
+  const fakeMacaroon = btoa(JSON.stringify({ fake: "macaroon" }));
   const mockBakery: unknown = {
     discharge: (
       _macaroon: Macaroon,

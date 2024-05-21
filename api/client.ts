@@ -11,6 +11,7 @@ import { Bakery } from "@canonical/macaroon-bakery";
 import AdminV3, {
   AuthUserInfo,
   FacadeVersions,
+  HostPort,
   LoginRequest,
   LoginResult,
   RedirectInfoResult,
@@ -18,6 +19,8 @@ import AdminV3, {
 
 import {
   Error as MacaroonError,
+  MacaroonJSONV1,
+  MacaroonJSONV2,
   MacaroonObject,
 } from "@canonical/macaroon-bakery/dist/macaroon";
 import type {
@@ -59,6 +62,12 @@ export interface Credentials {
   macaroons?: MacaroonObject[][];
 }
 
+// The type of a Macaroon from the Admin facade does not match a real macaroon.
+const isMacaroonObject = (
+  macaroon: unknown
+): macaroon is MacaroonJSONV1 | MacaroonJSONV2 =>
+  !!macaroon && typeof macaroon === "object";
+
 /**
   Connect to the Juju controller or model at the given URL.
 
@@ -92,7 +101,7 @@ function connect(
   url: string,
   options?: ConnectOptions,
   callback?: Callback<Client>
-): Promise<any> {
+): Promise<Client> {
   if (!options) {
     options = { closeCallback: () => {} };
   }
@@ -170,16 +179,16 @@ async function connectAndLogin(
   logout: typeof Client.prototype.logout;
 }> {
   // Connect to Juju.
-  const juju: Client = await connect(url, options);
+  const juju = await connect(url, options);
   try {
     const conn = await juju.login(credentials, clientVersion);
     return { conn, logout: juju.logout.bind(juju) };
-  } catch (error: any) {
-    if (!juju || !juju.isRedirectionError(error)) {
+  } catch (error) {
+    if (!juju.isRedirectionError(error)) {
       throw error;
     }
     // Redirect to the real model.
-    juju && juju.logout();
+    juju.logout();
     for (let i = 0; i < error.servers.length; i++) {
       const srv = error.servers[i][0];
       // TODO(frankban): we should really try to connect to all servers and
@@ -187,10 +196,7 @@ async function connectAndLogin(
       // that the public hostname is reachable.
       if (srv.type === "hostname" && srv.scope === "public") {
         // This is a public server with a dns-name, connect to it.
-        const generateURL = (
-          uuidOrURL: string,
-          srv: { value: any; port: any }
-        ) => {
+        const generateURL = (uuidOrURL: string, srv: HostPort) => {
           let uuid = uuidOrURL;
           if (uuid.startsWith("wss://") || uuid.startsWith("ws://")) {
             const parts = uuid.split("/");
@@ -291,7 +297,7 @@ class Client {
 
     // eslint-disable-next-line no-async-promise-executor
     return await new Promise(async (resolve, reject) => {
-      let response: any;
+      let response: LoginResult | null = null;
       try {
         try {
           response = await this._admin.login(args);
@@ -344,7 +350,13 @@ class Client {
               )
             );
           };
-          this._bakery.discharge(dischargeRequired, onSuccess, onFailure);
+          if (isMacaroonObject(dischargeRequired)) {
+            this._bakery.discharge(dischargeRequired, onSuccess, onFailure);
+          } else {
+            throw new Error(
+              "Discharge macaroon doesn't appear to be a macaroon."
+            );
+          }
           return;
         }
         resolve(new Connection(this._transport, this._facades, response));
@@ -382,7 +394,7 @@ class Client {
     @param err The error returned by the login request.
     @returns Whether the given error is a redirection error.
   */
-  isRedirectionError(err: any): boolean {
+  isRedirectionError(err: unknown): err is RedirectionError {
     return err instanceof RedirectionError;
   }
 }
@@ -417,7 +429,7 @@ class RedirectionError extends Error {
 export class Transport {
   _ws: WebSocket;
   _counter: number;
-  _callbacks: { [k: number]: Callback<any> };
+  _callbacks: Record<number, Callback<unknown>>;
   _closeCallback: CloseCallback;
   _debug: boolean;
 
@@ -451,9 +463,9 @@ export class Transport {
     @param resolve Function called when the request is successful.
     @param reject Function called when the request is not successful.
   */
-  write(
+  write<R>(
     req: JujuRequest,
-    resolve: (value: any) => void,
+    resolve: (value: R) => void,
     reject: (error: Error) => void
   ) {
     // Check that the connection is ready and sane.
@@ -468,8 +480,8 @@ export class Transport {
     this._counter += 1;
     // Include the current request id in the request.
     req["request-id"] = this._counter;
-    this._callbacks[this._counter] = (error, result) =>
-      error ? reject(error) : resolve(result);
+    this._callbacks[this._counter] = (error, result: unknown) =>
+      error ? reject(error) : resolve(result as R);
     const msg = JSON.stringify(req);
     if (this._debug) {
       console.debug("-->", msg);
