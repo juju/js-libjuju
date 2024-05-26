@@ -376,7 +376,7 @@ describe("connect", () => {
           done();
         });
       // Reply to the login request with a discharge required response.
-      ws.reply({ response: { "discharge-required": "macaroon" } });
+      ws.reply({ response: { "discharge-required": { fake: "macaroon" } } });
     });
     // Open the WebSocket connection.
     ws.open();
@@ -398,7 +398,7 @@ describe("connect", () => {
           done();
         });
       // Reply to the login request with a discharge required response.
-      ws.reply({ response: { "discharge-required": "macaroon" } });
+      ws.reply({ response: { "discharge-required": { fake: "macaroon" } } });
     });
     ws.open();
   });
@@ -411,7 +411,7 @@ describe("connect", () => {
         "auth-tag": "",
         "client-version": CLIENT_VERSION,
         credentials: "",
-        macaroons: ["fake macaroon"],
+        macaroons: [{ fake: "macaroon" }],
         nonce: "",
         "user-data": "",
       },
@@ -441,7 +441,7 @@ describe("connect", () => {
           done();
         });
       // Reply to the login request with a discharge required response.
-      ws.reply({ response: { "discharge-required": "macaroon" } });
+      ws.reply({ response: { "discharge-required": { fake: "macaroon" } } });
     });
     // Open the WebSocket connection.
     ws.open();
@@ -464,7 +464,7 @@ describe("connect", () => {
           done();
         });
       // Reply to the login request with a discharge required response.
-      ws.reply({ response: { "discharge-required": "macaroon" } });
+      ws.reply({ response: { "discharge-required": { fake: "macaroon" } } });
     });
     ws.open();
   });
@@ -477,7 +477,7 @@ describe("connect", () => {
         "auth-tag": "",
         "client-version": CLIENT_VERSION,
         credentials: "",
-        macaroons: ["fake macaroon"],
+        macaroons: [{ fake: "macaroon" }],
         nonce: "",
         "user-data": "",
       },
@@ -500,7 +500,7 @@ describe("connect", () => {
         ])
       );
       // Reply to the login request with a discharge required response.
-      ws.reply({ response: { "discharge-required": "macaroon" } });
+      ws.reply({ response: { "discharge-required": { fake: "macaroon" } } });
     });
     // Open the WebSocket connection.
     ws.open();
@@ -529,7 +529,7 @@ describe("connect", () => {
         ])
       );
       // Reply to the login request with a discharge required response.
-      ws.reply({ response: { "discharge-required": "macaroon" } });
+      ws.reply({ response: { "discharge-required": { fake: "macaroon" } } });
     });
     ws.open();
   });
