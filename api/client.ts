@@ -178,8 +178,8 @@ function connect(
 */
 async function connectAndLogin(
   url: string,
-  credentials: Credentials,
   options: ConnectOptions,
+  credentials?: Credentials,
   clientVersion = CLIENT_VERSION
 ): Promise<{
   conn?: Connection;
@@ -213,8 +213,8 @@ async function connectAndLogin(
         };
         return await connectAndLogin(
           generateURL(url, srv),
-          credentials,
           options,
+          credentials,
           clientVersion
         );
       }

@@ -670,7 +670,7 @@ describe("connectAndLogin", () => {
 
   it("connect failure", (done) => {
     const creds = { macaroons: [] };
-    connectAndLogin(url, creds, options).catch((error) => {
+    connectAndLogin(url, options, creds).catch((error) => {
       expect(error).toStrictEqual(
         new Error("cannot connect WebSocket: bad wolf")
       );
@@ -682,7 +682,7 @@ describe("connectAndLogin", () => {
 
   it("login redirection error failure", (done) => {
     const creds = { username: "who", password: "tardis" };
-    connectAndLogin(url, creds, options)
+    connectAndLogin(url, options, creds)
       .then(() => fail)
       .catch((error) => {
         expect(error.message).toBe("cannot connect to model after redirection");
@@ -773,7 +773,7 @@ describe("connectAndLogin", () => {
         }
       },
     };
-    connectAndLogin(url, creds, options).then(
+    connectAndLogin(url, options, creds).then(
       (result?: { conn?: Connection; logout: Client["logout"] }) => {
         expect(result).not.toBe(null);
         expect(result?.conn).not.toBe(null);
@@ -788,7 +788,7 @@ describe("connectAndLogin", () => {
 
   it("login success", (done) => {
     const creds = { username: "who", password: "tardis" };
-    connectAndLogin(url, creds, options).then((result: any) => {
+    connectAndLogin(url, options, creds).then((result: any) => {
       expect(result).not.toBe(null);
       expect(result.conn).not.toBe(null);
       expect(result.logout).not.toBe(null);
@@ -808,8 +808,7 @@ describe("connectAndLogin", () => {
   });
 
   it("login success", (done) => {
-    const creds = { username: "who", password: "tardis" };
-    connectAndLogin(url, creds, { ...options, oidcEnabled: true }).then(
+    connectAndLogin(url, { ...options, oidcEnabled: true }).then(
       (result: any) => {
         result.logout();
         // The WebSocket is now closed.
