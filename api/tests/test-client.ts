@@ -163,7 +163,7 @@ describe("connect", () => {
   it("login redirection error failure via promise", (done) => {
     connect("wss://1.2.3.4", options).then((juju: Client) => {
       juju
-        ?.login({})
+        ?.login({ macaroons: [] })
         .then(() => fail)
         .catch((error) => {
           validateRedirectionLoginFailure(error);
@@ -206,7 +206,7 @@ describe("connect", () => {
   it("login generic redirection error failure via promise", (done) => {
     connect("wss://1.2.3.4", options).then((juju: Client) => {
       juju
-        ?.login({})
+        ?.login({ macaroons: [] })
         .then(() => fail)
         .catch((error) => {
           expect(error).toStrictEqual(new Error("bad wolf"));
@@ -253,7 +253,7 @@ describe("connect", () => {
       expect(err).toBe(null);
       expect(juju).not.toBe(null);
       juju
-        ?.login({})
+        ?.login({ macaroons: [] })
         .then(() => fail)
         .catch((error) => {
           validateRedirectionLoginSuccess(juju, error);
@@ -298,7 +298,7 @@ describe("connect", () => {
   it("login redirection error success via promises", (done) => {
     connect("wss://1.2.3.4", options).then((juju: Client) => {
       juju
-        ?.login({})
+        ?.login({ macaroons: [] })
         .then(() => fail)
         .catch((error) => {
           validateRedirectionLoginSuccess(juju, error);
@@ -534,6 +534,31 @@ describe("connect", () => {
     ws.open();
   });
 
+  it("connect and enable OIDC login", (done) => {
+    connect(
+      "wss://1.2.3.4",
+      {
+        ...options,
+        oidcEnabled: true,
+      },
+      (err?: CallbackError, juju?: Client) => {
+        expect(err).toBe(null);
+        juju?.login().then(() => {
+          requestEqual(ws.lastRequest, {
+            type: "Admin",
+            request: "LoginWithSessionCookie",
+            version: 4,
+          });
+          done();
+        });
+        // Reply to the login request.
+        ws.reply({ response: {} });
+      }
+    );
+    // Open the WebSocket connection.
+    ws.open();
+  });
+
   it("connection transport success", (done) => {
     const options = { closeCallback: jest.fn() };
     makeConnection(options, (conn, ws) => {
@@ -644,8 +669,8 @@ describe("connectAndLogin", () => {
   };
 
   it("connect failure", (done) => {
-    const creds = {};
-    connectAndLogin(url, creds, options).catch((error) => {
+    const creds = { macaroons: [] };
+    connectAndLogin(url, options, creds).catch((error) => {
       expect(error).toStrictEqual(
         new Error("cannot connect WebSocket: bad wolf")
       );
@@ -656,8 +681,8 @@ describe("connectAndLogin", () => {
   });
 
   it("login redirection error failure", (done) => {
-    const creds = { user: "who", password: "tardis" };
-    connectAndLogin(url, creds, options)
+    const creds = { username: "who", password: "tardis" };
+    connectAndLogin(url, options, creds)
       .then(() => fail)
       .catch((error) => {
         expect(error.message).toBe("cannot connect to model after redirection");
@@ -684,7 +709,7 @@ describe("connectAndLogin", () => {
   it("login redirection error success", (done) => {
     // If this test is timing out then check that the setTimeout is opening the
     // model websocket.
-    const creds = { user: "who", password: "tardis" };
+    const creds = { username: "who", password: "tardis" };
     let modelWS: MockWebSocket;
     const options = {
       bakery: makeBakery(true),
@@ -748,7 +773,7 @@ describe("connectAndLogin", () => {
         }
       },
     };
-    connectAndLogin(url, creds, options).then(
+    connectAndLogin(url, options, creds).then(
       (result?: { conn?: Connection; logout: Client["logout"] }) => {
         expect(result).not.toBe(null);
         expect(result?.conn).not.toBe(null);
@@ -762,8 +787,8 @@ describe("connectAndLogin", () => {
   });
 
   it("login success", (done) => {
-    const creds = { user: "who", password: "tardis" };
-    connectAndLogin(url, creds, options).then((result: any) => {
+    const creds = { username: "who", password: "tardis" };
+    connectAndLogin(url, options, creds).then((result: any) => {
       expect(result).not.toBe(null);
       expect(result.conn).not.toBe(null);
       expect(result.logout).not.toBe(null);
@@ -772,6 +797,30 @@ describe("connectAndLogin", () => {
       expect(ws.readyState).toBe(3);
       done();
     });
+    ws.queueResponses(
+      new Map([
+        // Reply to the login request.
+        [1, { response: { facades: [] } }],
+      ])
+    );
+    // Open the WebSocket connection.
+    ws.open();
+  });
+
+  it("login success", (done) => {
+    connectAndLogin(url, { ...options, oidcEnabled: true }).then(
+      (result: any) => {
+        result.logout();
+        // The WebSocket is now closed.
+        expect(ws.readyState).toBe(3);
+        requestEqual(ws.lastRequest, {
+          type: "Admin",
+          request: "LoginWithSessionCookie",
+          version: 4,
+        });
+        done();
+      }
+    );
     ws.queueResponses(
       new Map([
         // Reply to the login request.

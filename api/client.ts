@@ -36,6 +36,7 @@ import {
   GenericFacade,
 } from "./types.js";
 import { createAsyncHandler, toError } from "./utils.js";
+import AdminV4 from "./custom-facades/AdminV4.js";
 
 export const CLIENT_VERSION = "3.3.2";
 
@@ -44,6 +45,7 @@ export interface ConnectOptions {
   closeCallback: CloseCallback;
   debug?: boolean;
   facades?: (ClassType<Facade> | GenericFacade)[];
+  oidcEnabled?: boolean;
   onWSCreated?: (ws: WebSocket) => void;
   wsclass?: typeof WebSocket;
 }
@@ -56,11 +58,16 @@ export interface ConnectionInfo {
   getFacade?: (name: string) => Facade;
 }
 
-export interface Credentials {
-  username?: string;
-  password?: string;
-  macaroons?: MacaroonObject[][];
-}
+export type ExcludeProps<O> = Partial<Record<keyof O, never>>;
+
+export type Credentials =
+  | {
+      username: string;
+      password: string;
+    }
+  | {
+      macaroons: MacaroonObject[][];
+    };
 
 // The type of a Macaroon from the Admin facade does not match a real macaroon.
 const isMacaroonObject = (
@@ -171,8 +178,8 @@ function connect(
 */
 async function connectAndLogin(
   url: string,
-  credentials: Credentials,
   options: ConnectOptions,
+  credentials?: Credentials,
   clientVersion = CLIENT_VERSION
 ): Promise<{
   conn?: Connection;
@@ -206,8 +213,8 @@ async function connectAndLogin(
         };
         return await connectAndLogin(
           generateURL(url, srv),
-          credentials,
           options,
+          credentials,
           clientVersion
         );
       }
@@ -240,7 +247,8 @@ class Client {
   _transport: Transport;
   _bakery?: Bakery | null;
   _facades: (ClassType<Facade> | GenericFacade)[];
-  _admin: AdminV3;
+  _admin: AdminV3 | AdminV4;
+  _oidcEnabled: boolean;
 
   constructor(ws: WebSocket, options: ConnectOptions) {
     // Instantiate the transport, used for sending messages to the server.
@@ -250,9 +258,13 @@ class Client {
       Boolean(options.debug)
     );
 
+    this._oidcEnabled = options.oidcEnabled || false;
     this._facades = options.facades || [];
     this._bakery = options.bakery;
-    this._admin = new AdminV3(this._transport, {});
+    this._admin = new (this._oidcEnabled ? AdminV4 : AdminV3)(
+      this._transport,
+      {}
+    );
   }
 
   /**
@@ -269,7 +281,7 @@ class Client {
       promise will not be resolved or rejected if a callback is provided.
   */
   async login(
-    credentials: Credentials,
+    credentials?: Credentials,
     clientVersion = CLIENT_VERSION
   ): Promise<Connection | undefined> {
     const args: LoginRequest = {
@@ -283,10 +295,10 @@ class Client {
     const url = this._transport._ws.url;
     const origin = url;
 
-    if (credentials.username && credentials.password) {
+    if (credentials && "username" in credentials) {
       args.credentials = credentials.password;
       args["auth-tag"] = `user-${credentials.username}`;
-    } else {
+    } else if (credentials && "macaroons" in credentials) {
       const macaroons = this._bakery?.storage.get(origin);
       let deserialized;
       if (macaroons) {
@@ -300,7 +312,10 @@ class Client {
       let response: LoginResult | null = null;
       try {
         try {
-          response = await this._admin.login(args);
+          response =
+            this._oidcEnabled && "loginWithSessionCookie" in this._admin
+              ? await this._admin.loginWithSessionCookie()
+              : await this._admin.login(args);
         } catch (error) {
           if (
             error instanceof Error &&
@@ -337,8 +352,12 @@ class Client {
             const serialized = btoa(JSON.stringify(macaroons));
             this._bakery?.storage.set(origin, serialized, () => {});
             // Send the login request again including the discharge macaroons.
-            credentials.macaroons = [macaroons];
-            return resolve(this.login(credentials, clientVersion));
+            return resolve(
+              this.login(
+                { ...credentials, macaroons: [macaroons] },
+                clientVersion
+              )
+            );
           };
           const onFailure = (err: string | MacaroonError) => {
             reject(
