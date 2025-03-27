@@ -539,7 +539,7 @@ describe("connect", () => {
       "wss://1.2.3.4",
       {
         ...options,
-        oidcEnabled: true,
+        loginWithSessionCookie: true,
       },
       (err?: CallbackError, juju?: Client) => {
         expect(err).toBe(null);
@@ -808,7 +808,7 @@ describe("connectAndLogin", () => {
   });
 
   it("login success", (done) => {
-    connectAndLogin(url, { ...options, oidcEnabled: true }).then(
+    connectAndLogin(url, { ...options, loginWithSessionCookie: true }).then(
       (result: any) => {
         result.logout();
         // The WebSocket is now closed.

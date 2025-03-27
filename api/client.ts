@@ -45,7 +45,7 @@ export interface ConnectOptions {
   closeCallback: CloseCallback;
   debug?: boolean;
   facades?: (ClassType<Facade> | GenericFacade)[];
-  oidcEnabled?: boolean;
+  loginWithSessionCookie?: boolean;
   onWSCreated?: (ws: WebSocket) => void;
   wsclass?: typeof WebSocket;
 }
@@ -248,7 +248,7 @@ class Client {
   _bakery?: Bakery | null;
   _facades: (ClassType<Facade> | GenericFacade)[];
   _admin: AdminV3 | AdminV4;
-  _oidcEnabled: boolean;
+  _loginWithSessionCookie: boolean;
 
   constructor(ws: WebSocket, options: ConnectOptions) {
     // Instantiate the transport, used for sending messages to the server.
@@ -258,10 +258,10 @@ class Client {
       Boolean(options.debug)
     );
 
-    this._oidcEnabled = options.oidcEnabled || false;
+    this._loginWithSessionCookie = options.loginWithSessionCookie || false;
     this._facades = options.facades || [];
     this._bakery = options.bakery;
-    this._admin = new (this._oidcEnabled ? AdminV4 : AdminV3)(
+    this._admin = new (this._loginWithSessionCookie ? AdminV4 : AdminV3)(
       this._transport,
       {}
     );
@@ -313,7 +313,8 @@ class Client {
       try {
         try {
           response =
-            this._oidcEnabled && "loginWithSessionCookie" in this._admin
+            this._loginWithSessionCookie &&
+            "loginWithSessionCookie" in this._admin
               ? await this._admin.loginWithSessionCookie()
               : await this._admin.login(args);
         } catch (error) {
