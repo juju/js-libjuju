@@ -134,14 +134,17 @@ Finally, update \`CLIENT_VERSION\` in \`api/client.ts\` with the highest support
 
 ### Releasing to NPM
 
-- Update the version number in \`package.json\`, respecting semver.
-- Run the tests with \`npm test\`.
-- Run the examples with \`node\` to ensure that everything works as expected.
-- Upgrade the [Juju Dashboard](https://github.com/canonical-web-and-design/jaas-dashboard) to this version using \`npm link\` and ensure that everything works as expected.
-- Tag the version in the git repository with the version number from above.
-- \`npm publish\`.
-- Update the release notes in the [repository](https://github.com/juju/js-libjuju/releases).
-- Create a post on the [Juju Discourse](https://discourse.juju.is/) with information about the release.
-
+- Update the version number in \`package.json\`, respecting semver, create a PR
+  and land it.
+- Build package with \`yarn run build\`.
+- Upgrade the [Juju Dashboard](https://github.com/canonical-web-and-design/jaas-dashboard) to this version using \`yarn link\` and ensure that everything works as expected.
+- Create a [new release](https://github.com/juju/js-libjuju/releases/new) on
+  GitHub, setting the tag and title to the version number from above and include
+  any relevant changes in the release notes (use the 'Generate release notes' to
+  show changes since the last release and create a full changelog link, but
+  rewrite the changes to help them make sense to consumers of the library).
+- Clone a fresh copy of the repository: \`git clone git@github.com:juju/js-libjuju.git\`.
+- Install the dependencies and build the package with \`yarn install && yarn run build\`.
+- Now you can publish to NPM with \`yarn publish\`.
 `;
 };
