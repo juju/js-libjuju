@@ -138,7 +138,6 @@ function generateFacadeFiles() {
       version: facade.Version,
       methods: generateMethods(facade.Schema.properties, facade.Name),
       interfaces: generateInterfaces(facade.Schema.definitions, facade.Name),
-      availableTo: facade.AvailableTo,
       docBlock: facade.Description,
       jujuVersion,
       jujuGitSHA,
@@ -156,6 +155,9 @@ export function generateMethods(
   methods: SchemaMethods,
   facadeName: string
 ): FacadeMethod[] {
+  if (!methods) {
+    return [];
+  }
   const facadeMethods: FacadeMethod[] = Object.entries(methods).map(
     ([name, method]) => {
       const generatedMethod: FacadeMethod = {

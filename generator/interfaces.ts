@@ -3,7 +3,6 @@ export interface FacadeTemplate {
   version: number;
   methods: FacadeMethod[];
   interfaces: InterfaceData[];
-  availableTo: string[];
   docBlock: string;
   jujuVersion: string;
   jujuGitSHA: string;

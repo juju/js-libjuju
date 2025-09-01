@@ -38,7 +38,7 @@ import {
 import { createAsyncHandler, toError } from "./utils.js";
 import AdminV4 from "./custom-facades/AdminV4.js";
 
-export const CLIENT_VERSION = "3.3.2";
+export const CLIENT_VERSION = "4.0-beta7";
 
 export interface ConnectOptions {
   bakery?: Bakery | null;

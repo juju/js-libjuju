@@ -3,7 +3,6 @@ export interface Facade {
   Version: number;
   Schema: FacadeSchema;
   Description: string;
-  AvailableTo: string[];
 }
 
 export interface FacadeSchema {

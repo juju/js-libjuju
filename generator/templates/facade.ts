@@ -48,17 +48,6 @@ ${i.types
 const lowerCaseFirstChar = (name: string): string =>
   name.charAt(0).toLowerCase() + name.slice(1);
 
-const upperCaseFirstChar = (name: string): string =>
-  name.charAt(0).toUpperCase() + name.slice(1);
-
-const generateAvailableList = (availableTo: string[]) =>
-  padString(
-    availableTo
-      .map((env) => upperCaseFirstChar(env.replace("-user", "s")))
-      .join("\n"),
-    4
-  );
-
 export function generateMethods(facadeTemplate: FacadeTemplate): string {
   return facadeTemplate.methods
     .map((m) => {
@@ -105,8 +94,6 @@ export default function generateFacadeTemplate(
 ): string {
   return `/**
   Juju ${facadeTemplate.name} version ${facadeTemplate.version}.
-  This facade is available on:
-${generateAvailableList(facadeTemplate.availableTo)}
 
   NOTE: This file was generated using the Juju schema
   from Juju ${facadeTemplate.jujuVersion} at the git SHA ${
