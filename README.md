@@ -89,11 +89,11 @@ Visit the [full API documentation](https://juju.github.io/js-libjuju/) for detai
 
 We have a number of examples showing how to perform a few common tasks. Those can be found in the `examples` folder.
 
-- [add-machine.js](https://github.com/juju/js-libjuju/blob/master/examples/add-machine.js)
-- [deploy.js](https://github.com/juju/js-libjuju/blob/master/examples/deploy.js)
-- [login-with-bakery.js](https://github.com/juju/js-libjuju/blob/master/examples/login-with-bakery.js)
-- [watch-all-models.js](https://github.com/juju/js-libjuju/blob/master/examples/watch-all-models.js)
-- [watch.js](https://github.com/juju/js-libjuju/blob/master/examples/watch.js)
+- [add-machine.js](examples/add-machine.js)
+- [deploy.js](examples/deploy.js)
+- [login-with-bakery.js](examples/login-with-bakery.js)
+- [watch-all-models.js](examples/watch-all-models.js)
+- [watch.js](examples/watch.js)
 
 ## Facade API Reference
 
@@ -101,132 +101,132 @@ Detailed Facade documentation is available as part of the [full API documentatio
 
 |Facade|Versions|
 |-|-|
-|ActionPruner|<ul><li>[ActionPrunerV1.ts](https://juju.github.io/js-libjuju/modules/facades_action_pruner_ActionPrunerV1.html)</li></ul>|
-|Action|<ul><li>[ActionV6.ts](https://juju.github.io/js-libjuju/modules/facades_action_ActionV6.html)</li><li>[ActionV7.ts](https://juju.github.io/js-libjuju/modules/facades_action_ActionV7.html)</li></ul>|
-|Admin|<ul><li>[AdminV3.ts](https://juju.github.io/js-libjuju/modules/facades_admin_AdminV3.html)</li></ul>|
-|AgentLifeFlag|<ul><li>[AgentLifeFlagV1.ts](https://juju.github.io/js-libjuju/modules/facades_agent_life_flag_AgentLifeFlagV1.html)</li></ul>|
-|AgentTools|<ul><li>[AgentToolsV1.ts](https://juju.github.io/js-libjuju/modules/facades_agent_tools_AgentToolsV1.html)</li></ul>|
-|Agent|<ul><li>[AgentV2.ts](https://juju.github.io/js-libjuju/modules/facades_agent_AgentV2.html)</li><li>[AgentV3.ts](https://juju.github.io/js-libjuju/modules/facades_agent_AgentV3.html)</li></ul>|
-|AllModelWatcher|<ul><li>[AllModelWatcherV2.ts](https://juju.github.io/js-libjuju/modules/facades_all_model_watcher_AllModelWatcherV2.html)</li><li>[AllModelWatcherV3.ts](https://juju.github.io/js-libjuju/modules/facades_all_model_watcher_AllModelWatcherV3.html)</li><li>[AllModelWatcherV4.ts](https://juju.github.io/js-libjuju/modules/facades_all_model_watcher_AllModelWatcherV4.html)</li></ul>|
-|AllWatcher|<ul><li>[AllWatcherV1.ts](https://juju.github.io/js-libjuju/modules/facades_all_watcher_AllWatcherV1.html)</li><li>[AllWatcherV2.ts](https://juju.github.io/js-libjuju/modules/facades_all_watcher_AllWatcherV2.html)</li><li>[AllWatcherV3.ts](https://juju.github.io/js-libjuju/modules/facades_all_watcher_AllWatcherV3.html)</li></ul>|
-|Annotations|<ul><li>[AnnotationsV2.ts](https://juju.github.io/js-libjuju/modules/facades_annotations_AnnotationsV2.html)</li></ul>|
-|ApplicationOffers|<ul><li>[ApplicationOffersV2.ts](https://juju.github.io/js-libjuju/modules/facades_application_offers_ApplicationOffersV2.html)</li><li>[ApplicationOffersV3.ts](https://juju.github.io/js-libjuju/modules/facades_application_offers_ApplicationOffersV3.html)</li><li>[ApplicationOffersV4.ts](https://juju.github.io/js-libjuju/modules/facades_application_offers_ApplicationOffersV4.html)</li></ul>|
-|ApplicationScaler|<ul><li>[ApplicationScalerV1.ts](https://juju.github.io/js-libjuju/modules/facades_application_scaler_ApplicationScalerV1.html)</li></ul>|
-|Application|<ul><li>[ApplicationV12.ts](https://juju.github.io/js-libjuju/modules/facades_application_ApplicationV12.html)</li><li>[ApplicationV13.ts](https://juju.github.io/js-libjuju/modules/facades_application_ApplicationV13.html)</li><li>[ApplicationV14.ts](https://juju.github.io/js-libjuju/modules/facades_application_ApplicationV14.html)</li><li>[ApplicationV15.ts](https://juju.github.io/js-libjuju/modules/facades_application_ApplicationV15.html)</li><li>[ApplicationV18.ts](https://juju.github.io/js-libjuju/modules/facades_application_ApplicationV18.html)</li><li>[ApplicationV19.ts](https://juju.github.io/js-libjuju/modules/facades_application_ApplicationV19.html)</li></ul>|
-|Backups|<ul><li>[BackupsV2.ts](https://juju.github.io/js-libjuju/modules/facades_backups_BackupsV2.html)</li><li>[BackupsV3.ts](https://juju.github.io/js-libjuju/modules/facades_backups_BackupsV3.html)</li></ul>|
-|Block|<ul><li>[BlockV2.ts](https://juju.github.io/js-libjuju/modules/facades_block_BlockV2.html)</li></ul>|
-|Bundle|<ul><li>[BundleV1.ts](https://juju.github.io/js-libjuju/modules/facades_bundle_BundleV1.html)</li><li>[BundleV4.ts](https://juju.github.io/js-libjuju/modules/facades_bundle_BundleV4.html)</li><li>[BundleV5.ts](https://juju.github.io/js-libjuju/modules/facades_bundle_BundleV5.html)</li><li>[BundleV6.ts](https://juju.github.io/js-libjuju/modules/facades_bundle_BundleV6.html)</li></ul>|
-|CAASAdmission|<ul><li>[CAASAdmissionV1.ts](https://juju.github.io/js-libjuju/modules/facades_caasadmission_CAASAdmissionV1.html)</li></ul>|
-|CAASAgent|<ul><li>[CAASAgentV1.ts](https://juju.github.io/js-libjuju/modules/facades_caasagent_CAASAgentV1.html)</li><li>[CAASAgentV2.ts](https://juju.github.io/js-libjuju/modules/facades_caasagent_CAASAgentV2.html)</li></ul>|
-|CAASApplicationProvisioner|<ul><li>[CAASApplicationProvisionerV1.ts](https://juju.github.io/js-libjuju/modules/facades_caasapplication_provisioner_CAASApplicationProvisionerV1.html)</li></ul>|
-|CAASApplication|<ul><li>[CAASApplicationV1.ts](https://juju.github.io/js-libjuju/modules/facades_caasapplication_CAASApplicationV1.html)</li></ul>|
-|CAASFirewallerEmbedded|<ul><li>[CAASFirewallerEmbeddedV1.ts](https://juju.github.io/js-libjuju/modules/facades_caasfirewaller_embedded_CAASFirewallerEmbeddedV1.html)</li></ul>|
-|CAASFirewallerSidecar|<ul><li>[CAASFirewallerSidecarV1.ts](https://juju.github.io/js-libjuju/modules/facades_caasfirewaller_sidecar_CAASFirewallerSidecarV1.html)</li></ul>|
-|CAASFirewaller|<ul><li>[CAASFirewallerV1.ts](https://juju.github.io/js-libjuju/modules/facades_caasfirewaller_CAASFirewallerV1.html)</li></ul>|
-|CAASModelConfigManager|<ul><li>[CAASModelConfigManagerV1.ts](https://juju.github.io/js-libjuju/modules/facades_caasmodel_config_manager_CAASModelConfigManagerV1.html)</li></ul>|
-|CAASModelOperator|<ul><li>[CAASModelOperatorV1.ts](https://juju.github.io/js-libjuju/modules/facades_caasmodel_operator_CAASModelOperatorV1.html)</li></ul>|
-|CAASOperatorProvisioner|<ul><li>[CAASOperatorProvisionerV1.ts](https://juju.github.io/js-libjuju/modules/facades_caasoperator_provisioner_CAASOperatorProvisionerV1.html)</li></ul>|
-|CAASOperatorUpgrader|<ul><li>[CAASOperatorUpgraderV1.ts](https://juju.github.io/js-libjuju/modules/facades_caasoperator_upgrader_CAASOperatorUpgraderV1.html)</li></ul>|
-|CAASOperator|<ul><li>[CAASOperatorV1.ts](https://juju.github.io/js-libjuju/modules/facades_caasoperator_CAASOperatorV1.html)</li></ul>|
-|CAASUnitProvisioner|<ul><li>[CAASUnitProvisionerV1.ts](https://juju.github.io/js-libjuju/modules/facades_caasunit_provisioner_CAASUnitProvisionerV1.html)</li><li>[CAASUnitProvisionerV2.ts](https://juju.github.io/js-libjuju/modules/facades_caasunit_provisioner_CAASUnitProvisionerV2.html)</li></ul>|
-|CharmDownloader|<ul><li>[CharmDownloaderV1.ts](https://juju.github.io/js-libjuju/modules/facades_charm_downloader_CharmDownloaderV1.html)</li></ul>|
-|CharmHub|<ul><li>[CharmHubV1.ts](https://juju.github.io/js-libjuju/modules/facades_charm_hub_CharmHubV1.html)</li></ul>|
-|CharmRevisionUpdater|<ul><li>[CharmRevisionUpdaterV2.ts](https://juju.github.io/js-libjuju/modules/facades_charm_revision_updater_CharmRevisionUpdaterV2.html)</li></ul>|
-|Charms|<ul><li>[CharmsV2.ts](https://juju.github.io/js-libjuju/modules/facades_charms_CharmsV2.html)</li><li>[CharmsV4.ts](https://juju.github.io/js-libjuju/modules/facades_charms_CharmsV4.html)</li><li>[CharmsV5.ts](https://juju.github.io/js-libjuju/modules/facades_charms_CharmsV5.html)</li><li>[CharmsV6.ts](https://juju.github.io/js-libjuju/modules/facades_charms_CharmsV6.html)</li><li>[CharmsV7.ts](https://juju.github.io/js-libjuju/modules/facades_charms_CharmsV7.html)</li></ul>|
-|Cleaner|<ul><li>[CleanerV2.ts](https://juju.github.io/js-libjuju/modules/facades_cleaner_CleanerV2.html)</li></ul>|
-|Client|<ul><li>[ClientV2.ts](https://juju.github.io/js-libjuju/modules/facades_client_ClientV2.html)</li><li>[ClientV3.ts](https://juju.github.io/js-libjuju/modules/facades_client_ClientV3.html)</li><li>[ClientV5.ts](https://juju.github.io/js-libjuju/modules/facades_client_ClientV5.html)</li><li>[ClientV6.ts](https://juju.github.io/js-libjuju/modules/facades_client_ClientV6.html)</li><li>[ClientV7.ts](https://juju.github.io/js-libjuju/modules/facades_client_ClientV7.html)</li></ul>|
-|Cloud|<ul><li>[CloudV1.ts](https://juju.github.io/js-libjuju/modules/facades_cloud_CloudV1.html)</li><li>[CloudV2.ts](https://juju.github.io/js-libjuju/modules/facades_cloud_CloudV2.html)</li><li>[CloudV3.ts](https://juju.github.io/js-libjuju/modules/facades_cloud_CloudV3.html)</li><li>[CloudV4.ts](https://juju.github.io/js-libjuju/modules/facades_cloud_CloudV4.html)</li><li>[CloudV5.ts](https://juju.github.io/js-libjuju/modules/facades_cloud_CloudV5.html)</li><li>[CloudV7.ts](https://juju.github.io/js-libjuju/modules/facades_cloud_CloudV7.html)</li></ul>|
-|Controller|<ul><li>[ControllerV11.ts](https://juju.github.io/js-libjuju/modules/facades_controller_ControllerV11.html)</li><li>[ControllerV3.ts](https://juju.github.io/js-libjuju/modules/facades_controller_ControllerV3.html)</li><li>[ControllerV4.ts](https://juju.github.io/js-libjuju/modules/facades_controller_ControllerV4.html)</li><li>[ControllerV5.ts](https://juju.github.io/js-libjuju/modules/facades_controller_ControllerV5.html)</li><li>[ControllerV6.ts](https://juju.github.io/js-libjuju/modules/facades_controller_ControllerV6.html)</li><li>[ControllerV7.ts](https://juju.github.io/js-libjuju/modules/facades_controller_ControllerV7.html)</li><li>[ControllerV8.ts](https://juju.github.io/js-libjuju/modules/facades_controller_ControllerV8.html)</li><li>[ControllerV9.ts](https://juju.github.io/js-libjuju/modules/facades_controller_ControllerV9.html)</li></ul>|
-|CredentialManager|<ul><li>[CredentialManagerV1.ts](https://juju.github.io/js-libjuju/modules/facades_credential_manager_CredentialManagerV1.html)</li></ul>|
-|CredentialValidator|<ul><li>[CredentialValidatorV2.ts](https://juju.github.io/js-libjuju/modules/facades_credential_validator_CredentialValidatorV2.html)</li></ul>|
-|CrossController|<ul><li>[CrossControllerV1.ts](https://juju.github.io/js-libjuju/modules/facades_cross_controller_CrossControllerV1.html)</li></ul>|
-|CrossModelRelations|<ul><li>[CrossModelRelationsV2.ts](https://juju.github.io/js-libjuju/modules/facades_cross_model_relations_CrossModelRelationsV2.html)</li></ul>|
-|CrossModelSecrets|<ul><li>[CrossModelSecretsV1.ts](https://juju.github.io/js-libjuju/modules/facades_cross_model_secrets_CrossModelSecretsV1.html)</li></ul>|
-|Deployer|<ul><li>[DeployerV1.ts](https://juju.github.io/js-libjuju/modules/facades_deployer_DeployerV1.html)</li></ul>|
-|DiskManager|<ul><li>[DiskManagerV2.ts](https://juju.github.io/js-libjuju/modules/facades_disk_manager_DiskManagerV2.html)</li></ul>|
-|EntityWatcher|<ul><li>[EntityWatcherV2.ts](https://juju.github.io/js-libjuju/modules/facades_entity_watcher_EntityWatcherV2.html)</li></ul>|
-|EnvironUpgrader|<ul><li>[EnvironUpgraderV1.ts](https://juju.github.io/js-libjuju/modules/facades_environ_upgrader_EnvironUpgraderV1.html)</li></ul>|
-|ExternalControllerUpdater|<ul><li>[ExternalControllerUpdaterV1.ts](https://juju.github.io/js-libjuju/modules/facades_external_controller_updater_ExternalControllerUpdaterV1.html)</li></ul>|
-|FanConfigurer|<ul><li>[FanConfigurerV1.ts](https://juju.github.io/js-libjuju/modules/facades_fan_configurer_FanConfigurerV1.html)</li></ul>|
-|FilesystemAttachmentsWatcher|<ul><li>[FilesystemAttachmentsWatcherV2.ts](https://juju.github.io/js-libjuju/modules/facades_filesystem_attachments_watcher_FilesystemAttachmentsWatcherV2.html)</li></ul>|
-|FirewallRules|<ul><li>[FirewallRulesV1.ts](https://juju.github.io/js-libjuju/modules/facades_firewall_rules_FirewallRulesV1.html)</li></ul>|
-|Firewaller|<ul><li>[FirewallerV5.ts](https://juju.github.io/js-libjuju/modules/facades_firewaller_FirewallerV5.html)</li><li>[FirewallerV7.ts](https://juju.github.io/js-libjuju/modules/facades_firewaller_FirewallerV7.html)</li></ul>|
-|HighAvailability|<ul><li>[HighAvailabilityV2.ts](https://juju.github.io/js-libjuju/modules/facades_high_availability_HighAvailabilityV2.html)</li></ul>|
-|HostKeyReporter|<ul><li>[HostKeyReporterV1.ts](https://juju.github.io/js-libjuju/modules/facades_host_key_reporter_HostKeyReporterV1.html)</li></ul>|
-|ImageManager|<ul><li>[ImageManagerV2.ts](https://juju.github.io/js-libjuju/modules/facades_image_manager_ImageManagerV2.html)</li></ul>|
-|ImageMetadataManager|<ul><li>[ImageMetadataManagerV1.ts](https://juju.github.io/js-libjuju/modules/facades_image_metadata_manager_ImageMetadataManagerV1.html)</li></ul>|
-|ImageMetadata|<ul><li>[ImageMetadataV3.ts](https://juju.github.io/js-libjuju/modules/facades_image_metadata_ImageMetadataV3.html)</li></ul>|
-|InstanceMutater|<ul><li>[InstanceMutaterV2.ts](https://juju.github.io/js-libjuju/modules/facades_instance_mutater_InstanceMutaterV2.html)</li><li>[InstanceMutaterV3.ts](https://juju.github.io/js-libjuju/modules/facades_instance_mutater_InstanceMutaterV3.html)</li></ul>|
-|InstancePoller|<ul><li>[InstancePollerV4.ts](https://juju.github.io/js-libjuju/modules/facades_instance_poller_InstancePollerV4.html)</li></ul>|
-|KeyManager|<ul><li>[KeyManagerV1.ts](https://juju.github.io/js-libjuju/modules/facades_key_manager_KeyManagerV1.html)</li></ul>|
-|KeyUpdater|<ul><li>[KeyUpdaterV1.ts](https://juju.github.io/js-libjuju/modules/facades_key_updater_KeyUpdaterV1.html)</li></ul>|
-|LeadershipService|<ul><li>[LeadershipServiceV2.ts](https://juju.github.io/js-libjuju/modules/facades_leadership_service_LeadershipServiceV2.html)</li></ul>|
-|LifeFlag|<ul><li>[LifeFlagV1.ts](https://juju.github.io/js-libjuju/modules/facades_life_flag_LifeFlagV1.html)</li></ul>|
-|LogForwarding|<ul><li>[LogForwardingV1.ts](https://juju.github.io/js-libjuju/modules/facades_log_forwarding_LogForwardingV1.html)</li></ul>|
-|Logger|<ul><li>[LoggerV1.ts](https://juju.github.io/js-libjuju/modules/facades_logger_LoggerV1.html)</li></ul>|
-|MachineActions|<ul><li>[MachineActionsV1.ts](https://juju.github.io/js-libjuju/modules/facades_machine_actions_MachineActionsV1.html)</li></ul>|
-|MachineManager|<ul><li>[MachineManagerV10.ts](https://juju.github.io/js-libjuju/modules/facades_machine_manager_MachineManagerV10.html)</li><li>[MachineManagerV6.ts](https://juju.github.io/js-libjuju/modules/facades_machine_manager_MachineManagerV6.html)</li><li>[MachineManagerV7.ts](https://juju.github.io/js-libjuju/modules/facades_machine_manager_MachineManagerV7.html)</li><li>[MachineManagerV9.ts](https://juju.github.io/js-libjuju/modules/facades_machine_manager_MachineManagerV9.html)</li></ul>|
-|MachineUndertaker|<ul><li>[MachineUndertakerV1.ts](https://juju.github.io/js-libjuju/modules/facades_machine_undertaker_MachineUndertakerV1.html)</li></ul>|
-|Machiner|<ul><li>[MachinerV4.ts](https://juju.github.io/js-libjuju/modules/facades_machiner_MachinerV4.html)</li><li>[MachinerV5.ts](https://juju.github.io/js-libjuju/modules/facades_machiner_MachinerV5.html)</li></ul>|
-|MeterStatus|<ul><li>[MeterStatusV2.ts](https://juju.github.io/js-libjuju/modules/facades_meter_status_MeterStatusV2.html)</li></ul>|
-|MetricsAdder|<ul><li>[MetricsAdderV2.ts](https://juju.github.io/js-libjuju/modules/facades_metrics_adder_MetricsAdderV2.html)</li></ul>|
-|MetricsDebug|<ul><li>[MetricsDebugV2.ts](https://juju.github.io/js-libjuju/modules/facades_metrics_debug_MetricsDebugV2.html)</li></ul>|
-|MetricsManager|<ul><li>[MetricsManagerV1.ts](https://juju.github.io/js-libjuju/modules/facades_metrics_manager_MetricsManagerV1.html)</li></ul>|
-|MigrationFlag|<ul><li>[MigrationFlagV1.ts](https://juju.github.io/js-libjuju/modules/facades_migration_flag_MigrationFlagV1.html)</li></ul>|
-|MigrationMaster|<ul><li>[MigrationMasterV2.ts](https://juju.github.io/js-libjuju/modules/facades_migration_master_MigrationMasterV2.html)</li><li>[MigrationMasterV3.ts](https://juju.github.io/js-libjuju/modules/facades_migration_master_MigrationMasterV3.html)</li></ul>|
-|MigrationMinion|<ul><li>[MigrationMinionV1.ts](https://juju.github.io/js-libjuju/modules/facades_migration_minion_MigrationMinionV1.html)</li></ul>|
-|MigrationStatusWatcher|<ul><li>[MigrationStatusWatcherV1.ts](https://juju.github.io/js-libjuju/modules/facades_migration_status_watcher_MigrationStatusWatcherV1.html)</li></ul>|
-|MigrationTarget|<ul><li>[MigrationTargetV1.ts](https://juju.github.io/js-libjuju/modules/facades_migration_target_MigrationTargetV1.html)</li><li>[MigrationTargetV2.ts](https://juju.github.io/js-libjuju/modules/facades_migration_target_MigrationTargetV2.html)</li><li>[MigrationTargetV3.ts](https://juju.github.io/js-libjuju/modules/facades_migration_target_MigrationTargetV3.html)</li></ul>|
-|ModelConfig|<ul><li>[ModelConfigV2.ts](https://juju.github.io/js-libjuju/modules/facades_model_config_ModelConfigV2.html)</li><li>[ModelConfigV3.ts](https://juju.github.io/js-libjuju/modules/facades_model_config_ModelConfigV3.html)</li></ul>|
-|ModelGeneration|<ul><li>[ModelGenerationV4.ts](https://juju.github.io/js-libjuju/modules/facades_model_generation_ModelGenerationV4.html)</li></ul>|
-|ModelManager|<ul><li>[ModelManagerV2.ts](https://juju.github.io/js-libjuju/modules/facades_model_manager_ModelManagerV2.html)</li><li>[ModelManagerV3.ts](https://juju.github.io/js-libjuju/modules/facades_model_manager_ModelManagerV3.html)</li><li>[ModelManagerV4.ts](https://juju.github.io/js-libjuju/modules/facades_model_manager_ModelManagerV4.html)</li><li>[ModelManagerV5.ts](https://juju.github.io/js-libjuju/modules/facades_model_manager_ModelManagerV5.html)</li><li>[ModelManagerV8.ts](https://juju.github.io/js-libjuju/modules/facades_model_manager_ModelManagerV8.html)</li><li>[ModelManagerV9.ts](https://juju.github.io/js-libjuju/modules/facades_model_manager_ModelManagerV9.html)</li></ul>|
-|ModelSummaryWatcher|<ul><li>[ModelSummaryWatcherV1.ts](https://juju.github.io/js-libjuju/modules/facades_model_summary_watcher_ModelSummaryWatcherV1.html)</li></ul>|
-|ModelUpgrader|<ul><li>[ModelUpgraderV1.ts](https://juju.github.io/js-libjuju/modules/facades_model_upgrader_ModelUpgraderV1.html)</li></ul>|
-|NotifyWatcher|<ul><li>[NotifyWatcherV1.ts](https://juju.github.io/js-libjuju/modules/facades_notify_watcher_NotifyWatcherV1.html)</li></ul>|
-|OfferStatusWatcher|<ul><li>[OfferStatusWatcherV1.ts](https://juju.github.io/js-libjuju/modules/facades_offer_status_watcher_OfferStatusWatcherV1.html)</li></ul>|
-|PayloadsHookContext|<ul><li>[PayloadsHookContextV1.ts](https://juju.github.io/js-libjuju/modules/facades_payloads_hook_context_PayloadsHookContextV1.html)</li></ul>|
-|Payloads|<ul><li>[PayloadsV1.ts](https://juju.github.io/js-libjuju/modules/facades_payloads_PayloadsV1.html)</li></ul>|
-|Pinger|<ul><li>[PingerV1.ts](https://juju.github.io/js-libjuju/modules/facades_pinger_PingerV1.html)</li></ul>|
-|Provisioner|<ul><li>[ProvisionerV11.ts](https://juju.github.io/js-libjuju/modules/facades_provisioner_ProvisionerV11.html)</li></ul>|
-|ProxyUpdater|<ul><li>[ProxyUpdaterV2.ts](https://juju.github.io/js-libjuju/modules/facades_proxy_updater_ProxyUpdaterV2.html)</li></ul>|
-|RaftLease|<ul><li>[RaftLeaseV1.ts](https://juju.github.io/js-libjuju/modules/facades_raft_lease_RaftLeaseV1.html)</li><li>[RaftLeaseV2.ts](https://juju.github.io/js-libjuju/modules/facades_raft_lease_RaftLeaseV2.html)</li></ul>|
-|Reboot|<ul><li>[RebootV2.ts](https://juju.github.io/js-libjuju/modules/facades_reboot_RebootV2.html)</li></ul>|
-|RelationStatusWatcher|<ul><li>[RelationStatusWatcherV1.ts](https://juju.github.io/js-libjuju/modules/facades_relation_status_watcher_RelationStatusWatcherV1.html)</li></ul>|
-|RelationUnitsWatcher|<ul><li>[RelationUnitsWatcherV1.ts](https://juju.github.io/js-libjuju/modules/facades_relation_units_watcher_RelationUnitsWatcherV1.html)</li></ul>|
-|RemoteRelationWatcher|<ul><li>[RemoteRelationWatcherV1.ts](https://juju.github.io/js-libjuju/modules/facades_remote_relation_watcher_RemoteRelationWatcherV1.html)</li></ul>|
-|RemoteRelations|<ul><li>[RemoteRelationsV2.ts](https://juju.github.io/js-libjuju/modules/facades_remote_relations_RemoteRelationsV2.html)</li></ul>|
-|ResourcesHookContext|<ul><li>[ResourcesHookContextV1.ts](https://juju.github.io/js-libjuju/modules/facades_resources_hook_context_ResourcesHookContextV1.html)</li></ul>|
-|Resources|<ul><li>[ResourcesV1.ts](https://juju.github.io/js-libjuju/modules/facades_resources_ResourcesV1.html)</li><li>[ResourcesV2.ts](https://juju.github.io/js-libjuju/modules/facades_resources_ResourcesV2.html)</li><li>[ResourcesV3.ts](https://juju.github.io/js-libjuju/modules/facades_resources_ResourcesV3.html)</li></ul>|
-|Resumer|<ul><li>[ResumerV2.ts](https://juju.github.io/js-libjuju/modules/facades_resumer_ResumerV2.html)</li></ul>|
-|RetryStrategy|<ul><li>[RetryStrategyV1.ts](https://juju.github.io/js-libjuju/modules/facades_retry_strategy_RetryStrategyV1.html)</li></ul>|
-|SecretBackendsManager|<ul><li>[SecretBackendsManagerV1.ts](https://juju.github.io/js-libjuju/modules/facades_secret_backends_manager_SecretBackendsManagerV1.html)</li></ul>|
-|SecretBackendsRotateWatcher|<ul><li>[SecretBackendsRotateWatcherV1.ts](https://juju.github.io/js-libjuju/modules/facades_secret_backends_rotate_watcher_SecretBackendsRotateWatcherV1.html)</li></ul>|
-|SecretBackends|<ul><li>[SecretBackendsV1.ts](https://juju.github.io/js-libjuju/modules/facades_secret_backends_SecretBackendsV1.html)</li></ul>|
-|SecretsDrain|<ul><li>[SecretsDrainV1.ts](https://juju.github.io/js-libjuju/modules/facades_secrets_drain_SecretsDrainV1.html)</li></ul>|
-|SecretsManager|<ul><li>[SecretsManagerV1.ts](https://juju.github.io/js-libjuju/modules/facades_secrets_manager_SecretsManagerV1.html)</li><li>[SecretsManagerV2.ts](https://juju.github.io/js-libjuju/modules/facades_secrets_manager_SecretsManagerV2.html)</li></ul>|
-|SecretsRevisionWatcher|<ul><li>[SecretsRevisionWatcherV1.ts](https://juju.github.io/js-libjuju/modules/facades_secrets_revision_watcher_SecretsRevisionWatcherV1.html)</li></ul>|
-|SecretsRotationWatcher|<ul><li>[SecretsRotationWatcherV1.ts](https://juju.github.io/js-libjuju/modules/facades_secrets_rotation_watcher_SecretsRotationWatcherV1.html)</li></ul>|
-|SecretsTriggerWatcher|<ul><li>[SecretsTriggerWatcherV1.ts](https://juju.github.io/js-libjuju/modules/facades_secrets_trigger_watcher_SecretsTriggerWatcherV1.html)</li></ul>|
-|Secrets|<ul><li>[SecretsV1.ts](https://juju.github.io/js-libjuju/modules/facades_secrets_SecretsV1.html)</li><li>[SecretsV2.ts](https://juju.github.io/js-libjuju/modules/facades_secrets_SecretsV2.html)</li></ul>|
-|Singular|<ul><li>[SingularV2.ts](https://juju.github.io/js-libjuju/modules/facades_singular_SingularV2.html)</li></ul>|
-|Spaces|<ul><li>[SpacesV6.ts](https://juju.github.io/js-libjuju/modules/facades_spaces_SpacesV6.html)</li></ul>|
-|SSHClient|<ul><li>[SSHClientV2.ts](https://juju.github.io/js-libjuju/modules/facades_sshclient_SSHClientV2.html)</li><li>[SSHClientV3.ts](https://juju.github.io/js-libjuju/modules/facades_sshclient_SSHClientV3.html)</li><li>[SSHClientV4.ts](https://juju.github.io/js-libjuju/modules/facades_sshclient_SSHClientV4.html)</li></ul>|
-|StatusHistory|<ul><li>[StatusHistoryV2.ts](https://juju.github.io/js-libjuju/modules/facades_status_history_StatusHistoryV2.html)</li></ul>|
-|StorageProvisioner|<ul><li>[StorageProvisionerV4.ts](https://juju.github.io/js-libjuju/modules/facades_storage_provisioner_StorageProvisionerV4.html)</li></ul>|
-|Storage|<ul><li>[StorageV6.ts](https://juju.github.io/js-libjuju/modules/facades_storage_StorageV6.html)</li></ul>|
-|StringsWatcher|<ul><li>[StringsWatcherV1.ts](https://juju.github.io/js-libjuju/modules/facades_strings_watcher_StringsWatcherV1.html)</li></ul>|
-|Subnets|<ul><li>[SubnetsV4.ts](https://juju.github.io/js-libjuju/modules/facades_subnets_SubnetsV4.html)</li><li>[SubnetsV5.ts](https://juju.github.io/js-libjuju/modules/facades_subnets_SubnetsV5.html)</li></ul>|
-|Undertaker|<ul><li>[UndertakerV1.ts](https://juju.github.io/js-libjuju/modules/facades_undertaker_UndertakerV1.html)</li></ul>|
-|UnitAssigner|<ul><li>[UnitAssignerV1.ts](https://juju.github.io/js-libjuju/modules/facades_unit_assigner_UnitAssignerV1.html)</li></ul>|
-|Uniter|<ul><li>[UniterV16.ts](https://juju.github.io/js-libjuju/modules/facades_uniter_UniterV16.html)</li><li>[UniterV18.ts](https://juju.github.io/js-libjuju/modules/facades_uniter_UniterV18.html)</li><li>[UniterV19.ts](https://juju.github.io/js-libjuju/modules/facades_uniter_UniterV19.html)</li></ul>|
-|UpgradeSeries|<ul><li>[UpgradeSeriesV3.ts](https://juju.github.io/js-libjuju/modules/facades_upgrade_series_UpgradeSeriesV3.html)</li></ul>|
-|UpgradeSteps|<ul><li>[UpgradeStepsV2.ts](https://juju.github.io/js-libjuju/modules/facades_upgrade_steps_UpgradeStepsV2.html)</li></ul>|
-|Upgrader|<ul><li>[UpgraderV1.ts](https://juju.github.io/js-libjuju/modules/facades_upgrader_UpgraderV1.html)</li></ul>|
-|UserManager|<ul><li>[UserManagerV1.ts](https://juju.github.io/js-libjuju/modules/facades_user_manager_UserManagerV1.html)</li><li>[UserManagerV2.ts](https://juju.github.io/js-libjuju/modules/facades_user_manager_UserManagerV2.html)</li><li>[UserManagerV3.ts](https://juju.github.io/js-libjuju/modules/facades_user_manager_UserManagerV3.html)</li></ul>|
-|UserSecretsDrain|<ul><li>[UserSecretsDrainV1.ts](https://juju.github.io/js-libjuju/modules/facades_user_secrets_drain_UserSecretsDrainV1.html)</li></ul>|
-|UserSecretsManager|<ul><li>[UserSecretsManagerV1.ts](https://juju.github.io/js-libjuju/modules/facades_user_secrets_manager_UserSecretsManagerV1.html)</li></ul>|
-|VolumeAttachmentPlansWatcher|<ul><li>[VolumeAttachmentPlansWatcherV1.ts](https://juju.github.io/js-libjuju/modules/facades_volume_attachment_plans_watcher_VolumeAttachmentPlansWatcherV1.html)</li></ul>|
-|VolumeAttachmentsWatcher|<ul><li>[VolumeAttachmentsWatcherV2.ts](https://juju.github.io/js-libjuju/modules/facades_volume_attachments_watcher_VolumeAttachmentsWatcherV2.html)</li></ul>|
+|ActionPruner|<ul><li>[ActionPrunerV1.ts](/api/facades/action-pruner/ActionPrunerV1.ts)</li></ul>|
+|Action|<ul><li>[ActionV6.ts](/api/facades/action/ActionV6.ts)</li><li>[ActionV7.ts](/api/facades/action/ActionV7.ts)</li></ul>|
+|Admin|<ul><li>[AdminV3.ts](/api/facades/admin/AdminV3.ts)</li></ul>|
+|AgentLifeFlag|<ul><li>[AgentLifeFlagV1.ts](/api/facades/agent-life-flag/AgentLifeFlagV1.ts)</li></ul>|
+|AgentTools|<ul><li>[AgentToolsV1.ts](/api/facades/agent-tools/AgentToolsV1.ts)</li></ul>|
+|Agent|<ul><li>[AgentV2.ts](/api/facades/agent/AgentV2.ts)</li><li>[AgentV3.ts](/api/facades/agent/AgentV3.ts)</li></ul>|
+|AllModelWatcher|<ul><li>[AllModelWatcherV2.ts](/api/facades/all-model-watcher/AllModelWatcherV2.ts)</li><li>[AllModelWatcherV3.ts](/api/facades/all-model-watcher/AllModelWatcherV3.ts)</li><li>[AllModelWatcherV4.ts](/api/facades/all-model-watcher/AllModelWatcherV4.ts)</li></ul>|
+|AllWatcher|<ul><li>[AllWatcherV1.ts](/api/facades/all-watcher/AllWatcherV1.ts)</li><li>[AllWatcherV2.ts](/api/facades/all-watcher/AllWatcherV2.ts)</li><li>[AllWatcherV3.ts](/api/facades/all-watcher/AllWatcherV3.ts)</li></ul>|
+|Annotations|<ul><li>[AnnotationsV2.ts](/api/facades/annotations/AnnotationsV2.ts)</li></ul>|
+|ApplicationOffers|<ul><li>[ApplicationOffersV2.ts](/api/facades/application-offers/ApplicationOffersV2.ts)</li><li>[ApplicationOffersV3.ts](/api/facades/application-offers/ApplicationOffersV3.ts)</li><li>[ApplicationOffersV4.ts](/api/facades/application-offers/ApplicationOffersV4.ts)</li><li>[ApplicationOffersV5.ts](/api/facades/application-offers/ApplicationOffersV5.ts)</li></ul>|
+|ApplicationScaler|<ul><li>[ApplicationScalerV1.ts](/api/facades/application-scaler/ApplicationScalerV1.ts)</li></ul>|
+|Application|<ul><li>[ApplicationV12.ts](/api/facades/application/ApplicationV12.ts)</li><li>[ApplicationV13.ts](/api/facades/application/ApplicationV13.ts)</li><li>[ApplicationV14.ts](/api/facades/application/ApplicationV14.ts)</li><li>[ApplicationV15.ts](/api/facades/application/ApplicationV15.ts)</li><li>[ApplicationV18.ts](/api/facades/application/ApplicationV18.ts)</li><li>[ApplicationV19.ts](/api/facades/application/ApplicationV19.ts)</li><li>[ApplicationV22.ts](/api/facades/application/ApplicationV22.ts)</li></ul>|
+|Backups|<ul><li>[BackupsV2.ts](/api/facades/backups/BackupsV2.ts)</li><li>[BackupsV3.ts](/api/facades/backups/BackupsV3.ts)</li></ul>|
+|Block|<ul><li>[BlockV2.ts](/api/facades/block/BlockV2.ts)</li></ul>|
+|Bundle|<ul><li>[BundleV1.ts](/api/facades/bundle/BundleV1.ts)</li><li>[BundleV4.ts](/api/facades/bundle/BundleV4.ts)</li><li>[BundleV5.ts](/api/facades/bundle/BundleV5.ts)</li><li>[BundleV6.ts](/api/facades/bundle/BundleV6.ts)</li></ul>|
+|CAASAdmission|<ul><li>[CAASAdmissionV1.ts](/api/facades/caasadmission/CAASAdmissionV1.ts)</li></ul>|
+|CAASAgent|<ul><li>[CAASAgentV1.ts](/api/facades/caasagent/CAASAgentV1.ts)</li><li>[CAASAgentV2.ts](/api/facades/caasagent/CAASAgentV2.ts)</li></ul>|
+|CAASApplicationProvisioner|<ul><li>[CAASApplicationProvisionerV1.ts](/api/facades/caasapplication-provisioner/CAASApplicationProvisionerV1.ts)</li></ul>|
+|CAASApplication|<ul><li>[CAASApplicationV1.ts](/api/facades/caasapplication/CAASApplicationV1.ts)</li></ul>|
+|CAASFirewallerEmbedded|<ul><li>[CAASFirewallerEmbeddedV1.ts](/api/facades/caasfirewaller-embedded/CAASFirewallerEmbeddedV1.ts)</li></ul>|
+|CAASFirewallerSidecar|<ul><li>[CAASFirewallerSidecarV1.ts](/api/facades/caasfirewaller-sidecar/CAASFirewallerSidecarV1.ts)</li></ul>|
+|CAASFirewaller|<ul><li>[CAASFirewallerV1.ts](/api/facades/caasfirewaller/CAASFirewallerV1.ts)</li></ul>|
+|CAASModelConfigManager|<ul><li>[CAASModelConfigManagerV1.ts](/api/facades/caasmodel-config-manager/CAASModelConfigManagerV1.ts)</li></ul>|
+|CAASModelOperator|<ul><li>[CAASModelOperatorV1.ts](/api/facades/caasmodel-operator/CAASModelOperatorV1.ts)</li></ul>|
+|CAASOperatorProvisioner|<ul><li>[CAASOperatorProvisionerV1.ts](/api/facades/caasoperator-provisioner/CAASOperatorProvisionerV1.ts)</li></ul>|
+|CAASOperatorUpgrader|<ul><li>[CAASOperatorUpgraderV1.ts](/api/facades/caasoperator-upgrader/CAASOperatorUpgraderV1.ts)</li></ul>|
+|CAASOperator|<ul><li>[CAASOperatorV1.ts](/api/facades/caasoperator/CAASOperatorV1.ts)</li></ul>|
+|CAASUnitProvisioner|<ul><li>[CAASUnitProvisionerV1.ts](/api/facades/caasunit-provisioner/CAASUnitProvisionerV1.ts)</li><li>[CAASUnitProvisionerV2.ts](/api/facades/caasunit-provisioner/CAASUnitProvisionerV2.ts)</li></ul>|
+|CharmDownloader|<ul><li>[CharmDownloaderV1.ts](/api/facades/charm-downloader/CharmDownloaderV1.ts)</li></ul>|
+|CharmHub|<ul><li>[CharmHubV1.ts](/api/facades/charm-hub/CharmHubV1.ts)</li></ul>|
+|CharmRevisionUpdater|<ul><li>[CharmRevisionUpdaterV2.ts](/api/facades/charm-revision-updater/CharmRevisionUpdaterV2.ts)</li></ul>|
+|Charms|<ul><li>[CharmsV2.ts](/api/facades/charms/CharmsV2.ts)</li><li>[CharmsV4.ts](/api/facades/charms/CharmsV4.ts)</li><li>[CharmsV5.ts](/api/facades/charms/CharmsV5.ts)</li><li>[CharmsV6.ts](/api/facades/charms/CharmsV6.ts)</li><li>[CharmsV7.ts](/api/facades/charms/CharmsV7.ts)</li></ul>|
+|Cleaner|<ul><li>[CleanerV2.ts](/api/facades/cleaner/CleanerV2.ts)</li></ul>|
+|Client|<ul><li>[ClientV2.ts](/api/facades/client/ClientV2.ts)</li><li>[ClientV3.ts](/api/facades/client/ClientV3.ts)</li><li>[ClientV5.ts](/api/facades/client/ClientV5.ts)</li><li>[ClientV6.ts](/api/facades/client/ClientV6.ts)</li><li>[ClientV7.ts](/api/facades/client/ClientV7.ts)</li><li>[ClientV8.ts](/api/facades/client/ClientV8.ts)</li></ul>|
+|Cloud|<ul><li>[CloudV1.ts](/api/facades/cloud/CloudV1.ts)</li><li>[CloudV2.ts](/api/facades/cloud/CloudV2.ts)</li><li>[CloudV3.ts](/api/facades/cloud/CloudV3.ts)</li><li>[CloudV4.ts](/api/facades/cloud/CloudV4.ts)</li><li>[CloudV5.ts](/api/facades/cloud/CloudV5.ts)</li><li>[CloudV7.ts](/api/facades/cloud/CloudV7.ts)</li></ul>|
+|Controller|<ul><li>[ControllerV11.ts](/api/facades/controller/ControllerV11.ts)</li><li>[ControllerV12.ts](/api/facades/controller/ControllerV12.ts)</li><li>[ControllerV3.ts](/api/facades/controller/ControllerV3.ts)</li><li>[ControllerV4.ts](/api/facades/controller/ControllerV4.ts)</li><li>[ControllerV5.ts](/api/facades/controller/ControllerV5.ts)</li><li>[ControllerV6.ts](/api/facades/controller/ControllerV6.ts)</li><li>[ControllerV7.ts](/api/facades/controller/ControllerV7.ts)</li><li>[ControllerV8.ts](/api/facades/controller/ControllerV8.ts)</li><li>[ControllerV9.ts](/api/facades/controller/ControllerV9.ts)</li></ul>|
+|CredentialManager|<ul><li>[CredentialManagerV1.ts](/api/facades/credential-manager/CredentialManagerV1.ts)</li></ul>|
+|CredentialValidator|<ul><li>[CredentialValidatorV2.ts](/api/facades/credential-validator/CredentialValidatorV2.ts)</li></ul>|
+|CrossController|<ul><li>[CrossControllerV1.ts](/api/facades/cross-controller/CrossControllerV1.ts)</li></ul>|
+|CrossModelRelations|<ul><li>[CrossModelRelationsV2.ts](/api/facades/cross-model-relations/CrossModelRelationsV2.ts)</li></ul>|
+|CrossModelSecrets|<ul><li>[CrossModelSecretsV1.ts](/api/facades/cross-model-secrets/CrossModelSecretsV1.ts)</li></ul>|
+|Deployer|<ul><li>[DeployerV1.ts](/api/facades/deployer/DeployerV1.ts)</li></ul>|
+|DiskManager|<ul><li>[DiskManagerV2.ts](/api/facades/disk-manager/DiskManagerV2.ts)</li></ul>|
+|EntityWatcher|<ul><li>[EntityWatcherV2.ts](/api/facades/entity-watcher/EntityWatcherV2.ts)</li></ul>|
+|EnvironUpgrader|<ul><li>[EnvironUpgraderV1.ts](/api/facades/environ-upgrader/EnvironUpgraderV1.ts)</li></ul>|
+|ExternalControllerUpdater|<ul><li>[ExternalControllerUpdaterV1.ts](/api/facades/external-controller-updater/ExternalControllerUpdaterV1.ts)</li></ul>|
+|FanConfigurer|<ul><li>[FanConfigurerV1.ts](/api/facades/fan-configurer/FanConfigurerV1.ts)</li></ul>|
+|FilesystemAttachmentsWatcher|<ul><li>[FilesystemAttachmentsWatcherV2.ts](/api/facades/filesystem-attachments-watcher/FilesystemAttachmentsWatcherV2.ts)</li></ul>|
+|FirewallRules|<ul><li>[FirewallRulesV1.ts](/api/facades/firewall-rules/FirewallRulesV1.ts)</li></ul>|
+|Firewaller|<ul><li>[FirewallerV5.ts](/api/facades/firewaller/FirewallerV5.ts)</li><li>[FirewallerV7.ts](/api/facades/firewaller/FirewallerV7.ts)</li></ul>|
+|HighAvailability|<ul><li>[HighAvailabilityV2.ts](/api/facades/high-availability/HighAvailabilityV2.ts)</li></ul>|
+|HostKeyReporter|<ul><li>[HostKeyReporterV1.ts](/api/facades/host-key-reporter/HostKeyReporterV1.ts)</li></ul>|
+|ImageManager|<ul><li>[ImageManagerV2.ts](/api/facades/image-manager/ImageManagerV2.ts)</li></ul>|
+|ImageMetadataManager|<ul><li>[ImageMetadataManagerV1.ts](/api/facades/image-metadata-manager/ImageMetadataManagerV1.ts)</li></ul>|
+|ImageMetadata|<ul><li>[ImageMetadataV3.ts](/api/facades/image-metadata/ImageMetadataV3.ts)</li></ul>|
+|InstanceMutater|<ul><li>[InstanceMutaterV2.ts](/api/facades/instance-mutater/InstanceMutaterV2.ts)</li><li>[InstanceMutaterV3.ts](/api/facades/instance-mutater/InstanceMutaterV3.ts)</li></ul>|
+|InstancePoller|<ul><li>[InstancePollerV4.ts](/api/facades/instance-poller/InstancePollerV4.ts)</li></ul>|
+|KeyManager|<ul><li>[KeyManagerV1.ts](/api/facades/key-manager/KeyManagerV1.ts)</li></ul>|
+|KeyUpdater|<ul><li>[KeyUpdaterV1.ts](/api/facades/key-updater/KeyUpdaterV1.ts)</li></ul>|
+|LeadershipService|<ul><li>[LeadershipServiceV2.ts](/api/facades/leadership-service/LeadershipServiceV2.ts)</li></ul>|
+|LifeFlag|<ul><li>[LifeFlagV1.ts](/api/facades/life-flag/LifeFlagV1.ts)</li></ul>|
+|LogForwarding|<ul><li>[LogForwardingV1.ts](/api/facades/log-forwarding/LogForwardingV1.ts)</li></ul>|
+|Logger|<ul><li>[LoggerV1.ts](/api/facades/logger/LoggerV1.ts)</li></ul>|
+|MachineActions|<ul><li>[MachineActionsV1.ts](/api/facades/machine-actions/MachineActionsV1.ts)</li></ul>|
+|MachineManager|<ul><li>[MachineManagerV10.ts](/api/facades/machine-manager/MachineManagerV10.ts)</li><li>[MachineManagerV6.ts](/api/facades/machine-manager/MachineManagerV6.ts)</li><li>[MachineManagerV7.ts](/api/facades/machine-manager/MachineManagerV7.ts)</li><li>[MachineManagerV9.ts](/api/facades/machine-manager/MachineManagerV9.ts)</li></ul>|
+|MachineUndertaker|<ul><li>[MachineUndertakerV1.ts](/api/facades/machine-undertaker/MachineUndertakerV1.ts)</li></ul>|
+|Machiner|<ul><li>[MachinerV4.ts](/api/facades/machiner/MachinerV4.ts)</li><li>[MachinerV5.ts](/api/facades/machiner/MachinerV5.ts)</li></ul>|
+|MeterStatus|<ul><li>[MeterStatusV2.ts](/api/facades/meter-status/MeterStatusV2.ts)</li></ul>|
+|MetricsAdder|<ul><li>[MetricsAdderV2.ts](/api/facades/metrics-adder/MetricsAdderV2.ts)</li></ul>|
+|MetricsDebug|<ul><li>[MetricsDebugV2.ts](/api/facades/metrics-debug/MetricsDebugV2.ts)</li></ul>|
+|MetricsManager|<ul><li>[MetricsManagerV1.ts](/api/facades/metrics-manager/MetricsManagerV1.ts)</li></ul>|
+|MigrationFlag|<ul><li>[MigrationFlagV1.ts](/api/facades/migration-flag/MigrationFlagV1.ts)</li></ul>|
+|MigrationMaster|<ul><li>[MigrationMasterV2.ts](/api/facades/migration-master/MigrationMasterV2.ts)</li><li>[MigrationMasterV3.ts](/api/facades/migration-master/MigrationMasterV3.ts)</li></ul>|
+|MigrationMinion|<ul><li>[MigrationMinionV1.ts](/api/facades/migration-minion/MigrationMinionV1.ts)</li></ul>|
+|MigrationStatusWatcher|<ul><li>[MigrationStatusWatcherV1.ts](/api/facades/migration-status-watcher/MigrationStatusWatcherV1.ts)</li></ul>|
+|MigrationTarget|<ul><li>[MigrationTargetV1.ts](/api/facades/migration-target/MigrationTargetV1.ts)</li><li>[MigrationTargetV2.ts](/api/facades/migration-target/MigrationTargetV2.ts)</li><li>[MigrationTargetV3.ts](/api/facades/migration-target/MigrationTargetV3.ts)</li></ul>|
+|ModelConfig|<ul><li>[ModelConfigV2.ts](/api/facades/model-config/ModelConfigV2.ts)</li><li>[ModelConfigV3.ts](/api/facades/model-config/ModelConfigV3.ts)</li></ul>|
+|ModelGeneration|<ul><li>[ModelGenerationV4.ts](/api/facades/model-generation/ModelGenerationV4.ts)</li></ul>|
+|ModelManager|<ul><li>[ModelManagerV10.ts](/api/facades/model-manager/ModelManagerV10.ts)</li><li>[ModelManagerV2.ts](/api/facades/model-manager/ModelManagerV2.ts)</li><li>[ModelManagerV3.ts](/api/facades/model-manager/ModelManagerV3.ts)</li><li>[ModelManagerV4.ts](/api/facades/model-manager/ModelManagerV4.ts)</li><li>[ModelManagerV5.ts](/api/facades/model-manager/ModelManagerV5.ts)</li><li>[ModelManagerV8.ts](/api/facades/model-manager/ModelManagerV8.ts)</li><li>[ModelManagerV9.ts](/api/facades/model-manager/ModelManagerV9.ts)</li></ul>|
+|ModelSummaryWatcher|<ul><li>[ModelSummaryWatcherV1.ts](/api/facades/model-summary-watcher/ModelSummaryWatcherV1.ts)</li></ul>|
+|ModelUpgrader|<ul><li>[ModelUpgraderV1.ts](/api/facades/model-upgrader/ModelUpgraderV1.ts)</li></ul>|
+|NotifyWatcher|<ul><li>[NotifyWatcherV1.ts](/api/facades/notify-watcher/NotifyWatcherV1.ts)</li></ul>|
+|OfferStatusWatcher|<ul><li>[OfferStatusWatcherV1.ts](/api/facades/offer-status-watcher/OfferStatusWatcherV1.ts)</li></ul>|
+|PayloadsHookContext|<ul><li>[PayloadsHookContextV1.ts](/api/facades/payloads-hook-context/PayloadsHookContextV1.ts)</li></ul>|
+|Payloads|<ul><li>[PayloadsV1.ts](/api/facades/payloads/PayloadsV1.ts)</li></ul>|
+|Pinger|<ul><li>[PingerV1.ts](/api/facades/pinger/PingerV1.ts)</li></ul>|
+|Provisioner|<ul><li>[ProvisionerV11.ts](/api/facades/provisioner/ProvisionerV11.ts)</li></ul>|
+|ProxyUpdater|<ul><li>[ProxyUpdaterV2.ts](/api/facades/proxy-updater/ProxyUpdaterV2.ts)</li></ul>|
+|RaftLease|<ul><li>[RaftLeaseV1.ts](/api/facades/raft-lease/RaftLeaseV1.ts)</li><li>[RaftLeaseV2.ts](/api/facades/raft-lease/RaftLeaseV2.ts)</li></ul>|
+|Reboot|<ul><li>[RebootV2.ts](/api/facades/reboot/RebootV2.ts)</li></ul>|
+|RelationStatusWatcher|<ul><li>[RelationStatusWatcherV1.ts](/api/facades/relation-status-watcher/RelationStatusWatcherV1.ts)</li></ul>|
+|RelationUnitsWatcher|<ul><li>[RelationUnitsWatcherV1.ts](/api/facades/relation-units-watcher/RelationUnitsWatcherV1.ts)</li></ul>|
+|RemoteRelationWatcher|<ul><li>[RemoteRelationWatcherV1.ts](/api/facades/remote-relation-watcher/RemoteRelationWatcherV1.ts)</li></ul>|
+|RemoteRelations|<ul><li>[RemoteRelationsV2.ts](/api/facades/remote-relations/RemoteRelationsV2.ts)</li></ul>|
+|ResourcesHookContext|<ul><li>[ResourcesHookContextV1.ts](/api/facades/resources-hook-context/ResourcesHookContextV1.ts)</li></ul>|
+|Resources|<ul><li>[ResourcesV1.ts](/api/facades/resources/ResourcesV1.ts)</li><li>[ResourcesV2.ts](/api/facades/resources/ResourcesV2.ts)</li><li>[ResourcesV3.ts](/api/facades/resources/ResourcesV3.ts)</li></ul>|
+|Resumer|<ul><li>[ResumerV2.ts](/api/facades/resumer/ResumerV2.ts)</li></ul>|
+|RetryStrategy|<ul><li>[RetryStrategyV1.ts](/api/facades/retry-strategy/RetryStrategyV1.ts)</li></ul>|
+|SecretBackendsManager|<ul><li>[SecretBackendsManagerV1.ts](/api/facades/secret-backends-manager/SecretBackendsManagerV1.ts)</li></ul>|
+|SecretBackendsRotateWatcher|<ul><li>[SecretBackendsRotateWatcherV1.ts](/api/facades/secret-backends-rotate-watcher/SecretBackendsRotateWatcherV1.ts)</li></ul>|
+|SecretBackends|<ul><li>[SecretBackendsV1.ts](/api/facades/secret-backends/SecretBackendsV1.ts)</li></ul>|
+|SecretsDrain|<ul><li>[SecretsDrainV1.ts](/api/facades/secrets-drain/SecretsDrainV1.ts)</li></ul>|
+|SecretsManager|<ul><li>[SecretsManagerV1.ts](/api/facades/secrets-manager/SecretsManagerV1.ts)</li><li>[SecretsManagerV2.ts](/api/facades/secrets-manager/SecretsManagerV2.ts)</li></ul>|
+|SecretsRevisionWatcher|<ul><li>[SecretsRevisionWatcherV1.ts](/api/facades/secrets-revision-watcher/SecretsRevisionWatcherV1.ts)</li></ul>|
+|SecretsRotationWatcher|<ul><li>[SecretsRotationWatcherV1.ts](/api/facades/secrets-rotation-watcher/SecretsRotationWatcherV1.ts)</li></ul>|
+|SecretsTriggerWatcher|<ul><li>[SecretsTriggerWatcherV1.ts](/api/facades/secrets-trigger-watcher/SecretsTriggerWatcherV1.ts)</li></ul>|
+|Secrets|<ul><li>[SecretsV1.ts](/api/facades/secrets/SecretsV1.ts)</li><li>[SecretsV2.ts](/api/facades/secrets/SecretsV2.ts)</li></ul>|
+|Singular|<ul><li>[SingularV2.ts](/api/facades/singular/SingularV2.ts)</li></ul>|
+|Spaces|<ul><li>[SpacesV6.ts](/api/facades/spaces/SpacesV6.ts)</li></ul>|
+|SSHClient|<ul><li>[SSHClientV2.ts](/api/facades/sshclient/SSHClientV2.ts)</li><li>[SSHClientV3.ts](/api/facades/sshclient/SSHClientV3.ts)</li><li>[SSHClientV4.ts](/api/facades/sshclient/SSHClientV4.ts)</li><li>[SSHClientV5.ts](/api/facades/sshclient/SSHClientV5.ts)</li></ul>|
+|StatusHistory|<ul><li>[StatusHistoryV2.ts](/api/facades/status-history/StatusHistoryV2.ts)</li></ul>|
+|StorageProvisioner|<ul><li>[StorageProvisionerV4.ts](/api/facades/storage-provisioner/StorageProvisionerV4.ts)</li></ul>|
+|Storage|<ul><li>[StorageV6.ts](/api/facades/storage/StorageV6.ts)</li><li>[StorageV7.ts](/api/facades/storage/StorageV7.ts)</li></ul>|
+|StringsWatcher|<ul><li>[StringsWatcherV1.ts](/api/facades/strings-watcher/StringsWatcherV1.ts)</li></ul>|
+|Subnets|<ul><li>[SubnetsV4.ts](/api/facades/subnets/SubnetsV4.ts)</li><li>[SubnetsV5.ts](/api/facades/subnets/SubnetsV5.ts)</li></ul>|
+|Undertaker|<ul><li>[UndertakerV1.ts](/api/facades/undertaker/UndertakerV1.ts)</li></ul>|
+|UnitAssigner|<ul><li>[UnitAssignerV1.ts](/api/facades/unit-assigner/UnitAssignerV1.ts)</li></ul>|
+|Uniter|<ul><li>[UniterV16.ts](/api/facades/uniter/UniterV16.ts)</li><li>[UniterV18.ts](/api/facades/uniter/UniterV18.ts)</li><li>[UniterV19.ts](/api/facades/uniter/UniterV19.ts)</li></ul>|
+|UpgradeSeries|<ul><li>[UpgradeSeriesV3.ts](/api/facades/upgrade-series/UpgradeSeriesV3.ts)</li></ul>|
+|UpgradeSteps|<ul><li>[UpgradeStepsV2.ts](/api/facades/upgrade-steps/UpgradeStepsV2.ts)</li></ul>|
+|Upgrader|<ul><li>[UpgraderV1.ts](/api/facades/upgrader/UpgraderV1.ts)</li></ul>|
+|UserManager|<ul><li>[UserManagerV1.ts](/api/facades/user-manager/UserManagerV1.ts)</li><li>[UserManagerV2.ts](/api/facades/user-manager/UserManagerV2.ts)</li><li>[UserManagerV3.ts](/api/facades/user-manager/UserManagerV3.ts)</li></ul>|
+|UserSecretsDrain|<ul><li>[UserSecretsDrainV1.ts](/api/facades/user-secrets-drain/UserSecretsDrainV1.ts)</li></ul>|
+|UserSecretsManager|<ul><li>[UserSecretsManagerV1.ts](/api/facades/user-secrets-manager/UserSecretsManagerV1.ts)</li></ul>|
+|VolumeAttachmentPlansWatcher|<ul><li>[VolumeAttachmentPlansWatcherV1.ts](/api/facades/volume-attachment-plans-watcher/VolumeAttachmentPlansWatcherV1.ts)</li></ul>|
+|VolumeAttachmentsWatcher|<ul><li>[VolumeAttachmentsWatcherV2.ts](/api/facades/volume-attachments-watcher/VolumeAttachmentsWatcherV2.ts)</li></ul>|
 
 ## Library Maintenance
 
@@ -240,7 +240,7 @@ After generating a new schema run `yarn store-schema ../path/to/juju` which will
 
 To update the facades, run `yarn generate-facades` on this project. This will generate the facades using the locally stored schema, sha, and version the schema was generated from.
 
-Finally, update `CLIENT_VERSION` in `api/client.ts` with the highest support version.
+Finally, update `CLIENT_VERSION` in `api/client.ts` with the highest supported version.
 
 ### Releasing to NPM
 
