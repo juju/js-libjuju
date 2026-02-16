@@ -15,18 +15,13 @@ jobs:
         node-version: [22.x]
     steps:
       - uses: actions/checkout@v3
-      - name: Restore node_modules
-        id: yarn-cache
-        uses: actions/cache@v3
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
+          cache: "yarn"
       - name: Install
-        run: yarn install
+        run: yarn install --immutable
       - run: yarn test
   prettier:
     name: Check Prettier
@@ -36,18 +31,13 @@ jobs:
         node-version: [22.x]
     steps:
       - uses: actions/checkout@v3
-      - name: Restore node_modules
-        id: yarn-cache
-        uses: actions/cache@v3
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
+          cache: "yarn"
       - name: Install
-        run: yarn install
+        run: yarn install --immutable
       - run: yarn prettier --check 'api/**/*'
   lint:
     name: Lint JavaScript/TypeScript
@@ -57,18 +47,13 @@ jobs:
         node-version: [22.x]
     steps:
       - uses: actions/checkout@v3
-      - name: Restore node_modules
-        id: yarn-cache
-        uses: actions/cache@v3
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
+          cache: "yarn"
       - name: Install
-        run: yarn install
+        run: yarn install --immutable
       - run: yarn lint
   build:
     name: Build
@@ -78,16 +63,11 @@ jobs:
         node-version: [22.x]
     steps:
       - uses: actions/checkout@v3
-      - name: Restore node_modules
-        id: yarn-cache
-        uses: actions/cache@v3
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
+          cache: "yarn"
       - name: Install
-        run: yarn install
+        run: yarn install --immutable
       - run: CI=false yarn build
