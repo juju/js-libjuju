@@ -89,11 +89,11 @@ Visit the [full API documentation](https://juju.github.io/js-libjuju/) for detai
 
 We have a number of examples showing how to perform a few common tasks. Those can be found in the `examples` folder.
 
-- [add-machine.js](https://github.com/juju/js-libjuju/blob/master/examples/add-machine.js)
-- [deploy.js](https://github.com/juju/js-libjuju/blob/master/examples/deploy.js)
-- [login-with-bakery.js](https://github.com/juju/js-libjuju/blob/master/examples/login-with-bakery.js)
-- [watch-all-models.js](https://github.com/juju/js-libjuju/blob/master/examples/watch-all-models.js)
-- [watch.js](https://github.com/juju/js-libjuju/blob/master/examples/watch.js)
+- [add-machine.js](https://github.com/juju/js-libjuju/blob/main/examples/add-machine.js)
+- [deploy.js](https://github.com/juju/js-libjuju/blob/main/examples/deploy.js)
+- [login-with-bakery.js](https://github.com/juju/js-libjuju/blob/main/examples/login-with-bakery.js)
+- [watch-all-models.js](https://github.com/juju/js-libjuju/blob/main/examples/watch-all-models.js)
+- [watch.js](https://github.com/juju/js-libjuju/blob/main/examples/watch.js)
 
 ## Facade API Reference
 

@@ -348,7 +348,7 @@ function generateReadmeFile(
     readmeTemplateData.exampleList.forEach((example) => {
       // instead of relative path for docs page which will 404
       // return the example page on the Github repo
-      example.path = `https://github.com/juju/js-libjuju/blob/master/${example.path}`;
+      example.path = `https://github.com/juju/js-libjuju/blob/main/${example.path}`;
     });
     Object.entries(readmeTemplateData.facadeList).forEach(
       ([facadeName, facade]) =>
