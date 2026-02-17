@@ -9,3 +9,10 @@ dist/
 .nyc_output/
 docs
 .nfs.*
+
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
