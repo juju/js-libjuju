@@ -14,6 +14,7 @@ jobs:
       matrix:
         node-version: [22.x]
     steps:
+      - run: corepack enable
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
@@ -30,6 +31,7 @@ jobs:
       matrix:
         node-version: [22.x]
     steps:
+      - run: corepack enable
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
@@ -46,6 +48,7 @@ jobs:
       matrix:
         node-version: [22.x]
     steps:
+      - run: corepack enable
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
@@ -62,6 +65,7 @@ jobs:
       matrix:
         node-version: [22.x]
     steps:
+      - run: corepack enable
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
