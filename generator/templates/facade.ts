@@ -103,10 +103,15 @@ ${paramsBlock ?? "    };"}
 export default function generateFacadeTemplate(
   facadeTemplate: FacadeTemplate
 ): string {
+  const availableTo = facadeTemplate.availableTo
+    ? `  This facade is available on:
+${generateAvailableList(facadeTemplate.availableTo)}
+
+  `
+    : "";
   return `/**
   Juju ${facadeTemplate.name} version ${facadeTemplate.version}.
-  This facade is available on:
-${generateAvailableList(facadeTemplate.availableTo)}
+${availableTo}
 
   NOTE: This file was generated using the Juju schema
   from Juju ${facadeTemplate.jujuVersion} at the git SHA ${

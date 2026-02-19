@@ -33,5 +33,15 @@
     "juju-git-sha": "65fa4c1ee5",
     "juju-version": "3.3",
     "schema": "https://raw.githubusercontent.com/juju/js-libjuju/3c0e1702882fe602e5945cc3c4b38ac7529e29f3/generator/schema/schema.json"
+  },
+  {
+    "juju-git-sha": "b08ad63",
+    "juju-version": "3.6.14",
+    "schema": "https://raw.githubusercontent.com/juju/juju/refs/tags/v3.6.14/apiserver/facades/schema.json"
+  },
+  {
+    "juju-git-sha": "22e0b6a",
+    "juju-version": "4.0.1",
+    "schema": "https://raw.githubusercontent.com/juju/juju/refs/tags/v4.0.1/apiserver/facades/schema.json"
   }
 ]
