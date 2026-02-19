@@ -156,6 +156,9 @@ export function generateMethods(
   methods: SchemaMethods,
   facadeName: string
 ): FacadeMethod[] {
+  if (!methods) {
+    return [];
+  }
   const facadeMethods: FacadeMethod[] = Object.entries(methods).map(
     ([name, method]) => {
       const generatedMethod: FacadeMethod = {

@@ -124,13 +124,15 @@ ${Object.keys(r.facadeList)
 
 The Juju facade API files are generated from a supplied Juju schema.
 
-To generate this schema you will need to clone the [Juju repository](https://github.com/juju/juju/) and then run \`make rebuild-schema\` or \`go run github.com/juju/juju/generate/schemagen -admin-facades --facade-group=client,jimm ./apiserver/facades/schema.json\` to generate a schema file that contains the publicly available facades as well as the set of facades for JAAS. Other \`--facade-group\` options are \`latest\` and \`all\`.
+First, open the file \`generator/schema/schema-history.json\` and add a new object with \`juju-version\` set to the version of Juju you want to support.
 
-After generating a new schema run \`yarn store-schema ../path/to/juju\` which will store the updated schema and necessary meta data in this project.
+Set \`schema\` to a "raw" path on github for the schema file e.g. \`https://raw.githubusercontent.com/juju/juju/refs/tags/v3.6.14/apiserver/facades/schema.json\` (substituting the tag with the version number from above).
 
-To update the facades, run \`yarn generate-facades\` on this project. This will generate the facades using the locally stored schema, sha, and version the schema was generated from.
+Set \`juju-git-sha\` to the sha for the release (go to the release page for the version you want to support e.g. \`https://github.com/juju/juju/releases/tag/v3.6.14\` and the sha will be listed next to the tag).
 
-Finally, update \`CLIENT_VERSION\` in \`api/client.ts\` with the highest support version.
+To update the facades, run \`yarn regenerate-all-facades\`. This will generate the facades using the data from the \`schema-history.json\` file.
+
+Finally, update \`CLIENT_VERSION\` in \`api/client.ts\` with the highest version of Juju that is supported by Jujulib.
 
 ### Releasing to NPM
 
