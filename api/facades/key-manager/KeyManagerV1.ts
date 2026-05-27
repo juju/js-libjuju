@@ -1,10 +1,8 @@
 /**
   Juju KeyManager version 1.
-  This facade is available on:
-    Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -58,9 +56,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  KeyManagerAPI provides api endpoints for manipulating ssh keys
-*/
 class KeyManagerV1 implements Facade {
   static NAME = "KeyManager";
   static VERSION = 1;
@@ -78,9 +73,7 @@ class KeyManagerV1 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    AddKeys adds new authorised ssh keys for the specified user.
-  */
+
   addKeys(params: ModifyUserSSHKeys): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -94,9 +87,6 @@ class KeyManagerV1 implements Facade {
     });
   }
 
-  /**
-    DeleteKeys deletes the authorised ssh keys for the specified user.
-  */
   deleteKeys(params: ModifyUserSSHKeys): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -110,9 +100,6 @@ class KeyManagerV1 implements Facade {
     });
   }
 
-  /**
-    ImportKeys imports new authorised ssh keys from the specified key ids for the specified user.
-  */
   importKeys(params: ModifyUserSSHKeys): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -126,9 +113,6 @@ class KeyManagerV1 implements Facade {
     });
   }
 
-  /**
-    ListKeys returns the authorised ssh keys for the specified users.
-  */
   listKeys(params: ListSSHKeys): Promise<StringsResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

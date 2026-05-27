@@ -294,9 +294,6 @@ class MachinerV4 implements Facade {
     });
   }
 
-  /**
-
-  */
   setMachineAddresses(params: SetMachinesAddresses): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

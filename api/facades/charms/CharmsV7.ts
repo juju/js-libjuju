@@ -1,10 +1,8 @@
 /**
   Juju Charms version 7.
-  This facade is available on:
-    Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -39,13 +37,15 @@ export interface Charm {
   "lxd-profile"?: CharmLXDProfile;
   manifest?: CharmManifest;
   meta?: CharmMeta;
-  metrics?: CharmMetrics;
   revision: number;
   url: string;
+  version?: string;
 }
 
 export interface CharmActionSpec {
   description: string;
+  "execution-group"?: string;
+  parallel?: boolean;
   params: AdditionalProperties;
 }
 
@@ -60,15 +60,10 @@ export interface CharmBase {
 }
 
 export interface CharmContainer {
+  gid?: number;
   mounts?: CharmMount[];
   resource?: string;
-}
-
-export interface CharmDeployment {
-  "min-version": string;
-  mode: string;
-  service: string;
-  type: string;
+  uid?: number;
 }
 
 export interface CharmDevice {
@@ -92,34 +87,22 @@ export interface CharmManifest {
 export interface CharmMeta {
   "assumes-expr"?: ExpressionTree;
   categories?: string[];
+  "charm-user"?: string;
   containers?: Record<string, CharmContainer>;
-  deployment?: CharmDeployment;
   description: string;
   devices?: Record<string, CharmDevice>;
   "extra-bindings"?: Record<string, string>;
   "min-juju-version"?: string;
   name: string;
-  "payload-classes"?: Record<string, CharmPayloadClass>;
   peers?: Record<string, CharmRelation>;
   provides?: Record<string, CharmRelation>;
   requires?: Record<string, CharmRelation>;
   resources?: Record<string, CharmResourceMeta>;
-  series?: string[];
   storage?: Record<string, CharmStorage>;
   subordinate: boolean;
   summary: string;
   tags?: string[];
   terms?: string[];
-}
-
-export interface CharmMetric {
-  description: string;
-  type: string;
-}
-
-export interface CharmMetrics {
-  metrics: Record<string, CharmMetric>;
-  plan: CharmPlan;
 }
 
 export interface CharmMount {
@@ -150,15 +133,6 @@ export interface CharmOrigin {
 export interface CharmOriginResult {
   "charm-origin": CharmOrigin;
   error?: Error;
-}
-
-export interface CharmPayloadClass {
-  name: string;
-  type: string;
-}
-
-export interface CharmPlan {
-  required: boolean;
 }
 
 export interface CharmRelation {
@@ -268,10 +242,6 @@ export interface ExpressionTree {
   Expression: AdditionalProperties;
 }
 
-export interface IsMeteredResult {
-  metered: boolean;
-}
-
 export interface Macaroon {
   [key: string]: AdditionalProperties;
 }
@@ -302,10 +272,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  APIv7 provides the Charms API facade for version 7.
-  v7 guarantees SupportedBases will be provided in ResolveCharms
-*/
 class CharmsV7 implements Facade {
   static NAME = "Charms";
   static VERSION = 7;
@@ -323,11 +289,7 @@ class CharmsV7 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    AddCharm adds the given charm URL (which must include revision) to the
-    environment, if it does not exist yet. Local charms are not supported,
-    only charm store and charm hub URLs. See also AddLocalCharm().
-  */
+
   addCharm(params: AddCharmWithOrigin): Promise<CharmOriginResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -341,9 +303,6 @@ class CharmsV7 implements Facade {
     });
   }
 
-  /**
-    CharmInfo returns information about the requested charm.
-  */
   charmInfo(params: CharmURL): Promise<Charm> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -357,10 +316,6 @@ class CharmsV7 implements Facade {
     });
   }
 
-  /**
-    CheckCharmPlacement checks if a charm is allowed to be placed with in a
-    given application.
-  */
   checkCharmPlacement(
     params: ApplicationCharmPlacements
   ): Promise<ErrorResults> {
@@ -376,10 +331,6 @@ class CharmsV7 implements Facade {
     });
   }
 
-  /**
-    GetDownloadInfos attempts to get the bundle corresponding to the charm url
-    and origin.
-  */
   getDownloadInfos(params: CharmURLAndOrigins): Promise<DownloadInfoResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -393,29 +344,6 @@ class CharmsV7 implements Facade {
     });
   }
 
-  /**
-    IsMetered returns whether or not the charm is metered.
-    TODO (cderici) only used for metered charms in cmd MeteredDeployAPI,
-    kept for client compatibility, remove in juju 4.0
-  */
-  isMetered(params: CharmURL): Promise<IsMeteredResult> {
-    return new Promise((resolve, reject) => {
-      const req: JujuRequest = {
-        type: "Charms",
-        request: "IsMetered",
-        version: 7,
-        params: params,
-      };
-
-      this._transport.write(req, resolve, reject);
-    });
-  }
-
-  /**
-    List returns a list of charm URLs currently in the state.
-    If supplied parameter contains any names, the result will
-    be filtered to return only the charms with supplied names.
-  */
   list(params: CharmsList): Promise<CharmsListResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -429,9 +357,6 @@ class CharmsV7 implements Facade {
     });
   }
 
-  /**
-    ListCharmResources returns a series of resources for a given charm.
-  */
   listCharmResources(
     params: CharmURLAndOrigins
   ): Promise<CharmResourcesResults> {
@@ -447,10 +372,6 @@ class CharmsV7 implements Facade {
     });
   }
 
-  /**
-    ResolveCharms resolves the given charm URLs with an optionally specified
-    preferred channel.  Channel provided via CharmOrigin.
-  */
   resolveCharms(
     params: ResolveCharmsWithChannel
   ): Promise<ResolveCharmWithChannelResults> {

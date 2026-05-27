@@ -110,9 +110,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class InstanceMutaterV3 implements Facade {
   static NAME = "InstanceMutater";
   static VERSION = 3;

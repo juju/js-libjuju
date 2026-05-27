@@ -219,9 +219,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class CAASFirewallerV1 implements Facade {
   static NAME = "CAASFirewaller";
   static VERSION = 1;

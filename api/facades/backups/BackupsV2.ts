@@ -55,7 +55,7 @@ export interface BackupsMetadataResult {
   size: number;
   started: string;
   stored: string;
-  version: Number;
+  version: string;
 }
 
 export interface BackupsRemoveArgs {
@@ -112,9 +112,7 @@ class BackupsV2 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
 
-  */
   create(params: BackupsCreateArgs): Promise<BackupsMetadataResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

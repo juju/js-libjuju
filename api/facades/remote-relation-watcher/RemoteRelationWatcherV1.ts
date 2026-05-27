@@ -79,9 +79,7 @@ class RemoteRelationWatcherV1 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
 
-  */
   next(params: any): Promise<RemoteRelationWatchResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

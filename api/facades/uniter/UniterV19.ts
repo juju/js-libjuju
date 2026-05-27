@@ -1372,9 +1372,6 @@ class UniterV19 implements Facade {
     });
   }
 
-  /**
-
-  */
   getMeterStatus(params: Entities): Promise<MeterStatusResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -2465,9 +2462,6 @@ class UniterV19 implements Facade {
     });
   }
 
-  /**
-
-  */
   watchMeterStatus(params: Entities): Promise<NotifyWatchResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

@@ -1,9 +1,8 @@
 /**
   Juju ApplicationOffers version 6.
 
-
   NOTE: This file was generated using the Juju schema
-  from Juju 4.0.1 at the git SHA 22e0b6a.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -205,9 +204,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class ApplicationOffersV6 implements Facade {
   static NAME = "ApplicationOffers";
   static VERSION = 6;
@@ -225,9 +221,7 @@ class ApplicationOffersV6 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
 
-  */
   applicationOffers(params: OfferURLs): Promise<ApplicationOffersResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -241,9 +235,6 @@ class ApplicationOffersV6 implements Facade {
     });
   }
 
-  /**
-
-  */
   destroyOffers(params: DestroyApplicationOffers): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -257,9 +248,6 @@ class ApplicationOffersV6 implements Facade {
     });
   }
 
-  /**
-
-  */
   findApplicationOffers(
     params: OfferFilters
   ): Promise<QueryApplicationOffersResultsV5> {
@@ -275,9 +263,6 @@ class ApplicationOffersV6 implements Facade {
     });
   }
 
-  /**
-
-  */
   getConsumeDetails(
     params: ConsumeOfferDetailsArg
   ): Promise<ConsumeOfferDetailsResults> {
@@ -293,9 +278,6 @@ class ApplicationOffersV6 implements Facade {
     });
   }
 
-  /**
-
-  */
   listApplicationOffers(
     params: OfferFilters
   ): Promise<QueryApplicationOffersResultsV5> {
@@ -311,9 +293,6 @@ class ApplicationOffersV6 implements Facade {
     });
   }
 
-  /**
-
-  */
   modifyOfferAccess(params: ModifyOfferAccessRequest): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -327,9 +306,6 @@ class ApplicationOffersV6 implements Facade {
     });
   }
 
-  /**
-
-  */
   offer(params: AddApplicationOffers): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -343,9 +319,6 @@ class ApplicationOffersV6 implements Facade {
     });
   }
 
-  /**
-
-  */
   remoteApplicationInfo(
     params: OfferURLs
   ): Promise<RemoteApplicationInfoResults> {

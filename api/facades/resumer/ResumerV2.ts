@@ -33,9 +33,7 @@ class ResumerV2 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
 
-  */
   resumeTransactions(params: any): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

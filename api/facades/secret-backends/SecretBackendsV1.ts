@@ -1,10 +1,8 @@
 /**
   Juju SecretBackends version 1.
-  This facade is available on:
-    Controllers
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -91,9 +89,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  SecretBackendsAPI is the server implementation for the SecretBackends facade.
-*/
 class SecretBackendsV1 implements Facade {
   static NAME = "SecretBackends";
   static VERSION = 1;
@@ -111,9 +106,7 @@ class SecretBackendsV1 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    AddSecretBackends adds new secret backends.
-  */
+
   addSecretBackends(params: AddSecretBackendArgs): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -127,9 +120,6 @@ class SecretBackendsV1 implements Facade {
     });
   }
 
-  /**
-    ListSecretBackends lists available secret backends.
-  */
   listSecretBackends(
     params: ListSecretBackendsArgs
   ): Promise<ListSecretBackendsResults> {
@@ -145,9 +135,6 @@ class SecretBackendsV1 implements Facade {
     });
   }
 
-  /**
-    RemoveSecretBackends removes secret backends.
-  */
   removeSecretBackends(params: RemoveSecretBackendArgs): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -161,9 +148,6 @@ class SecretBackendsV1 implements Facade {
     });
   }
 
-  /**
-    UpdateSecretBackends updates secret backends.
-  */
   updateSecretBackends(params: UpdateSecretBackendArgs): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

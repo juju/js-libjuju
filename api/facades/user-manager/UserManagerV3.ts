@@ -1,10 +1,8 @@
 /**
   Juju UserManager version 3.
-  This facade is available on:
-    Controllers
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -109,10 +107,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  UserManagerAPI implements the user manager interface and is the concrete
-  implementation of the api end point.
-*/
 class UserManagerV3 implements Facade {
   static NAME = "UserManager";
   static VERSION = 3;
@@ -130,10 +124,7 @@ class UserManagerV3 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    AddUser adds a user with a username, and either a password or
-    a randomly generated secret key which will be returned.
-  */
+
   addUser(params: AddUsers): Promise<AddUserResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -147,10 +138,6 @@ class UserManagerV3 implements Facade {
     });
   }
 
-  /**
-    DisableUser disables one or more users.  If the user is already disabled,
-    the action is considered a success.
-  */
   disableUser(params: Entities): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -164,10 +151,6 @@ class UserManagerV3 implements Facade {
     });
   }
 
-  /**
-    EnableUser enables one or more users.  If the user is already enabled,
-    the action is considered a success.
-  */
   enableUser(params: Entities): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -181,9 +164,6 @@ class UserManagerV3 implements Facade {
     });
   }
 
-  /**
-    ModelUserInfo returns information on all users in the model.
-  */
   modelUserInfo(params: Entities): Promise<ModelUserInfoResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -197,13 +177,6 @@ class UserManagerV3 implements Facade {
     });
   }
 
-  /**
-    RemoveUser permanently removes a user from the current controller for each
-    entity provided. While the user is permanently removed we keep it's
-    information around for auditing purposes.
-    TODO(redir): Add information about getting deleted user information when we
-    add that capability.
-  */
   removeUser(params: Entities): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -217,12 +190,6 @@ class UserManagerV3 implements Facade {
     });
   }
 
-  /**
-    ResetPassword resets password for supplied users by
-    invalidating current passwords (if any) and generating
-    new random secret keys which will be returned.
-    Users cannot reset their own password.
-  */
   resetPassword(params: Entities): Promise<AddUserResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -236,9 +203,6 @@ class UserManagerV3 implements Facade {
     });
   }
 
-  /**
-    SetPassword changes the stored password for the specified users.
-  */
   setPassword(params: EntityPasswords): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -252,9 +216,6 @@ class UserManagerV3 implements Facade {
     });
   }
 
-  /**
-    UserInfo returns information on a user.
-  */
   userInfo(params: UserInfoRequest): Promise<UserInfoResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

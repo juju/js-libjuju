@@ -91,9 +91,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class CAASAgentV1 implements Facade {
   static NAME = "CAASAgent";
   static VERSION = 1;

@@ -53,7 +53,7 @@ export interface Binary {
   Build: number;
   Major: number;
   Minor: number;
-  Number: Number;
+  Number: string;
   Patch: number;
   Release: string;
   Tag: string;

@@ -1,10 +1,8 @@
 /**
   Juju Resources version 3.
-  This facade is available on:
-    Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -120,9 +118,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  API is the public API facade for resources.
-*/
 class ResourcesV3 implements Facade {
   static NAME = "Resources";
   static VERSION = 3;
@@ -140,11 +135,7 @@ class ResourcesV3 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    AddPendingResources adds the provided resources (info) to the Juju
-    model in a pending state, meaning they are not available until
-    resolved. Handles CharmHub and Local charms.
-  */
+
   addPendingResources(
     params: AddPendingResourcesArgsV2
   ): Promise<AddPendingResourcesResult> {
@@ -160,9 +151,6 @@ class ResourcesV3 implements Facade {
     });
   }
 
-  /**
-    ListResources returns the list of resources for the given application.
-  */
   listResources(params: ListResourcesArgs): Promise<ResourcesResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

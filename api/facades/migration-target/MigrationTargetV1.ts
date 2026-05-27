@@ -15,7 +15,7 @@ import { autoBind } from "../../utils.js";
 
 export interface AdoptResourcesArgs {
   "model-tag": string;
-  "source-controller-version": Number;
+  "source-controller-version": string;
 }
 
 export interface BytesResult {
@@ -38,7 +38,7 @@ export interface ErrorResults {
 
 export interface MigrationModelInfo {
   "agent-version": string;
-  "controller-agent-version": Number;
+  "controller-agent-version": string;
   name: string;
   "owner-tag": string;
   uuid: string;

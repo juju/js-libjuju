@@ -288,7 +288,7 @@ export interface OperatorProvisioningInfo {
   error?: Error;
   "image-details": DockerImageInfo;
   tags?: Record<string, string>;
-  version: Number;
+  version: string;
 }
 
 export interface OperatorProvisioningInfoResults {
@@ -315,9 +315,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class CAASOperatorProvisionerV1 implements Facade {
   static NAME = "CAASOperatorProvisioner";
   static VERSION = 1;

@@ -52,9 +52,7 @@ class CAASModelConfigManagerV1 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
 
-  */
   controllerConfig(params: any): Promise<ControllerConfigResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -68,9 +66,6 @@ class CAASModelConfigManagerV1 implements Facade {
     });
   }
 
-  /**
-
-  */
   watchControllerConfig(params: any): Promise<NotifyWatchResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

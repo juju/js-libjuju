@@ -31,7 +31,7 @@ export interface MasterMigrationStatus {
 
 export interface MigrationModelInfo {
   "agent-version": string;
-  "controller-agent-version": Number;
+  "controller-agent-version": string;
   "facade-versions"?: Record<string, number[]>;
   name: string;
   "owner-tag": string;
@@ -84,7 +84,7 @@ export interface Number {
 }
 
 export interface PrechecksArgs {
-  "target-controller-version": Number;
+  "target-controller-version": string;
 }
 
 export interface ProcessRelations {

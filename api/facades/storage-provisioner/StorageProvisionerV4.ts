@@ -403,9 +403,6 @@ class StorageProvisionerV4 implements Facade {
     });
   }
 
-  /**
-
-  */
   createVolumeAttachmentPlans(
     params: VolumeAttachmentPlans
   ): Promise<ErrorResults> {
@@ -594,9 +591,6 @@ class StorageProvisionerV4 implements Facade {
     });
   }
 
-  /**
-
-  */
   removeVolumeAttachmentPlan(params: MachineStorageIds): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -695,9 +689,6 @@ class StorageProvisionerV4 implements Facade {
     });
   }
 
-  /**
-
-  */
   setVolumeAttachmentPlanBlockInfo(
     params: VolumeAttachmentPlans
   ): Promise<ErrorResults> {

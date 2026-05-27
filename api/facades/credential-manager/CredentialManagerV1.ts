@@ -1,10 +1,8 @@
 /**
   Juju CredentialManager version 1.
-  This facade is available on:
-    Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -13,27 +11,6 @@ import { ConnectionInfo, Transport } from "../../client.js";
 import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 
-export interface Error {
-  code: string;
-  info?: AdditionalProperties;
-  message: string;
-}
-
-export interface ErrorResult {
-  error?: Error;
-}
-
-export interface InvalidateCredentialArg {
-  reason?: string;
-}
-
-export interface AdditionalProperties {
-  [key: string]: any;
-}
-
-/**
-
-*/
 class CredentialManagerV1 implements Facade {
   static NAME = "CredentialManager";
   static VERSION = 1;
@@ -50,23 +27,6 @@ class CredentialManagerV1 implements Facade {
 
     // Automatically bind all methods to instances.
     autoBind(this);
-  }
-  /**
-    InvalidateModelCredential marks the cloud credential for this model as invalid.
-  */
-  invalidateModelCredential(
-    params: InvalidateCredentialArg
-  ): Promise<ErrorResult> {
-    return new Promise((resolve, reject) => {
-      const req: JujuRequest = {
-        type: "CredentialManager",
-        request: "InvalidateModelCredential",
-        version: 1,
-        params: params,
-      };
-
-      this._transport.write(req, resolve, reject);
-    });
   }
 }
 

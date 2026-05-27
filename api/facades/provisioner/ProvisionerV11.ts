@@ -39,7 +39,7 @@ export interface Binary {
   Build: number;
   Major: number;
   Minor: number;
-  Number: Number;
+  Number: string;
   Patch: number;
   Release: string;
   Tag: string;
@@ -196,7 +196,7 @@ export interface FindToolsParams {
   agentstream: string;
   arch: string;
   major: number;
-  number: Number;
+  number: string;
   "os-type": string;
 }
 
@@ -1065,9 +1065,6 @@ class ProvisionerV11 implements Facade {
     });
   }
 
-  /**
-
-  */
   setHostMachineNetworkConfig(params: SetMachineNetworkConfig): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

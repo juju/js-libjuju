@@ -1,12 +1,8 @@
 /**
   Juju Client version 8.
-  This facade is available on:
-    Models
-
-
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.6.14 at the git SHA b08ad63.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -43,7 +39,6 @@ export interface ApplicationStatus {
   "exposed-endpoints"?: Record<string, ExposedEndpoint>;
   int?: number;
   life: string;
-  "meter-statuses": Record<string, MeterStatus>;
   "provider-id"?: string;
   "public-address": string;
   relations: Record<string, string[]>;
@@ -157,6 +152,7 @@ export interface LXDProfile {
 export interface MachineStatus {
   "agent-status": DetailedStatus;
   base: Base;
+  "cluster-role"?: string;
   constraints: string;
   containers: Record<string, MachineStatus>;
   "display-name": string;
@@ -176,19 +172,12 @@ export interface MachineStatus {
   "wants-vote": boolean;
 }
 
-export interface MeterStatus {
-  color: string;
-  message: string;
-}
-
 export interface ModelStatusInfo {
   "available-version": string;
   "cloud-tag": string;
-  "meter-status": MeterStatus;
   "model-status": DetailedStatus;
   name: string;
   region?: string;
-  sla: string;
   type: string;
   version: string;
 }
@@ -338,9 +327,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class ClientV8 implements Facade {
   static NAME = "Client";
   static VERSION = 8;
@@ -358,9 +344,7 @@ class ClientV8 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
 
-  */
   fullStatus(params: StatusParams): Promise<FullStatus> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -374,9 +358,6 @@ class ClientV8 implements Facade {
     });
   }
 
-  /**
-
-  */
   statusHistory(params: StatusHistoryRequests): Promise<StatusHistoryResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -390,9 +371,6 @@ class ClientV8 implements Facade {
     });
   }
 
-  /**
-
-  */
   watchAll(params: any): Promise<AllWatcherId> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

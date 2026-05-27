@@ -1,14 +1,8 @@
 /**
   Juju Admin version 3.
-  This facade is available on:
-    Controller-machine-agent
-    Machine-agent
-    Unit-agent
-    Controllers
-    Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -93,10 +87,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  admin is the only object that unlogged-in clients can access. It holds any
-  methods that are needed to log in.
-*/
 class AdminV3 implements Facade {
   static NAME = "Admin";
   static VERSION = 3;
@@ -114,10 +104,7 @@ class AdminV3 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    Login logs in with the provided credentials.  All subsequent requests on the
-    connection will act as the authenticated user.
-  */
+
   login(params: LoginRequest): Promise<LoginResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -131,11 +118,6 @@ class AdminV3 implements Facade {
     });
   }
 
-  /**
-    RedirectInfo returns redirected host information for the model.
-    In Juju it always returns an error because the Juju controller
-    does not multiplex controllers.
-  */
   redirectInfo(params: any): Promise<RedirectInfoResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

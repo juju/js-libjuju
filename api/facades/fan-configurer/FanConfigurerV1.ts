@@ -40,9 +40,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class FanConfigurerV1 implements Facade {
   static NAME = "FanConfigurer";
   static VERSION = 1;

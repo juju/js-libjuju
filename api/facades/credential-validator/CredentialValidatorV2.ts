@@ -50,9 +50,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class CredentialValidatorV2 implements Facade {
   static NAME = "CredentialValidator";
   static VERSION = 2;

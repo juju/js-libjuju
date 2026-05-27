@@ -1,10 +1,8 @@
 /**
   Juju Secrets version 2.
-  This facade is available on:
-    Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -72,6 +70,7 @@ export interface ListSecretResult {
   label?: string;
   "latest-expire-time"?: string;
   "latest-revision": number;
+  "latest-revision-checksum": string;
   "next-rotate-time"?: string;
   "owner-tag": string;
   revisions: SecretRevision[];
@@ -92,6 +91,7 @@ export interface ListSecretsArgs {
 }
 
 export interface SecretContentParams {
+  checksum?: string;
   data?: Record<string, string>;
   "value-ref"?: SecretValueRef;
 }
@@ -161,9 +161,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  SecretsAPI is the backend for the Secrets facade.
-*/
 class SecretsV2 implements Facade {
   static NAME = "Secrets";
   static VERSION = 2;
@@ -181,9 +178,7 @@ class SecretsV2 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    CreateSecrets creates new secrets.
-  */
+
   createSecrets(params: CreateSecretArgs): Promise<StringResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -197,9 +192,6 @@ class SecretsV2 implements Facade {
     });
   }
 
-  /**
-    GrantSecret grants access to a user secret.
-  */
   grantSecret(params: GrantRevokeUserSecretArg): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -213,9 +205,6 @@ class SecretsV2 implements Facade {
     });
   }
 
-  /**
-    ListSecrets lists available secrets.
-  */
   listSecrets(params: ListSecretsArgs): Promise<ListSecretResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -229,9 +218,6 @@ class SecretsV2 implements Facade {
     });
   }
 
-  /**
-    RemoveSecrets remove user secret.
-  */
   removeSecrets(params: DeleteSecretArgs): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -245,9 +231,6 @@ class SecretsV2 implements Facade {
     });
   }
 
-  /**
-    RevokeSecret revokes access to a user secret.
-  */
   revokeSecret(params: GrantRevokeUserSecretArg): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -261,9 +244,6 @@ class SecretsV2 implements Facade {
     });
   }
 
-  /**
-    UpdateSecrets creates new secrets.
-  */
   updateSecrets(params: UpdateUserSecretArgs): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

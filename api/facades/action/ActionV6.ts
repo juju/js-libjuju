@@ -292,9 +292,6 @@ class ActionV6 implements Facade {
     });
   }
 
-  /**
-
-  */
   findActionsByNames(params: FindActionsByNames): Promise<ActionsByNames> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

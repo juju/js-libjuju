@@ -1,10 +1,8 @@
 /**
   Juju Annotations version 2.
-  This facade is available on:
-    Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -58,10 +56,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  API implements the service interface and is the concrete
-  implementation of the api end point.
-*/
 class AnnotationsV2 implements Facade {
   static NAME = "Annotations";
   static VERSION = 2;
@@ -79,11 +73,7 @@ class AnnotationsV2 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    Get returns annotations for given entities.
-    If annotations cannot be retrieved for a given entity, an error is returned.
-    Each entity is treated independently and, hence, will fail or succeed independently.
-  */
+
   get(params: Entities): Promise<AnnotationsGetResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -97,9 +87,6 @@ class AnnotationsV2 implements Facade {
     });
   }
 
-  /**
-    Set stores annotations for given entities
-  */
   set(params: AnnotationsSet): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

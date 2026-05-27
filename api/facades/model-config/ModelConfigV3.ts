@@ -8,7 +8,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 3.6.14 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -92,9 +92,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  ModelConfigAPIV3 is currently the latest.
-*/
 class ModelConfigV3 implements Facade {
   static NAME = "ModelConfig";
   static VERSION = 3;
@@ -112,9 +109,7 @@ class ModelConfigV3 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    GetModelConstraints returns the constraints for the model.
-  */
+
   getModelConstraints(params: any): Promise<GetConstraintsResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -128,10 +123,6 @@ class ModelConfigV3 implements Facade {
     });
   }
 
-  /**
-    ModelGet implements the server-side part of the
-    model-config CLI command.
-  */
   modelGet(params: any): Promise<ModelConfigResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -145,10 +136,6 @@ class ModelConfigV3 implements Facade {
     });
   }
 
-  /**
-    ModelSet implements the server-side part of the
-    set-model-config CLI command.
-  */
   modelSet(params: ModelSet): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -162,10 +149,6 @@ class ModelConfigV3 implements Facade {
     });
   }
 
-  /**
-    ModelUnset implements the server-side part of the
-    set-model-config CLI command.
-  */
   modelUnset(params: ModelUnset): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -179,9 +162,6 @@ class ModelConfigV3 implements Facade {
     });
   }
 
-  /**
-    SLALevel returns the current sla level for the model.
-  */
   sLALevel(params: any): Promise<StringResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -195,9 +175,6 @@ class ModelConfigV3 implements Facade {
     });
   }
 
-  /**
-    Sequences returns the model's sequence names and next values.
-  */
   sequences(params: any): Promise<ModelSequencesResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -211,9 +188,6 @@ class ModelConfigV3 implements Facade {
     });
   }
 
-  /**
-    SetModelConstraints sets the constraints for the model.
-  */
   setModelConstraints(params: SetConstraints): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -227,9 +201,6 @@ class ModelConfigV3 implements Facade {
     });
   }
 
-  /**
-    SetSLALevel sets the sla level on the model.
-  */
   setSLALevel(params: ModelSLA): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

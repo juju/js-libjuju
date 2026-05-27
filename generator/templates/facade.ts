@@ -110,18 +110,17 @@ export default function generateFacadeTemplate(
   const availableTo = facadeTemplate.availableTo
     ? `  This facade is available on:
 ${generateAvailableList(facadeTemplate.availableTo)}
-
-  `
+`
     : "";
   const docBlock = facadeTemplate.docBlock
-    ? `/**
+    ? `
+/**
 ${padString(facadeTemplate.docBlock, 2)}
 */`
     : "";
   return `/**
   Juju ${facadeTemplate.name} version ${facadeTemplate.version}.
 ${availableTo}
-
   NOTE: This file was generated using the Juju schema
   from Juju ${facadeTemplate.jujuVersion} at the git SHA ${
     facadeTemplate.jujuGitSHA
@@ -134,7 +133,6 @@ import { ConnectionInfo, Transport } from "../../client.js";
 import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 ${facadeTemplate.interfaces.map(generateInterface).join("\n")}
-
 ${docBlock}
 class ${facadeTemplate.name}V${facadeTemplate.version} implements Facade {
   static NAME = "${facadeTemplate.name}";
