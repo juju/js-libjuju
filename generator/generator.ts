@@ -31,11 +31,13 @@ import {
   SchemaMethod,
   SchemaMethods,
   SchemaProperties,
+  SchemaPropertyValue,
 } from "./templates/types.js";
 import {
   attributeOverrides,
   definitionsOverrides,
   methodOverrides,
+  refOverrides,
 } from "./overrides.js";
 
 export function generator() {
@@ -102,19 +104,38 @@ function getRefString(ref: string): string {
   return parts[parts.length - 1];
 }
 
+/**
+ * Extract the type of a property, either from the primitive type or ref. This method should be used instead of
+ * directly accessing the ref so that any overrides are made.
+ */
+function extractPropertyType(property: SchemaPropertyValue): {
+  isRef: boolean;
+  type: string | undefined;
+} {
+  const ref = property?.["$ref"];
+  if (!ref) {
+    return {
+      isRef: false,
+      type: property?.["type"],
+    };
+  }
+  if (ref in refOverrides) {
+    // Recursively extract overrides in case a replacement also has a replacement, or if the replacement
+    // is not a ref it will need to extract the 'type'.
+    return extractPropertyType(refOverrides[ref]);
+  }
+  return {
+    isRef: true,
+    type: getRefString(ref),
+  };
+}
+
 function extractType(
   method: SchemaMethod,
   segment: keyof SchemaProperties
 ): string | undefined {
-  if (method.properties?.[segment]) {
-    const ref = method.properties[segment]?.["$ref"];
-    const type = method.properties[segment]?.["type"];
-    if (ref) {
-      return getRefString(ref);
-    }
-    return type;
-  }
-  return undefined;
+  const property = method.properties?.[segment];
+  return property ? extractPropertyType(property).type : undefined;
 }
 
 function generateFacadeFiles() {
@@ -226,6 +247,26 @@ function generateInterface([name, definition]: [
   };
 }
 
+/**
+ * Recursively extract the type of an array.
+ */
+function extractArrayType(values: JSONSchemaType): string {
+  if (values.type === "array" && values.items) {
+    if (values.items["$ref"]) {
+      const propertyType = extractPropertyType(values.items).type ?? "unknown";
+      return `${propertyType}[]`;
+    }
+    if (values.items.type === "integer") {
+      values.items.type = "number";
+    } else if (values.items.type === "array" && values.items.items) {
+      // Multi-dimensional array:
+      return `${extractArrayType(values.items)}[]`;
+    }
+    return `${values.items.type}[]`;
+  }
+  return "unknown";
+}
+
 export function generateTypes(
   properties: DefinitionProperties,
   required: string[]
@@ -241,14 +282,19 @@ export function generateTypes(
             regex === ".*"
           ) {
             const patternProperty = values.patternProperties[regex];
+            const patternType = extractPropertyType(patternProperty);
             // If pattern is a ref then use that for the object value type.
-            if (patternProperty["$ref"]) {
+            if (patternType.isRef) {
               return {
                 type: "object",
-                valueType: getRefString(patternProperty["$ref"]),
+                valueType: patternType?.type ?? "unknown",
               };
             }
-            const valueType = extractType(patternProperty);
+            const valueType = extractType({
+              ...patternProperty,
+              // Use the type that was extract above in case a ref was substituted with a primitive type.
+              type: patternType.type,
+            });
             // If the pattern is additionalProperties then use that as the
             // object type.
             if (valueType === "AdditionalProperties") {
@@ -271,21 +317,8 @@ export function generateTypes(
           return "AdditionalProperties";
         }
       }
-      // TODO: Recirsify this conditional.
       if (values.type === "array" && values.items) {
-        if (values.items["$ref"]) {
-          return `${getRefString(values.items["$ref"])}[]`;
-        }
-        if (values.items.type === "integer") {
-          values.items.type = "number";
-        } else if (values.items.type === "array" && values.items.items) {
-          // multi-dimensional array
-          if (values.items.items["$ref"]) {
-            return `${getRefString(values.items.items["$ref"])}[][]`;
-          }
-          return "[]";
-        }
-        return `${values.items.type}[]`;
+        return extractArrayType(values);
       }
       if (values.type === "integer") {
         return "number";
@@ -293,7 +326,7 @@ export function generateTypes(
       return values.type;
     }
     if (values["$ref"]) {
-      return getRefString(values["$ref"]);
+      return extractPropertyType(values).type ?? "unknown";
     }
     return "any"; // If we don't know the type then type it as any.
   }

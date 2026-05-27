@@ -6391,6 +6391,17 @@
             }
           }
         },
+        "CheckCredentialsModels": {
+          "type": "object",
+          "properties": {
+            "Params": {
+              "$ref": "#/definitions/TaggedCredentials"
+            },
+            "Result": {
+              "$ref": "#/definitions/UpdateCredentialResults"
+            }
+          }
+        },
         "Cloud": {
           "type": "object",
           "properties": {
@@ -7246,7 +7257,7 @@
   {
     "Name": "Controller",
     "Description": "",
-    "Version": 13,
+    "Version": 14,
     "Schema": {
       "type": "object",
       "properties": {
@@ -7255,6 +7266,17 @@
           "properties": {
             "Result": {
               "$ref": "#/definitions/UserModelList"
+            }
+          }
+        },
+        "CloudSpec": {
+          "type": "object",
+          "properties": {
+            "Params": {
+              "$ref": "#/definitions/Entities"
+            },
+            "Result": {
+              "$ref": "#/definitions/CloudSpecResults"
             }
           }
         },
@@ -7492,6 +7514,30 @@
           },
           "additionalProperties": false,
           "required": ["type", "name"]
+        },
+        "CloudSpecResult": {
+          "type": "object",
+          "properties": {
+            "error": {
+              "$ref": "#/definitions/Error"
+            },
+            "result": {
+              "$ref": "#/definitions/CloudSpec"
+            }
+          },
+          "additionalProperties": false
+        },
+        "CloudSpecResults": {
+          "type": "object",
+          "properties": {
+            "results": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CloudSpecResult"
+              }
+            }
+          },
+          "additionalProperties": false
         },
         "ControllerAPIInfoResult": {
           "type": "object",
@@ -7738,6 +7784,9 @@
         "InitiateMigrationArgs": {
           "type": "object",
           "properties": {
+            "dry-run": {
+              "type": "boolean"
+            },
             "specs": {
               "type": "array",
               "items": {

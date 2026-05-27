@@ -79,9 +79,13 @@ export function generateMethods(facadeTemplate: FacadeTemplate): string {
           }
       };`
         : null;
-      return `/**
+      const docBlock = m.docBlock
+        ? `/**
 ${padString(m.docBlock || "", 4)}
-  */
+  */`
+        : "";
+
+      return `${docBlock}
   ${lowerCaseFirstChar(m.name)}(${
         m.params ? `params: ${paramsType}` : ""
       }): Promise<${m.result}> {
@@ -109,6 +113,11 @@ ${generateAvailableList(facadeTemplate.availableTo)}
 
   `
     : "";
+  const docBlock = facadeTemplate.docBlock
+    ? `/**
+${padString(facadeTemplate.docBlock, 2)}
+*/`
+    : "";
   return `/**
   Juju ${facadeTemplate.name} version ${facadeTemplate.version}.
 ${availableTo}
@@ -126,9 +135,7 @@ import { Facade } from "../../types.js";
 import { autoBind } from "../../utils.js";
 ${facadeTemplate.interfaces.map(generateInterface).join("\n")}
 
-/**
-${padString(facadeTemplate.docBlock, 2)}
-*/
+${docBlock}
 class ${facadeTemplate.name}V${facadeTemplate.version} implements Facade {
   static NAME = "${facadeTemplate.name}";
   static VERSION = ${facadeTemplate.version};
