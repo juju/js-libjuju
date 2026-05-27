@@ -1,15 +1,8 @@
 /**
   Juju Application version 22.
-  This facade is available on:
-    Controller-machine-agent
-    Machine-agent
-    Unit-agent
-    Models
-
-
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.6.14 at the git SHA b08ad63.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -72,7 +65,7 @@ export interface ApplicationDeploy {
   placement?: Placement[];
   policy?: string;
   resources?: Record<string, string>;
-  storage?: Record<string, Constraints>;
+  storage?: Record<string, Directive>;
 }
 
 export interface ApplicationExpose {
@@ -127,15 +120,6 @@ export interface ApplicationMergeBindingsArgs {
   args: ApplicationMergeBindings[];
 }
 
-export interface ApplicationMetricCredential {
-  application: string;
-  "metrics-credentials": number[];
-}
-
-export interface ApplicationMetricCredentials {
-  creds: ApplicationMetricCredential[];
-}
-
 export interface ApplicationOfferDetailsV5 {
   "application-description": string;
   endpoints?: RemoteEndpoint[];
@@ -160,7 +144,7 @@ export interface ApplicationResult {
   tag: string;
 }
 
-export interface ApplicationSetCharm {
+export interface ApplicationSetCharmV2 {
   application: string;
   channel: string;
   "charm-origin"?: CharmOrigin;
@@ -173,12 +157,12 @@ export interface ApplicationSetCharm {
   "force-units": boolean;
   generation: string;
   "resource-ids"?: Record<string, string>;
-  "storage-constraints"?: Record<string, StorageConstraints>;
+  "storage-directives"?: Record<string, StorageDirectives>;
 }
 
 export interface ApplicationStorageGetResult {
   Error: Error;
-  "storage-constraints": Record<string, StorageConstraints>;
+  "storage-constraints": Record<string, StorageDirectives>;
 }
 
 export interface ApplicationStorageGetResults {
@@ -187,7 +171,7 @@ export interface ApplicationStorageGetResults {
 
 export interface ApplicationStorageUpdate {
   "application-tag": string;
-  "storage-constraints": Record<string, StorageConstraints>;
+  "storage-constraints": Record<string, StorageDirectives>;
 }
 
 export interface ApplicationStorageUpdateRequest {
@@ -260,9 +244,9 @@ export interface ConfigSetArgs {
 }
 
 export interface Constraints {
+  Attributes: Record<string, string>;
   Count: number;
-  Pool: string;
-  Size: number;
+  Type: string;
 }
 
 export interface ConsumeApplicationArgV5 {
@@ -292,7 +276,6 @@ export interface DeployFromRepositoryArg {
   Devices: Record<string, Constraints>;
   DryRun: boolean;
   Placement: Placement[];
-  Storage: Record<string, Constraints>;
   Trust: boolean;
   base?: Base;
   channel?: string;
@@ -301,6 +284,7 @@ export interface DeployFromRepositoryArg {
   "num-units"?: number;
   resources?: Record<string, string>;
   revision?: number;
+  storage: Record<string, Directive>;
 }
 
 export interface DeployFromRepositoryArgs {
@@ -394,6 +378,12 @@ export interface DestroyUnitResults {
 
 export interface DestroyUnitsParams {
   units: DestroyUnitParams[];
+}
+
+export interface Directive {
+  Count: number;
+  Pool: string;
+  Size: number;
 }
 
 export interface EndpointRelationData {
@@ -512,7 +502,7 @@ export interface SetConstraints {
   constraints: Value;
 }
 
-export interface StorageConstraints {
+export interface StorageDirectives {
   count?: number;
   pool?: string;
   size?: number;
@@ -552,16 +542,6 @@ export interface UnitsResolved {
   tags?: Entities;
 }
 
-export interface UpdateChannelArg {
-  channel: string;
-  force: boolean;
-  tag: Entity;
-}
-
-export interface UpdateChannelArgs {
-  args: UpdateChannelArg[];
-}
-
 export interface Value {
   "allocate-public-ip"?: boolean;
   arch?: string;
@@ -584,9 +564,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class ApplicationV22 implements Facade {
   static NAME = "Application";
   static VERSION = 22;
@@ -604,9 +581,7 @@ class ApplicationV22 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
 
-  */
   addRelation(params: AddRelation): Promise<AddRelationResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -620,9 +595,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   addUnits(params: AddApplicationUnits): Promise<AddApplicationUnitsResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -636,9 +608,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   applicationsInfo(params: Entities): Promise<ApplicationInfoResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -652,9 +621,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   charmConfig(
     params: ApplicationGetArgs
   ): Promise<ApplicationGetConfigResults> {
@@ -670,9 +636,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   charmRelations(
     params: ApplicationCharmRelations
   ): Promise<ApplicationCharmRelationsResults> {
@@ -688,9 +651,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   consume(params: ConsumeApplicationArgsV5): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -704,9 +664,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   deploy(params: ApplicationsDeploy): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -720,9 +677,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   deployFromRepository(
     params: DeployFromRepositoryArgs
   ): Promise<DeployFromRepositoryResults> {
@@ -738,9 +692,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   destroyApplication(
     params: DestroyApplicationsParams
   ): Promise<DestroyApplicationResults> {
@@ -756,9 +707,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   destroyConsumedApplications(
     params: DestroyConsumedApplicationsParams
   ): Promise<ErrorResults> {
@@ -774,9 +722,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   destroyRelation(params: DestroyRelation): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -790,9 +735,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   destroyUnit(params: DestroyUnitsParams): Promise<DestroyUnitResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -806,9 +748,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   expose(params: ApplicationExpose): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -822,9 +761,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   get(params: ApplicationGet): Promise<ApplicationGetResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -838,9 +774,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   getApplicationStorage(
     params: Entities
   ): Promise<ApplicationStorageGetResults> {
@@ -856,9 +789,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   getCharmURLOrigin(params: ApplicationGet): Promise<CharmURLOriginResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -872,9 +802,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   getConfig(params: Entities): Promise<ApplicationGetConfigResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -888,9 +815,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   getConstraints(params: Entities): Promise<ApplicationGetConstraintsResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -904,9 +828,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   leader(params: Entity): Promise<StringResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -920,9 +841,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   mergeBindings(params: ApplicationMergeBindingsArgs): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -936,9 +854,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   resolveUnitErrors(params: UnitsResolved): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -952,9 +867,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   scaleApplications(
     params: ScaleApplicationsParamsV2
   ): Promise<ScaleApplicationResults> {
@@ -970,10 +882,7 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
-  setCharm(params: ApplicationSetCharm): Promise<any> {
+  setCharm(params: ApplicationSetCharmV2): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
         type: "Application",
@@ -986,9 +895,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   setConfigs(params: ConfigSetArgs): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -1002,9 +908,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   setConstraints(params: SetConstraints): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -1018,27 +921,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
-  setMetricCredentials(
-    params: ApplicationMetricCredentials
-  ): Promise<ErrorResults> {
-    return new Promise((resolve, reject) => {
-      const req: JujuRequest = {
-        type: "Application",
-        request: "SetMetricCredentials",
-        version: 22,
-        params: params,
-      };
-
-      this._transport.write(req, resolve, reject);
-    });
-  }
-
-  /**
-
-  */
   setRelationsSuspended(params: RelationSuspendedArgs): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -1052,9 +934,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   unexpose(params: ApplicationUnexpose): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -1068,9 +947,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   unitsInfo(params: Entities): Promise<UnitInfoResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -1084,9 +960,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
   unsetApplicationsConfig(
     params: ApplicationConfigUnsetArgs
   ): Promise<ErrorResults> {
@@ -1102,25 +975,6 @@ class ApplicationV22 implements Facade {
     });
   }
 
-  /**
-
-  */
-  updateApplicationBase(params: UpdateChannelArgs): Promise<ErrorResults> {
-    return new Promise((resolve, reject) => {
-      const req: JujuRequest = {
-        type: "Application",
-        request: "UpdateApplicationBase",
-        version: 22,
-        params: params,
-      };
-
-      this._transport.write(req, resolve, reject);
-    });
-  }
-
-  /**
-
-  */
   updateApplicationStorage(
     params: ApplicationStorageUpdateRequest
   ): Promise<ErrorResults> {

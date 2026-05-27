@@ -1,13 +1,8 @@
 /**
-  Juju Controller version 12.
-  This facade is available on:
-    Controller-machine-agent
-    Machine-agent
-    Unit-agent
-    Controllers
+  Juju Controller version 14.
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.6.14 at the git SHA b08ad63.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -119,7 +114,7 @@ export interface HostedModelConfig {
   config?: AdditionalProperties;
   error?: Error;
   name: string;
-  owner: string;
+  qualifier: string;
 }
 
 export interface HostedModelConfigsResults {
@@ -171,7 +166,7 @@ export interface MigrationTargetInfo {
 
 export interface Model {
   name: string;
-  "owner-tag": string;
+  qualifier: string;
   type: string;
   uuid: string;
 }
@@ -184,7 +179,7 @@ export interface ModelBlockInfo {
   blocks: string[];
   "model-uuid": string;
   name: string;
-  "owner-tag": string;
+  qualifier: string;
 }
 
 export interface ModelBlockInfoList {
@@ -201,14 +196,11 @@ export interface ModelFilesystemInfo {
 
 export interface ModelMachineInfo {
   "display-name"?: string;
-  "ha-primary"?: boolean;
   hardware?: MachineHardware;
-  "has-vote"?: boolean;
   id: string;
   "instance-id"?: string;
   message?: string;
   status?: string;
-  "wants-vote"?: boolean;
 }
 
 export interface ModelStatus {
@@ -220,7 +212,7 @@ export interface ModelStatus {
   life: string;
   machines?: ModelMachineInfo[];
   "model-tag": string;
-  "owner-tag": string;
+  qualifier: string;
   type: string;
   "unit-count": number;
   volumes?: ModelVolumeInfo[];
@@ -228,10 +220,6 @@ export interface ModelStatus {
 
 export interface ModelStatusResults {
   models: ModelStatus[];
-}
-
-export interface ModelTag {
-  [key: string]: AdditionalProperties;
 }
 
 export interface ModelVolumeInfo {
@@ -250,15 +238,6 @@ export interface ModifyControllerAccess {
 
 export interface ModifyControllerAccessRequest {
   changes: ModifyControllerAccess[];
-}
-
-export interface NotifyWatchResult {
-  NotifyWatcherId: string;
-  error?: Error;
-}
-
-export interface NotifyWatchResults {
-  results: NotifyWatchResult[];
 }
 
 export interface Proxy {
@@ -306,12 +285,12 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-class ControllerV12 implements Facade {
+class ControllerV14 implements Facade {
   static NAME = "Controller";
-  static VERSION = 12;
+  static VERSION = 14;
 
   NAME = "Controller";
-  VERSION = 12;
+  VERSION = 14;
 
   _transport: Transport;
   _info: ConnectionInfo;
@@ -329,7 +308,7 @@ class ControllerV12 implements Facade {
       const req: JujuRequest = {
         type: "Controller",
         request: "AllModels",
-        version: 12,
+        version: 14,
         params: params,
       };
 
@@ -342,7 +321,7 @@ class ControllerV12 implements Facade {
       const req: JujuRequest = {
         type: "Controller",
         request: "CloudSpec",
-        version: 12,
+        version: 14,
         params: params,
       };
 
@@ -355,7 +334,7 @@ class ControllerV12 implements Facade {
       const req: JujuRequest = {
         type: "Controller",
         request: "ConfigSet",
-        version: 12,
+        version: 14,
         params: params,
       };
 
@@ -370,7 +349,7 @@ class ControllerV12 implements Facade {
       const req: JujuRequest = {
         type: "Controller",
         request: "ControllerAPIInfoForModels",
-        version: 12,
+        version: 14,
         params: params,
       };
 
@@ -383,7 +362,7 @@ class ControllerV12 implements Facade {
       const req: JujuRequest = {
         type: "Controller",
         request: "ControllerConfig",
-        version: 12,
+        version: 14,
         params: params,
       };
 
@@ -396,7 +375,7 @@ class ControllerV12 implements Facade {
       const req: JujuRequest = {
         type: "Controller",
         request: "ControllerVersion",
-        version: 12,
+        version: 14,
         params: params,
       };
 
@@ -409,7 +388,7 @@ class ControllerV12 implements Facade {
       const req: JujuRequest = {
         type: "Controller",
         request: "DashboardConnectionInfo",
-        version: 12,
+        version: 14,
         params: params,
       };
 
@@ -422,20 +401,7 @@ class ControllerV12 implements Facade {
       const req: JujuRequest = {
         type: "Controller",
         request: "DestroyController",
-        version: 12,
-        params: params,
-      };
-
-      this._transport.write(req, resolve, reject);
-    });
-  }
-
-  getCloudSpec(params: ModelTag): Promise<CloudSpecResult> {
-    return new Promise((resolve, reject) => {
-      const req: JujuRequest = {
-        type: "Controller",
-        request: "GetCloudSpec",
-        version: 12,
+        version: 14,
         params: params,
       };
 
@@ -448,7 +414,7 @@ class ControllerV12 implements Facade {
       const req: JujuRequest = {
         type: "Controller",
         request: "GetControllerAccess",
-        version: 12,
+        version: 14,
         params: params,
       };
 
@@ -461,7 +427,7 @@ class ControllerV12 implements Facade {
       const req: JujuRequest = {
         type: "Controller",
         request: "HostedModelConfigs",
-        version: 12,
+        version: 14,
         params: params,
       };
 
@@ -474,7 +440,7 @@ class ControllerV12 implements Facade {
       const req: JujuRequest = {
         type: "Controller",
         request: "IdentityProviderURL",
-        version: 12,
+        version: 14,
         params: params,
       };
 
@@ -489,7 +455,7 @@ class ControllerV12 implements Facade {
       const req: JujuRequest = {
         type: "Controller",
         request: "InitiateMigration",
-        version: 12,
+        version: 14,
         params: params,
       };
 
@@ -502,7 +468,7 @@ class ControllerV12 implements Facade {
       const req: JujuRequest = {
         type: "Controller",
         request: "ListBlockedModels",
-        version: 12,
+        version: 14,
         params: params,
       };
 
@@ -515,7 +481,7 @@ class ControllerV12 implements Facade {
       const req: JujuRequest = {
         type: "Controller",
         request: "ModelStatus",
-        version: 12,
+        version: 14,
         params: params,
       };
 
@@ -530,7 +496,7 @@ class ControllerV12 implements Facade {
       const req: JujuRequest = {
         type: "Controller",
         request: "ModifyControllerAccess",
-        version: 12,
+        version: 14,
         params: params,
       };
 
@@ -543,7 +509,7 @@ class ControllerV12 implements Facade {
       const req: JujuRequest = {
         type: "Controller",
         request: "MongoVersion",
-        version: 12,
+        version: 14,
         params: params,
       };
 
@@ -556,7 +522,7 @@ class ControllerV12 implements Facade {
       const req: JujuRequest = {
         type: "Controller",
         request: "RemoveBlocks",
-        version: 12,
+        version: 14,
         params: params,
       };
 
@@ -569,7 +535,7 @@ class ControllerV12 implements Facade {
       const req: JujuRequest = {
         type: "Controller",
         request: "WatchAllModelSummaries",
-        version: 12,
+        version: 14,
         params: params,
       };
 
@@ -582,20 +548,7 @@ class ControllerV12 implements Facade {
       const req: JujuRequest = {
         type: "Controller",
         request: "WatchAllModels",
-        version: 12,
-        params: params,
-      };
-
-      this._transport.write(req, resolve, reject);
-    });
-  }
-
-  watchCloudSpecsChanges(params: Entities): Promise<NotifyWatchResults> {
-    return new Promise((resolve, reject) => {
-      const req: JujuRequest = {
-        type: "Controller",
-        request: "WatchCloudSpecsChanges",
-        version: 12,
+        version: 14,
         params: params,
       };
 
@@ -608,7 +561,7 @@ class ControllerV12 implements Facade {
       const req: JujuRequest = {
         type: "Controller",
         request: "WatchModelSummaries",
-        version: 12,
+        version: 14,
         params: params,
       };
 
@@ -617,4 +570,4 @@ class ControllerV12 implements Facade {
   }
 }
 
-export default ControllerV12;
+export default ControllerV14;

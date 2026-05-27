@@ -49,9 +49,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class LifeFlagV1 implements Facade {
   static NAME = "LifeFlag";
   static VERSION = 1;

@@ -21,7 +21,7 @@ export interface Binary {
   Build: number;
   Major: number;
   Minor: number;
-  Number: Number;
+  Number: string;
   Patch: number;
   Release: string;
   Tag: string;
@@ -97,7 +97,7 @@ export interface Version {
 
 export interface VersionResult {
   error?: Error;
-  version?: Number;
+  version?: string;
 }
 
 export interface VersionResults {
@@ -108,9 +108,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class UpgraderV1 implements Facade {
   static NAME = "Upgrader";
   static VERSION = 1;
@@ -128,9 +125,7 @@ class UpgraderV1 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
 
-  */
   desiredVersion(params: Entities): Promise<VersionResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -144,9 +139,6 @@ class UpgraderV1 implements Facade {
     });
   }
 
-  /**
-
-  */
   setTools(params: EntitiesVersion): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -160,9 +152,6 @@ class UpgraderV1 implements Facade {
     });
   }
 
-  /**
-
-  */
   tools(params: Entities): Promise<ToolsResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -176,9 +165,6 @@ class UpgraderV1 implements Facade {
     });
   }
 
-  /**
-
-  */
   watchAPIVersion(params: Entities): Promise<NotifyWatchResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

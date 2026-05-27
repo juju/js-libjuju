@@ -77,9 +77,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class EnvironUpgraderV1 implements Facade {
   static NAME = "EnvironUpgrader";
   static VERSION = 1;

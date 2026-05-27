@@ -4,7 +4,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 3.6.14 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -35,9 +35,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  API serves payload-specific API methods.
-*/
 class PayloadsV1 implements Facade {
   static NAME = "Payloads";
   static VERSION = 1;
@@ -55,11 +52,7 @@ class PayloadsV1 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    List builds the list of payloads being tracked for
-    the given unit and IDs. If no IDs are provided then all tracked
-    payloads for the unit are returned.
-  */
+
   list(params: PayloadListArgs): Promise<PayloadListResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

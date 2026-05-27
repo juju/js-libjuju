@@ -31,7 +31,7 @@ export interface MasterMigrationStatus {
 
 export interface MigrationModelInfo {
   "agent-version": string;
-  "controller-agent-version": Number;
+  "controller-agent-version": string;
   name: string;
   "owner-tag": string;
   uuid: string;

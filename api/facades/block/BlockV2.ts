@@ -1,10 +1,8 @@
 /**
   Juju Block version 2.
-  This facade is available on:
-    Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -48,10 +46,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  API implements Block interface and is the concrete
-  implementation of the api end point.
-*/
 class BlockV2 implements Facade {
   static NAME = "Block";
   static VERSION = 2;
@@ -69,9 +63,7 @@ class BlockV2 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    List implements Block.List().
-  */
+
   list(params: any): Promise<BlockResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -85,9 +77,6 @@ class BlockV2 implements Facade {
     });
   }
 
-  /**
-    SwitchBlockOff implements Block.SwitchBlockOff().
-  */
   switchBlockOff(params: BlockSwitchParams): Promise<ErrorResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -101,9 +90,6 @@ class BlockV2 implements Facade {
     });
   }
 
-  /**
-    SwitchBlockOn implements Block.SwitchBlockOn().
-  */
   switchBlockOn(params: BlockSwitchParams): Promise<ErrorResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

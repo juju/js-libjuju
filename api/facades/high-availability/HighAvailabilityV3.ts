@@ -1,9 +1,8 @@
 /**
   Juju HighAvailability version 3.
 
-
   NOTE: This file was generated using the Juju schema
-  from Juju 4.0.1 at the git SHA 22e0b6a.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -76,9 +75,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class HighAvailabilityV3 implements Facade {
   static NAME = "HighAvailability";
   static VERSION = 3;
@@ -96,9 +92,7 @@ class HighAvailabilityV3 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
 
-  */
   controllerDetails(params: any): Promise<ControllerDetailsResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -112,9 +106,6 @@ class HighAvailabilityV3 implements Facade {
     });
   }
 
-  /**
-
-  */
   enableHA(params: ControllersSpecs): Promise<ControllersChangeResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

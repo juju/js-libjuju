@@ -1,13 +1,8 @@
 /**
   Juju ModelUpgrader version 1.
-  This facade is available on:
-    Controller-machine-agent
-    Machine-agent
-    Unit-agent
-    Controllers
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -39,11 +34,11 @@ export interface UpgradeModelParams {
   "dry-run"?: boolean;
   "ignore-agent-versions"?: boolean;
   "model-tag": string;
-  "target-version": Number;
+  "target-version": string;
 }
 
 export interface UpgradeModelResult {
-  "chosen-version": Number;
+  "chosen-version": string;
   error?: Error;
 }
 
@@ -51,10 +46,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  ModelUpgraderAPI implements the model upgrader interface and is
-  the concrete implementation of the api end point.
-*/
 class ModelUpgraderV1 implements Facade {
   static NAME = "ModelUpgrader";
   static VERSION = 1;
@@ -72,10 +63,7 @@ class ModelUpgraderV1 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    AbortModelUpgrade aborts and archives the model upgrade
-    synchronisation record, if any.
-  */
+
   abortModelUpgrade(params: ModelParam): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -89,9 +77,6 @@ class ModelUpgraderV1 implements Facade {
     });
   }
 
-  /**
-    UpgradeModel upgrades a model.
-  */
   upgradeModel(params: UpgradeModelParams): Promise<UpgradeModelResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

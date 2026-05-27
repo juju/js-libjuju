@@ -74,7 +74,7 @@ export interface CAASApplicationProvisioningInfo {
   scale?: number;
   tags?: Record<string, string>;
   trust?: boolean;
-  version: Number;
+  version: string;
   volumes?: KubernetesVolumeParams[];
 }
 
@@ -510,9 +510,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class CAASApplicationProvisionerV1 implements Facade {
   static NAME = "CAASApplicationProvisioner";
   static VERSION = 1;

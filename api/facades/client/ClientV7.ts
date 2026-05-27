@@ -63,7 +63,7 @@ export interface Binary {
   Build: number;
   Major: number;
   Minor: number;
-  Number: Number;
+  Number: string;
   Patch: number;
   Release: string;
   Tag: string;
@@ -144,7 +144,7 @@ export interface FindToolsParams {
   agentstream: string;
   arch: string;
   major: number;
-  number: Number;
+  number: string;
   "os-type": string;
 }
 

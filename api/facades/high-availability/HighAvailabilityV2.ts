@@ -5,7 +5,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 3.6.14 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -68,10 +68,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  HighAvailabilityAPI implements the HighAvailability interface and is the concrete
-  implementation of the api end point.
-*/
 class HighAvailabilityV2 implements Facade {
   static NAME = "HighAvailability";
   static VERSION = 2;
@@ -89,10 +85,7 @@ class HighAvailabilityV2 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    EnableHA adds controller machines as necessary to ensure the
-    controller has the number of machines specified.
-  */
+
   enableHA(params: ControllersSpecs): Promise<ControllersChangeResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

@@ -1,7 +1,6 @@
 /**
   Juju Controller version 13.
 
-
   NOTE: This file was generated using the Juju schema
   from Juju 4.0.1 at the git SHA 22e0b6a.
   Do not manually edit this file.
@@ -276,9 +275,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class ControllerV13 implements Facade {
   static NAME = "Controller";
   static VERSION = 13;
@@ -296,9 +292,7 @@ class ControllerV13 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
 
-  */
   allModels(params: any): Promise<UserModelList> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -312,9 +306,6 @@ class ControllerV13 implements Facade {
     });
   }
 
-  /**
-
-  */
   configSet(params: ControllerConfigSet): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -328,9 +319,6 @@ class ControllerV13 implements Facade {
     });
   }
 
-  /**
-
-  */
   controllerAPIInfoForModels(
     params: Entities
   ): Promise<ControllerAPIInfoResults> {
@@ -346,9 +334,6 @@ class ControllerV13 implements Facade {
     });
   }
 
-  /**
-
-  */
   controllerConfig(params: any): Promise<ControllerConfigResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -362,9 +347,6 @@ class ControllerV13 implements Facade {
     });
   }
 
-  /**
-
-  */
   controllerVersion(params: any): Promise<ControllerVersionResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -378,9 +360,6 @@ class ControllerV13 implements Facade {
     });
   }
 
-  /**
-
-  */
   dashboardConnectionInfo(params: any): Promise<DashboardConnectionInfo> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -394,9 +373,6 @@ class ControllerV13 implements Facade {
     });
   }
 
-  /**
-
-  */
   destroyController(params: DestroyControllerArgs): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -410,9 +386,6 @@ class ControllerV13 implements Facade {
     });
   }
 
-  /**
-
-  */
   getControllerAccess(params: Entities): Promise<UserAccessResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -426,9 +399,6 @@ class ControllerV13 implements Facade {
     });
   }
 
-  /**
-
-  */
   hostedModelConfigs(params: any): Promise<HostedModelConfigsResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -442,9 +412,6 @@ class ControllerV13 implements Facade {
     });
   }
 
-  /**
-
-  */
   identityProviderURL(params: any): Promise<StringResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -458,9 +425,6 @@ class ControllerV13 implements Facade {
     });
   }
 
-  /**
-
-  */
   initiateMigration(
     params: InitiateMigrationArgs
   ): Promise<InitiateMigrationResults> {
@@ -476,9 +440,6 @@ class ControllerV13 implements Facade {
     });
   }
 
-  /**
-
-  */
   listBlockedModels(params: any): Promise<ModelBlockInfoList> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -492,9 +453,6 @@ class ControllerV13 implements Facade {
     });
   }
 
-  /**
-
-  */
   modelStatus(params: Entities): Promise<ModelStatusResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -508,9 +466,6 @@ class ControllerV13 implements Facade {
     });
   }
 
-  /**
-
-  */
   modifyControllerAccess(
     params: ModifyControllerAccessRequest
   ): Promise<ErrorResults> {
@@ -526,9 +481,6 @@ class ControllerV13 implements Facade {
     });
   }
 
-  /**
-
-  */
   mongoVersion(params: any): Promise<StringResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -542,9 +494,6 @@ class ControllerV13 implements Facade {
     });
   }
 
-  /**
-
-  */
   removeBlocks(params: RemoveBlocksArgs): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -558,9 +507,6 @@ class ControllerV13 implements Facade {
     });
   }
 
-  /**
-
-  */
   watchAllModelSummaries(params: any): Promise<SummaryWatcherID> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -574,9 +520,6 @@ class ControllerV13 implements Facade {
     });
   }
 
-  /**
-
-  */
   watchAllModels(params: any): Promise<AllWatcherId> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -590,9 +533,6 @@ class ControllerV13 implements Facade {
     });
   }
 
-  /**
-
-  */
   watchModelSummaries(params: any): Promise<SummaryWatcherID> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

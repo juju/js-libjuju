@@ -1,10 +1,8 @@
 /**
   Juju Action version 7.
-  This facade is available on:
-    Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -116,7 +114,6 @@ export interface RunParams {
   parallel?: boolean;
   timeout: number;
   units?: string[];
-  "workload-context"?: boolean;
 }
 
 export interface StringsWatchResult {
@@ -133,9 +130,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  APIv7 provides the Action API facade for version 7.
-*/
 class ActionV7 implements Facade {
   static NAME = "Action";
   static VERSION = 7;
@@ -153,10 +147,7 @@ class ActionV7 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    Actions takes a list of ActionTags, and returns the full Action for
-    each ID.
-  */
+
   actions(params: Entities): Promise<ActionResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -170,10 +161,6 @@ class ActionV7 implements Facade {
     });
   }
 
-  /**
-    ApplicationsCharmsActions returns a slice of charm Actions for a slice of
-    services.
-  */
   applicationsCharmsActions(
     params: Entities
   ): Promise<ApplicationsCharmActionsResults> {
@@ -189,9 +176,6 @@ class ActionV7 implements Facade {
     });
   }
 
-  /**
-    Cancel attempts to cancel enqueued Actions from running.
-  */
   cancel(params: Entities): Promise<ActionResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -205,11 +189,6 @@ class ActionV7 implements Facade {
     });
   }
 
-  /**
-    EnqueueOperation takes a list of Actions and queues them up to be executed as
-    an operation, each action running as a task on the designated ActionReceiver.
-    We return the ID of the overall operation and each individual task.
-  */
   enqueueOperation(params: Actions): Promise<EnqueuedActions> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -223,9 +202,6 @@ class ActionV7 implements Facade {
     });
   }
 
-  /**
-    ListOperations fetches the called actions for specified apps/units.
-  */
   listOperations(params: OperationQueryArgs): Promise<OperationResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -239,9 +215,6 @@ class ActionV7 implements Facade {
     });
   }
 
-  /**
-    Operations fetches the specified operation ids.
-  */
   operations(params: Entities): Promise<OperationResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -255,10 +228,6 @@ class ActionV7 implements Facade {
     });
   }
 
-  /**
-    Run the commands specified on the machines identified through the
-    list of machines, units and services.
-  */
   run(params: RunParams): Promise<EnqueuedActions> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -272,9 +241,6 @@ class ActionV7 implements Facade {
     });
   }
 
-  /**
-    RunOnAllMachines attempts to run the specified command on all the machines.
-  */
   runOnAllMachines(params: RunParams): Promise<EnqueuedActions> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -288,9 +254,6 @@ class ActionV7 implements Facade {
     });
   }
 
-  /**
-    WatchActionsProgress creates a watcher that reports on action log messages.
-  */
   watchActionsProgress(params: Entities): Promise<StringsWatchResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

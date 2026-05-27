@@ -1,9 +1,8 @@
 /**
   Juju ModelConfig version 4.
 
-
   NOTE: This file was generated using the Juju schema
-  from Juju 4.0.1 at the git SHA 22e0b6a.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -83,9 +82,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class ModelConfigV4 implements Facade {
   static NAME = "ModelConfig";
   static VERSION = 4;
@@ -103,9 +99,7 @@ class ModelConfigV4 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
 
-  */
   getModelConstraints(params: any): Promise<GetConstraintsResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -119,9 +113,6 @@ class ModelConfigV4 implements Facade {
     });
   }
 
-  /**
-
-  */
   getModelSecretBackend(params: any): Promise<StringResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -135,9 +126,6 @@ class ModelConfigV4 implements Facade {
     });
   }
 
-  /**
-
-  */
   modelGet(params: any): Promise<ModelConfigResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -151,9 +139,6 @@ class ModelConfigV4 implements Facade {
     });
   }
 
-  /**
-
-  */
   modelSet(params: ModelSet): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -167,9 +152,6 @@ class ModelConfigV4 implements Facade {
     });
   }
 
-  /**
-
-  */
   modelUnset(params: ModelUnset): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -183,9 +165,6 @@ class ModelConfigV4 implements Facade {
     });
   }
 
-  /**
-
-  */
   sequences(params: any): Promise<ModelSequencesResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -199,9 +178,6 @@ class ModelConfigV4 implements Facade {
     });
   }
 
-  /**
-
-  */
   setModelConstraints(params: SetConstraints): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -215,9 +191,6 @@ class ModelConfigV4 implements Facade {
     });
   }
 
-  /**
-
-  */
   setModelSecretBackend(
     params: SetModelSecretBackendArg
   ): Promise<ErrorResult> {

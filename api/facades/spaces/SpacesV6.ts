@@ -1,13 +1,8 @@
 /**
   Juju Spaces version 6.
-  This facade is available on:
-    Controller-machine-agent
-    Machine-agent
-    Unit-agent
-    Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -134,7 +129,6 @@ export interface Subnet {
   "provider-network-id"?: string;
   "provider-space-id"?: string;
   "space-tag": string;
-  status?: string;
   "vlan-tag": number;
   zones: string[];
 }
@@ -143,9 +137,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  API provides the spaces API facade for version 6.
-*/
 class SpacesV6 implements Facade {
   static NAME = "Spaces";
   static VERSION = 6;
@@ -163,10 +154,7 @@ class SpacesV6 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    CreateSpaces creates a new Juju network space, associating the
-    specified subnets with it (optional; can be empty).
-  */
+
   createSpaces(params: CreateSpacesParams): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -180,9 +168,6 @@ class SpacesV6 implements Facade {
     });
   }
 
-  /**
-    ListSpaces lists all the available spaces and their associated subnets.
-  */
   listSpaces(params: any): Promise<ListSpacesResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -196,9 +181,6 @@ class SpacesV6 implements Facade {
     });
   }
 
-  /**
-    MoveSubnets ensures that the input subnets are in the input space.
-  */
   moveSubnets(params: MoveSubnetsParams): Promise<MoveSubnetsResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -212,9 +194,6 @@ class SpacesV6 implements Facade {
     });
   }
 
-  /**
-    ReloadSpaces refreshes spaces from substrate
-  */
   reloadSpaces(params: any): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -228,10 +207,6 @@ class SpacesV6 implements Facade {
     });
   }
 
-  /**
-    RemoveSpace removes a space.
-    Returns SpaceResults if entities/settings are found which makes the deletion not possible.
-  */
   removeSpace(params: RemoveSpaceParams): Promise<RemoveSpaceResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -245,9 +220,6 @@ class SpacesV6 implements Facade {
     });
   }
 
-  /**
-    RenameSpace renames a space.
-  */
   renameSpace(params: RenameSpacesParams): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -261,9 +233,6 @@ class SpacesV6 implements Facade {
     });
   }
 
-  /**
-    ShowSpace shows the spaces for a set of given entities.
-  */
   showSpace(params: Entities): Promise<ShowSpaceResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

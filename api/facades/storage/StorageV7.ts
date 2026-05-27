@@ -1,15 +1,8 @@
 /**
   Juju Storage version 7.
-  This facade is available on:
-    Controller-machine-agent
-    Machine-agent
-    Unit-agent
-    Models
-
-
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.6.14 at the git SHA b08ad63.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -145,7 +138,7 @@ export interface RemoveStorageInstance {
 
 export interface StorageAddParams {
   name: string;
-  storage: StorageConstraints;
+  storage: StorageDirectives;
   unit: string;
 }
 
@@ -164,12 +157,6 @@ export interface StorageAttachmentId {
 
 export interface StorageAttachmentIds {
   ids: StorageAttachmentId[];
-}
-
-export interface StorageConstraints {
-  count?: number;
-  pool?: string;
-  size?: number;
 }
 
 export interface StorageDetachmentParams {
@@ -204,6 +191,12 @@ export interface StorageDetailsResult {
 
 export interface StorageDetailsResults {
   results?: StorageDetailsResult[];
+}
+
+export interface StorageDirectives {
+  count?: number;
+  pool?: string;
+  size?: number;
 }
 
 export interface StorageFilter {
@@ -317,9 +310,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class StorageV7 implements Facade {
   static NAME = "Storage";
   static VERSION = 7;
@@ -337,9 +327,7 @@ class StorageV7 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
 
-  */
   addToUnit(params: StoragesAddParams): Promise<AddStorageResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -353,9 +341,6 @@ class StorageV7 implements Facade {
     });
   }
 
-  /**
-
-  */
   attach(params: StorageAttachmentIds): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -369,9 +354,6 @@ class StorageV7 implements Facade {
     });
   }
 
-  /**
-
-  */
   createPool(params: StoragePoolArgs): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -385,9 +367,6 @@ class StorageV7 implements Facade {
     });
   }
 
-  /**
-
-  */
   detachStorage(params: StorageDetachmentParams): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -401,9 +380,6 @@ class StorageV7 implements Facade {
     });
   }
 
-  /**
-
-  */
   import(params: BulkImportStorageParamsV2): Promise<ImportStorageResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -417,9 +393,6 @@ class StorageV7 implements Facade {
     });
   }
 
-  /**
-
-  */
   listFilesystems(
     params: FilesystemFilters
   ): Promise<FilesystemDetailsListResults> {
@@ -435,9 +408,6 @@ class StorageV7 implements Facade {
     });
   }
 
-  /**
-
-  */
   listPools(params: StoragePoolFilters): Promise<StoragePoolsResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -451,9 +421,6 @@ class StorageV7 implements Facade {
     });
   }
 
-  /**
-
-  */
   listStorageDetails(
     params: StorageFilters
   ): Promise<StorageDetailsListResults> {
@@ -469,9 +436,6 @@ class StorageV7 implements Facade {
     });
   }
 
-  /**
-
-  */
   listVolumes(params: VolumeFilters): Promise<VolumeDetailsListResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -485,9 +449,6 @@ class StorageV7 implements Facade {
     });
   }
 
-  /**
-
-  */
   remove(params: RemoveStorage): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -501,9 +462,6 @@ class StorageV7 implements Facade {
     });
   }
 
-  /**
-
-  */
   removePool(params: StoragePoolDeleteArgs): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -517,9 +475,6 @@ class StorageV7 implements Facade {
     });
   }
 
-  /**
-
-  */
   storageDetails(params: Entities): Promise<StorageDetailsResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -533,9 +488,6 @@ class StorageV7 implements Facade {
     });
   }
 
-  /**
-
-  */
   updatePool(params: StoragePoolArgs): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

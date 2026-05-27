@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 3.6.14 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -243,9 +243,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  MachineManagerAPI provides access to the MachineManager API facade.
-*/
 class MachineManagerV10 implements Facade {
   static NAME = "MachineManager";
   static VERSION = 10;
@@ -263,10 +260,7 @@ class MachineManagerV10 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    AddMachines adds new machines with the supplied parameters.
-    The args will contain Base info.
-  */
+
   addMachines(params: AddMachines): Promise<AddMachinesResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -280,9 +274,6 @@ class MachineManagerV10 implements Facade {
     });
   }
 
-  /**
-    DestroyMachineWithParams removes a set of machines from the model.
-  */
   destroyMachineWithParams(
     params: DestroyMachinesParams
   ): Promise<DestroyMachineResults> {
@@ -298,11 +289,6 @@ class MachineManagerV10 implements Facade {
     });
   }
 
-  /**
-    GetUpgradeSeriesMessages returns all new messages associated with upgrade
-    series events. Messages that have already been retrieved once are not
-    returned by this method.
-  */
   getUpgradeSeriesMessages(
     params: UpgradeSeriesNotificationParams
   ): Promise<StringsResults> {
@@ -318,10 +304,6 @@ class MachineManagerV10 implements Facade {
     });
   }
 
-  /**
-    InstanceTypes returns instance type information for the cloud and region
-    in which the current model is deployed.
-  */
   instanceTypes(
     params: ModelInstanceTypesConstraints
   ): Promise<InstanceTypesResults> {
@@ -337,10 +319,6 @@ class MachineManagerV10 implements Facade {
     });
   }
 
-  /**
-    ProvisioningScript returns a shell script that, when run,
-    provisions a machine agent on the machine executing the script.
-  */
   provisioningScript(
     params: ProvisioningScriptParams
   ): Promise<ProvisioningScriptResult> {
@@ -356,9 +334,6 @@ class MachineManagerV10 implements Facade {
     });
   }
 
-  /**
-    RetryProvisioning marks a provisioning error as transient on the machines.
-  */
   retryProvisioning(params: RetryProvisioningArgs): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -372,10 +347,6 @@ class MachineManagerV10 implements Facade {
     });
   }
 
-  /**
-    UpgradeSeriesComplete marks a machine as having completed a managed series
-    upgrade.
-  */
   upgradeSeriesComplete(params: UpdateChannelArg): Promise<ErrorResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -389,9 +360,6 @@ class MachineManagerV10 implements Facade {
     });
   }
 
-  /**
-    UpgradeSeriesPrepare prepares a machine for a OS series upgrade.
-  */
   upgradeSeriesPrepare(params: UpdateChannelArg): Promise<ErrorResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -405,12 +373,6 @@ class MachineManagerV10 implements Facade {
     });
   }
 
-  /**
-    UpgradeSeriesValidate validates that the incoming arguments correspond to a
-    valid series upgrade for the target machine.
-    If they do, a list of the machine's current units is returned for use in
-    soliciting user confirmation of the command.
-  */
   upgradeSeriesValidate(
     params: UpdateChannelArgs
   ): Promise<UpgradeSeriesUnitsResults> {
@@ -426,10 +388,6 @@ class MachineManagerV10 implements Facade {
     });
   }
 
-  /**
-    WatchUpgradeSeriesNotifications returns a watcher that fires on upgrade
-    series events.
-  */
   watchUpgradeSeriesNotifications(
     params: Entities
   ): Promise<NotifyWatchResults> {

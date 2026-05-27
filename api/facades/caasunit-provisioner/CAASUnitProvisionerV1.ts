@@ -273,9 +273,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class CAASUnitProvisionerV1 implements Facade {
   static NAME = "CAASUnitProvisioner";
   static VERSION = 1;

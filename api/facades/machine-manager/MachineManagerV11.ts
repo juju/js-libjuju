@@ -1,9 +1,8 @@
 /**
   Juju MachineManager version 11.
 
-
   NOTE: This file was generated using the Juju schema
-  from Juju 4.0.1 at the git SHA 22e0b6a.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -189,9 +188,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class MachineManagerV11 implements Facade {
   static NAME = "MachineManager";
   static VERSION = 11;
@@ -209,9 +205,7 @@ class MachineManagerV11 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
 
-  */
   addMachines(params: AddMachines): Promise<AddMachinesResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -225,9 +219,6 @@ class MachineManagerV11 implements Facade {
     });
   }
 
-  /**
-
-  */
   destroyMachineWithParams(
     params: DestroyMachinesParams
   ): Promise<DestroyMachineResults> {
@@ -243,9 +234,6 @@ class MachineManagerV11 implements Facade {
     });
   }
 
-  /**
-
-  */
   instanceTypes(
     params: ModelInstanceTypesConstraints
   ): Promise<InstanceTypesResults> {
@@ -261,9 +249,6 @@ class MachineManagerV11 implements Facade {
     });
   }
 
-  /**
-
-  */
   provisioningScript(
     params: ProvisioningScriptParams
   ): Promise<ProvisioningScriptResult> {
@@ -279,9 +264,6 @@ class MachineManagerV11 implements Facade {
     });
   }
 
-  /**
-
-  */
   retryProvisioning(params: RetryProvisioningArgs): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

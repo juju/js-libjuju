@@ -46,9 +46,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class CAASAdmissionV1 implements Facade {
   static NAME = "CAASAdmission";
   static VERSION = 1;

@@ -28,7 +28,7 @@ export interface ErrorResult {
 
 export interface KubernetesUpgradeArg {
   "agent-tag": string;
-  version: Number;
+  version: string;
 }
 
 export interface Number {
@@ -43,9 +43,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class CAASOperatorUpgraderV1 implements Facade {
   static NAME = "CAASOperatorUpgrader";
   static VERSION = 1;

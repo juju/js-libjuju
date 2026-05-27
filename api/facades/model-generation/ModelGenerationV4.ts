@@ -7,7 +7,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 3.6.14 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -95,9 +95,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  API is the concrete implementation of the API endpoint.
-*/
 class ModelGenerationV4 implements Facade {
   static NAME = "ModelGeneration";
   static VERSION = 4;
@@ -115,11 +112,7 @@ class ModelGenerationV4 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    AbortBranch aborts the input branch, marking it complete.  However no
-    changes are made applicable to the whole model.  No units may be assigned
-    to the branch when aborting.
-  */
+
   abortBranch(params: BranchArg): Promise<ErrorResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -133,9 +126,6 @@ class ModelGenerationV4 implements Facade {
     });
   }
 
-  /**
-    AddBranch adds a new branch with the input name to the model.
-  */
   addBranch(params: BranchArg): Promise<ErrorResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -149,12 +139,6 @@ class ModelGenerationV4 implements Facade {
     });
   }
 
-  /**
-    BranchInfo will return details of branch identified by the input argument,
-    including units on the branch and the configuration disjoint with the
-    master generation.
-    An error is returned if no in-flight branch matching in input is found.
-  */
   branchInfo(params: BranchInfoArgs): Promise<BranchResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -168,10 +152,6 @@ class ModelGenerationV4 implements Facade {
     });
   }
 
-  /**
-    CommitBranch commits the input branch, making its changes applicable to
-    the whole model and marking it complete.
-  */
   commitBranch(params: BranchArg): Promise<IntResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -185,10 +165,6 @@ class ModelGenerationV4 implements Facade {
     });
   }
 
-  /**
-    HasActiveBranch returns a true result if the input model has an "in-flight"
-    branch matching the input name.
-  */
   hasActiveBranch(params: BranchArg): Promise<BoolResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -202,9 +178,6 @@ class ModelGenerationV4 implements Facade {
     });
   }
 
-  /**
-    ListCommits will return the commits, hence only branches with generation_id higher than 0
-  */
   listCommits(params: any): Promise<BranchResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -218,11 +191,6 @@ class ModelGenerationV4 implements Facade {
     });
   }
 
-  /**
-    ShowCommit will return details a commit given by its generationId
-    An error is returned if either no branch can be found corresponding to the generation id.
-    Or the generation id given is below 1.
-  */
   showCommit(params: GenerationId): Promise<GenerationResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -236,10 +204,6 @@ class ModelGenerationV4 implements Facade {
     });
   }
 
-  /**
-    TrackBranch marks the input units and/or applications as tracking the input
-    branch, causing them to realise changes made under that branch.
-  */
   trackBranch(params: BranchTrackArg): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

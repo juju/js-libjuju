@@ -1,13 +1,8 @@
 /**
   Juju Subnets version 5.
-  This facade is available on:
-    Controller-machine-agent
-    Machine-agent
-    Unit-agent
-    Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -37,7 +32,6 @@ export interface Subnet {
   "provider-network-id"?: string;
   "provider-space-id"?: string;
   "space-tag": string;
-  status?: string;
   "vlan-tag": number;
   zones: string[];
 }
@@ -51,7 +45,6 @@ export interface SubnetV2 {
   "provider-network-id"?: string;
   "provider-space-id"?: string;
   "space-tag": string;
-  status?: string;
   "vlan-tag": number;
   zones: string[];
 }
@@ -84,9 +77,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  API provides the subnets API facade for version 5.
-*/
 class SubnetsV5 implements Facade {
   static NAME = "Subnets";
   static VERSION = 5;
@@ -104,11 +94,7 @@ class SubnetsV5 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    AllZones returns all availability zones known to Juju. If a
-    zone is unusable, unavailable, or deprecated the Available
-    field will be false.
-  */
+
   allZones(params: any): Promise<ZoneResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -122,10 +108,6 @@ class SubnetsV5 implements Facade {
     });
   }
 
-  /**
-    ListSubnets returns the matching subnets after applying
-    optional filters.
-  */
   listSubnets(params: SubnetsFilters): Promise<ListSubnetsResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -139,9 +121,6 @@ class SubnetsV5 implements Facade {
     });
   }
 
-  /**
-    SubnetsByCIDR returns the collection of subnets matching each CIDR in the input.
-  */
   subnetsByCIDR(params: CIDRParams): Promise<SubnetsResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

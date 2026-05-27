@@ -1,15 +1,8 @@
 /**
   Juju SSHClient version 5.
-  This facade is available on:
-    Controller-machine-agent
-    Machine-agent
-    Unit-agent
-    Models
-
-
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.6.14 at the git SHA b08ad63.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -56,12 +49,6 @@ export interface Error {
   message: string;
 }
 
-export interface PublicSSHHostKeyResult {
-  error?: Error;
-  "jump-server-public-key": number[];
-  "public-key": number[];
-}
-
 export interface SSHAddressResult {
   address?: string;
   error?: Error;
@@ -93,10 +80,6 @@ export interface SSHPublicKeysResults {
   results: SSHPublicKeysResult[];
 }
 
-export interface SSHVirtualHostKeyRequestArg {
-  hostname: string;
-}
-
 export interface VirtualHostnameTargetArg {
   container?: string;
   tag: string;
@@ -106,9 +89,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class SSHClientV5 implements Facade {
   static NAME = "SSHClient";
   static VERSION = 5;
@@ -126,9 +106,7 @@ class SSHClientV5 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
 
-  */
   allAddresses(params: Entities): Promise<SSHAddressesResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -142,9 +120,6 @@ class SSHClientV5 implements Facade {
     });
   }
 
-  /**
-
-  */
   modelCredentialForSSH(params: any): Promise<CloudSpecResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -158,9 +133,6 @@ class SSHClientV5 implements Facade {
     });
   }
 
-  /**
-
-  */
   privateAddress(params: Entities): Promise<SSHAddressResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -174,9 +146,6 @@ class SSHClientV5 implements Facade {
     });
   }
 
-  /**
-
-  */
   proxy(params: any): Promise<SSHProxyResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -190,9 +159,6 @@ class SSHClientV5 implements Facade {
     });
   }
 
-  /**
-
-  */
   publicAddress(params: Entities): Promise<SSHAddressResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -206,27 +172,6 @@ class SSHClientV5 implements Facade {
     });
   }
 
-  /**
-
-  */
-  publicHostKeyForTarget(
-    params: SSHVirtualHostKeyRequestArg
-  ): Promise<PublicSSHHostKeyResult> {
-    return new Promise((resolve, reject) => {
-      const req: JujuRequest = {
-        type: "SSHClient",
-        request: "PublicHostKeyForTarget",
-        version: 5,
-        params: params,
-      };
-
-      this._transport.write(req, resolve, reject);
-    });
-  }
-
-  /**
-
-  */
   publicKeys(params: Entities): Promise<SSHPublicKeysResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -240,9 +185,6 @@ class SSHClientV5 implements Facade {
     });
   }
 
-  /**
-
-  */
   virtualHostname(params: VirtualHostnameTargetArg): Promise<SSHAddressResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

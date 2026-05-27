@@ -1,9 +1,8 @@
 /**
   Juju Bundle version 8.
 
-
   NOTE: This file was generated using the Juju schema
-  from Juju 4.0.1 at the git SHA 22e0b6a.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -48,9 +47,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class BundleV8 implements Facade {
   static NAME = "Bundle";
   static VERSION = 8;
@@ -68,9 +64,7 @@ class BundleV8 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
 
-  */
   exportBundle(params: ExportBundleParams): Promise<StringResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -84,9 +78,6 @@ class BundleV8 implements Facade {
     });
   }
 
-  /**
-
-  */
   getChangesMapArgs(
     params: BundleChangesParams
   ): Promise<BundleChangesMapArgsResults> {

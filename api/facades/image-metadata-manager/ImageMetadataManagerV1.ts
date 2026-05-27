@@ -1,13 +1,8 @@
 /**
   Juju ImageMetadataManager version 1.
-  This facade is available on:
-    Controller-machine-agent
-    Machine-agent
-    Unit-agent
-    Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 4.0.10 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -72,10 +67,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  API is the concrete implementation of the api end point
-  for loud image metadata manipulations.
-*/
 class ImageMetadataManagerV1 implements Facade {
   static NAME = "ImageMetadataManager";
   static VERSION = 1;
@@ -93,10 +84,7 @@ class ImageMetadataManagerV1 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    Delete deletes cloud image metadata for given image ids.
-    It supports bulk calls.
-  */
+
   delete(params: MetadataImageIds): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -110,11 +98,6 @@ class ImageMetadataManagerV1 implements Facade {
     });
   }
 
-  /**
-    List returns all found cloud image metadata that satisfy
-    given filter.
-    Returned list contains metadata ordered by priority.
-  */
   list(params: ImageMetadataFilter): Promise<ListCloudImageMetadataResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -128,10 +111,6 @@ class ImageMetadataManagerV1 implements Facade {
     });
   }
 
-  /**
-    Save stores given cloud image metadata.
-    It supports bulk calls.
-  */
   save(params: MetadataSaveParams): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

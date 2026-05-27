@@ -235,9 +235,6 @@ class AgentV2 implements Facade {
     });
   }
 
-  /**
-
-  */
   getEntities(params: Entities): Promise<AgentGetEntitiesResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -251,9 +248,6 @@ class AgentV2 implements Facade {
     });
   }
 
-  /**
-
-  */
   isMaster(params: any): Promise<IsMasterResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -299,9 +293,6 @@ class AgentV2 implements Facade {
     });
   }
 
-  /**
-
-  */
   stateServingInfo(params: any): Promise<StateServingInfo> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

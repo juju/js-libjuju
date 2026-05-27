@@ -69,7 +69,7 @@ export interface Address {
 }
 
 export interface AgentVersionResult {
-  version: Number;
+  version: string;
 }
 
 export interface AllWatcherId {
@@ -113,7 +113,7 @@ export interface Binary {
   Build: number;
   Major: number;
   Minor: number;
-  Number: Number;
+  Number: string;
   Patch: number;
   Series: string;
   Tag: string;
@@ -219,7 +219,7 @@ export interface FindToolsParams {
   arch: string;
   major: number;
   minor: number;
-  number: Number;
+  number: string;
   series: string;
 }
 
@@ -507,7 +507,7 @@ export interface SetConstraints {
 
 export interface SetModelAgentVersion {
   force?: boolean;
-  version: Number;
+  version: string;
 }
 
 export interface StatusHistoryFilter {

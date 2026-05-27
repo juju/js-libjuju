@@ -5,7 +5,7 @@
     Models
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 3.6.14 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -63,11 +63,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  APIv6 provides the Bundle API facade for version 6. It is otherwise
-  identical to V5 with the exception that the V6 adds the support for
-  multi-part yaml handling to GetChanges and GetChangesMapArgs.
-*/
 class BundleV6 implements Facade {
   static NAME = "Bundle";
   static VERSION = 6;
@@ -85,9 +80,7 @@ class BundleV6 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    ExportBundle exports the current model configuration as bundle.
-  */
+
   exportBundle(params: ExportBundleParams): Promise<StringResult> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -101,14 +94,6 @@ class BundleV6 implements Facade {
     });
   }
 
-  /**
-    GetChanges returns the list of changes required to deploy the given bundle
-    data. The changes are sorted by requirements, so that they can be applied in
-    order.
-    GetChanges has been superseded in favour of GetChangesMapArgs. It's
-    preferable to use that new method to add new functionality and move clients
-    away from this one.
-  */
   getChanges(params: BundleChangesParams): Promise<BundleChangesResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -122,12 +107,6 @@ class BundleV6 implements Facade {
     });
   }
 
-  /**
-    GetChangesMapArgs returns the list of changes required to deploy the given
-    bundle data. The changes are sorted by requirements, so that they can be
-    applied in order.
-    V4 GetChangesMapArgs is not supported on anything less than v4
-  */
   getChangesMapArgs(
     params: BundleChangesParams
   ): Promise<BundleChangesMapArgsResults> {

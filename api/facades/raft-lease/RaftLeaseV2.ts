@@ -51,9 +51,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class RaftLeaseV2 implements Facade {
   static NAME = "RaftLease";
   static VERSION = 2;
@@ -71,9 +68,7 @@ class RaftLeaseV2 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
 
-  */
   applyLease(params: LeaseOperationsV2): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

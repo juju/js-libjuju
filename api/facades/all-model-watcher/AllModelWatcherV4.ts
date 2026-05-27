@@ -4,7 +4,7 @@
     Controllers
 
   NOTE: This file was generated using the Juju schema
-  from Juju 3.3 at the git SHA 65fa4c1ee5.
+  from Juju 3.6.14 at the git SHA b08ad63.
   Do not manually edit this file.
 */
 
@@ -26,12 +26,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-  SrvAllWatcher defines the API methods on a state.Multiwatcher.
-  which watches any changes to the state. Each client has its own
-  current set of watchers, stored in resources. It is used by both
-  the AllWatcher and AllModelWatcher facades.
-*/
 class AllModelWatcherV4 implements Facade {
   static NAME = "AllModelWatcher";
   static VERSION = 4;
@@ -49,10 +43,7 @@ class AllModelWatcherV4 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
-    Next will return the current state of everything on the first call
-    and subsequent calls will
-  */
+
   next(params: { id: string }): Promise<AllWatcherNextResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -66,9 +57,6 @@ class AllModelWatcherV4 implements Facade {
     });
   }
 
-  /**
-    Stop stops the watcher.
-  */
   stop(params: { id: string }): Promise<any> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

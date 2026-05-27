@@ -82,7 +82,7 @@ export interface HostPort {
 export interface ModelOperatorInfo {
   "api-addresses": string[];
   "image-details": DockerImageInfo;
-  version: Number;
+  version: string;
 }
 
 export interface NotifyWatchResult {

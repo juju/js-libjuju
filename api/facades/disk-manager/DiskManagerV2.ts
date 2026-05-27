@@ -76,9 +76,7 @@ class DiskManagerV2 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
 
-  */
   setMachineBlockDevices(
     params: SetMachineBlockDevices
   ): Promise<ErrorResults> {

@@ -6,8 +6,6 @@
     Unit-agent
     Controllers
 
-
-
   NOTE: This file was generated using the Juju schema
   from Juju 3.6.14 at the git SHA b08ad63.
   Do not manually edit this file.
@@ -357,9 +355,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class ModelManagerV10 implements Facade {
   static NAME = "ModelManager";
   static VERSION = 10;
@@ -377,9 +372,7 @@ class ModelManagerV10 implements Facade {
     // Automatically bind all methods to instances.
     autoBind(this);
   }
-  /**
 
-  */
   changeModelCredential(
     params: ChangeModelCredentialsParams
   ): Promise<ErrorResults> {
@@ -395,9 +388,6 @@ class ModelManagerV10 implements Facade {
     });
   }
 
-  /**
-
-  */
   createModel(params: ModelCreateArgs): Promise<ModelInfo> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -411,9 +401,6 @@ class ModelManagerV10 implements Facade {
     });
   }
 
-  /**
-
-  */
   destroyModels(params: DestroyModelsParams): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -427,9 +414,6 @@ class ModelManagerV10 implements Facade {
     });
   }
 
-  /**
-
-  */
   dumpModels(params: DumpModelRequest): Promise<StringResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -443,9 +427,6 @@ class ModelManagerV10 implements Facade {
     });
   }
 
-  /**
-
-  */
   dumpModelsDB(params: Entities): Promise<MapResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -459,9 +440,6 @@ class ModelManagerV10 implements Facade {
     });
   }
 
-  /**
-
-  */
   listModelSummaries(
     params: ModelSummariesRequest
   ): Promise<ModelSummaryResults> {
@@ -477,9 +455,6 @@ class ModelManagerV10 implements Facade {
     });
   }
 
-  /**
-
-  */
   listModels(params: Entity): Promise<UserModelList> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -493,9 +468,6 @@ class ModelManagerV10 implements Facade {
     });
   }
 
-  /**
-
-  */
   modelDefaultsForClouds(params: Entities): Promise<ModelDefaultsResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -509,9 +481,6 @@ class ModelManagerV10 implements Facade {
     });
   }
 
-  /**
-
-  */
   modelInfo(params: Entities): Promise<ModelInfoResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -525,9 +494,6 @@ class ModelManagerV10 implements Facade {
     });
   }
 
-  /**
-
-  */
   modelStatus(params: Entities): Promise<ModelStatusResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -541,9 +507,6 @@ class ModelManagerV10 implements Facade {
     });
   }
 
-  /**
-
-  */
   modifyModelAccess(params: ModifyModelAccessRequest): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -557,9 +520,6 @@ class ModelManagerV10 implements Facade {
     });
   }
 
-  /**
-
-  */
   setModelDefaults(params: SetModelDefaults): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {
@@ -573,9 +533,6 @@ class ModelManagerV10 implements Facade {
     });
   }
 
-  /**
-
-  */
   unsetModelDefaults(params: UnsetModelDefaults): Promise<ErrorResults> {
     return new Promise((resolve, reject) => {
       const req: JujuRequest = {

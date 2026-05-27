@@ -30,9 +30,6 @@ export interface AdditionalProperties {
   [key: string]: any;
 }
 
-/**
-
-*/
 class MigrationStatusWatcherV1 implements Facade {
   static NAME = "MigrationStatusWatcher";
   static VERSION = 1;
