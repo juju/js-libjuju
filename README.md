@@ -256,4 +256,4 @@ Finally, update `CLIENT_VERSION` in `api/client.ts` with the highest version of 
   rewrite the changes to help them make sense to consumers of the library).
 - Clone a fresh copy of the repository: `git clone git@github.com:juju/js-libjuju.git`.
 - Install the dependencies and build the package with `yarn install && yarn run build`.
-- Now you can publish to NPM with `yarn publish`.
+- Now you can publish to NPM with `yarn npm publish --access public`.

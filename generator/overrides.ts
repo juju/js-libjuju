@@ -1,4 +1,4 @@
-import { SchemaDefinition } from "./templates/types.js";
+import { SchemaDefinition, SchemaPropertyValue } from "./templates/types.js";
 
 type MethodOverrides = Record<
   string,
@@ -97,4 +97,13 @@ export const attributeOverrides: Record<string, string> = {
   // API as a string.
   // https://bugs.launchpad.net/juju/+bug/2025108
   "agent-version": "string",
+};
+
+export const refOverrides: Record<string, SchemaPropertyValue> = {
+  // The schema defines agent-version as a `Number` object but it is returned by the
+  // API as a string.
+  // https://bugs.launchpad.net/juju/+bug/2025108
+  "#/definitions/Number": {
+    type: "string",
+  },
 };

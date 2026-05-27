@@ -79,6 +79,31 @@ describe("generateMethods", () => {
       },
     ]);
   });
+
+  it("replaces Number type with string", () => {
+    expect(
+      generateMethods(
+        {
+          DesiredVersion: {
+            description: "Gets the desired version.",
+            type: "object",
+            properties: {
+              Params: { $ref: "#/definitions/Number" },
+              Result: { $ref: "#/definitions/Number" },
+            },
+          },
+        },
+        "Upgrader"
+      )
+    ).toStrictEqual([
+      {
+        name: "DesiredVersion",
+        params: "string",
+        result: "string",
+        docBlock: "Gets the desired version.",
+      },
+    ]);
+  });
 });
 
 describe("generateInterfaces", () => {
@@ -242,6 +267,81 @@ describe("generateInterfaces", () => {
         types: [
           { name: "entity", required: true, type: "AdditionalProperties" },
           { name: "removed", required: true, type: "boolean" },
+        ],
+      },
+      {
+        name: "AdditionalProperties",
+        types: [{ name: "[key: string]", required: false, type: "any" }],
+      },
+    ]);
+  });
+
+  it("replaces Number type with string", () => {
+    expect(
+      generateInterfaces(
+        {
+          UpgradeModelParams: {
+            type: "object",
+            properties: {
+              "agent-stream": {
+                type: "string",
+              },
+              "target-version": {
+                $ref: "#/definitions/Number",
+              },
+            },
+            additionalProperties: false,
+            required: ["model-tag", "target-version"],
+          },
+        },
+        "ModelUpgrader"
+      )
+    ).toStrictEqual([
+      {
+        name: "UpgradeModelParams",
+        types: [
+          { name: "agent-stream", required: false, type: "string" },
+          { name: "target-version", required: true, type: "string" },
+        ],
+      },
+      {
+        name: "AdditionalProperties",
+        types: [{ name: "[key: string]", required: false, type: "any" }],
+      },
+    ]);
+  });
+
+  it("replaces Number type with string in mult-dimensional arrays", () => {
+    expect(
+      generateInterfaces(
+        {
+          UpgradeModelParams: {
+            type: "object",
+            properties: {
+              "target-version": {
+                type: "array",
+                items: {
+                  type: "array",
+                  items: {
+                    type: "array",
+                    items: {
+                      $ref: "#/definitions/Number",
+                    },
+                  },
+                },
+              },
+            },
+            additionalProperties: false,
+            required: ["target-version"],
+          },
+        },
+        "ModelUpgrader"
+      )
+    ).toStrictEqual([
+      {
+        name: "UpgradeModelParams",
+        types: [
+          { name: "target-version", required: true, type: "string[][][]" },
         ],
       },
       {
@@ -462,16 +562,29 @@ describe("generateTypes", () => {
     ]);
   });
 
-  it("overrides agent-version", () => {
+  it("replaces Number with string in patternProperties", () => {
     expect(
       generateTypes(
         {
-          "agent-version": { $ref: "#/definitions/Number" },
+          actions: {
+            type: "object",
+            patternProperties: {
+              ".*": {
+                type: "object",
+                $ref: "#/definitions/Number",
+              },
+            },
+          },
         },
         []
       )
     ).toStrictEqual([
-      { name: "agent-version", required: false, type: "string" },
+      {
+        name: "actions",
+        required: false,
+        type: "object",
+        valueType: "string",
+      },
     ]);
   });
 });

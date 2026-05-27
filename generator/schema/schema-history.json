@@ -43,5 +43,10 @@
     "juju-git-sha": "22e0b6a",
     "juju-version": "4.0.1",
     "schema": "https://raw.githubusercontent.com/juju/juju/refs/tags/v4.0.1/apiserver/facades/schema.json"
+  },
+  {
+    "juju-git-sha": "b08ad63",
+    "juju-version": "4.0.10",
+    "schema": "https://raw.githubusercontent.com/juju/juju/refs/tags/v4.0.10/apiserver/facades/schema.json"
   }
 ]
