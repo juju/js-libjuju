@@ -292,7 +292,7 @@ export function generateTypes(
             }
             const valueType = extractType({
               ...patternProperty,
-              // Use the type that was extract above in case a ref was substituted with a primitive type.
+              // Use the type that was extracted above in case a ref was substituted with a primitive type.
               type: patternType.type,
             });
             // If the pattern is additionalProperties then use that as the
