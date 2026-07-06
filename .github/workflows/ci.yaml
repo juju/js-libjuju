@@ -15,12 +15,11 @@ jobs:
         node-version: [22.x]
     steps:
       - run: corepack enable
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "yarn"
       - name: Install
         run: yarn install --immutable
       - run: yarn test
@@ -32,12 +31,11 @@ jobs:
         node-version: [22.x]
     steps:
       - run: corepack enable
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "yarn"
       - name: Install
         run: yarn install --immutable
       - run: yarn prettier --check 'api/**/*'
@@ -49,12 +47,11 @@ jobs:
         node-version: [22.x]
     steps:
       - run: corepack enable
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "yarn"
       - name: Install
         run: yarn install --immutable
       - run: yarn lint
@@ -66,12 +63,11 @@ jobs:
         node-version: [22.x]
     steps:
       - run: corepack enable
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "yarn"
       - name: Install
         run: yarn install --immutable
       - run: CI=false yarn build
