@@ -5,6 +5,7 @@ import CloudV3 from "./CloudV3.js";
 import CloudV4 from "./CloudV4.js";
 import CloudV5 from "./CloudV5.js";
 import CloudV7 from "./CloudV7.js";
+import CloudV8 from "./CloudV8.js";
 
 export * as CloudV1 from "./CloudV1.js";
 export * as CloudV2 from "./CloudV2.js";
@@ -12,10 +13,11 @@ export * as CloudV3 from "./CloudV3.js";
 export * as CloudV4 from "./CloudV4.js";
 export * as CloudV5 from "./CloudV5.js";
 export * as CloudV7 from "./CloudV7.js";
+export * as CloudV8 from "./CloudV8.js";
 
 const Cloud: GenericFacade = {
   name: "Cloud",
-  versions: [CloudV1, CloudV2, CloudV3, CloudV4, CloudV5, CloudV7],
+  versions: [CloudV1, CloudV2, CloudV3, CloudV4, CloudV5, CloudV7, CloudV8],
 };
 
 export default Cloud;
