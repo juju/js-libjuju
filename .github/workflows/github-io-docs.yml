@@ -6,8 +6,17 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22.x]
     steps:
-      - uses: actions/checkout@v2
+      - run: corepack enable
+      - uses: actions/checkout@v6
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
       - name: Install Dependencies
         run: yarn install
       - name: Build the project
